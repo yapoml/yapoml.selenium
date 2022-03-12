@@ -1,0 +1,42 @@
+﻿public class {{$1.name}}Component : Yapoml.Selenium.Component
+{
+  public {{$1.name}}Component(OpenQA.Selenium.IWebDriver webDriver, OpenQA.Selenium.IWebElement webElement, Yapoml.Options.ISpaceOptions spaceOptions)
+    : base(webDriver, webElement, spaceOptions)
+  {
+
+  }
+
+  {{ for component in $1.component_generation_contextes -}}
+    public {{ if component.is_plural }}System.Collections.Generic.IList<{{component.name}}Component>{{ else }}{{component.name}}Component{{ end }} {{component.name}}
+    {
+      get
+      {
+        {{ if component.by.method == 'XPath' }}
+        var by = OpenQA.Selenium.By.XPath("{{ component.by.value }}");
+        {{ end }}
+
+        {{ if component.by.method == 'Css' }}
+        var by = OpenQA.Selenium.By.CssSelector("{{ component.by.value }}");
+        {{ end }}
+
+        {{ if component.by.method == 'Id' }}
+        var by = OpenQA.Selenium.By.Id("{{ component.by.value }}");
+        {{ end }}
+        
+        {{ if component.is_plural }}
+        EventSource.RaiseOnFindingComponents("{{component.name}}", by);
+        var webElements = WrappedElement.FindElements(by);
+        EventSource.RaiseOnFoundComponents(by, webElements);
+        return webElements.Select(e => new {{component.name}}Component(WebDriver, e, SpaceOptions)).ToList();
+        {{ else }}
+        EventSource.RaiseOnFindingComponent("{{component.name}}", by);
+        var webElement = WrappedElement.FindElement(by);
+        EventSource.RaiseOnFoundComponent(by, WebDriver, webElement);
+        return new {{component.name}}Component(WebDriver, webElement, SpaceOptions);
+        {{ end }}
+      }
+    }
+
+    {{ include 'NestedComponentTemplate' component }}
+  {{ end }}
+}

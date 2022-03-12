@@ -1,0 +1,25 @@
+﻿using OpenQA.Selenium;
+
+namespace {{namespace}}
+{
+  public partial class {{name}}Space
+  {
+    private IWebDriver _webDriver;
+
+    private Yapoml.Options.ISpaceOptions _spaceOptions;
+
+    public {{name}}Space(IWebDriver webDriver, Yapoml.Options.ISpaceOptions spaceOptions)
+    {
+      _webDriver = webDriver;
+      _spaceOptions = spaceOptions;
+    }
+
+    {{ for space in spaces -}}
+    public {{space.namespace}}.{{space.name}}Space {{space.name}} => new {{space.namespace}}.{{space.name}}Space(_webDriver, _spaceOptions);
+    {{ end }}
+
+    {{ for page in pages }}
+    public {{page.namespace}}.{{page.name}} {{page.name}} => new {{page.namespace}}.{{page.name}}(_webDriver, _spaceOptions);
+    {{ end }}
+  }
+}

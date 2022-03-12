@@ -1,0 +1,14 @@
+﻿using OpenQA.Selenium;
+
+namespace Yapoml.Selenium
+{
+  /// <inheritdoc/>
+  public partial class Page : Yapoml.Selenium.Components.BasePage
+  {
+    public Page(IWebDriver webDriver, Yapoml.Options.ISpaceOptions spaceOptions)
+        : base (webDriver, spaceOptions)
+    {
+
+    }
+  }
+}
