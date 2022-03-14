@@ -15,12 +15,13 @@ namespace Yapoml.Selenium
 			_webDriver = webDriver;
 			_spaceOptions = spaceOptions;
 		}
+
 {{ for space in spaces }}
 		public {{space.namespace}}.{{space.name}}Space {{space.name}}
 		{
 			get
 			{
-				return new {{space.namespace}}.{{space.name}}Space(_webDriver, _spaceOptions);
+				return _spaceOptions.Get<Yapoml.Selenium.Factory.ISpaceFactory>().Create<{{space.namespace}}.{{space.name}}Space>(_webDriver, _spaceOptions);
 			}
 		}
 {{ end }}
@@ -48,6 +49,9 @@ namespace Yapoml.Selenium
 
 			// default logger
 			spaceOptions.Register<Yapoml.Logging.ILogger>(new Yapoml.Logging.ConsoleLogger());
+
+			// default factories
+			spaceOptions.Register<Yapoml.Selenium.Factory.ISpaceFactory>(new Yapoml.Selenium.Factory.DefaultSpaceFactory());
 
 			var eventSource = new Yapoml.Selenium.Events.EventSource();
 			spaceOptions.Register<Yapoml.Selenium.Events.IEventSource>(eventSource);

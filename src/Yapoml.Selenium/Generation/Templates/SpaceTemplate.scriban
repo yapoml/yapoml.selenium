@@ -15,7 +15,7 @@ namespace {{namespace}}
     }
 
     {{ for space in spaces -}}
-    public {{space.namespace}}.{{space.name}}Space {{space.name}} => new {{space.namespace}}.{{space.name}}Space(_webDriver, _spaceOptions);
+    public {{space.namespace}}.{{space.name}}Space {{space.name}} => _spaceOptions.Get<Yapoml.Selenium.Factory.ISpaceFactory>().Create<{{space.namespace}}.{{space.name}}Space>(_webDriver, _spaceOptions);
     {{ end }}
 
     {{ for page in pages }}
