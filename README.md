@@ -6,13 +6,6 @@ Given that you have the following `LoginPage.po.yaml` file
 ya:
   UsernameInput:
     by: id username
-
-  PasswordInput:
-    by:
-      css: .password
-
-  LoginButton:
-    by: css .primary-button
 ```
 
 Then you are able to immediately interact with web elements
