@@ -30,7 +30,7 @@ namespace Yapoml.Selenium
 		{
 			get
 			{
-				return new {{page.namespace}}.{{page.name}}(_webDriver, _spaceOptions);
+				return _spaceOptions.Get<Yapoml.Selenium.Factory.IPageFactory>().Create<{{page.namespace}}.{{page.name}}>(_webDriver, _spaceOptions);
 			}
 		}
 {{ end }}
@@ -52,6 +52,7 @@ namespace Yapoml.Selenium
 
 			// default factories
 			spaceOptions.Register<Yapoml.Selenium.Factory.ISpaceFactory>(new Yapoml.Selenium.Factory.DefaultSpaceFactory());
+			spaceOptions.Register<Yapoml.Selenium.Factory.IPageFactory>(new Yapoml.Selenium.Factory.DefaultPageFactory());
 
 			var eventSource = new Yapoml.Selenium.Events.EventSource();
 			spaceOptions.Register<Yapoml.Selenium.Events.IEventSource>(eventSource);
