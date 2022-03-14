@@ -53,6 +53,7 @@ namespace Yapoml.Selenium
 			// default factories
 			spaceOptions.Register<Yapoml.Selenium.Factory.ISpaceFactory>(new Yapoml.Selenium.Factory.DefaultSpaceFactory());
 			spaceOptions.Register<Yapoml.Selenium.Factory.IPageFactory>(new Yapoml.Selenium.Factory.DefaultPageFactory());
+			spaceOptions.Register<Yapoml.Selenium.Factory.IComponentFactory>(new Yapoml.Selenium.Factory.DefaultComponentFactory());
 
 			var eventSource = new Yapoml.Selenium.Events.EventSource();
 			spaceOptions.Register<Yapoml.Selenium.Events.IEventSource>(eventSource);

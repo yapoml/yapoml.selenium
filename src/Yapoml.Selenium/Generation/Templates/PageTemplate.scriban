@@ -32,12 +32,12 @@ namespace {{namespace}}
         EventSource.RaiseOnFindingComponents("{{component.name}}", by);
         var webElements = WebDriver.FindElements(by);
         EventSource.RaiseOnFoundComponents(by, webElements);
-        return webElements.Select(e => new {{component.name}}Component(WebDriver, e, SpaceOptions)).ToList();
+        return webElements.Select(e => SpaceOptions.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{component.name}}Component>(WebDriver, e, SpaceOptions)).ToList();
         {{ else }}
         EventSource.RaiseOnFindingComponent("{{component.name}}", by);
         var webElement = WebDriver.FindElement(by);
         EventSource.RaiseOnFoundComponent(by, WebDriver, webElement);
-        return new {{component.name}}Component(WebDriver, webElement, SpaceOptions);
+        return SpaceOptions.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{component.name}}Component>(WebDriver, webElement, SpaceOptions);
         {{ end }}
       }
     }
