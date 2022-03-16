@@ -1,10 +1,8 @@
-﻿ya:
-  Packages:
-    by: css .package
+﻿Packages:
+  by: css .package
 
-    ya:
-      Title:
-        by: .//a
+  Title:
+    by: .//a
 
-      Description:
-        by: css .package-details
+  Description:
+    by: css .package-details

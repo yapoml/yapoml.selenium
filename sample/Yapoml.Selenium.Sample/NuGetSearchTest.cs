@@ -28,7 +28,7 @@ namespace Yapoml.Selenium.Sample
         }
 
         [Test]
-        public void Search()
+        public void SearchWithSelenium()
         {
             _webDriver.FindElement(By.Id("search")).SendKeys("yaml");
             _webDriver.FindElement(By.CssSelector(".btn-search")).Click();

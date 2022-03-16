@@ -7,9 +7,8 @@ Install [Yapoml.Selenium](https://www.nuget.org/packages/Yapoml.Selenium) nuget 
 Given that you have the following `LoginPage.po.yaml` file
 
 ```yaml
-ya:
-  UsernameInput:
-    by: id username
+UsernameInput:
+  by: id username
 ```
 
 Then you are able to immediately interact with web elements

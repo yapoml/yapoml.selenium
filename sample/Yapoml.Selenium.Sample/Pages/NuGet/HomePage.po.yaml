@@ -1,6 +1,5 @@
-﻿ya:
-  SearchInput:
-    by: id search
+﻿SearchInput:
+  by: id search
   
-  SearchButton:
-    by: css .btn-search
+SearchButton:
+  by: css .btn-search
