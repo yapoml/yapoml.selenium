@@ -1,8 +1,6 @@
-﻿Packages:
+﻿Packages: 
   by: css .package
 
-  Title:
-    by: .//a
+  Title: .//a
 
-  Description:
-    by: css .package-details
+  Description: css .package-details
