@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using Microsoft.CodeAnalysis;
 using Scriban;
 using Scriban.Runtime;
@@ -37,12 +36,14 @@ namespace Yapoml.Selenium.Generation
                 var parser = new Parser();
 
                 // build yapoml generation context
-                var yaContext = new GlobalGenerationContext(projectDir, _rootNamespace, parser);
+                var yaContextBuilder = new GlobalGenerationContextBuilder(projectDir, _rootNamespace, parser);
 
                 foreach (AdditionalText file in context.AdditionalFiles)
                 {
-                    yaContext.AddFile(file.Path);
+                    yaContextBuilder.AddFile(file.Path);
                 }
+
+                var yaContext = yaContextBuilder.Build();
 
                 // generate files
                 GenerateEntryPoint(yaContext);

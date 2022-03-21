@@ -1,4 +1,4 @@
-﻿namespace Yapoml.Selenium.Sample.Pages.NuGet
+﻿namespace Yapoml.Selenium.Sample.Basics.Pages
 {
     public partial class HomePage
     {

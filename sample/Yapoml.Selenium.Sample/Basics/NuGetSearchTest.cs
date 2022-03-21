@@ -4,7 +4,7 @@ using OpenQA.Selenium.Firefox;
 using System;
 using Yapoml.Selenium;
 
-namespace Yapoml.Selenium.Sample
+namespace Yapoml.Selenium.Sample.Basics
 {
     [TestFixture]
     public class NuGetSearchTest
@@ -46,8 +46,7 @@ namespace Yapoml.Selenium.Sample
             var ya = _webDriver.Ya(
                 //opts => opts.UseSerilog()
                 opts => opts.UseLighter(delay: 200, fadeOutSpeed: 400)
-                )
-                .Pages.NuGet;
+                ).Basics.Pages;
 
             ya.HomePage.Search("yaml");
 

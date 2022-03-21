@@ -1,0 +1,8 @@
+﻿Navigation:
+ by: id navbar
+
+ MenuItems:
+   by: ./ul[1]/li
+
+   Title:
+     by: ./a/span
