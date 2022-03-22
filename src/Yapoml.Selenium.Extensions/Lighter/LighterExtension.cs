@@ -39,7 +39,7 @@ namespace Yapoml.Selenium
             {
                 try
                 {
-                    var backgroundColor = e.WebElement.GetCssValue("backgroundColor");
+                    var backgroundColor = e.WebElement.GetCssValue("background-color");
 
                     jsExecutor.ExecuteScript($"arguments[0].setAttribute('style', 'background: rgba({_color.R}, {_color.G}, {_color.B}, {(float)_color.A / 100});');", e.WebElement);
 
