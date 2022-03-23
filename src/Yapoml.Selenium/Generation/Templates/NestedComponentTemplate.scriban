@@ -27,12 +27,12 @@
         EventSource.RaiseOnFindingComponents("{{component.name}}", by);
         var webElements = WrappedElement.FindElements(by);
         EventSource.RaiseOnFoundComponents(by, webElements);
-        return webElements.Select(e => new {{component.singular_name}}Component(WebDriver, e, SpaceOptions)).ToList();
+        return webElements.Select(e => SpaceOptions.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{component.singular_name}}Component>(WebDriver, e, SpaceOptions)).ToList();
         {{ else }}
         EventSource.RaiseOnFindingComponent("{{component.name}}", by);
         var webElement = WrappedElement.FindElement(by);
         EventSource.RaiseOnFoundComponent(by, WebDriver, webElement);
-        return new {{component.name}}Component(WebDriver, webElement, SpaceOptions);
+        return SpaceOptions.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{component.name}}Component>(WebDriver, webElement, SpaceOptions);
         {{ end }}
       }
     }
