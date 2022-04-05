@@ -6,4 +6,8 @@
 		<None Remove="**\*.po.yaml" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<Using Include="Yapoml.Selenium" />
+	</ItemGroup>
+
 </Project>
