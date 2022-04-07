@@ -27,6 +27,10 @@ namespace {{namespace}}
         {{ if component.by.method == 'Id' -}}
         var by = OpenQA.Selenium.By.Id("{{ component.by.value }}");
         {{ end -}}
+
+        {{ if component.by.method == 'None' -}}
+        var by = OpenQA.Selenium.By.XPath("{{ component.by.value }}");
+        {{ end -}}
         
         {{ if component.is_plural }}
         EventSource.RaiseOnFindingComponents("{{component.name}}", by);
