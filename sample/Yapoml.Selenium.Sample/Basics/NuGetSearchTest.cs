@@ -49,12 +49,19 @@ namespace Yapoml.Selenium.Sample.Basics
                 ).Basics.Pages;
 
             ya.HomePage.Search("yaml");
+            ya.SearchResultsPage.Open();
 
             foreach (var package in ya.SearchResultsPage.Packages)
             {
                 Assert.That(package.Title.Text, Is.Not.Empty);
                 Assert.That(package.Description.Text, Is.Not.Empty);
             }
+        }
+
+        [Test]
+        public void NavigateWithYapoml()
+        {
+            _webDriver.Ya(opts => opts.UseBaseUrl("https://nuget.org")).Basics.Pages.SearchResultsPage.Open();
         }
     }
 }

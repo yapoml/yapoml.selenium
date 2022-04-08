@@ -11,6 +11,14 @@ namespace {{namespace}}
       
     }
 
+    {{ if url }}
+    public void Open()
+    {
+        var baseUrl = SpaceOptions.Get<Yapoml.Selenium.BaseUrl>().Url;
+        WebDriver.Navigate().GoToUrl(baseUrl + "{{url.path}}");
+    }
+    {{ end }}
+
     {{ for component in components}}
     public {{ if component.is_plural }}System.Collections.Generic.IList<{{component.singular_name}}Component>{{ else }}{{component.name}}Component{{ end }} {{component.name}}
     {
