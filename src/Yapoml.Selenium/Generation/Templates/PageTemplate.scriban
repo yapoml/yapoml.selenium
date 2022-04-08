@@ -12,7 +12,10 @@ namespace {{namespace}}
     }
 
     {{ if url }}
-    public void Open()
+    public void Open(
+        {{ for segment in url.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }}
+        {{ for param in url.params }} {{ if url.segments && for.first}}, {{end}}{{ if for.first == false }}, {{end}}string {{param}} = null{{end}}
+    )
     {
         var baseUrl = SpaceOptions.Get<Yapoml.Selenium.BaseUrl>().Url;
         WebDriver.Navigate().GoToUrl(baseUrl + "{{url.path}}");

@@ -2,7 +2,7 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using System;
-using Yapoml.Selenium;
+//using Yapoml.Selenium;
 
 namespace Yapoml.Selenium.Sample.Basics
 {
@@ -49,7 +49,6 @@ namespace Yapoml.Selenium.Sample.Basics
                 ).Basics.Pages;
 
             ya.HomePage.Search("yaml");
-            ya.SearchResultsPage.Open();
 
             foreach (var package in ya.SearchResultsPage.Packages)
             {
@@ -61,7 +60,13 @@ namespace Yapoml.Selenium.Sample.Basics
         [Test]
         public void NavigateWithYapoml()
         {
-            _webDriver.Ya(opts => opts.UseBaseUrl("https://nuget.org")).Basics.Pages.SearchResultsPage.Open();
+            var ya = _webDriver.Ya(opts =>
+                opts.UseBaseUrl("https://nuget.org"))
+                .Basics.Pages;
+
+            ya.SearchResultsPage.Open("qwe");
+
+            Assert.That(ya.SearchResultsPage.Packages.Count, Is.EqualTo(20));
         }
     }
 }
