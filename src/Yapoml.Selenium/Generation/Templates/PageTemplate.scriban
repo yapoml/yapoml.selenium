@@ -18,7 +18,17 @@ namespace {{namespace}}
     )
     {
         var baseUrl = SpaceOptions.Get<Yapoml.Selenium.BaseUrl>().Url;
-        WebDriver.Navigate().GoToUrl(baseUrl + "{{url.path}}");
+
+        var segments = new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>() { 
+            {{ for segment in url.segments }}{{ if for.first == false }}, {{end}}new System.Collections.Generic.KeyValuePair<string, string>("{{ segment }}", {{ segment }}) {{ end }} 
+        };
+
+        var queryParams = new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>() { 
+            {{ for param in url.params }}{{ if for.first == false }}, {{end}}new System.Collections.Generic.KeyValuePair<string, string>("{{ param }}", {{ param }}) {{ end }} 
+        };
+
+        var navService = new Yapoml.Selenium.Services.NavigationService(baseUrl);
+        WebDriver.Navigate().GoToUrl(navService.BuildUri("{{ url.path }}", segments, queryParams));
     }
     {{ end }}
 

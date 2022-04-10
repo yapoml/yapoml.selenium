@@ -1,8 +1,7 @@
 ﻿url:
   path: /packages
   params:
-    - p1
-    - p2
+    - q
 
 Packages: 
   by: css .package

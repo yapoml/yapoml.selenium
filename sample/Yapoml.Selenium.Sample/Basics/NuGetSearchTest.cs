@@ -64,7 +64,7 @@ namespace Yapoml.Selenium.Sample.Basics
                 opts.UseBaseUrl("https://nuget.org"))
                 .Basics.Pages;
 
-            ya.SearchResultsPage.Open("qwe");
+            ya.SearchResultsPage.Open(q: "yaml");
 
             Assert.That(ya.SearchResultsPage.Packages.Count, Is.EqualTo(20));
         }
