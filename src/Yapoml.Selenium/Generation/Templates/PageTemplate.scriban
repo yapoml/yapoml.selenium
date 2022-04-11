@@ -12,7 +12,7 @@ namespace {{namespace}}
     }
 
     {{ if url }}
-    public void Open(
+    public {{name}} Open(
         {{ for segment in url.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }}
         {{ for param in url.params }} {{ if url.segments && for.first}}, {{end}}{{ if for.first == false }}, {{end}}string {{param}} = null{{end}}
     )
@@ -29,6 +29,8 @@ namespace {{namespace}}
 
         var navService = new Yapoml.Selenium.Services.NavigationService(baseUrl);
         WebDriver.Navigate().GoToUrl(navService.BuildUri("{{ url.path }}", segments, queryParams));
+
+        return this;
     }
     {{ end }}
 

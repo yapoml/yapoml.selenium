@@ -2,7 +2,6 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using System;
-//using Yapoml.Selenium;
 
 namespace Yapoml.Selenium.Sample.Basics
 {
@@ -44,13 +43,12 @@ namespace Yapoml.Selenium.Sample.Basics
         public void SearchWithYapoml()
         {
             var ya = _webDriver.Ya(
-                //opts => opts.UseSerilog()
                 opts => opts.UseLighter(delay: 200, fadeOutSpeed: 400)
                 ).Basics.Pages;
 
             ya.HomePage.Search("yaml");
 
-            foreach (var package in ya.SearchResultsPage.Packages)
+            foreach (var package in ya.PackagesPage.Packages)
             {
                 Assert.That(package.Title.Text, Is.Not.Empty);
                 Assert.That(package.Description.Text, Is.Not.Empty);
@@ -64,9 +62,11 @@ namespace Yapoml.Selenium.Sample.Basics
                 opts.UseBaseUrl("https://nuget.org"))
                 .Basics.Pages;
 
-            ya.SearchResultsPage.Open(q: "yaml");
+            // it opens https://nuget.org/packages?q=yaml
+            Assert.That(ya.PackagesPage.Open(q: "yaml").Packages.Count, Is.EqualTo(20));
 
-            Assert.That(ya.SearchResultsPage.Packages.Count, Is.EqualTo(20));
+            // it opens https://nuget.org/packages/Newtonsoft.Json
+            Console.WriteLine(ya.PackageDetailsPage.Open("Newtonsoft.Json").Version.Text);
         }
     }
 }
