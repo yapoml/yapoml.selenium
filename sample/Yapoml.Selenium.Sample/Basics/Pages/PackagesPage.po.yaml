@@ -1,4 +1,9 @@
-﻿Packages: 
+﻿url:
+  path: /packages
+  params:
+    - q
+
+Packages: 
   by: css .package
 
   Title: .//a
