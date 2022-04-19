@@ -2,8 +2,8 @@
 using Microsoft.CodeAnalysis;
 using Scriban;
 using Scriban.Runtime;
-using Yapoml.Workspace;
-using Yapoml.Workspace.Parsers;
+using Yapoml.Framework.Workspace;
+using Yapoml.Framework.Workspace.Parsers;
 
 namespace Yapoml.Selenium.Generation
 {

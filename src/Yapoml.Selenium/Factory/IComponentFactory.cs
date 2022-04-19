@@ -1,10 +1,11 @@
 ﻿using OpenQA.Selenium;
+using Yapoml.Framework.Options;
 using Yapoml.Selenium.Components;
 
 namespace Yapoml.Selenium.Factory
 {
     public interface IComponentFactory
     {
-        TComponent Create<TComponent>(IWebDriver webDriver, IWebElement webElement, Options.ISpaceOptions spaceOptions) where TComponent : BaseComponent;
+        TComponent Create<TComponent>(IWebDriver webDriver, IWebElement webElement, ISpaceOptions spaceOptions) where TComponent : BaseComponent;
     }
 }

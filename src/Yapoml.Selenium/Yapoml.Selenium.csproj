@@ -18,13 +18,13 @@
 		<PackageReference Include="Scriban" Version="5.4.0" GeneratePathProperty="true" PrivateAssets="all" />
 		<PackageReference Include="Selenium.WebDriver" Version="4.0.0" />
 		<PackageReference Include="YamlDotNet" Version="11.2.1" GeneratePathProperty="true" PrivateAssets="all" />
-		<PackageReference Include="Yapoml" Version="0.1.0-alpha.59" />
-		<PackageReference Include="Yapoml.Workspace" Version="0.1.0-alpha.59" GeneratePathProperty="true" PrivateAssets="all" />
+		<PackageReference Include="Yapoml.Framework" Version="0.1.0-alpha.61" />
+		<PackageReference Include="Yapoml.Framework.Workspace" Version="0.1.0-alpha.61" GeneratePathProperty="true" PrivateAssets="all" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-		<None Include="$(PKGYapoml_Workspace)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		<None Include="$(PKGYapoml_Framework_Workspace)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 
 		<None Include="$(PKGYamlDotNet)\lib\netstandard1.3\YamlDotNet.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 		<None Include="$(PKGScriban)\lib\netstandard2.0\Scriban.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
@@ -45,7 +45,7 @@
 		<ItemGroup>
 			<TargetPathWithTargetPlatformMoniker Include="$(PKGYamlDotNet)\lib\netstandard1.3\YamlDotNet.dll" IncludeRuntimeDependency="false" />
 			<TargetPathWithTargetPlatformMoniker Include="$(PKGScriban)\lib\netstandard2.0\Scriban.dll" IncludeRuntimeDependency="false" />
-			<TargetPathWithTargetPlatformMoniker Include="$(PKGYapoml_Workspace)\lib\netstandard2.0\Yapoml.Workspace.dll" IncludeRuntimeDependency="false" />
+			<TargetPathWithTargetPlatformMoniker Include="$(PKGYapoml_Framework_Workspace)\lib\netstandard2.0\Yapoml.Framework.Workspace.dll" IncludeRuntimeDependency="false" />
 		</ItemGroup>
 	</Target>
 

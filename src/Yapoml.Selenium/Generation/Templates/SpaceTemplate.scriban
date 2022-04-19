@@ -6,9 +6,9 @@ namespace {{namespace}}
   {
     private IWebDriver _webDriver;
 
-    private Yapoml.Options.ISpaceOptions _spaceOptions;
+    private Yapoml.Framework.Options.ISpaceOptions _spaceOptions;
 
-    public {{name}}Space(IWebDriver webDriver, Yapoml.Options.ISpaceOptions spaceOptions)
+    public {{name}}Space(IWebDriver webDriver, Yapoml.Framework.Options.ISpaceOptions spaceOptions)
     {
       _webDriver = webDriver;
       _spaceOptions = spaceOptions;

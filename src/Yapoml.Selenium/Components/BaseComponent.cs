@@ -1,7 +1,7 @@
 ﻿using OpenQA.Selenium;
 using System.Collections.ObjectModel;
 using System.Drawing;
-using Yapoml.Options;
+using Yapoml.Framework.Options;
 using Yapoml.Selenium.Events;
 
 namespace Yapoml.Selenium.Components

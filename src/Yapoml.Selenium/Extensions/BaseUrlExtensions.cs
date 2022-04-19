@@ -1,4 +1,4 @@
-﻿using Yapoml.Options;
+﻿using Yapoml.Framework.Options;
 
 namespace Yapoml.Selenium
 {

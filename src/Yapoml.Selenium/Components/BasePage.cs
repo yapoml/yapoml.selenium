@@ -1,5 +1,5 @@
 ﻿using OpenQA.Selenium;
-using Yapoml.Options;
+using Yapoml.Framework.Options;
 
 namespace Yapoml.Selenium.Components
 {

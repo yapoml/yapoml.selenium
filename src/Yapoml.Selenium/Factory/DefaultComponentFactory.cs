@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium;
 using System;
-using Yapoml.Options;
+using Yapoml.Framework.Options;
 using Yapoml.Selenium.Components;
 
 namespace Yapoml.Selenium.Factory

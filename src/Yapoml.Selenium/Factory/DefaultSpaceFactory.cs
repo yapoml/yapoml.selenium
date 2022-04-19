@@ -1,11 +1,12 @@
 ﻿using OpenQA.Selenium;
 using System;
+using Yapoml.Framework.Options;
 
 namespace Yapoml.Selenium.Factory
 {
     public class DefaultSpaceFactory : ISpaceFactory
     {
-        public TSpace Create<TSpace>(IWebDriver webDriver, Options.ISpaceOptions spaceOptions)
+        public TSpace Create<TSpace>(IWebDriver webDriver, ISpaceOptions spaceOptions)
         {
             var space = (TSpace)Activator.CreateInstance(typeof(TSpace), webDriver, spaceOptions);
 

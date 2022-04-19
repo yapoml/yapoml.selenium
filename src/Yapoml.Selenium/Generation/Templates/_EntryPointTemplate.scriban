@@ -8,9 +8,9 @@ namespace Yapoml.Selenium
 	{
 		private IWebDriver _webDriver;
 
-		private Yapoml.Options.ISpaceOptions _spaceOptions;
+		private Yapoml.Framework.Options.ISpaceOptions _spaceOptions;
 
-		public YaSpace(IWebDriver webDriver, Yapoml.Options.ISpaceOptions spaceOptions)
+		public YaSpace(IWebDriver webDriver, Yapoml.Framework.Options.ISpaceOptions spaceOptions)
 		{
 			_webDriver = webDriver;
 			_spaceOptions = spaceOptions;
@@ -43,12 +43,12 @@ namespace Yapoml.Selenium
 			return webDriver.Ya((options) => { });
 		}
 
-		public static YaSpace Ya(this IWebDriver webDriver, System.Action<Yapoml.Options.ISpaceOptions> spaceOptionsCallback)
+		public static YaSpace Ya(this IWebDriver webDriver, System.Action<Yapoml.Framework.Options.ISpaceOptions> spaceOptionsCallback)
 		{
-			var spaceOptions = new Yapoml.Options.SpaceOptions();
+			var spaceOptions = new Yapoml.Framework.Options.SpaceOptions();
 
 			// default logger
-			spaceOptions.Register<Yapoml.Logging.ILogger>(new Yapoml.Logging.ConsoleLogger());
+			spaceOptions.Register<Yapoml.Framework.Logging.ILogger>(new Yapoml.Framework.Logging.ConsoleLogger());
 
 			// default factories
 			spaceOptions.Register<Yapoml.Selenium.Factory.ISpaceFactory>(new Yapoml.Selenium.Factory.DefaultSpaceFactory());
