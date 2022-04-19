@@ -26,6 +26,16 @@ namespace Yapoml.Selenium
 		}
 {{ end }}
 {{ for page in pages }}
+		/// <summary>
+		/// Consists of the following page components:
+		/// <list type="bullet">
+		{{ for c in page.components -}}
+		/// <item>
+		///   <description>{{ if c.is_plural }}List of {{ end }}{{ c.name }}</description>
+		/// </item>
+		{{ end -}}
+		/// </list>
+		/// </summary>
 		public {{page.namespace}}.{{page.name}} {{page.name}}
 		{
 			get
