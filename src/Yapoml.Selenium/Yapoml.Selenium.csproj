@@ -5,6 +5,14 @@
 
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 
+		<Description>Yet another page object generation for Selenium WebDriver</Description>
+		<Authors>Nikolay Borisenko</Authors>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://yapoml.github.io</PackageProjectUrl>
+		<PackageIcon>Logo.png</PackageIcon>
+		<RepositoryType>GitHub</RepositoryType>
+		<RepositoryUrl>https://github.com/yapoml/selenium</RepositoryUrl>
+		<PackageTags>page generation</PackageTags>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
@@ -18,8 +26,8 @@
 		<PackageReference Include="Scriban" Version="5.4.0" GeneratePathProperty="true" PrivateAssets="all" />
 		<PackageReference Include="Selenium.WebDriver" Version="4.0.0" />
 		<PackageReference Include="YamlDotNet" Version="11.2.1" GeneratePathProperty="true" PrivateAssets="all" />
-		<PackageReference Include="Yapoml.Framework" Version="0.1.0-alpha.61" />
-		<PackageReference Include="Yapoml.Framework.Workspace" Version="0.1.0-alpha.61" GeneratePathProperty="true" PrivateAssets="all" />
+		<PackageReference Include="Yapoml.Framework" Version="0.1.0" />
+		<PackageReference Include="Yapoml.Framework.Workspace" Version="0.1.0" GeneratePathProperty="true" PrivateAssets="all" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -30,6 +38,7 @@
 		<None Include="$(PKGScriban)\lib\netstandard2.0\Scriban.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 
 		<None Include="*.targets" Pack="true" PackagePath="build/" />
+		<None Include="..\..\Logo.png" Pack="true" PackagePath="\" Visible="false" />
 		<None Include="README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
