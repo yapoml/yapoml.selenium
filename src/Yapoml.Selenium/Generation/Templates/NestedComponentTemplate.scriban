@@ -6,7 +6,7 @@
 
   }
 
-  {{ for component in $1.component_generation_contextes -}}
+  {{ for component in $1.components -}}
     public {{ if component.is_plural }}System.Collections.Generic.IList<{{component.singular_name}}Component>{{ else }}{{component.name}}Component{{ end }} {{component.name}}
     {
       get

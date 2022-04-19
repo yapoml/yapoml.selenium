@@ -2,8 +2,8 @@
 using Microsoft.CodeAnalysis;
 using Scriban;
 using Scriban.Runtime;
-using Yapoml.Generation;
-using Yapoml.Generation.Parsers;
+using Yapoml.Workspace;
+using Yapoml.Workspace.Parsers;
 
 namespace Yapoml.Selenium.Generation
 {
@@ -33,10 +33,10 @@ namespace Yapoml.Selenium.Generation
                 context.AnalyzerConfigOptions.GlobalOptions.TryGetValue("build_property.RootNamespace", out _rootNamespace);
                 context.AnalyzerConfigOptions.GlobalOptions.TryGetValue("build_property.ProjectDir", out var projectDir);
 
-                var parser = new Parser();
+                var parser = new WorkspaceParser();
 
                 // build yapoml generation context
-                var yaContextBuilder = new GlobalGenerationContextBuilder(projectDir, _rootNamespace, parser);
+                var yaContextBuilder = new WorkspaceContextBuilder(projectDir, _rootNamespace, parser);
 
                 foreach (AdditionalText file in context.AdditionalFiles)
                 {
@@ -72,73 +72,73 @@ namespace Yapoml.Selenium.Generation
             }
         }
 
-        private void GenerateEntryPoint(GlobalGenerationContext globalGenerationContext)
+        private void GenerateEntryPoint(WorkspaceContext workspaceContext)
         {
             var template = Template.Parse(new TemplateReader().Read("_EntryPointTemplate"));
 
-            _templateContext.PushGlobal(ScriptObject.From(globalGenerationContext));
+            _templateContext.PushGlobal(ScriptObject.From(workspaceContext));
             var renderedEntryPoint = template.Render(_templateContext);
 
             _context.AddSource("_EntryPoint.cs", renderedEntryPoint);
         }
 
-        private void GenerateBasePage(GlobalGenerationContext globalGenerationContext)
+        private void GenerateBasePage(WorkspaceContext workspaceContext)
         {
             var template = Template.Parse(new TemplateReader().Read("_BasePageTemplate"));
 
-            _templateContext.PushGlobal(ScriptObject.From(globalGenerationContext));
+            _templateContext.PushGlobal(ScriptObject.From(workspaceContext));
             var renderedbasePage = template.Render(_templateContext);
 
             _context.AddSource("_BasePage.cs", renderedbasePage);
         }
 
-        private void GenerateBaseComponent(GlobalGenerationContext globalGenerationContext)
+        private void GenerateBaseComponent(WorkspaceContext workspaceContext)
         {
             var template = Template.Parse(new TemplateReader().Read("_BaseComponentTemplate"));
 
-            _templateContext.PushGlobal(ScriptObject.From(globalGenerationContext));
+            _templateContext.PushGlobal(ScriptObject.From(workspaceContext));
             var renderedbaseComponent = template.Render(_templateContext);
 
             _context.AddSource("_BaseComponent.cs", renderedbaseComponent);
         }
 
-        private void GenerateSpaces(SpaceGenerationContext spaceGenerationContext)
+        private void GenerateSpaces(SpaceContext spaceContext)
         {
             var template = Template.Parse(new TemplateReader().Read("SpaceTemplate"));
 
-            _templateContext.PushGlobal(ScriptObject.From(spaceGenerationContext));
+            _templateContext.PushGlobal(ScriptObject.From(spaceContext));
             var renderedSpace = template.Render(_templateContext);
 
-            var generatedFileName = $"{spaceGenerationContext.Namespace}.{spaceGenerationContext.Name}Space.cs";
+            var generatedFileName = $"{spaceContext.Namespace}.{spaceContext.Name}Space.cs";
             _context.AddSource(generatedFileName, renderedSpace);
 
-            foreach (var space in spaceGenerationContext.Spaces)
+            foreach (var space in spaceContext.Spaces)
             {
                 GenerateSpaces(space);
             }
 
-            foreach (var page in spaceGenerationContext.Pages)
+            foreach (var page in spaceContext.Pages)
             {
                 GeneratePages(page);
             }
 
-            foreach (var component in spaceGenerationContext.Components)
+            foreach (var component in spaceContext.Components)
             {
                 //GenerateComponent(component);
             }
         }
 
-        private void GeneratePages(PageGenerationContext pageGenerationContext)
+        private void GeneratePages(PageContext pageContext)
         {
             var template = Template.Parse(new TemplateReader().Read("PageTemplate"));
 
-            _templateContext.PushGlobal(ScriptObject.From(pageGenerationContext));
+            _templateContext.PushGlobal(ScriptObject.From(pageContext));
             var renderedPage = template.Render(_templateContext);
 
-            var generatedFileName = $"{pageGenerationContext.Namespace}.{pageGenerationContext.Name}Page.cs";
+            var generatedFileName = $"{pageContext.Namespace}.{pageContext.Name}Page.cs";
             _context.AddSource(generatedFileName, renderedPage);
 
-            foreach (var component in pageGenerationContext.Components)
+            foreach (var component in pageContext.Components)
             {
                 //GenerateComponent(component);
             }
