@@ -35,6 +35,16 @@ namespace {{namespace}}
     {{ end }}
 
     {{ for component in components}}
+    /// <summary>
+    /// {{ if component.is_plural == false }} Consists of the following nested components: {{ else }} Each <c>{{component.singular_name}}</c> consists of the following nested components: {{ end }}
+    /// <list type="bullet">
+    {{ for c in component.components -}}
+    /// <item>
+    ///   <description>{{ if c.is_plural }}List of {{ end }}{{ c.name }}</description>
+    /// </item>
+    {{ end -}}
+    /// </list>
+    /// </summary>
     public {{ if component.is_plural }}System.Collections.Generic.IList<{{component.singular_name}}Component>{{ else }}{{component.name}}Component{{ end }} {{component.name}}
     {
       get
