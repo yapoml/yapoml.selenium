@@ -8,6 +8,7 @@
 
   {{ for component in $1.components -}}
     /// <summary>
+    {{ if component.components != blank -}}
     /// {{ if component.is_plural == false }} Consists of the following nested components: {{ else }} Each <c>{{component.singular_name}}</c> consists of the following nested components: {{ end }}
     /// <list type="bullet">
     {{ for c in component.components -}}
@@ -16,6 +17,7 @@
     /// </item>
     {{ end -}}
     /// </list>
+    {{ end -}}
     /// </summary>
     public {{ if component.is_plural }}System.Collections.Generic.IList<{{component.singular_name}}Component>{{ else }}{{component.name}}Component{{ end }} {{component.name}}
     {
