@@ -7,7 +7,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Using Include="Yapoml.Selenium" />
+		<Using Include="Yapoml.Selenium" Condition="$(ImplicitUsings) != disable"/>
 	</ItemGroup>
 
 </Project>
