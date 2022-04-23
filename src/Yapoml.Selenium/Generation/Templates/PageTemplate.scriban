@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace {{namespace}}
 {
+# pragma warning disable
   public partial class {{name}} : {{ if base_page }}{{ base_page.namespace }}.{{base_page.name}}{{else}}Yapoml.Selenium.Page{{end}}
   {
     public {{name}}(IWebDriver webDriver, Yapoml.Framework.Options.ISpaceOptions spaceOptions)
@@ -84,4 +85,5 @@ namespace {{namespace}}
     {{ include 'NestedComponentTemplate' component }}
     {{ end }}
   }
+# pragma warning restore
 }
