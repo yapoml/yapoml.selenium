@@ -15,13 +15,7 @@ namespace Yapoml.Selenium.Services
 
         public Uri BuildUri(string url, IList<KeyValuePair<string, string>> segments, IList<KeyValuePair<string, string>> queryParams)
         {
-            if (segments != null)
-            {
-                foreach (var segment in segments)
-                {
-                    url = url.Replace($"{{{segment.Key}}}", segment.Value);
-                }
-            }
+            url = new SegmentService().Replace(url, segments);
 
             var urlBuilder = new UriBuilder(new Uri(new Uri(_baseUrl), url));
 

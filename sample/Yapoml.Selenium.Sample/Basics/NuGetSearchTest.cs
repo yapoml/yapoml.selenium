@@ -53,6 +53,9 @@ namespace Yapoml.Selenium.Sample.Basics
                 Assert.That(package.Title.Text, Is.Not.Empty);
                 Assert.That(package.Description.Text, Is.Not.Empty);
             }
+
+            var yamlPackage = ya.PackagesPage.GetPackage(name: "YamlDotNet");
+            Console.WriteLine(yamlPackage.Description.Text);
         }
 
         [Test]

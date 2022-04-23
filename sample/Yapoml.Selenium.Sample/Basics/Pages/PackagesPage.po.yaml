@@ -9,3 +9,8 @@ Packages:
   Title: .//a
 
   Description: css .package-details
+
+GetPackage:
+  by: .//article[@class='package' and .//a[text()='{name}']]
+
+  Description: css .package-details
