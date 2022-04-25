@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Scriban;
 using Scriban.Runtime;
@@ -38,7 +39,7 @@ namespace Yapoml.Selenium.Generation
                 // build yapoml generation context
                 var yaContextBuilder = new WorkspaceContextBuilder(projectDir, _rootNamespace, parser);
 
-                foreach (AdditionalText file in context.AdditionalFiles)
+                foreach (AdditionalText file in context.AdditionalFiles.Where(f => f.Path.EndsWith(".po.yaml", StringComparison.OrdinalIgnoreCase)))
                 {
                     yaContextBuilder.AddFile(file.Path);
                 }
