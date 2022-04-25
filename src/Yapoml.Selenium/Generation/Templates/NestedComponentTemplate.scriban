@@ -10,23 +10,24 @@
 	/// <summary>
 	{{ include 'NestedComponentTemplate_Desc' component }}
 	/// </summary>
+	{{- if component.by.segments == null }}
 	public {{ if component.is_plural }}System.Collections.Generic.IList<{{component.singular_name}}Component>{{ else }}{{component.name}}Component{{ end }} {{component.name}}
 	{
 		get
 		{
-			{{- if component.by.method == 'XPath' }}
+			{{ if component.by.method == 'XPath' -}}
 			var by = OpenQA.Selenium.By.XPath("{{ component.by.value }}");
-			{{ end }}
+			{{ end -}}
 
-			{{- if component.by.method == 'Css' }}
+			{{ if component.by.method == 'Css' -}}
 			var by = OpenQA.Selenium.By.CssSelector("{{ component.by.value }}");
-			{{ end }}
+			{{ end -}}
 
-			{{- if component.by.method == 'Id' }}
+			{{ if component.by.method == 'Id' -}}
 			var by = OpenQA.Selenium.By.Id("{{ component.by.value }}");
-			{{ end }}
+			{{ end -}}
 
-			{{- if component.by.method == 'None' -}}
+			{{ if component.by.method == 'None' -}}
 			var by = OpenQA.Selenium.By.XPath("{{ component.by.value }}");
 			{{ end -}}
 		
@@ -43,6 +44,44 @@
 			{{- end }}
 		}
 	}
+	{{ else }}
+	public {{ if component.is_plural }}System.Collections.Generic.IList<{{component.singular_name}}Component>{{ else }}{{component.name}}Component{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
+	{
+		var segments = new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>() { 
+				{{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}new System.Collections.Generic.KeyValuePair<string, string>("{{ segment }}", {{ segment }}) {{ end }} 
+			};
+
+		var byValue = new Yapoml.Selenium.Services.SegmentService().Replace("{{ component.by.value }}", segments);
+
+		{{ if component.by.method == 'XPath' -}}
+		var by = OpenQA.Selenium.By.XPath(byValue);
+		{{ end -}}
+
+		{{ if component.by.method == 'Css' -}}
+		var by = OpenQA.Selenium.By.CssSelector(byValue);
+		{{ end -}}
+
+		{{ if component.by.method == 'Id' -}}
+		var by = OpenQA.Selenium.By.Id(byValue);
+		{{ end -}}
+
+		{{ if component.by.method == 'None' -}}
+		var by = OpenQA.Selenium.By.XPath(byValue);
+		{{ end -}}
+		
+		{{- if component.is_plural }}
+		EventSource.RaiseOnFindingComponents("{{component.name}}", by);
+		var webElements = WrappedElement.FindElements(by);
+		EventSource.RaiseOnFoundComponents(by, webElements);
+		return webElements.Select(e => SpaceOptions.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{component.singular_name}}Component>(WebDriver, e, SpaceOptions)).ToList();
+		{{ else }}
+		EventSource.RaiseOnFindingComponent("{{component.name}}", by);
+		var webElement = WrappedElement.FindElement(by);
+		EventSource.RaiseOnFoundComponent(by, WebDriver, webElement);
+		return SpaceOptions.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{component.name}}Component>(WebDriver, webElement, SpaceOptions);
+		{{- end }}
+	}
+	{{ end }}
 
 	{{ include 'NestedComponentTemplate' component }}
 	{{ end }}
