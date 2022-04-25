@@ -1,0 +1,13 @@
+﻿/// Finds <c>{{$1.name}}</c> by <c>{{$1.by.value}}</c>.
+{{- if $1.components != blank }}
+/// <para>
+/// {{ if $1.is_plural == false }} Consists of the following nested components: {{ else }} Each <c>{{$1.singular_name}}</c> consists of the following nested components: {{ end }}
+/// <list type="bullet">
+{{- for c in $1.components }}
+/// <item>
+/// <description>{{ if c.is_plural }}List of {{ end }}{{ c.name }}</description>
+/// </item>
+{{- end }}
+/// </list>
+/// </para>
+{{- end -}}

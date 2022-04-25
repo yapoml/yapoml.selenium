@@ -1,58 +1,49 @@
 ﻿public class {{if $1.is_plural}}{{$1.singular_name}}{{else}}{{$1.name}}{{end}}Component : Yapoml.Selenium.Component
 {
-  public {{if $1.is_plural}}{{$1.singular_name}}{{else}}{{$1.name}}{{end}}Component(OpenQA.Selenium.IWebDriver webDriver, OpenQA.Selenium.IWebElement webElement, Yapoml.Framework.Options.ISpaceOptions spaceOptions)
-    : base(webDriver, webElement, spaceOptions)
-  {
+	public {{if $1.is_plural}}{{$1.singular_name}}{{else}}{{$1.name}}{{end}}Component(OpenQA.Selenium.IWebDriver webDriver, OpenQA.Selenium.IWebElement webElement, Yapoml.Framework.Options.ISpaceOptions spaceOptions)
+		: base(webDriver, webElement, spaceOptions)
+	{
 
-  }
+	}
 
-  {{ for component in $1.components -}}
-    /// <summary>
-    {{ if component.components != blank -}}
-    /// {{ if component.is_plural == false }} Consists of the following nested components: {{ else }} Each <c>{{component.singular_name}}</c> consists of the following nested components: {{ end }}
-    /// <list type="bullet">
-    {{ for c in component.components -}}
-    /// <item>
-    ///   <description>{{ if c.is_plural }}List of {{ end }}{{ c.name }}</description>
-    /// </item>
-    {{ end -}}
-    /// </list>
-    {{ end -}}
-    /// </summary>
-    public {{ if component.is_plural }}System.Collections.Generic.IList<{{component.singular_name}}Component>{{ else }}{{component.name}}Component{{ end }} {{component.name}}
-    {
-      get
-      {
-        {{ if component.by.method == 'XPath' }}
-        var by = OpenQA.Selenium.By.XPath("{{ component.by.value }}");
-        {{ end }}
+	{{- for component in $1.components }}
+	/// <summary>
+	{{ include 'NestedComponentTemplate_Desc' component }}
+	/// </summary>
+	public {{ if component.is_plural }}System.Collections.Generic.IList<{{component.singular_name}}Component>{{ else }}{{component.name}}Component{{ end }} {{component.name}}
+	{
+		get
+		{
+			{{- if component.by.method == 'XPath' }}
+			var by = OpenQA.Selenium.By.XPath("{{ component.by.value }}");
+			{{ end }}
 
-        {{ if component.by.method == 'Css' }}
-        var by = OpenQA.Selenium.By.CssSelector("{{ component.by.value }}");
-        {{ end }}
+			{{- if component.by.method == 'Css' }}
+			var by = OpenQA.Selenium.By.CssSelector("{{ component.by.value }}");
+			{{ end }}
 
-        {{ if component.by.method == 'Id' }}
-        var by = OpenQA.Selenium.By.Id("{{ component.by.value }}");
-        {{ end }}
+			{{- if component.by.method == 'Id' }}
+			var by = OpenQA.Selenium.By.Id("{{ component.by.value }}");
+			{{ end }}
 
-        {{ if component.by.method == 'None' -}}
-        var by = OpenQA.Selenium.By.XPath("{{ component.by.value }}");
-        {{ end -}}
-        
-        {{ if component.is_plural }}
-        EventSource.RaiseOnFindingComponents("{{component.name}}", by);
-        var webElements = WrappedElement.FindElements(by);
-        EventSource.RaiseOnFoundComponents(by, webElements);
-        return webElements.Select(e => SpaceOptions.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{component.singular_name}}Component>(WebDriver, e, SpaceOptions)).ToList();
-        {{ else }}
-        EventSource.RaiseOnFindingComponent("{{component.name}}", by);
-        var webElement = WrappedElement.FindElement(by);
-        EventSource.RaiseOnFoundComponent(by, WebDriver, webElement);
-        return SpaceOptions.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{component.name}}Component>(WebDriver, webElement, SpaceOptions);
-        {{ end }}
-      }
-    }
+			{{- if component.by.method == 'None' -}}
+			var by = OpenQA.Selenium.By.XPath("{{ component.by.value }}");
+			{{ end -}}
+		
+			{{- if component.is_plural }}
+			EventSource.RaiseOnFindingComponents("{{component.name}}", by);
+			var webElements = WrappedElement.FindElements(by);
+			EventSource.RaiseOnFoundComponents(by, webElements);
+			return webElements.Select(e => SpaceOptions.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{component.singular_name}}Component>(WebDriver, e, SpaceOptions)).ToList();
+			{{ else }}
+			EventSource.RaiseOnFindingComponent("{{component.name}}", by);
+			var webElement = WrappedElement.FindElement(by);
+			EventSource.RaiseOnFoundComponent(by, WebDriver, webElement);
+			return SpaceOptions.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{component.name}}Component>(WebDriver, webElement, SpaceOptions);
+			{{- end }}
+		}
+	}
 
-    {{ include 'NestedComponentTemplate' component }}
-  {{ end }}
+	{{ include 'NestedComponentTemplate' component }}
+	{{ end }}
 }

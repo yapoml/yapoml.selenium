@@ -1,130 +1,123 @@
-﻿using OpenQA.Selenium;
+﻿# pragma warning disable
+using OpenQA.Selenium;
 using System.Linq;
 
 namespace {{namespace}}
 {
-# pragma warning disable
-  public partial class {{name}} : {{ if base_page }}{{ base_page.namespace }}.{{base_page.name}}{{else}}Yapoml.Selenium.Page{{end}}
-  {
-    public {{name}}(IWebDriver webDriver, Yapoml.Framework.Options.ISpaceOptions spaceOptions)
-        : base(webDriver, spaceOptions)
-    {
-      
-    }
+	public partial class {{name}} : {{ if base_page }}{{ base_page.namespace }}.{{base_page.name}}{{else}}Yapoml.Selenium.Page{{end}}
+	{
+		public {{name}}(IWebDriver webDriver, Yapoml.Framework.Options.ISpaceOptions spaceOptions)
+			: base(webDriver, spaceOptions)
+		{
 
-    {{ if url }}
-    public {{name}} Open(
-        {{ for segment in url.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }}
-        {{ for param in url.params }} {{ if url.segments && for.first}}, {{end}}{{ if for.first == false }}, {{end}}string {{param}} = null{{end}}
-    )
-    {
-        var baseUrl = SpaceOptions.Get<Yapoml.Selenium.BaseUrl>().Url;
+		}
 
-        var segments = new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>() { 
-            {{ for segment in url.segments }}{{ if for.first == false }}, {{end}}new System.Collections.Generic.KeyValuePair<string, string>("{{ segment }}", {{ segment }}) {{ end }} 
-        };
+		{{- if url }}
+		/// <summary>
+		/// Navigates to <c>{{ url.path }}</c>
+		/// </summary>
+		public {{ name }} Open(
+		{{- for segment in url.segments }}{{ if for.first == false }}, {{ end }}string {{ segment }}{{ end }}
+		{{- for param in url.params }} {{ if url.segments && for.first }}, {{ end }}{{ if for.first == false }}, {{ end }}string {{ param }} = null{{ end }})
+		{
+			var baseUrl = SpaceOptions.Get<Yapoml.Selenium.BaseUrl>().Url;
 
-        var queryParams = new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>() { 
-            {{ for param in url.params }}{{ if for.first == false }}, {{end}}new System.Collections.Generic.KeyValuePair<string, string>("{{ param }}", {{ param }}) {{ end }} 
-        };
+			var segments = new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>() { 
+				{{- for segment in url.segments }}{{ if for.first == false }}, {{end}}new System.Collections.Generic.KeyValuePair<string, string>("{{ segment }}", {{ segment }}) {{ end -}} 
+			};
 
-        var navService = new Yapoml.Selenium.Services.NavigationService(baseUrl);
-        WebDriver.Navigate().GoToUrl(navService.BuildUri("{{ url.path }}", segments, queryParams));
+			var queryParams = new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>() { 
+				{{- for param in url.params }}{{ if for.first == false }}, {{end}}new System.Collections.Generic.KeyValuePair<string, string>("{{ param }}", {{ param }}) {{ end -}} 
+			};
 
-        return this;
-    }
-    {{ end }}
+			var navService = new Yapoml.Selenium.Services.NavigationService(baseUrl);
+			WebDriver.Navigate().GoToUrl(navService.BuildUri("{{ url.path }}", segments, queryParams));
 
-    {{ for component in components}}
-    /// <summary>
-    {{ if component.components != blank -}}
-    /// {{ if component.is_plural == false }} Consists of the following nested components: {{ else }} Each <c>{{component.singular_name}}</c> consists of the following nested components: {{ end }}
-    /// <list type="bullet">
-    {{ for c in component.components -}}
-    /// <item>
-    ///   <description>{{ if c.is_plural }}List of {{ end }}{{ c.name }}</description>
-    /// </item>
-    {{ end -}}
-    /// </list>
-    {{ end -}}
-    /// </summary>
-    {{ if component.by.segments == null }}
-    public {{ if component.is_plural }}System.Collections.Generic.IList<{{component.singular_name}}Component>{{ else }}{{component.name}}Component{{ end }} {{component.name}}
-    {
-      get
-      {
-        var byValue = "{{ component.by.value }}";
+			return this;
+		}
+		{{ end }}
 
-        {{ if component.by.method == 'XPath' -}}
-        var by = OpenQA.Selenium.By.XPath(byValue);
-        {{ end -}}
+		{{- for component in components }}
+		/// <summary>
+		{{ include 'NestedComponentTemplate_Desc' component }}
+		/// </summary>
+		{{- if component.by.segments == null }}
+		public {{ if component.is_plural }}System.Collections.Generic.IList<{{component.singular_name}}Component>{{ else }}{{component.name}}Component{{ end }} {{component.name}}
+		{
+			get
+			{
+				var byValue = "{{ component.by.value }}";
 
-        {{ if component.by.method == 'Css' -}}
-        var by = OpenQA.Selenium.By.CssSelector(byValue);
-        {{ end -}}
+				{{- if component.by.method == 'XPath' -}}
+				var by = OpenQA.Selenium.By.XPath(byValue);
+				{{ end -}}
 
-        {{ if component.by.method == 'Id' -}}
-        var by = OpenQA.Selenium.By.Id(byValue);
-        {{ end -}}
+				{{- if component.by.method == 'Css' -}}
+				var by = OpenQA.Selenium.By.CssSelector(byValue);
+				{{ end -}}
 
-        {{ if component.by.method == 'None' -}}
-        var by = OpenQA.Selenium.By.XPath(byValue);
-        {{ end -}}
-        
-        {{ if component.is_plural }}
-        EventSource.RaiseOnFindingComponents("{{component.name}}", by);
-        var webElements = WebDriver.FindElements(by);
-        EventSource.RaiseOnFoundComponents(by, webElements);
-        return webElements.Select(e => SpaceOptions.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{component.singular_name}}Component>(WebDriver, e, SpaceOptions)).ToList();
-        {{ else }}
-        EventSource.RaiseOnFindingComponent("{{component.name}}", by);
-        var webElement = WebDriver.FindElement(by);
-        EventSource.RaiseOnFoundComponent(by, WebDriver, webElement);
-        return SpaceOptions.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{component.name}}Component>(WebDriver, webElement, SpaceOptions);
-        {{ end }}
-      }
-    }
-    {{ else }}
-    public {{ if component.is_plural }}System.Collections.Generic.IList<{{component.singular_name}}Component>{{ else }}{{component.name}}Component{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
-    {
-        var segments = new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>() { 
-            {{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}new System.Collections.Generic.KeyValuePair<string, string>("{{ segment }}", {{ segment }}) {{ end }} 
-        };
+				{{- if component.by.method == 'Id' -}}
+				var by = OpenQA.Selenium.By.Id(byValue);
+				{{ end -}}
 
-        var byValue = new Yapoml.Selenium.Services.SegmentService().Replace("{{ component.by.value }}", segments);
+				{{- if component.by.method == 'None' -}}
+				var by = OpenQA.Selenium.By.XPath(byValue);
+				{{ end -}}
+		
+				{{- if component.is_plural }}
+				EventSource.RaiseOnFindingComponents("{{component.name}}", by);
+				var webElements = WebDriver.FindElements(by);
+				EventSource.RaiseOnFoundComponents(by, webElements);
+				return webElements.Select(e => SpaceOptions.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{component.singular_name}}Component>(WebDriver, e, SpaceOptions)).ToList();
+				{{ else }}
+				EventSource.RaiseOnFindingComponent("{{component.name}}", by);
+				var webElement = WebDriver.FindElement(by);
+				EventSource.RaiseOnFoundComponent(by, WebDriver, webElement);
+				return SpaceOptions.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{component.name}}Component>(WebDriver, webElement, SpaceOptions);
+				{{- end}}
+			}
+		}
+		{{ else }}
+		public {{ if component.is_plural }}System.Collections.Generic.IList<{{component.singular_name}}Component>{{ else }}{{component.name}}Component{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
+		{
+			var segments = new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>() { 
+				{{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}new System.Collections.Generic.KeyValuePair<string, string>("{{ segment }}", {{ segment }}) {{ end }} 
+			};
 
-        {{ if component.by.method == 'XPath' -}}
-        var by = OpenQA.Selenium.By.XPath(byValue);
-        {{ end -}}
+			var byValue = new Yapoml.Selenium.Services.SegmentService().Replace("{{ component.by.value }}", segments);
 
-        {{ if component.by.method == 'Css' -}}
-        var by = OpenQA.Selenium.By.CssSelector(byValue);
-        {{ end -}}
+			{{- if component.by.method == 'XPath' -}}
+			var by = OpenQA.Selenium.By.XPath(byValue);
+			{{ end -}}
 
-        {{ if component.by.method == 'Id' -}}
-        var by = OpenQA.Selenium.By.Id(byValue);
-        {{ end -}}
+			{{- if component.by.method == 'Css' -}}
+			var by = OpenQA.Selenium.By.CssSelector(byValue);
+			{{ end -}}
 
-        {{ if component.by.method == 'None' -}}
-        var by = OpenQA.Selenium.By.XPath(byValue);
-        {{ end -}}
-        
-        {{ if component.is_plural }}
-        EventSource.RaiseOnFindingComponents("{{component.name}}", by);
-        var webElements = WebDriver.FindElements(by);
-        EventSource.RaiseOnFoundComponents(by, webElements);
-        return webElements.Select(e => SpaceOptions.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{component.singular_name}}Component>(WebDriver, e, SpaceOptions)).ToList();
-        {{ else }}
-        EventSource.RaiseOnFindingComponent("{{component.name}}", by);
-        var webElement = WebDriver.FindElement(by);
-        EventSource.RaiseOnFoundComponent(by, WebDriver, webElement);
-        return SpaceOptions.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{component.name}}Component>(WebDriver, webElement, SpaceOptions);
-        {{ end }}
-    }
-    {{ end }}
+			{{- if component.by.method == 'Id' -}}
+			var by = OpenQA.Selenium.By.Id(byValue);
+			{{ end -}}
 
-    {{ include 'NestedComponentTemplate' component }}
-    {{ end }}
-  }
-# pragma warning restore
+			{{- if component.by.method == 'None' -}}
+			var by = OpenQA.Selenium.By.XPath(byValue);
+			{{ end -}}
+		
+			{{- if component.is_plural -}}
+			EventSource.RaiseOnFindingComponents("{{component.name}}", by);
+			var webElements = WebDriver.FindElements(by);
+			EventSource.RaiseOnFoundComponents(by, webElements);
+			return webElements.Select(e => SpaceOptions.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{component.singular_name}}Component>(WebDriver, e, SpaceOptions)).ToList();
+			{{ else }}
+			EventSource.RaiseOnFindingComponent("{{component.name}}", by);
+			var webElement = WebDriver.FindElement(by);
+			EventSource.RaiseOnFoundComponent(by, WebDriver, webElement);
+			return SpaceOptions.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{component.name}}Component>(WebDriver, webElement, SpaceOptions);
+			{{- end -}}
+		}
+		{{ end }}
+
+		{{ include 'NestedComponentTemplate' component }}
+		{{ end }}
+	}
 }
+# pragma warning restore
