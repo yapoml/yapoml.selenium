@@ -1,4 +1,0 @@
-﻿base: homepage
-
-HamburgerButton:
-  by: css .navbar-toggle

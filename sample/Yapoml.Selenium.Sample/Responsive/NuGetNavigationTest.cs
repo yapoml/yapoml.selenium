@@ -3,7 +3,6 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using System;
 using System.Linq;
-using Yapoml.Selenium;
 using Yapoml.Selenium.Components;
 
 namespace Yapoml.Selenium.Sample.Responsive
@@ -50,13 +49,14 @@ namespace Yapoml.Selenium.Sample.Responsive
         [TestCase(true)]
         public void NavigateToPackagesWithYapoml(bool isMobile)
         {
-            var myPageFactory = new MyPageObjectFactory(isMobile);
-
-            var ya = _webDriver.Ya(opts => opts.Register<Factory.IPageFactory>(myPageFactory)).Responsive.Pages;
+            var ya = _webDriver.Ya(
+                opts => opts.Register<Factory.IPageFactory>(new MyPageObjectFactory(isMobile)))
+                .Responsive.Pages;
 
             if (isMobile) _webDriver.Manage().Window.Size = new System.Drawing.Size(320, 575);
 
-            // HomePage property returns HomePage class or HomeMobilePage class depending on MyPageObjectFactory
+            // HomePage property returns instance of HomePage class or HomePage_1 class
+            // depending on MyPageObjectFactory
             ya.HomePage.Navigate("Packages");
 
             foreach (var package in ya.PackagesPage.Packages)
@@ -82,7 +82,7 @@ namespace Yapoml.Selenium.Sample.Responsive
                 if (IsMobile)
                 {
                     var mobilePageType = typeof(TPage).Assembly.GetTypes()
-                        .FirstOrDefault(t => t.IsAssignableTo(typeof(TPage)) && t.Name.Contains("Mobile"));
+                        .FirstOrDefault(t => t.IsAssignableTo(typeof(TPage)) && t.Name.EndsWith("1"));
 
                     if (mobilePageType != null)
                     {

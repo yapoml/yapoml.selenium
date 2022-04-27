@@ -6,3 +6,10 @@
 
    Title:
      by: ./a/span
+
+---
+
+base: homepage
+
+HamburgerButton:
+  by: css .navbar-toggle
