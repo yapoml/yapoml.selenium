@@ -3,15 +3,11 @@ Generates page object classes for Selenium WebDriver with ease.
 Given that you have the following `LoginPage.po.yaml` file
 
 ```yaml
-UsernameInput:
-  by: id username
+UsernameInput: id username
 
-PasswordInput:
-  by:
-    css: .password
+PasswordInput: .password
 
-LoginButton:
-  by: css .primary-button
+LoginButton: .//button
 ```
 
 Then you are able to immediately interact with web elements

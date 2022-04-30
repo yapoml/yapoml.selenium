@@ -133,16 +133,13 @@ namespace Yapoml.Selenium.Generation
         {
             var template = Template.Parse(new TemplateReader().Read("PageTemplate"));
 
-            _templateContext.PushGlobal(ScriptObject.From(pageContext));
+            var scripObject = ScriptObject.From(pageContext);
+            scripObject.Import(typeof(Services.ByMethodDetector));
+            _templateContext.PushGlobal(scripObject);
             var renderedPage = template.Render(_templateContext);
 
             var generatedFileName = $"{pageContext.Namespace}.{pageContext.Name}Page.cs";
             _context.AddSource(generatedFileName, renderedPage);
-
-            foreach (var component in pageContext.Components)
-            {
-                //GenerateComponent(component);
-            }
         }
 
         //private void GenerateComponent(ComponentGenerationContext componentGenerationContext)

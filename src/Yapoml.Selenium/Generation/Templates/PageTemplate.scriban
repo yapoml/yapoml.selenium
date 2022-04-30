@@ -62,7 +62,11 @@ namespace {{namespace}}
 				{{ end -}}
 
 				{{ if component.by.method == 'None' -}}
+				{{ if is_xpath component.by.value }}
 				var by = OpenQA.Selenium.By.XPath(byValue);
+				{{ else }}
+				var by = OpenQA.Selenium.By.CssSelector(byValue);
+				{{ end -}}
 				{{ end -}}
 		
 				{{- if component.is_plural }}
@@ -100,7 +104,11 @@ namespace {{namespace}}
 			{{ end -}}
 
 			{{ if component.by.method == 'None' -}}
+			{{ if is_xpath component.by.value }}
 			var by = OpenQA.Selenium.By.XPath(byValue);
+			{{ else }}
+			var by = OpenQA.Selenium.By.CssSelector(byValue);
+			{{ end -}}
 			{{ end -}}
 		
 			{{- if component.is_plural -}}

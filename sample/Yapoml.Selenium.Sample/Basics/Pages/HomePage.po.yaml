@@ -1,3 +1,3 @@
 ﻿SearchInput: id search
   
-SearchButton: css .btn-search
+SearchButton: .btn-search

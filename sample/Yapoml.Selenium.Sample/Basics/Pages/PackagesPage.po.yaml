@@ -4,13 +4,13 @@
     - q
 
 Packages: 
-  by: css .package
+  by: .package
 
   Title: .//a
 
-  Description: css .package-details
+  Description: .package-details
 
 GetPackage:
   by: .//article[@class='package' and .//a[text()='{name}']]
 
-  Description: css .package-details
+  Description: .package-details
