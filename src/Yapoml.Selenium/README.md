@@ -13,7 +13,5 @@ LoginButton: .//button
 Then you are able to immediately interact with web elements
 
 ```csharp
-using Yapoml.Selenium;
-
 webDriver.Ya().LoginPage.UsernameInput.SendKeys("user01");
 ```
