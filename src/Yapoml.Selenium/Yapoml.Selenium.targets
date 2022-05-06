@@ -6,8 +6,8 @@
 		<None Remove="**\*.po.yaml" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<Using Include="Yapoml.Selenium" Condition="$(ImplicitUsings) != disable"/>
+	<ItemGroup Condition="'$(ImplicitUsings)' == 'true' or '$(ImplicitUsings)' == 'enable'">
+		<Using Include="Yapoml.Selenium" />
 	</ItemGroup>
 
 </Project>
