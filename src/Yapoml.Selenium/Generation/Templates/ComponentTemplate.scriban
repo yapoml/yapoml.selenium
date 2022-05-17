@@ -1,4 +1,4 @@
 ﻿namespace {{namespace}}
 {
-	
+	{{ include 'NestedComponentTemplate' this }}
 }

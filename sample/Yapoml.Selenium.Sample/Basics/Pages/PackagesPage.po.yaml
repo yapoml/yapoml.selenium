@@ -4,13 +4,9 @@
     - q
 
 Packages: 
-  by: .package
-
-  Title: .//a
-
-  Description: .package-details
+  ref: Package
 
 GetPackage:
-  by: .//article[@class='package' and .//a[text()='{name}']]
+  by: .//article[@class='package' and .//a[text()='{name}']] # where {name} is parameter
 
-  Description: .package-details
+  ref: Package

@@ -11,7 +11,7 @@
 	{{ include 'NestedComponentTemplate_Desc' component }}
 	/// </summary>
 	{{- if component.by.segments == null }}
-	public {{ if component.is_plural }}System.Collections.Generic.IList<{{component.singular_name}}Component>{{ else }}{{component.name}}Component{{ end }} {{component.name}}
+	public {{ if component.is_plural }}System.Collections.Generic.IList<{{get_component_return_type component}}>{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}
 	{
 		get
 		{
@@ -39,17 +39,17 @@
 			EventSource.RaiseOnFindingComponents("{{component.name}}", by);
 			var webElements = WrappedElement.FindElements(by);
 			EventSource.RaiseOnFoundComponents(by, webElements);
-			return webElements.Select(e => SpaceOptions.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{component.singular_name}}Component>(WebDriver, e, SpaceOptions)).ToList();
+			return webElements.Select(e => SpaceOptions.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{get_component_return_type component}}>(WebDriver, e, SpaceOptions)).ToList();
 			{{ else }}
 			EventSource.RaiseOnFindingComponent("{{component.name}}", by);
 			var webElement = WrappedElement.FindElement(by);
 			EventSource.RaiseOnFoundComponent(by, WebDriver, webElement);
-			return SpaceOptions.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{component.name}}Component>(WebDriver, webElement, SpaceOptions);
+			return SpaceOptions.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{get_component_return_type component}}>(WebDriver, webElement, SpaceOptions);
 			{{- end }}
 		}
 	}
 	{{ else }}
-	public {{ if component.is_plural }}System.Collections.Generic.IList<{{component.singular_name}}Component>{{ else }}{{component.name}}Component{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
+	public {{ if component.is_plural }}System.Collections.Generic.IList<{{get_component_return_type component}}>{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
 	{
 		var segments = new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>() { 
 				{{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}new System.Collections.Generic.KeyValuePair<string, string>("{{ segment }}", {{ segment }}) {{ end }} 
@@ -81,16 +81,18 @@
 		EventSource.RaiseOnFindingComponents("{{component.name}}", by);
 		var webElements = WrappedElement.FindElements(by);
 		EventSource.RaiseOnFoundComponents(by, webElements);
-		return webElements.Select(e => SpaceOptions.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{component.singular_name}}Component>(WebDriver, e, SpaceOptions)).ToList();
+		return webElements.Select(e => SpaceOptions.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{get_component_return_type component}}>(WebDriver, e, SpaceOptions)).ToList();
 		{{ else }}
 		EventSource.RaiseOnFindingComponent("{{component.name}}", by);
 		var webElement = WrappedElement.FindElement(by);
 		EventSource.RaiseOnFoundComponent(by, WebDriver, webElement);
-		return SpaceOptions.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{component.name}}Component>(WebDriver, webElement, SpaceOptions);
+		return SpaceOptions.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{get_component_return_type component}}>(WebDriver, webElement, SpaceOptions);
 		{{- end }}
 	}
 	{{ end }}
 
+	{{ if component.referenced_component == null }}
 	{{ include 'NestedComponentTemplate' component }}
+	{{ end }}
 	{{ end }}
 }

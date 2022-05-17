@@ -4,6 +4,8 @@
 	<ItemGroup>
 		<AdditionalFiles Include="**\*.po.yaml" />
 		<None Remove="**\*.po.yaml" />
+		<AdditionalFiles Include="**\*.pc.yaml" />
+		<None Remove="**\*.pc.yaml" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(ImplicitUsings)' == 'true' or '$(ImplicitUsings)' == 'enable'">

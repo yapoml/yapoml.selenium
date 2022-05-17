@@ -39,7 +39,9 @@ namespace Yapoml.Selenium.Generation
                 // build yapoml generation context
                 var yaContextBuilder = new WorkspaceContextBuilder(projectDir, _rootNamespace, parser);
 
-                foreach (AdditionalText file in context.AdditionalFiles.Where(f => f.Path.EndsWith(".po.yaml", StringComparison.OrdinalIgnoreCase)))
+                foreach (AdditionalText file in context.AdditionalFiles
+                    .Where(f => f.Path.EndsWith(".po.yaml", StringComparison.OrdinalIgnoreCase) ||
+                        f.Path.EndsWith(".pc.yaml", StringComparison.OrdinalIgnoreCase)))
                 {
                     yaContextBuilder.AddFile(file.Path);
                 }
@@ -53,12 +55,22 @@ namespace Yapoml.Selenium.Generation
 
                 foreach (var space in yaContext.Spaces)
                 {
-                    GenerateSpaces(space);
+                    GenerateSpace(space);
+
+                    foreach (var component in space.Components)
+                    {
+                        GenerateComponent(component);
+                    }
                 }
 
                 foreach (var page in yaContext.Pages)
                 {
-                    GeneratePages(page);
+                    GeneratePage(page);
+                }
+
+                foreach (var component in yaContext.Components)
+                {
+                    GenerateComponent(component);
                 }
             }
             catch (Exception exp)
@@ -103,7 +115,7 @@ namespace Yapoml.Selenium.Generation
             _context.AddSource("_BaseComponent.cs", renderedbaseComponent);
         }
 
-        private void GenerateSpaces(SpaceContext spaceContext)
+        private void GenerateSpace(SpaceContext spaceContext)
         {
             var template = Template.Parse(new TemplateReader().Read("SpaceTemplate"));
 
@@ -115,26 +127,26 @@ namespace Yapoml.Selenium.Generation
 
             foreach (var space in spaceContext.Spaces)
             {
-                GenerateSpaces(space);
+                GenerateSpace(space);
             }
 
             foreach (var page in spaceContext.Pages)
             {
-                GeneratePages(page);
+                GeneratePage(page);
             }
 
             foreach (var component in spaceContext.Components)
             {
-                //GenerateComponent(component);
+                GenerateComponent(component);
             }
         }
 
-        private void GeneratePages(PageContext pageContext)
+        private void GeneratePage(PageContext pageContext)
         {
             var template = Template.Parse(new TemplateReader().Read("PageTemplate"));
 
             var scripObject = ScriptObject.From(pageContext);
-            scripObject.Import(typeof(Services.ByMethodDetector));
+            scripObject.Import(typeof(Services.GenerationService));
             _templateContext.PushGlobal(scripObject);
             var renderedPage = template.Render(_templateContext);
 
@@ -142,20 +154,18 @@ namespace Yapoml.Selenium.Generation
             _context.AddSource(generatedFileName, renderedPage);
         }
 
-        //private void GenerateComponent(ComponentGenerationContext componentGenerationContext)
-        //{
-        //    Template engine = Template.Parse(_templateReader.Read("ComponentTemplate"));
+        private void GenerateComponent(ComponentContext componentContext)
+        {
+            var template = Template.Parse(new TemplateReader().Read("ComponentTemplate"));
 
-        //    var renderedComponent = engine.Render(Hash.FromAnonymousObject(componentGenerationContext));
+            var scripObject = ScriptObject.From(componentContext);
+            //scripObject.Import(typeof(Services.ByMethodDetector));
+            _templateContext.PushGlobal(scripObject);
+            var renderedComponent = template.Render(_templateContext);
 
-        //    var generatedFileName = $"{componentGenerationContext.Namespace.Substring(_rootNamespace.Length + 1).Replace('.', '_')}_{componentGenerationContext.Name}Component.g.cs";
-        //    _context.AddSource(generatedFileName, renderedComponent);
-
-        //    foreach (var component in componentGenerationContext.ComponentGenerationContextes)
-        //    {
-        //        GenerateComponent(component);
-        //    }
-        //}
+            var generatedFileName = $"{componentContext.Namespace}.{componentContext.Name}Component.cs";
+            _context.AddSource(generatedFileName, renderedComponent);
+        }
     }
 }
 
