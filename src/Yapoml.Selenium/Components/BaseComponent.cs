@@ -23,7 +23,7 @@ namespace Yapoml.Selenium.Components
             WrappedElement = webElement;
             SpaceOptions = spaceOptions;
 
-            EventSource = spaceOptions.Get<IEventSource>().ComponentEventSource;
+            EventSource = spaceOptions.Services.Get<IEventSource>().ComponentEventSource;
         }
 
         public string TagName => WrappedElement.TagName;

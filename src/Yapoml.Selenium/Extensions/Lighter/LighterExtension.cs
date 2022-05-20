@@ -24,7 +24,7 @@ namespace Yapoml.Selenium
                 _color = color;
             }
 
-            var eventSource = spaceOptions.Get<IEventSource>();
+            var eventSource = spaceOptions.Services.Get<IEventSource>();
 
             eventSource.ComponentEventSource.OnFoundComponent += ComponentEventSource_OnFoundComponent;
 

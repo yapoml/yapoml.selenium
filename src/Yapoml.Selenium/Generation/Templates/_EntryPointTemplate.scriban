@@ -22,7 +22,7 @@ namespace Yapoml.Selenium
 		{
 			get
 			{
-				return _spaceOptions.Get<Yapoml.Selenium.Factory.ISpaceFactory>().Create<{{space.namespace}}.{{space.name}}Space>(_webDriver, _spaceOptions);
+				return _spaceOptions.Services.Get<Yapoml.Selenium.Factory.ISpaceFactory>().Create<{{space.namespace}}.{{space.name}}Space>(_webDriver, _spaceOptions);
 			}
 		}
 {{ end }}
@@ -41,7 +41,7 @@ namespace Yapoml.Selenium
 		{
 			get
 			{
-				return _spaceOptions.Get<Yapoml.Selenium.Factory.IPageFactory>().Create<{{page.namespace}}.{{page.name}}>(_webDriver, _spaceOptions);
+				return _spaceOptions.Services.Get<Yapoml.Selenium.Factory.IPageFactory>().Create<{{page.namespace}}.{{page.name}}>(_webDriver, _spaceOptions);
 			}
 		}
 {{ end }}
@@ -60,15 +60,15 @@ namespace Yapoml.Selenium
 			var spaceOptions = new Yapoml.Framework.Options.SpaceOptions();
 
 			// default logger
-			spaceOptions.Register<Yapoml.Framework.Logging.ILogger>(new Yapoml.Framework.Logging.ConsoleLogger());
+			spaceOptions.Services.Register<Yapoml.Framework.Logging.ILogger>(new Yapoml.Framework.Logging.ConsoleLogger());
 
 			// default factories
-			spaceOptions.Register<Yapoml.Selenium.Factory.ISpaceFactory>(new Yapoml.Selenium.Factory.DefaultSpaceFactory());
-			spaceOptions.Register<Yapoml.Selenium.Factory.IPageFactory>(new Yapoml.Selenium.Factory.DefaultPageFactory());
-			spaceOptions.Register<Yapoml.Selenium.Factory.IComponentFactory>(new Yapoml.Selenium.Factory.DefaultComponentFactory());
+			spaceOptions.Services.Register<Yapoml.Selenium.Factory.ISpaceFactory>(new Yapoml.Selenium.Factory.DefaultSpaceFactory());
+			spaceOptions.Services.Register<Yapoml.Selenium.Factory.IPageFactory>(new Yapoml.Selenium.Factory.DefaultPageFactory());
+			spaceOptions.Services.Register<Yapoml.Selenium.Factory.IComponentFactory>(new Yapoml.Selenium.Factory.DefaultComponentFactory());
 
 			var eventSource = new Yapoml.Selenium.Events.EventSource();
-			spaceOptions.Register<Yapoml.Selenium.Events.IEventSource>(eventSource);
+			spaceOptions.Services.Register<Yapoml.Selenium.Events.IEventSource>(eventSource);
 
 			var logProducer = new Yapoml.Selenium.Events.LogEventsProducer(spaceOptions);
 			logProducer.Init();

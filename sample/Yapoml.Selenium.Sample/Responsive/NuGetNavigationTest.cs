@@ -50,7 +50,7 @@ namespace Yapoml.Selenium.Sample.Responsive
         public void NavigateToPackagesWithYapoml(bool isMobile)
         {
             var ya = _webDriver.Ya(
-                opts => opts.Register<Factory.IPageFactory>(new MyPageObjectFactory(isMobile)))
+                opts => opts.Services.Register<Factory.IPageFactory>(new MyPageObjectFactory(isMobile)))
                 .Responsive.Pages;
 
             if (isMobile) _webDriver.Manage().Window.Size = new System.Drawing.Size(320, 575);

@@ -12,10 +12,10 @@ namespace Yapoml.Selenium.Events
 
         public LogEventsProducer(ISpaceOptions spaceOptions)
         {
-            _logger = spaceOptions.Get<ILogger>();
-            _source = spaceOptions.Get<IEventSource>();
+            _logger = spaceOptions.Services.Get<ILogger>();
+            _source = spaceOptions.Services.Get<IEventSource>();
 
-            spaceOptions.OnTypeRegistered += SpaceOptions_OnTypeRegistered;
+            spaceOptions.Services.OnTypeRegistered += SpaceOptions_OnTypeRegistered;
         }
 
         private void SpaceOptions_OnTypeRegistered(object sender, TypeRegisteredEventArgs e)

@@ -6,7 +6,7 @@ namespace Yapoml.Selenium
     {
         public static ISpaceOptions UseBaseUrl(this ISpaceOptions spaceOptions, string url)
         {
-            spaceOptions.Register(new BaseUrl(url));
+            spaceOptions.Services.Register(new BaseUrl(url));
 
             return spaceOptions;
         }
