@@ -48,10 +48,13 @@ namespace Yapoml.Selenium.Generation
 
                 var yaContext = yaContextBuilder.Build();
 
-                // generate files
-                GenerateEntryPoint(yaContext);
-                GenerateBasePage(yaContext);
-                GenerateBaseComponent(yaContext);
+                // generate base files
+                if (yaContext.Spaces.Any() || yaContext.Pages.Any() || yaContext.Components.Any())
+                {
+                    GenerateEntryPoint(yaContext);
+                    GenerateBasePage(yaContext);
+                    GenerateBaseComponent(yaContext);
+                }
 
                 foreach (var space in yaContext.Spaces)
                 {
