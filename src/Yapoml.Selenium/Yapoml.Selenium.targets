@@ -9,7 +9,7 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(ImplicitUsings)' == 'true' or '$(ImplicitUsings)' == 'enable'">
-		<Using Include="Yapoml.Selenium" />
+		<Using Include="$(RootNamespace)" />
 	</ItemGroup>
 
 </Project>

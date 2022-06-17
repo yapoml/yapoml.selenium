@@ -5,7 +5,7 @@ using System.Linq;
 namespace {{namespace}}
 {
 	[System.Runtime.CompilerServices.CompilerGenerated()]
-	public partial class {{name}} : {{ if base_page }}{{ base_page.namespace }}.{{base_page.name}}{{else}}Yapoml.Selenium.Page{{end}}
+	public partial class {{name}} : {{ if base_page }}{{ base_page.namespace }}.{{base_page.name}}{{else}}{{workspace.root_namespace}}.Page{{end}}
 	{
 		public {{name}}(IWebDriver webDriver, Yapoml.Framework.Options.ISpaceOptions spaceOptions)
 			: base(webDriver, spaceOptions)

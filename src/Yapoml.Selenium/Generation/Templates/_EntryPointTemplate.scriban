@@ -2,7 +2,7 @@
 
 using OpenQA.Selenium;
 
-namespace Yapoml.Selenium
+namespace {{root_namespace}}
 {
 	[System.Runtime.CompilerServices.CompilerGenerated()]
 	public partial class YaSpace

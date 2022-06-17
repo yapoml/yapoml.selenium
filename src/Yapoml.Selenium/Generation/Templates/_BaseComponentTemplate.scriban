@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium;
 
-namespace Yapoml.Selenium
+namespace {{root_namespace}}
 {
     /// <inheritdoc/>
     [System.Runtime.CompilerServices.CompilerGenerated()]
