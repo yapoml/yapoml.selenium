@@ -13,6 +13,7 @@ namespace Yapoml.Selenium.Generation
     {
         private TemplateContext _templateContext;
 
+        private IWorkspaceParser _parser = new WorkspaceParser();
         private WorkspaceContextBuilder _yaContextBuilder;
 
         private string _rootNamespace;
@@ -37,44 +38,55 @@ namespace Yapoml.Selenium.Generation
 
             context.RegisterSourceOutput(namesAndContents, (spc, files) =>
             {
-                var parser = new WorkspaceParser();
-
-                // build yapoml generation context
-                _yaContextBuilder = new WorkspaceContextBuilder(_projectDir, _rootNamespace, parser);
-
-                foreach (var file in files)
+                try
                 {
-                    _yaContextBuilder.AddFile(file.path);
-                }
+                    // build yapoml generation context
+                    _yaContextBuilder = new WorkspaceContextBuilder(_projectDir, _rootNamespace, _parser);
 
-                var yaContext = _yaContextBuilder.Build();
-
-                // generate files
-                if (yaContext.Spaces.Any() || yaContext.Pages.Any() || yaContext.Components.Any())
-                {
-                    GenerateEntryPoint(spc, yaContext);
-                    GenerateBasePage(spc, yaContext);
-                    GenerateBaseComponent(spc, yaContext);
-
-                    foreach (var space in yaContext.Spaces)
+                    foreach (var file in files)
                     {
-                        GenerateSpace(spc, space);
+                        _yaContextBuilder.AddFile(file.path, file.content);
+                    }
 
-                        foreach (var component in space.Components)
+                    var yaContext = _yaContextBuilder.Build();
+
+                    // generate files
+                    if (yaContext.Spaces.Any() || yaContext.Pages.Any() || yaContext.Components.Any())
+                    {
+                        GenerateEntryPoint(spc, yaContext);
+                        GenerateBasePage(spc, yaContext);
+                        GenerateBaseComponent(spc, yaContext);
+
+                        foreach (var space in yaContext.Spaces)
+                        {
+                            GenerateSpace(spc, space);
+
+                            foreach (var component in space.Components)
+                            {
+                                GenerateComponent(spc, component);
+                            }
+                        }
+
+                        foreach (var page in yaContext.Pages)
+                        {
+                            GeneratePage(spc, page);
+                        }
+
+                        foreach (var component in yaContext.Components)
                         {
                             GenerateComponent(spc, component);
                         }
                     }
-
-                    foreach (var page in yaContext.Pages)
-                    {
-                        GeneratePage(spc, page);
-                    }
-
-                    foreach (var component in yaContext.Components)
-                    {
-                        GenerateComponent(spc, component);
-                    }
+                }
+                catch (Exception ex)
+                {
+                    spc.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor(
+                    "YA0001",
+                    ex.Message,
+                    ex.ToString(),
+                    "some category",
+                    DiagnosticSeverity.Error,
+                    true), null));
                 }
             });
 
