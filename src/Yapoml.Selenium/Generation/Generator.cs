@@ -9,116 +9,108 @@ using Yapoml.Framework.Workspace.Parsers;
 namespace Yapoml.Selenium.Generation
 {
     [Generator]
-    internal class Generator : ISourceGenerator
+    internal class Generator : IIncrementalGenerator
     {
-        private GeneratorExecutionContext _context;
-
         private TemplateContext _templateContext;
 
-        private string _rootNamespace;
+        private WorkspaceContextBuilder _yaContextBuilder;
 
-        public void Initialize(GeneratorInitializationContext context)
+        private string _rootNamespace;
+        private string _projectDir;
+
+        public void Initialize(IncrementalGeneratorInitializationContext context)
         {
             _templateContext = new TemplateContext();
             _templateContext.TemplateLoader = new ResourceTemplateLoader();
             _templateContext.AutoIndent = true;
-        }
 
-        public void Execute(GeneratorExecutionContext context)
-        {
-            _context = context;
-
-            try
+            var globalOptions = context.AnalyzerConfigOptionsProvider.Select((o, c) => o.GlobalOptions);
+            context.RegisterSourceOutput(globalOptions, (c, s) =>
             {
-                // get root namespace
-                context.AnalyzerConfigOptions.GlobalOptions.TryGetValue("build_property.RootNamespace", out _rootNamespace);
-                context.AnalyzerConfigOptions.GlobalOptions.TryGetValue("build_property.ProjectDir", out var projectDir);
+                s.TryGetValue("build_property.RootNamespace", out _rootNamespace);
+                s.TryGetValue("build_property.ProjectDir", out _projectDir);
+            });
 
+            IncrementalValuesProvider<AdditionalText> textFiles = context.AdditionalTextsProvider.Where(file => file.Path.EndsWith(".po.yaml", StringComparison.OrdinalIgnoreCase) || file.Path.EndsWith(".pc.yaml", StringComparison.OrdinalIgnoreCase));
+
+            var namesAndContents = textFiles.Select((text, cancellationToken) => (path: text.Path, content: text.GetText(cancellationToken).ToString())).Collect();
+
+            context.RegisterSourceOutput(namesAndContents, (spc, files) =>
+            {
                 var parser = new WorkspaceParser();
 
                 // build yapoml generation context
-                var yaContextBuilder = new WorkspaceContextBuilder(projectDir, _rootNamespace, parser);
+                _yaContextBuilder = new WorkspaceContextBuilder(_projectDir, _rootNamespace, parser);
 
-                foreach (AdditionalText file in context.AdditionalFiles
-                    .Where(f => f.Path.EndsWith(".po.yaml", StringComparison.OrdinalIgnoreCase) ||
-                        f.Path.EndsWith(".pc.yaml", StringComparison.OrdinalIgnoreCase)))
+                foreach (var file in files)
                 {
-                    yaContextBuilder.AddFile(file.Path);
+                    _yaContextBuilder.AddFile(file.path);
                 }
 
-                var yaContext = yaContextBuilder.Build();
+                var yaContext = _yaContextBuilder.Build();
 
-                // generate base files
+                // generate files
                 if (yaContext.Spaces.Any() || yaContext.Pages.Any() || yaContext.Components.Any())
                 {
-                    GenerateEntryPoint(yaContext);
-                    GenerateBasePage(yaContext);
-                    GenerateBaseComponent(yaContext);
-                }
+                    GenerateEntryPoint(spc, yaContext);
+                    GenerateBasePage(spc, yaContext);
+                    GenerateBaseComponent(spc, yaContext);
 
-                foreach (var space in yaContext.Spaces)
-                {
-                    GenerateSpace(space);
-
-                    foreach (var component in space.Components)
+                    foreach (var space in yaContext.Spaces)
                     {
-                        GenerateComponent(component);
+                        GenerateSpace(spc, space);
+
+                        foreach (var component in space.Components)
+                        {
+                            GenerateComponent(spc, component);
+                        }
+                    }
+
+                    foreach (var page in yaContext.Pages)
+                    {
+                        GeneratePage(spc, page);
+                    }
+
+                    foreach (var component in yaContext.Components)
+                    {
+                        GenerateComponent(spc, component);
                     }
                 }
+            });
 
-                foreach (var page in yaContext.Pages)
-                {
-                    GeneratePage(page);
-                }
-
-                foreach (var component in yaContext.Components)
-                {
-                    GenerateComponent(component);
-                }
-            }
-            catch (Exception exp)
-            {
-                context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor(
-                    "YA0001",
-                    exp.Message,
-                    exp.ToString(),
-                    "some category",
-                    DiagnosticSeverity.Error,
-                    true), null));
-            }
         }
 
-        private void GenerateEntryPoint(WorkspaceContext workspaceContext)
+        private void GenerateEntryPoint(SourceProductionContext spc, WorkspaceContext workspaceContext)
         {
             var template = Template.Parse(new TemplateReader().Read("_EntryPointTemplate"));
 
             _templateContext.PushGlobal(ScriptObject.From(workspaceContext));
             var renderedEntryPoint = template.Render(_templateContext);
 
-            _context.AddSource("_EntryPoint.cs", renderedEntryPoint);
+            spc.AddSource("_EntryPoint.cs", renderedEntryPoint);
         }
 
-        private void GenerateBasePage(WorkspaceContext workspaceContext)
+        private void GenerateBasePage(SourceProductionContext spc, WorkspaceContext workspaceContext)
         {
             var template = Template.Parse(new TemplateReader().Read("_BasePageTemplate"));
 
             _templateContext.PushGlobal(ScriptObject.From(workspaceContext));
             var renderedbasePage = template.Render(_templateContext);
 
-            _context.AddSource("_BasePage.cs", renderedbasePage);
+            spc.AddSource("_BasePage.cs", renderedbasePage);
         }
 
-        private void GenerateBaseComponent(WorkspaceContext workspaceContext)
+        private void GenerateBaseComponent(SourceProductionContext spc, WorkspaceContext workspaceContext)
         {
             var template = Template.Parse(new TemplateReader().Read("_BaseComponentTemplate"));
 
             _templateContext.PushGlobal(ScriptObject.From(workspaceContext));
             var renderedbaseComponent = template.Render(_templateContext);
 
-            _context.AddSource("_BaseComponent.cs", renderedbaseComponent);
+            spc.AddSource("_BaseComponent.cs", renderedbaseComponent);
         }
 
-        private void GenerateSpace(SpaceContext spaceContext)
+        private void GenerateSpace(SourceProductionContext spc, SpaceContext spaceContext)
         {
             var template = Template.Parse(new TemplateReader().Read("SpaceTemplate"));
 
@@ -126,25 +118,25 @@ namespace Yapoml.Selenium.Generation
             var renderedSpace = template.Render(_templateContext);
 
             var generatedFileName = $"{spaceContext.Namespace}.{spaceContext.Name}Space.cs";
-            _context.AddSource(generatedFileName, renderedSpace);
+            spc.AddSource(generatedFileName, renderedSpace);
 
             foreach (var space in spaceContext.Spaces)
             {
-                GenerateSpace(space);
+                GenerateSpace(spc, space);
             }
 
             foreach (var page in spaceContext.Pages)
             {
-                GeneratePage(page);
+                GeneratePage(spc, page);
             }
 
             foreach (var component in spaceContext.Components)
             {
-                GenerateComponent(component);
+                GenerateComponent(spc, component);
             }
         }
 
-        private void GeneratePage(PageContext pageContext)
+        private void GeneratePage(SourceProductionContext spc, PageContext pageContext)
         {
             var template = Template.Parse(new TemplateReader().Read("PageTemplate"));
 
@@ -154,20 +146,19 @@ namespace Yapoml.Selenium.Generation
             var renderedPage = template.Render(_templateContext);
 
             var generatedFileName = $"{pageContext.Namespace}.{pageContext.Name}Page.cs";
-            _context.AddSource(generatedFileName, renderedPage);
+            spc.AddSource(generatedFileName, renderedPage);
         }
 
-        private void GenerateComponent(ComponentContext componentContext)
+        private void GenerateComponent(SourceProductionContext spc, ComponentContext componentContext)
         {
             var template = Template.Parse(new TemplateReader().Read("ComponentTemplate"));
 
             var scripObject = ScriptObject.From(componentContext);
-            //scripObject.Import(typeof(Services.ByMethodDetector));
             _templateContext.PushGlobal(scripObject);
             var renderedComponent = template.Render(_templateContext);
 
             var generatedFileName = $"{componentContext.Namespace}.{componentContext.Name}Component.cs";
-            _context.AddSource(generatedFileName, renderedComponent);
+            spc.AddSource(generatedFileName, renderedComponent);
         }
     }
 }
