@@ -1,33 +1,26 @@
 ﻿using System;
-using System.IO;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Scriban;
-using Scriban.Runtime;
 using Yapoml.Framework.Workspace;
 using Yapoml.Framework.Workspace.Parsers;
+
+[assembly: InternalsVisibleTo("Yapoml.Selenium.Test")]
+[assembly: InternalsVisibleTo("Yapoml.Selenium.Benchmark")]
 
 namespace Yapoml.Selenium.Generation
 {
     [Generator]
     internal class Generator : IIncrementalGenerator
     {
-        private TemplateContext _templateContext;
-
-        private IWorkspaceParser _parser = new WorkspaceParser();
-        private WorkspaceContextBuilder _yaContextBuilder;
-
         private string _rootNamespace;
         private string _projectDir;
 
-        private static object _lockObj = new object();
-
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            _templateContext = new TemplateContext();
-            _templateContext.TemplateLoader = new ResourceTemplateLoader();
-            _templateContext.AutoIndent = true;
-
             var globalOptions = context.AnalyzerConfigOptionsProvider.Select((o, c) => o.GlobalOptions);
             context.RegisterSourceOutput(globalOptions, (c, s) =>
             {
@@ -35,149 +28,142 @@ namespace Yapoml.Selenium.Generation
                 s.TryGetValue("build_property.ProjectDir", out _projectDir);
             });
 
-            IncrementalValuesProvider<AdditionalText> textFiles = context.AdditionalTextsProvider.Where(file => file.Path.EndsWith(".po.yaml", StringComparison.OrdinalIgnoreCase) || file.Path.EndsWith(".pc.yaml", StringComparison.OrdinalIgnoreCase));
+            var textFiles = context.AdditionalTextsProvider.Where(file => file.Path.EndsWith(".po.yaml", StringComparison.OrdinalIgnoreCase) || file.Path.EndsWith(".pc.yaml", StringComparison.OrdinalIgnoreCase)).Collect();
 
-            var namesAndContents = textFiles.Select((text, cancellationToken) => (path: text.Path, content: text.GetText(cancellationToken).ToString())).Collect();
-
-            context.RegisterSourceOutput(namesAndContents, (spc, files) =>
+            context.RegisterSourceOutput(textFiles, (spc, files) =>
             {
-                // TODO: Consider the fact this thread might be "aborted" and started new one, just locking for now
-                lock (_lockObj)
+                var sw = Stopwatch.StartNew();
+
+                try
                 {
-                    try
-                    {
-                        // build yapoml generation context
-                        _yaContextBuilder = new WorkspaceContextBuilder(_projectDir, _rootNamespace, _parser);
+                    var sourceProducer = new SourceProducer();
 
-                        foreach (var file in files)
+                    var parser = new WorkspaceParser();
+
+                    // build yapoml generation context
+                    var yaContextBuilder = new WorkspaceContextBuilder(_projectDir, _rootNamespace, parser);
+
+                    var parsingSw = Stopwatch.StartNew();
+
+                    foreach (var file in files)
+                    {
+                        spc.CancellationToken.ThrowIfCancellationRequested();
+
+                        yaContextBuilder.AddFile(file.Path, file.GetText(spc.CancellationToken).ToString());
+                    }
+
+                    var yaContext = yaContextBuilder.Build();
+
+                    // generate files
+                    if (yaContext.Spaces.Any() || yaContext.Pages.Any() || yaContext.Components.Any())
+                    {
+                        var tasks = new List<Task>();
+
+                        GenerateEntryPoint(spc, yaContext, sourceProducer);
+                        GenerateBasePage(spc, yaContext, sourceProducer);
+                        GenerateBaseComponent(spc, yaContext, sourceProducer);
+
+                        foreach (var space in yaContext.Spaces)
                         {
-                            _yaContextBuilder.AddFile(file.path, file.content);
+                            foreach (var (file, content) in GenerateSpace(spc, space, sourceProducer))
+                            {
+                                spc.AddSource(file, content);
+                            }
                         }
 
-                        var yaContext = _yaContextBuilder.Build();
-
-                        // generate files
-                        if (yaContext.Spaces.Any() || yaContext.Pages.Any() || yaContext.Components.Any())
+                        foreach (var page in yaContext.Pages)
                         {
-                            GenerateEntryPoint(spc, yaContext);
-                            GenerateBasePage(spc, yaContext);
-                            GenerateBaseComponent(spc, yaContext);
+                            var (file, content) = GeneratePage(spc, page, sourceProducer);
 
-                            foreach (var space in yaContext.Spaces)
-                            {
-                                GenerateSpace(spc, space);
+                            spc.AddSource(file, content);
+                        }
 
-                                foreach (var component in space.Components)
-                                {
-                                    GenerateComponent(spc, component);
-                                }
-                            }
+                        foreach (var component in yaContext.Components)
+                        {
+                            var (file, content) = GenerateComponent(spc, component, sourceProducer);
 
-                            foreach (var page in yaContext.Pages)
-                            {
-                                GeneratePage(spc, page);
-                            }
-
-                            foreach (var component in yaContext.Components)
-                            {
-                                GenerateComponent(spc, component);
-                            }
+                            spc.AddSource(file, content);
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        spc.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor(
-                        "YA0001",
-                        ex.Message,
-                        ex.ToString(),
-                        "some category",
-                        DiagnosticSeverity.Error,
-                        true), null));
-                    }
+                }
+                catch (Exception ex)
+                {
+                    spc.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor(
+                    "YA0001",
+                    ex.Message,
+                    ex.ToString(),
+                    "some category",
+                    DiagnosticSeverity.Error,
+                    true), null));
                 }
             });
 
         }
 
-        private void GenerateEntryPoint(SourceProductionContext spc, WorkspaceContext workspaceContext)
+        private void GenerateEntryPoint(SourceProductionContext spc, WorkspaceContext workspaceContext, SourceProducer sourceProducer)
         {
-            var template = Template.Parse(new TemplateReader().Read("_EntryPointTemplate"));
+            spc.CancellationToken.ThrowIfCancellationRequested();
 
-            _templateContext.PushGlobal(ScriptObject.From(workspaceContext));
-            var renderedEntryPoint = template.Render(_templateContext);
-
-            spc.AddSource("_EntryPoint.cs", renderedEntryPoint);
+            spc.AddSource("_EntryPoint.cs", sourceProducer.ProduceEntryPoint(workspaceContext));
         }
 
-        private void GenerateBasePage(SourceProductionContext spc, WorkspaceContext workspaceContext)
+        private void GenerateBasePage(SourceProductionContext spc, WorkspaceContext workspaceContext, SourceProducer sourceProducer)
         {
-            var template = Template.Parse(new TemplateReader().Read("_BasePageTemplate"));
+            spc.CancellationToken.ThrowIfCancellationRequested();
 
-            _templateContext.PushGlobal(ScriptObject.From(workspaceContext));
-            var renderedbasePage = template.Render(_templateContext);
-
-            spc.AddSource("_BasePage.cs", renderedbasePage);
+            spc.AddSource("_BasePage.cs", sourceProducer.ProduceBasePage(workspaceContext));
         }
 
-        private void GenerateBaseComponent(SourceProductionContext spc, WorkspaceContext workspaceContext)
+        private void GenerateBaseComponent(SourceProductionContext spc, WorkspaceContext workspaceContext, SourceProducer sourceProducer)
         {
-            var template = Template.Parse(new TemplateReader().Read("_BaseComponentTemplate"));
+            spc.CancellationToken.ThrowIfCancellationRequested();
 
-            _templateContext.PushGlobal(ScriptObject.From(workspaceContext));
-            var renderedbaseComponent = template.Render(_templateContext);
-
-            spc.AddSource("_BaseComponent.cs", renderedbaseComponent);
+            spc.AddSource("_BaseComponent.cs", sourceProducer.ProduceBaseComponent(workspaceContext));
         }
 
-        private void GenerateSpace(SourceProductionContext spc, SpaceContext spaceContext)
+        private IList<(string file, string content)> GenerateSpace(SourceProductionContext spc, SpaceContext spaceContext, SourceProducer sourceProducer)
         {
-            var template = Template.Parse(new TemplateReader().Read("SpaceTemplate"));
+            var files = new List<(string file, string content)>();
 
-            _templateContext.PushGlobal(ScriptObject.From(spaceContext));
-            var renderedSpace = template.Render(_templateContext);
+            spc.CancellationToken.ThrowIfCancellationRequested();
 
             var generatedFileName = $"{spaceContext.Namespace}.{spaceContext.Name}Space.cs";
-            spc.AddSource(generatedFileName, renderedSpace);
+
+            files.Add((generatedFileName, sourceProducer.ProduceSpace(spaceContext)));
 
             foreach (var space in spaceContext.Spaces)
             {
-                GenerateSpace(spc, space);
+                files.AddRange(GenerateSpace(spc, space, sourceProducer));
             }
 
             foreach (var page in spaceContext.Pages)
             {
-                GeneratePage(spc, page);
+                files.Add(GeneratePage(spc, page, sourceProducer));
             }
 
             foreach (var component in spaceContext.Components)
             {
-                GenerateComponent(spc, component);
+                files.Add(GenerateComponent(spc, component, sourceProducer));
             }
+
+            return files;
         }
 
-        private void GeneratePage(SourceProductionContext spc, PageContext pageContext)
+        private (string file, string content) GeneratePage(SourceProductionContext spc, PageContext pageContext, SourceProducer sourceProducer)
         {
-            var template = Template.Parse(new TemplateReader().Read("PageTemplate"));
-
-            var scripObject = ScriptObject.From(pageContext);
-            scripObject.Import(typeof(Services.GenerationService));
-            _templateContext.PushGlobal(scripObject);
-            var renderedPage = template.Render(_templateContext);
+            spc.CancellationToken.ThrowIfCancellationRequested();
 
             var generatedFileName = $"{pageContext.Namespace}.{pageContext.Name}Page.cs";
-            spc.AddSource(generatedFileName, renderedPage);
+
+            return (generatedFileName, sourceProducer.ProducePage(pageContext));
         }
 
-        private void GenerateComponent(SourceProductionContext spc, ComponentContext componentContext)
+        private (string file, string content) GenerateComponent(SourceProductionContext spc, ComponentContext componentContext, SourceProducer sourceProducer)
         {
-            var template = Template.Parse(new TemplateReader().Read("ComponentTemplate"));
-
-            var scripObject = ScriptObject.From(componentContext);
-            _templateContext.PushGlobal(scripObject);
-            var renderedComponent = template.Render(_templateContext);
+            spc.CancellationToken.ThrowIfCancellationRequested();
 
             var generatedFileName = $"{componentContext.Namespace}.{componentContext.Name}Component.cs";
-            spc.AddSource(generatedFileName, renderedComponent);
+            return (generatedFileName, sourceProducer.ProduceComponent(componentContext));
         }
     }
 }

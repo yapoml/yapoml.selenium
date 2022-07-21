@@ -9,7 +9,7 @@ namespace Yapoml.Selenium.Generation
 {
     internal class ResourceTemplateLoader : Scriban.Runtime.ITemplateLoader
     {
-        private Assembly _assembly = typeof(ResourceTemplateLoader).Assembly;
+        private readonly Assembly _assembly = typeof(ResourceTemplateLoader).Assembly;
 
         public string GetPath(TemplateContext context, SourceSpan callerSpan, string templateName)
         {

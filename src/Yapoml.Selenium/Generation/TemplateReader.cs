@@ -16,7 +16,9 @@ namespace Yapoml.Selenium.Generation
             using (Stream stream = assembly.GetManifestResourceStream(assembly.GetName().Name + ".Generation.Templates." + templateName + ".scriban"))
             using (StreamReader reader = new StreamReader(stream))
             {
-                return reader.ReadToEnd();
+                var content = reader.ReadToEnd();
+
+                return content;
             }
         }
     }
