@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -18,6 +20,50 @@ namespace Yapoml.Selenium.Generation
     {
         private string _rootNamespace;
         private string _projectDir;
+
+        static Generator()
+        {
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+        }
+
+        private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+
+            string resourceName = null;
+
+            if (args.Name.StartsWith("YamlDotNet"))
+            {
+                resourceName = "Yapoml.Selenium.YamlDotNet.dll";
+            }
+            else if (args.Name.StartsWith("Scriban"))
+            {
+                resourceName = "Yapoml.Selenium.Scriban.dll";
+            }
+            else if (args.Name.StartsWith("Humanizer"))
+            {
+                resourceName = "Yapoml.Selenium.Humanizer.dll";
+            }
+            else if (args.Name.StartsWith("Yapoml.Framework.Workspace"))
+            {
+                resourceName = "Yapoml.Selenium.Yapoml.Framework.Workspace.dll";
+            }
+
+            Assembly dep = null;
+
+            if (resourceName != null)
+            {
+                using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+                {
+                    using (BinaryReader reader = new BinaryReader(stream))
+                    {
+                        dep = Assembly.Load(reader.ReadBytes((int)stream.Length));
+                    }
+                }
+            }
+
+            return dep;
+        }
 
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {

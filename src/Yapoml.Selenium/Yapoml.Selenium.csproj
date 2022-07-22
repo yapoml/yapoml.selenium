@@ -33,11 +33,11 @@
 
 	<ItemGroup>
 		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-		<None Include="$(PKGYapoml_Framework_Workspace)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-
-		<None Include="$(PKGYamlDotNet)\lib\netstandard1.3\YamlDotNet.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-		<None Include="$(PKGScriban)\lib\netstandard2.0\Scriban.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-		<None Include="$(PKGHumanizer_Core)\lib\netstandard2.0\Humanizer.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		
+		<EmbeddedResource Include="$(PKGYapoml_Framework_Workspace)\lib\netstandard2.0\*.dll" />
+		<EmbeddedResource Include="$(PKGYamlDotNet)\lib\netstandard1.3\YamlDotNet.dll" />
+		<EmbeddedResource Include="$(PKGScriban)\lib\netstandard2.0\Scriban.dll" />
+		<EmbeddedResource Include="$(PKGHumanizer_Core)\lib\netstandard2.0\Humanizer.dll" />
 
 		<None Include="*.targets" Pack="true" PackagePath="build/" />
 		<None Include="..\..\Logo.png" Pack="true" PackagePath="\" Visible="false" />
