@@ -27,8 +27,8 @@
 		<PackageReference Include="Scriban" Version="5.5.0" GeneratePathProperty="true" PrivateAssets="all" />
 		<PackageReference Include="Selenium.WebDriver" Version="4.0.0" />
 		<PackageReference Include="YamlDotNet" Version="11.2.1" GeneratePathProperty="true" PrivateAssets="all" />
-		<PackageReference Include="Yapoml.Framework" Version="0.5.0" />
-		<PackageReference Include="Yapoml.Framework.Workspace" Version="0.5.0" GeneratePathProperty="true" PrivateAssets="all" />
+		<PackageReference Include="Yapoml.Framework" Version="0.5.1" />
+		<PackageReference Include="Yapoml.Framework.Workspace" Version="0.5.1" GeneratePathProperty="true" PrivateAssets="all" />
 	</ItemGroup>
 
 	<ItemGroup>
