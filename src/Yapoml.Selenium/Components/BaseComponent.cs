@@ -6,8 +6,9 @@ using Yapoml.Selenium.Events;
 
 namespace Yapoml.Selenium.Components
 {
+    // TODO: Generate it in user space
     /// <inheritdoc/>
-    public partial class BaseComponent : IWebElement, IWrapsElement
+    public partial class BaseComponent : IWebElement, IWrapsElement, ITakesScreenshot
     {
         protected IWebDriver WebDriver { get; private set; }
 
@@ -99,6 +100,11 @@ namespace Yapoml.Selenium.Components
         public void Submit()
         {
             WrappedElement.Submit();
+        }
+
+        public Screenshot GetScreenshot()
+        {
+            return ((ITakesScreenshot)WrappedElement).GetScreenshot();
         }
     }
 }
