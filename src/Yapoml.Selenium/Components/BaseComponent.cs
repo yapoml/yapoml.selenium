@@ -1,6 +1,4 @@
 ﻿using OpenQA.Selenium;
-using System.Collections.ObjectModel;
-using System.Drawing;
 using Yapoml.Framework.Options;
 using Yapoml.Selenium.Events;
 
@@ -8,7 +6,7 @@ namespace Yapoml.Selenium.Components
 {
     // TODO: Generate it in user space
     /// <inheritdoc/>
-    public partial class BaseComponent : IWebElement, IWrapsElement, ITakesScreenshot
+    public partial class BaseComponent
     {
         protected IWebDriver WebDriver { get; private set; }
 
@@ -25,86 +23,6 @@ namespace Yapoml.Selenium.Components
             SpaceOptions = spaceOptions;
 
             EventSource = spaceOptions.Services.Get<IEventSource>().ComponentEventSource;
-        }
-
-        public string TagName => WrappedElement.TagName;
-
-        public string Text => WrappedElement.Text;
-
-        public bool Enabled => WrappedElement.Enabled;
-
-        public bool Selected => WrappedElement.Selected;
-
-        public Point Location => WrappedElement.Location;
-
-        public Size Size => WrappedElement.Size;
-
-        public bool Displayed => WrappedElement.Displayed;
-
-        public void Clear()
-        {
-            WrappedElement.Clear();
-        }
-
-        public void Click()
-        {
-            WrappedElement.Click();
-        }
-
-        public IWebElement FindElement(By by)
-        {
-            return WrappedElement.FindElement(by);
-        }
-
-        public ReadOnlyCollection<IWebElement> FindElements(By by)
-        {
-            return WrappedElement.FindElements(by);
-        }
-
-        public string GetAttribute(string attributeName)
-        {
-            return WrappedElement.GetAttribute(attributeName);
-        }
-
-        public string GetCssValue(string propertyName)
-        {
-            return WrappedElement.GetCssValue(propertyName);
-        }
-
-        public string GetDomAttribute(string attributeName)
-        {
-            return WrappedElement.GetDomAttribute(attributeName);
-        }
-
-        public string GetDomProperty(string propertyName)
-        {
-            return WrappedElement.GetDomProperty(propertyName);
-        }
-
-        [System.Obsolete]
-        public string GetProperty(string propertyName)
-        {
-            return WrappedElement.GetProperty(propertyName);
-        }
-
-        public ISearchContext GetShadowRoot()
-        {
-            return WrappedElement.GetShadowRoot();
-        }
-
-        public void SendKeys(string text)
-        {
-            WrappedElement.SendKeys(text);
-        }
-
-        public void Submit()
-        {
-            WrappedElement.Submit();
-        }
-
-        public Screenshot GetScreenshot()
-        {
-            return ((ITakesScreenshot)WrappedElement).GetScreenshot();
         }
     }
 }
