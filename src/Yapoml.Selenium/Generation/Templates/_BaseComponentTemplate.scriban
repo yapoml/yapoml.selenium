@@ -70,12 +70,6 @@ namespace {{root_namespace}}
             return WrappedElement.GetDomProperty(propertyName);
         }
 
-        [System.Obsolete]
-        public string GetProperty(string propertyName)
-        {
-            return WrappedElement.GetProperty(propertyName);
-        }
-
         public ISearchContext GetShadowRoot()
         {
             return WrappedElement.GetShadowRoot();
