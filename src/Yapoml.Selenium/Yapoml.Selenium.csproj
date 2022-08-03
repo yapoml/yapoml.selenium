@@ -26,16 +26,16 @@
 		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3" PrivateAssets="all" />
 		<PackageReference Include="Scriban" Version="5.5.0" GeneratePathProperty="true" PrivateAssets="all" />
 		<PackageReference Include="Selenium.WebDriver" Version="4.3.0" />
-		<PackageReference Include="YamlDotNet" Version="11.2.1" GeneratePathProperty="true" PrivateAssets="all" />
-		<PackageReference Include="Yapoml.Framework" Version="0.5.1" />
-		<PackageReference Include="Yapoml.Framework.Workspace" Version="0.5.1" GeneratePathProperty="true" PrivateAssets="all" />
+		<PackageReference Include="YamlDotNet" Version="12.0.0" GeneratePathProperty="true" PrivateAssets="all" />
+		<PackageReference Include="Yapoml.Framework" Version="0.5.2" />
+		<PackageReference Include="Yapoml.Framework.Workspace" Version="0.5.2" GeneratePathProperty="true" PrivateAssets="all" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 		
 		<EmbeddedResource Include="$(PKGYapoml_Framework_Workspace)\lib\netstandard2.0\*.dll" Visible="false" />
-		<EmbeddedResource Include="$(PKGYamlDotNet)\lib\netstandard1.3\YamlDotNet.dll" Visible="false" />
+		<EmbeddedResource Include="$(PKGYamlDotNet)\lib\netstandard2.0\YamlDotNet.dll" Visible="false" />
 		<EmbeddedResource Include="$(PKGScriban)\lib\netstandard2.0\Scriban.dll" Visible="false" />
 		<EmbeddedResource Include="$(PKGHumanizer_Core)\lib\netstandard2.0\Humanizer.dll" Visible="false" />
 
@@ -54,7 +54,7 @@
 
 	<Target Name="GetDependencyTargetPaths">
 		<ItemGroup>
-			<TargetPathWithTargetPlatformMoniker Include="$(PKGYamlDotNet)\lib\netstandard1.3\YamlDotNet.dll" IncludeRuntimeDependency="false" />
+			<TargetPathWithTargetPlatformMoniker Include="$(PKGYamlDotNet)\lib\netstandard2.0\YamlDotNet.dll" IncludeRuntimeDependency="false" />
 			<TargetPathWithTargetPlatformMoniker Include="$(PKGScriban)\lib\netstandard2.0\Scriban.dll" IncludeRuntimeDependency="false" />
 			<TargetPathWithTargetPlatformMoniker Include="$(PKGHumanizer_Core)\lib\netstandard2.0\Humanizer.dll" IncludeRuntimeDependency="false" />
 			<TargetPathWithTargetPlatformMoniker Include="$(PKGYapoml_Framework_Workspace)\lib\netstandard2.0\Yapoml.Framework.Workspace.dll" IncludeRuntimeDependency="false" />
