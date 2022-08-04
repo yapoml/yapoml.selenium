@@ -2,7 +2,7 @@
 
 namespace {{namespace}}
 {
-	[System.Runtime.CompilerServices.CompilerGenerated()]
+	[System.Runtime.CompilerServices.CompilerGenerated]
 	public partial class {{name}}Space
 	{
 		private IWebDriver _webDriver;

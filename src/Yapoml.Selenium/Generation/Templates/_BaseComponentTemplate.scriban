@@ -6,88 +6,88 @@ using Yapoml.Selenium.Events;
 
 namespace {{root_namespace}}
 {
-    /// <inheritdoc/>
-    [System.Runtime.CompilerServices.CompilerGenerated]
-    public partial class Component : Yapoml.Selenium.Components.BaseComponent, IWebElement, IWrapsElement, ITakesScreenshot
-    {
-        public Component(IWebDriver webDriver, IWebElement webElement, ISpaceOptions spaceOptions)
-            : base (webDriver, webElement, spaceOptions)
-        {
-            
-        }
+	/// <inheritdoc cref="IWebElement"/>
+	[System.Runtime.CompilerServices.CompilerGenerated]
+	public partial class Component : Yapoml.Selenium.Components.BaseComponent, IWebElement, IWrapsElement, ITakesScreenshot
+	{
+		public Component(IWebDriver webDriver, IWebElement webElement, ISpaceOptions spaceOptions)
+			: base (webDriver, webElement, spaceOptions)
+		{
+			
+		}
 
-        public string TagName => WrappedElement.TagName;
+		public string TagName => WrappedElement.TagName;
 
-        public string Text => WrappedElement.Text;
+		public string Text => WrappedElement.Text;
 
-        public bool Enabled => WrappedElement.Enabled;
+		public bool Enabled => WrappedElement.Enabled;
 
-        public bool Selected => WrappedElement.Selected;
+		public bool Selected => WrappedElement.Selected;
 
-        public Point Location => WrappedElement.Location;
+		public Point Location => WrappedElement.Location;
 
-        public Size Size => WrappedElement.Size;
+		public Size Size => WrappedElement.Size;
 
-        public bool Displayed => WrappedElement.Displayed;
+		public bool Displayed => WrappedElement.Displayed;
 
-        public void Clear()
-        {
-            WrappedElement.Clear();
-        }
+		public void Clear()
+		{
+			WrappedElement.Clear();
+		}
 
-        public void Click()
-        {
-            WrappedElement.Click();
-        }
+		public void Click()
+		{
+			WrappedElement.Click();
+		}
 
-        public IWebElement FindElement(By by)
-        {
-            return WrappedElement.FindElement(by);
-        }
+		public IWebElement FindElement(By by)
+		{
+			return WrappedElement.FindElement(by);
+		}
 
-        public ReadOnlyCollection<IWebElement> FindElements(By by)
-        {
-            return WrappedElement.FindElements(by);
-        }
+		public ReadOnlyCollection<IWebElement> FindElements(By by)
+		{
+			return WrappedElement.FindElements(by);
+		}
 
-        public string GetAttribute(string attributeName)
-        {
-            return WrappedElement.GetAttribute(attributeName);
-        }
+		public string GetAttribute(string attributeName)
+		{
+			return WrappedElement.GetAttribute(attributeName);
+		}
 
-        public string GetCssValue(string propertyName)
-        {
-            return WrappedElement.GetCssValue(propertyName);
-        }
+		public string GetCssValue(string propertyName)
+		{
+			return WrappedElement.GetCssValue(propertyName);
+		}
 
-        public string GetDomAttribute(string attributeName)
-        {
-            return WrappedElement.GetDomAttribute(attributeName);
-        }
+		public string GetDomAttribute(string attributeName)
+		{
+			return WrappedElement.GetDomAttribute(attributeName);
+		}
 
-        public string GetDomProperty(string propertyName)
-        {
-            return WrappedElement.GetDomProperty(propertyName);
-        }
+		public string GetDomProperty(string propertyName)
+		{
+			return WrappedElement.GetDomProperty(propertyName);
+		}
 
-        public ISearchContext GetShadowRoot()
-        {
-            return WrappedElement.GetShadowRoot();
-        }
+		public ISearchContext GetShadowRoot()
+		{
+			return WrappedElement.GetShadowRoot();
+		}
 
-        public void SendKeys(string text)
-        {
-            WrappedElement.SendKeys(text);
-        }
+		public void SendKeys(string text)
+		{
+			WrappedElement.SendKeys(text);
+		}
 
-        public void Submit()
-        {
-            WrappedElement.Submit();
-        }
+		public void Submit()
+		{
+			WrappedElement.Submit();
+		}
 
-        public Screenshot GetScreenshot()
-        {
-            return ((ITakesScreenshot)WrappedElement).GetScreenshot();
-        }
-    }
+		public Screenshot GetScreenshot()
+		{
+			return ((ITakesScreenshot)WrappedElement).GetScreenshot();
+		}
+	}
 }

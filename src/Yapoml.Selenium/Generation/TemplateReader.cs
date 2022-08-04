@@ -5,7 +5,7 @@ namespace Yapoml.Selenium.Generation
 {
     internal class TemplateReader
     {
-        private Assembly assembly;
+        private readonly Assembly assembly;
         public TemplateReader()
         {
             assembly = typeof(TemplateReader).Assembly;

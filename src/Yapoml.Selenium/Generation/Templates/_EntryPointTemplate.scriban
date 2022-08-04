@@ -4,7 +4,7 @@ using OpenQA.Selenium;
 
 namespace {{root_namespace}}
 {
-	[System.Runtime.CompilerServices.CompilerGenerated()]
+	[System.Runtime.CompilerServices.CompilerGenerated]
 	public partial class YaSpace
 	{
 		private IWebDriver _webDriver;
@@ -47,7 +47,7 @@ namespace {{root_namespace}}
 {{ end }}
 	}
 
-	[System.Runtime.CompilerServices.CompilerGenerated()]
+	[System.Runtime.CompilerServices.CompilerGenerated]
 	public static class YapomlExtensions
 	{
 		public static YaSpace Ya(this IWebDriver webDriver)
