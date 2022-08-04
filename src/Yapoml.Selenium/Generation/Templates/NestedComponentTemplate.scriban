@@ -7,6 +7,7 @@
 	}
 
 	{{- for component in $1.components }}
+
 	/// <summary>
 	{{ include 'NestedComponentTemplate_Desc' component }}
 	/// </summary>
@@ -91,7 +92,7 @@
 	}
 	{{ end }}
 
-	{{ if component.referenced_component == null }}
+	{{- if component.referenced_component == null }}
 	{{ include 'NestedComponentTemplate' component }}
 	{{ end }}
 	{{ end }}

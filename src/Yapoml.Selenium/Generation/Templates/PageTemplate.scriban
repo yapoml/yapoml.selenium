@@ -39,6 +39,7 @@ namespace {{namespace}}
 		{{ end }}
 
 		{{- for component in components }}
+
 		/// <summary>
 		{{ include 'NestedComponentTemplate_Desc' component }}
 		/// </summary>
@@ -125,7 +126,7 @@ namespace {{namespace}}
 		}
 		{{ end }}
 
-		{{ if component.referenced_component == null }}
+		{{- if component.referenced_component == null }}
 		{{ include 'NestedComponentTemplate' component }}
 		{{ end }}
 		{{ end }}

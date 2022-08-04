@@ -15,22 +15,24 @@ namespace {{namespace}}
 			_spaceOptions = spaceOptions;
 		}
 
-		{{ for space in spaces -}}
-		public {{space.namespace}}.{{space.name}}Space {{space.name}} => _spaceOptions.Services.Get<Yapoml.Selenium.Factory.ISpaceFactory>().Create<{{space.namespace}}.{{space.name}}Space>(_webDriver, _spaceOptions);
-		{{ end }}
+		{{- for space in spaces }}
 
-		{{ for page in pages }}
+		public {{space.namespace}}.{{space.name}}Space {{space.name}} => _spaceOptions.Services.Get<Yapoml.Selenium.Factory.ISpaceFactory>().Create<{{space.namespace}}.{{space.name}}Space>(_webDriver, _spaceOptions);
+		{{- end }}
+
+		{{- for page in pages }}
+
 		/// <summary>
 		/// Consists of the following page components:
 		/// <list type="bullet">
-		{{ for c in page.components -}}
+		{{- for c in page.components }}
 		/// <item>
 		///   <description>{{ if c.is_plural }}List of {{ end }}{{ c.name }}</description>
 		/// </item>
-		{{ end -}}
+		{{- end }}
 		/// </list>
 		/// </summary>
 		public {{page.namespace}}.{{page.name}} {{page.name}} => _spaceOptions.Services.Get<Yapoml.Selenium.Factory.IPageFactory>().Create<{{page.namespace}}.{{page.name}}>(_webDriver, _spaceOptions);
-		{{ end }}
+		{{- end }}
 	}
 }
