@@ -14,6 +14,7 @@ namespace {{namespace}}
 		}
 
 		{{- if url }}
+
 		/// <summary>
 		/// Navigates to <c>{{ url.path }}</c>
 		/// </summary>
@@ -130,6 +131,57 @@ namespace {{namespace}}
 		{{ include 'NestedComponentTemplate' component }}
 		{{ end }}
 		{{ end }}
+
+		/// <summary>
+		/// Provides capabilities to wait components on the <see cref="{{ name }}"/> page.
+		/// </summary>
+		public {{ name }}Waiter Wait => new {{ name }}Waiter(WebDriver, SpaceOptions);
+
+		public struct {{ name }}Waiter
+		{
+			OpenQA.Selenium.IWebDriver _webDriver;
+			Yapoml.Framework.Options.ISpaceOptions _spaceOptions;
+
+			public {{ name }}Waiter(OpenQA.Selenium.IWebDriver webDriver, Yapoml.Framework.Options.ISpaceOptions spaceOptions)
+			{
+				_webDriver = webDriver;
+				_spaceOptions = spaceOptions;
+			}
+
+			{{- for component in components }}
+			{{- if !component.is_plural }}
+
+			public {{ get_component_return_type component }} {{ component.name }}Displayed()
+			{
+				var byValue = "{{ component.by.value }}";
+
+				{{ if component.by.method == 'XPath' -}}
+				var by = OpenQA.Selenium.By.XPath(byValue);
+				{{ end -}}
+
+				{{ if component.by.method == 'Css' -}}
+				var by = OpenQA.Selenium.By.CssSelector(byValue);
+				{{ end -}}
+
+				{{ if component.by.method == 'Id' -}}
+				var by = OpenQA.Selenium.By.Id(byValue);
+				{{ end -}}
+
+				{{ if component.by.method == 'None' -}}
+				{{ if is_xpath component.by.value }}
+				var by = OpenQA.Selenium.By.XPath(byValue);
+				{{ else }}
+				var by = OpenQA.Selenium.By.CssSelector(byValue);
+				{{ end -}}
+				{{ end -}}
+
+				var element = Yapoml.Selenium.Services.Waiter.UntilDisplayed(_webDriver, by, System.TimeSpan.FromSeconds(10), System.TimeSpan.FromMilliseconds(500));
+
+				return _spaceOptions.Services.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{get_component_return_type component}}>(_webDriver, element, _spaceOptions);
+			}
+			{{- end }}
+			{{- end }}
+		}
 	}
 }
 # pragma warning restore

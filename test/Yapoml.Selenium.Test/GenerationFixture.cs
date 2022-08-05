@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -9,7 +10,7 @@ using Yapoml.Selenium.Generation;
 
 namespace Yapoml.Selenium.Test
 {
-    public class Tests
+    public class GenerationFixture
     {
         [Test]
         public void Test1()
@@ -39,7 +40,7 @@ SomeButton: ./qwe
 
             GeneratorDriverRunResult runResult = driver.GetRunResult();
 
-            Assert.That(runResult.Diagnostics, Is.Empty);
+            runResult.Diagnostics.Should().BeEmpty();
         }
 
         private static Compilation CreateCompilation()

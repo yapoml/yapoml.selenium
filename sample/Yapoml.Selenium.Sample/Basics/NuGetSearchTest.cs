@@ -15,8 +15,6 @@ namespace Yapoml.Selenium.Sample.Basics
         {
             _webDriver = new FirefoxDriver();
 
-            _webDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-
             _webDriver.Navigate().GoToUrl("https://nuget.org");
         }
 
@@ -70,6 +68,14 @@ namespace Yapoml.Selenium.Sample.Basics
 
             // it opens https://nuget.org/packages/Newtonsoft.Json
             Console.WriteLine(ya.PackageDetailsPage.Open("Newtonsoft.Json").Version.Text);
+        }
+
+        [Test]
+        public void WaitWithYapoml()
+        {
+            var searchInput = _webDriver.Ya().Basics.Pages.HomePage.Wait.SearchInputDisplayed();
+
+            Console.WriteLine(searchInput.Displayed);
         }
     }
 }
