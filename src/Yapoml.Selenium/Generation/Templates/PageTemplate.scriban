@@ -22,7 +22,7 @@ namespace {{namespace}}
 		{{- for segment in url.segments }}{{ if for.first == false }}, {{ end }}string {{ segment }}{{ end }}
 		{{- for param in url.params }} {{ if url.segments && for.first }}, {{ end }}{{ if for.first == false }}, {{ end }}string {{ param }} = null{{ end }})
 		{
-			var baseUrl = SpaceOptions.Services.Get<Yapoml.Selenium.BaseUrlOptions>().Url;
+			var baseUrl = SpaceOptions.Services.Get<Yapoml.Selenium.Options.BaseUrlOptions>().Url;
 
 			var segments = new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, string>>() { 
 				{{- for segment in url.segments }}{{ if for.first == false }}, {{end}}new System.Collections.Generic.KeyValuePair<string, string>("{{ segment }}", {{ segment }}) {{ end -}} 

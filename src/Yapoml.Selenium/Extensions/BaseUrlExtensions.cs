@@ -1,4 +1,6 @@
-﻿using Yapoml.Framework.Options;
+﻿using System;
+using Yapoml.Framework.Options;
+using Yapoml.Selenium.Options;
 
 namespace Yapoml.Selenium
 {
@@ -10,15 +12,10 @@ namespace Yapoml.Selenium
 
             return spaceOptions;
         }
-    }
 
-    public class BaseUrlOptions
-    {
-        public BaseUrlOptions(string baseUrl)
+        public static ISpaceOptions UseBaseUrl(this ISpaceOptions spaceOptions, Uri url)
         {
-            Url = baseUrl;
+            return spaceOptions.UseBaseUrl(url.ToString());
         }
-
-        public string Url { get; }
     }
 }
