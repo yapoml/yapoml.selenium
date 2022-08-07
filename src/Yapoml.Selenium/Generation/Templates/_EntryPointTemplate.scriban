@@ -67,6 +67,8 @@ namespace {{root_namespace}}
 			spaceOptions.Services.Register<Yapoml.Selenium.Factory.IPageFactory>(new Yapoml.Selenium.Factory.DefaultPageFactory());
 			spaceOptions.Services.Register<Yapoml.Selenium.Factory.IComponentFactory>(new Yapoml.Selenium.Factory.DefaultComponentFactory());
 
+			spaceOptions.Services.Register<Yapoml.Selenium.Options.TimeoutOptions>(new Yapoml.Selenium.Options.TimeoutOptions(System.TimeSpan.FromSeconds(30), System.TimeSpan.FromMilliseconds(500)));
+
 			var eventSource = new Yapoml.Selenium.Events.EventSource();
 			spaceOptions.Services.Register<Yapoml.Selenium.Events.IEventSource>(eventSource);
 
