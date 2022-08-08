@@ -16,7 +16,7 @@
 	{{- for component in $1.components }}
 	{{- if !component.is_plural }}
 
-	public {{ get_component_return_type component }} {{ component.name }}Displayed()
+	public {{ get_component_return_type component }} {{ component.name }}Displayed(System.TimeSpan? timeout = null, System.TimeSpan? pollingInterval = null)
 	{
 		var byValue = "{{ component.by.value }}";
 
@@ -40,7 +40,7 @@
 		{{ end -}}
 		{{ end -}}
 
-		var element = Yapoml.Selenium.Services.Waiter.UntilDisplayed(_searchContext, by, _timeoutOptions.Timeout, _timeoutOptions.PollingInterval);
+		var element = Yapoml.Selenium.Services.Waiter.UntilDisplayed(_searchContext, by, timeout ?? _timeoutOptions.Timeout, pollingInterval ?? _timeoutOptions.PollingInterval);
 
 		return _spaceOptions.Services.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{get_component_return_type component}}>(_webDriver, element, _spaceOptions);
 	}
