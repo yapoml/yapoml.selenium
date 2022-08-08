@@ -73,9 +73,16 @@ namespace Yapoml.Selenium.Sample.Basics
         [Test]
         public void WaitWithYapoml()
         {
-            var searchInput = _webDriver.Ya(opts =>
+            // set global timeout
+            var homePage = _webDriver.Ya(opts =>
                     opts.WithTimeout(timeout: TimeSpan.FromSeconds(10)))
-                .Basics.Pages.HomePage.Wait.SearchInputDisplayed();
+                .Basics.Pages.HomePage;
+
+            // used global timeout
+            var searchInput = homePage.Wait.SearchInputDisplayed();
+
+            // or explicitly only here
+            searchInput = homePage.Wait.SearchInputDisplayed(timeout: TimeSpan.FromSeconds(20));
 
             Console.WriteLine(searchInput.Displayed);
         }
