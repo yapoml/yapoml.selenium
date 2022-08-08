@@ -33,7 +33,7 @@ public {{ get_component_return_type component }} Wait{{ component.name }}Display
 
 	var timeoutOptions = SpaceOptions.Services.Get<Yapoml.Selenium.Options.TimeoutOptions>();
 
-	var element = Yapoml.Selenium.Services.Waiter.UntilDisplayed({{ $2 }}, by, timeout ?? timeoutOptions.Timeout, pollingInterval ?? timeoutOptions.PollingInterval);
+	var element = Yapoml.Selenium.Services.Waiter.UntilDisplayed("{{ component.name }}", {{ $2 }}, by, timeout ?? timeoutOptions.Timeout, pollingInterval ?? timeoutOptions.PollingInterval);
 
 	return SpaceOptions.Services.Get<Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}>(WebDriver, element, SpaceOptions);
 }

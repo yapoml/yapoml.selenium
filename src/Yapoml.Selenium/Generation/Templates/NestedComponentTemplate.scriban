@@ -43,7 +43,7 @@
 			return webElements.Select(e => SpaceOptions.Services.Get<Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}>(WebDriver, e, SpaceOptions)).ToList();
 			{{ else }}
 			EventSource.RaiseOnFindingComponent("{{component.name}}", by);
-			var webElement = SpaceOptions.Services.Get<Yapoml.Selenium.Services.Locator.IElementLocator>().FindElement(WrappedElement, by);
+			var webElement = SpaceOptions.Services.Get<Yapoml.Selenium.Services.Locator.IElementLocator>().FindElement("{{ component.name }}", WrappedElement, by);
 			EventSource.RaiseOnFoundComponent(by, WebDriver, webElement);
 			return SpaceOptions.Services.Get<Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}>(WebDriver, webElement, SpaceOptions);
 			{{- end }}
@@ -85,7 +85,7 @@
 		return webElements.Select(e => SpaceOptions.Services.Get<Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}>(WebDriver, e, SpaceOptions)).ToList();
 		{{ else }}
 		EventSource.RaiseOnFindingComponent("{{component.name}}", by);
-		var webElement = SpaceOptions.Services.Get<Yapoml.Selenium.Services.Locator.IElementLocator>().FindElement(WrappedElement, by);
+		var webElement = SpaceOptions.Services.Get<Yapoml.Selenium.Services.Locator.IElementLocator>().FindElement("{{ component.name }}", WrappedElement, by);
 		EventSource.RaiseOnFoundComponent(by, WebDriver, webElement);
 		return SpaceOptions.Services.Get<Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}>(WebDriver, webElement, SpaceOptions);
 		{{- end }}

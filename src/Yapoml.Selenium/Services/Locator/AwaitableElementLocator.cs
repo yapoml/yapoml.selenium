@@ -14,8 +14,10 @@ namespace Yapoml.Selenium.Services.Locator
             _timeoutOptions = timeoutOptions;
         }
 
-        public IWebElement FindElement(ISearchContext searchContext, By by)
+        public IWebElement FindElement(string componentFriendlyName, ISearchContext searchContext, By by)
         {
+            Exception lastError = null;
+
             try
             {
                 return Waiter.Until(() =>
@@ -24,15 +26,17 @@ namespace Yapoml.Selenium.Services.Locator
                     {
                         return searchContext.FindElement(by);
                     }
-                    catch (NoSuchElementException)
+                    catch (NoSuchElementException ex)
                     {
+                        lastError = ex;
+
                         return null;
                     }
                 }, _timeoutOptions.Timeout, _timeoutOptions.PollingInterval);
             }
             catch(TimeoutException)
             {
-                throw new TimeoutException($"Couldn't find element by {by} in {searchContext} during {_timeoutOptions.Timeout}");
+                throw Waiter.BuildTimeoutException($"{componentFriendlyName} component is not located yet '{by}'.", lastError, _timeoutOptions.Timeout, _timeoutOptions.PollingInterval, new List<Type> { typeof(NoSuchElementException) });
             }
         }
 

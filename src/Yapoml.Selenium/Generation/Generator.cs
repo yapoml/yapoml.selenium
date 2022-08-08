@@ -26,45 +26,6 @@ namespace Yapoml.Selenium.Generation
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
         }
 
-        private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-
-            string resourceName = null;
-
-            if (args.Name.StartsWith("YamlDotNet"))
-            {
-                resourceName = "Yapoml.Selenium.YamlDotNet.dll";
-            }
-            else if (args.Name.StartsWith("Scriban"))
-            {
-                resourceName = "Yapoml.Selenium.Scriban.dll";
-            }
-            else if (args.Name.StartsWith("Humanizer"))
-            {
-                resourceName = "Yapoml.Selenium.Humanizer.dll";
-            }
-            else if (args.Name.StartsWith("Yapoml.Framework.Workspace"))
-            {
-                resourceName = "Yapoml.Selenium.Yapoml.Framework.Workspace.dll";
-            }
-
-            Assembly dep = null;
-
-            if (resourceName != null)
-            {
-                using (Stream stream = assembly.GetManifestResourceStream(resourceName))
-                {
-                    using (BinaryReader reader = new BinaryReader(stream))
-                    {
-                        dep = Assembly.Load(reader.ReadBytes((int)stream.Length));
-                    }
-                }
-            }
-
-            return dep;
-        }
-
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
             var globalOptions = context.AnalyzerConfigOptionsProvider.Select((o, c) => o.GlobalOptions);
@@ -210,6 +171,45 @@ namespace Yapoml.Selenium.Generation
 
             var generatedFileName = $"{componentContext.Namespace}.{componentContext.Name}Component.cs";
             return (generatedFileName, sourceProducer.ProduceComponent(componentContext));
+        }
+
+        private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+
+            string resourceName = null;
+
+            if (args.Name.StartsWith("YamlDotNet"))
+            {
+                resourceName = "Yapoml.Selenium.YamlDotNet.dll";
+            }
+            else if (args.Name.StartsWith("Scriban"))
+            {
+                resourceName = "Yapoml.Selenium.Scriban.dll";
+            }
+            else if (args.Name.StartsWith("Humanizer"))
+            {
+                resourceName = "Yapoml.Selenium.Humanizer.dll";
+            }
+            else if (args.Name.StartsWith("Yapoml.Framework.Workspace"))
+            {
+                resourceName = "Yapoml.Selenium.Yapoml.Framework.Workspace.dll";
+            }
+
+            Assembly dep = null;
+
+            if (resourceName != null)
+            {
+                using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+                {
+                    using (BinaryReader reader = new BinaryReader(stream))
+                    {
+                        dep = Assembly.Load(reader.ReadBytes((int)stream.Length));
+                    }
+                }
+            }
+
+            return dep;
         }
     }
 }
