@@ -17,7 +17,7 @@ namespace {{namespace}}
 
 		{{- for space in spaces }}
 
-		public {{space.namespace}}.{{space.name}}Space {{space.name}} => _spaceOptions.Services.Get<Yapoml.Selenium.Factory.ISpaceFactory>().Create<{{space.namespace}}.{{space.name}}Space>(_webDriver, _spaceOptions);
+		public {{space.namespace}}.{{space.name}}Space {{space.name}} => _spaceOptions.Services.Get<Yapoml.Selenium.Services.Factory.ISpaceFactory>().Create<{{space.namespace}}.{{space.name}}Space>(_webDriver, _spaceOptions);
 		{{- end }}
 
 		{{- for page in pages }}
@@ -32,7 +32,7 @@ namespace {{namespace}}
 		{{- end }}
 		/// </list>
 		/// </summary>
-		public {{page.namespace}}.{{page.name}} {{page.name}} => _spaceOptions.Services.Get<Yapoml.Selenium.Factory.IPageFactory>().Create<{{page.namespace}}.{{page.name}}>(_webDriver, _spaceOptions);
+		public {{page.namespace}}.{{page.name}} {{page.name}} => _spaceOptions.Services.Get<Yapoml.Selenium.Services.Factory.IPageFactory>().Create<{{page.namespace}}.{{page.name}}>(_webDriver, _spaceOptions);
 		{{- end }}
 	}
 }

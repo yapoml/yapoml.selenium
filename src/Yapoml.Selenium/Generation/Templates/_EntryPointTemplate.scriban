@@ -22,7 +22,7 @@ namespace {{root_namespace}}
 		{
 			get
 			{
-				return _spaceOptions.Services.Get<Yapoml.Selenium.Factory.ISpaceFactory>().Create<{{space.namespace}}.{{space.name}}Space>(_webDriver, _spaceOptions);
+				return _spaceOptions.Services.Get<Yapoml.Selenium.Services.Factory.ISpaceFactory>().Create<{{space.namespace}}.{{space.name}}Space>(_webDriver, _spaceOptions);
 			}
 		}
 {{ end }}
@@ -41,7 +41,7 @@ namespace {{root_namespace}}
 		{
 			get
 			{
-				return _spaceOptions.Services.Get<Yapoml.Selenium.Factory.IPageFactory>().Create<{{page.namespace}}.{{page.name}}>(_webDriver, _spaceOptions);
+				return _spaceOptions.Services.Get<Yapoml.Selenium.Services.Factory.IPageFactory>().Create<{{page.namespace}}.{{page.name}}>(_webDriver, _spaceOptions);
 			}
 		}
 {{ end }}
@@ -63,9 +63,9 @@ namespace {{root_namespace}}
 			spaceOptions.Services.Register<Yapoml.Framework.Logging.ILogger>(new Yapoml.Framework.Logging.ConsoleLogger());
 
 			// default factories
-			spaceOptions.Services.Register<Yapoml.Selenium.Factory.ISpaceFactory>(new Yapoml.Selenium.Factory.DefaultSpaceFactory());
-			spaceOptions.Services.Register<Yapoml.Selenium.Factory.IPageFactory>(new Yapoml.Selenium.Factory.DefaultPageFactory());
-			spaceOptions.Services.Register<Yapoml.Selenium.Factory.IComponentFactory>(new Yapoml.Selenium.Factory.DefaultComponentFactory());
+			spaceOptions.Services.Register<Yapoml.Selenium.Services.Factory.ISpaceFactory>(new Yapoml.Selenium.Services.Factory.DefaultSpaceFactory());
+			spaceOptions.Services.Register<Yapoml.Selenium.Services.Factory.IPageFactory>(new Yapoml.Selenium.Services.Factory.DefaultPageFactory());
+			spaceOptions.Services.Register<Yapoml.Selenium.Services.Factory.IComponentFactory>(new Yapoml.Selenium.Services.Factory.DefaultComponentFactory());
 
 			spaceOptions.Services.Register<Yapoml.Selenium.Options.TimeoutOptions>(new Yapoml.Selenium.Options.TimeoutOptions(System.TimeSpan.FromSeconds(30), System.TimeSpan.FromMilliseconds(500)));
 

@@ -1,7 +1,7 @@
 ﻿using OpenQA.Selenium;
 using Yapoml.Framework.Options;
 
-namespace Yapoml.Selenium.Factory
+namespace Yapoml.Selenium.Services.Factory
 {
     public interface ISpaceFactory
     {

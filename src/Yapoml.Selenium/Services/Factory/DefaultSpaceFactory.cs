@@ -2,7 +2,7 @@
 using System;
 using Yapoml.Framework.Options;
 
-namespace Yapoml.Selenium.Factory
+namespace Yapoml.Selenium.Services.Factory
 {
     public class DefaultSpaceFactory : ISpaceFactory
     {

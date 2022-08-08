@@ -3,7 +3,7 @@ using System;
 using Yapoml.Framework.Options;
 using Yapoml.Selenium.Components;
 
-namespace Yapoml.Selenium.Factory
+namespace Yapoml.Selenium.Services.Factory
 {
     public class DefaultComponentFactory : IComponentFactory
     {
