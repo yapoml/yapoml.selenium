@@ -18,7 +18,7 @@ namespace Yapoml.Selenium.Test
         {
             Action act = () => Waiter.Until<object>(() => throw new Exception(), TimeSpan.FromMilliseconds(50), TimeSpan.FromMilliseconds(10));
 
-            act.Should().Throw<TimeoutException>();
+            act.Should().Throw<Exception>();
         }
     }
 }

@@ -11,39 +11,44 @@ namespace Yapoml.Selenium.Services
         {
             var stopwatch = Stopwatch.StartNew();
 
-            Exception lastError = null;
-
             while (stopwatch.Elapsed <= timeout)
             {
-                try
+                var result = condition();
+                if (result != null)
                 {
-                    var result = condition();
-                    if (result != null)
-                    {
-                        return result;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    lastError = ex;
+                    return result;
                 }
 
                 Thread.Sleep(pollingInterval);
             }
 
-            throw new TimeoutException("my message", lastError);
+            throw new TimeoutException("my message");
         }
 
         public static IWebElement UntilDisplayed(ISearchContext searchContext, By by, TimeSpan timeout, TimeSpan pollingInterval)
         {
             IWebElement condition()
             {
-                var element = searchContext.FindElement(by);
+                try
+                {
+                    var element = searchContext.FindElement(by);
 
-                return element.Displayed ? element : null;
+                    return element.Displayed ? element : null;
+                }
+                catch (Exception ex) when (ex is NoSuchElementException || ex is StaleElementReferenceException)
+                {
+                    return null;
+                }
             }
 
-            return Until(condition, timeout, pollingInterval);
+            try
+            {
+                return Until(condition, timeout, pollingInterval);
+            }
+            catch(TimeoutException)
+            {
+                throw new TimeoutException($"Element {by} couldn't be displayed during {timeout} timeout.");
+            }
         }
     }
 }

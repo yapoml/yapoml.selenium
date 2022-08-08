@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using System;
 using System.Collections.Generic;
 using Yapoml.Selenium.Options;
 
@@ -15,17 +16,24 @@ namespace Yapoml.Selenium.Services.Finder
 
         public IWebElement FindElement(ISearchContext searchContext, By by)
         {
-            return Waiter.Until(() =>
+            try
             {
-                try
+                return Waiter.Until(() =>
                 {
-                    return searchContext.FindElement(by);
-                }
-                catch (NoSuchElementException)
-                {
-                    return null;
-                }
-            }, _timeoutOptions.Timeout, _timeoutOptions.PollingInterval);
+                    try
+                    {
+                        return searchContext.FindElement(by);
+                    }
+                    catch (NoSuchElementException)
+                    {
+                        return null;
+                    }
+                }, _timeoutOptions.Timeout, _timeoutOptions.PollingInterval);
+            }
+            catch(TimeoutException)
+            {
+                throw new TimeoutException($"Couldn't find element by {by} in {searchContext} during {_timeoutOptions.Timeout}");
+            }
         }
 
         public IReadOnlyList<IWebElement> FindElements(ISearchContext searchContext, By by)
