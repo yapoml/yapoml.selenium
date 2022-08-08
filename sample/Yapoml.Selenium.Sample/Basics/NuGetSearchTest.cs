@@ -79,10 +79,10 @@ namespace Yapoml.Selenium.Sample.Basics
                 .Basics.Pages.HomePage;
 
             // used global timeout
-            var searchInput = homePage.Wait.SearchInputDisplayed();
+            var searchInput = homePage.WaitSearchInputDisplayed();
 
             // or explicitly only here
-            searchInput = homePage.Wait.SearchInputDisplayed(timeout: TimeSpan.FromSeconds(20));
+            searchInput = homePage.WaitSearchInputDisplayed(timeout: TimeSpan.FromSeconds(20));
 
             Console.WriteLine(searchInput.Displayed);
         }

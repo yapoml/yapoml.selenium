@@ -98,11 +98,6 @@
 	{{ end }}
 
 	{{- if (array.size $1.components) > 0 }}
-	/// <summary>
-	/// Provides capabilities to wait components in the <see cref="{{ $1.name }}Component"/>.
-	/// </summary>
-	public {{ $1.name }}Waiter Wait => new {{ $1.name }}Waiter(WebDriver, WrappedElement, SpaceOptions);
-
-	{{ include 'WaiterTemplate' $1 }}
+	{{ include 'WaiterTemplate' $1 "WrappedElement"}}
 	{{ end }}
 }

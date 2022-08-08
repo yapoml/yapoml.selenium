@@ -133,12 +133,7 @@ namespace {{namespace}}
 		{{ end }}
 
 		{{- if (array.size components) > 0 }}
-		/// <summary>
-		/// Provides capabilities to wait components on the <see cref="{{ name }}"/> page.
-		/// </summary>
-		public {{ name }}Waiter Wait => new {{ name }}Waiter(WebDriver, WebDriver, SpaceOptions);
-
-		{{ include 'WaiterTemplate' this }}
+		{{ include 'WaiterTemplate' this "WebDriver"}}
 		{{ end }}
 	}
 }
