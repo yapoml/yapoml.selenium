@@ -16,6 +16,12 @@
 	{{- for component in $1.components }}
 	{{- if !component.is_plural }}
 
+	/// <summary>
+	/// Waits until <c>{{ component.name }}</c> is displayed.
+	/// </summary>
+	/// <param name="timeout">How long to wait until {{ component.name }} component is displayed.</param>
+	/// <param name="pollingInterval">Interval between verifications in a loop.</param>
+	/// <returns></returns>
 	public {{ get_component_return_type component }} {{ component.name }}Displayed(System.TimeSpan? timeout = null, System.TimeSpan? pollingInterval = null)
 	{
 		var byValue = "{{ component.by.value }}";
