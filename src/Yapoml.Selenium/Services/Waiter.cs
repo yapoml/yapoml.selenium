@@ -27,6 +27,8 @@ namespace Yapoml.Selenium.Services
 
         public static IWebElement UntilDisplayed(ISearchContext searchContext, By by, TimeSpan timeout, TimeSpan pollingInterval)
         {
+            Exception lastError = null;
+
             IWebElement condition()
             {
                 try
@@ -37,6 +39,8 @@ namespace Yapoml.Selenium.Services
                 }
                 catch (Exception ex) when (ex is NoSuchElementException || ex is StaleElementReferenceException)
                 {
+                    lastError = ex;
+
                     return null;
                 }
             }
@@ -47,7 +51,8 @@ namespace Yapoml.Selenium.Services
             }
             catch(TimeoutException)
             {
-                throw new TimeoutException($"Element {by} couldn't be displayed during {timeout} timeout.");
+                // todo: pur here everything we know (component name, ignored exceptions, search context)
+                throw new TimeoutException($"Element {by} couldn't be displayed during {timeout.TotalSeconds} seconds.", lastError);
             }
         }
     }
