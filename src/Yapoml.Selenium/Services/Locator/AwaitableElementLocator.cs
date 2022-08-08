@@ -3,13 +3,13 @@ using System;
 using System.Collections.Generic;
 using Yapoml.Selenium.Options;
 
-namespace Yapoml.Selenium.Services.Finder
+namespace Yapoml.Selenium.Services.Locator
 {
-    public class AwaitableElementFinder : IElementFinder
+    public class AwaitableElementLocator : IElementLocator
     {
         private readonly TimeoutOptions _timeoutOptions;
 
-        public AwaitableElementFinder(TimeoutOptions timeoutOptions)
+        public AwaitableElementLocator(TimeoutOptions timeoutOptions)
         {
             _timeoutOptions = timeoutOptions;
         }

@@ -1,6 +1,6 @@
 ﻿using Yapoml.Framework.Options;
 using Yapoml.Selenium.Options;
-using Yapoml.Selenium.Services.Finder;
+using Yapoml.Selenium.Services.Locator;
 
 namespace Yapoml.Selenium
 {
@@ -16,7 +16,7 @@ namespace Yapoml.Selenium
         {
             var timeoutOptions = spaceOptions.Services.Get<TimeoutOptions>();
 
-            spaceOptions.Services.Register<IElementFinder>(new AwaitableElementFinder(timeoutOptions));
+            spaceOptions.Services.Register<IElementLocator>(new AwaitableElementLocator(timeoutOptions));
 
             return spaceOptions;
         }

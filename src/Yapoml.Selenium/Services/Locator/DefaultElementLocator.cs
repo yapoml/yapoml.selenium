@@ -1,9 +1,9 @@
 ﻿using OpenQA.Selenium;
 using System.Collections.Generic;
 
-namespace Yapoml.Selenium.Services.Finder
+namespace Yapoml.Selenium.Services.Locator
 {
-    public class DefaultElementFinder : IElementFinder
+    public class DefaultElementLocator : IElementLocator
     {
         public IWebElement FindElement(ISearchContext searchContext, By by)
         {
