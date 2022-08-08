@@ -73,12 +73,12 @@ namespace {{namespace}}
 		
 				{{- if component.is_plural }}
 				EventSource.RaiseOnFindingComponents("{{component.name}}", by);
-				var webElements = WebDriver.FindElements(by);
+				var webElements = SpaceOptions.Services.Get<Yapoml.Selenium.Services.Finder.IElementFinder>().FindElements(WebDriver, by);
 				EventSource.RaiseOnFoundComponents(by, webElements);
 				return webElements.Select(e => SpaceOptions.Services.Get<Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}>(WebDriver, e, SpaceOptions)).ToList();
 				{{ else }}
 				EventSource.RaiseOnFindingComponent("{{component.name}}", by);
-				var webElement = WebDriver.FindElement(by);
+				var webElement = SpaceOptions.Services.Get<Yapoml.Selenium.Services.Finder.IElementFinder>().FindElement(WebDriver, by);
 				EventSource.RaiseOnFoundComponent(by, WebDriver, webElement);
 				return SpaceOptions.Services.Get<Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}>(WebDriver, webElement, SpaceOptions);
 				{{- end}}
@@ -115,12 +115,12 @@ namespace {{namespace}}
 		
 			{{- if component.is_plural -}}
 			EventSource.RaiseOnFindingComponents("{{component.name}}", by);
-			var webElements = WebDriver.FindElements(by);
+			var webElements = SpaceOptions.Services.Get<Yapoml.Selenium.Services.Finder.IElementFinder>().FindElements(WebDriver, by);
 			EventSource.RaiseOnFoundComponents(by, webElements);
 			return webElements.Select(e => SpaceOptions.Services.Get<Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}>(WebDriver, e, SpaceOptions)).ToList();
 			{{ else }}
 			EventSource.RaiseOnFindingComponent("{{component.name}}", by);
-			var webElement = WebDriver.FindElement(by);
+			var webElement = SpaceOptions.Services.Get<Yapoml.Selenium.Services.Finder.IElementFinder>().FindElement(WebDriver, by);
 			EventSource.RaiseOnFoundComponent(by, WebDriver, webElement);
 			return SpaceOptions.Services.Get<Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}>(WebDriver, webElement, SpaceOptions);
 			{{- end -}}
