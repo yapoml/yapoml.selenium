@@ -1,0 +1,49 @@
+﻿public struct {{ $1.name }}Waiter
+{
+	OpenQA.Selenium.IWebDriver _webDriver;
+	OpenQA.Selenium.ISearchContext _searchContext;
+	Yapoml.Framework.Options.ISpaceOptions _spaceOptions;
+	Yapoml.Selenium.Options.TimeoutOptions _timeoutOptions;
+
+	public {{ $1.name }}Waiter(OpenQA.Selenium.IWebDriver webDriver, OpenQA.Selenium.ISearchContext searchContext, Yapoml.Framework.Options.ISpaceOptions spaceOptions)
+	{
+		_webDriver = webDriver;
+		_searchContext = searchContext;
+		_spaceOptions = spaceOptions;
+		_timeoutOptions = spaceOptions.Services.Get<Yapoml.Selenium.Options.TimeoutOptions>();
+	}
+
+	{{- for component in $1.components }}
+	{{- if !component.is_plural }}
+
+	public {{ get_component_return_type component }} {{ component.name }}Displayed()
+	{
+		var byValue = "{{ component.by.value }}";
+
+		{{ if component.by.method == 'XPath' -}}
+		var by = OpenQA.Selenium.By.XPath(byValue);
+		{{ end -}}
+
+		{{ if component.by.method == 'Css' -}}
+		var by = OpenQA.Selenium.By.CssSelector(byValue);
+		{{ end -}}
+
+		{{ if component.by.method == 'Id' -}}
+		var by = OpenQA.Selenium.By.Id(byValue);
+		{{ end -}}
+
+		{{ if component.by.method == 'None' -}}
+		{{ if is_xpath component.by.value }}
+		var by = OpenQA.Selenium.By.XPath(byValue);
+		{{ else }}
+		var by = OpenQA.Selenium.By.CssSelector(byValue);
+		{{ end -}}
+		{{ end -}}
+
+		var element = Yapoml.Selenium.Services.Waiter.UntilDisplayed(_searchContext, by, _timeoutOptions.Timeout, _timeoutOptions.PollingInterval);
+
+		return _spaceOptions.Services.Get<Yapoml.Selenium.Factory.IComponentFactory>().Create<{{get_component_return_type component}}>(_webDriver, element, _spaceOptions);
+	}
+	{{- end }}
+	{{- end }}
+}
