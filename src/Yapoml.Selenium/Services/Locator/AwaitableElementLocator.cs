@@ -18,6 +18,11 @@ namespace Yapoml.Selenium.Services.Locator
         {
             Exception lastError = null;
 
+            var ignoredExceptions = new Dictionary<Type, uint>
+            {
+                { typeof(NoSuchElementException), 0}
+            };
+
             try
             {
                 return Waiter.Until(() =>
@@ -30,13 +35,15 @@ namespace Yapoml.Selenium.Services.Locator
                     {
                         lastError = ex;
 
+                        ignoredExceptions[ex.GetType()]++;
+
                         return null;
                     }
                 }, _timeoutOptions.Timeout, _timeoutOptions.PollingInterval);
             }
-            catch(TimeoutException)
+            catch (TimeoutException)
             {
-                throw Waiter.BuildTimeoutException($"{componentFriendlyName} component is not located yet '{by}'.", lastError, _timeoutOptions.Timeout, _timeoutOptions.PollingInterval, new List<Type> { typeof(NoSuchElementException) });
+                throw Waiter.BuildTimeoutException($"{componentFriendlyName} component is not located yet '{by}'.", lastError, _timeoutOptions.Timeout, _timeoutOptions.PollingInterval, ignoredExceptions);
             }
         }
 
@@ -47,7 +54,7 @@ namespace Yapoml.Selenium.Services.Locator
                 try
                 {
                     var elements = searchContext.FindElements(by);
-                    
+
                     return elements.Count > 0 ? elements : null;
                 }
                 catch (NoSuchElementException)

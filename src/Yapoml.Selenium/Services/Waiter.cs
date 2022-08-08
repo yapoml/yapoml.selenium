@@ -39,6 +39,11 @@ namespace Yapoml.Selenium.Services
         {
             Exception lastError = null;
 
+            Dictionary<Type, uint> _ignoredExceptions = new Dictionary<Type, uint> {
+                { typeof(NoSuchElementException), 0 },
+                { typeof(StaleElementReferenceException), 0 }
+             };
+
             IWebElement condition()
             {
                 try
@@ -47,9 +52,11 @@ namespace Yapoml.Selenium.Services
 
                     return element.Displayed ? element : null;
                 }
-                catch (Exception ex) when (ex is NoSuchElementException || ex is StaleElementReferenceException)
+                catch (Exception ex) when (_ignoredExceptions.ContainsKey(ex.GetType()))
                 {
                     lastError = ex;
+
+                    _ignoredExceptions[ex.GetType()]++;
 
                     return null;
                 }
@@ -61,11 +68,11 @@ namespace Yapoml.Selenium.Services
             }
             catch (TimeoutException)
             {
-                throw BuildTimeoutException($"{componentFriendlyName} component is not displayed yet '{by}'.", lastError, timeout, pollingInterval, new List<Type> { typeof(NoSuchElementException), typeof(StaleElementReferenceException) });
+                throw BuildTimeoutException($"{componentFriendlyName} component is not displayed yet '{by}'.", lastError, timeout, pollingInterval, _ignoredExceptions);
             }
         }
 
-        public static TimeoutException BuildTimeoutException(string message, Exception innerException, TimeSpan timeout, TimeSpan pollingInterval, IEnumerable<Type> ignoredExceptionTypes)
+        public static TimeoutException BuildTimeoutException(string message, Exception innerException, TimeSpan timeout, TimeSpan pollingInterval, IDictionary<Type, uint> ignoredExceptionTypes)
         {
             var builder = new StringBuilder();
 
@@ -75,15 +82,15 @@ namespace Yapoml.Selenium.Services
 
             builder.AppendLine($"  Timeout is {timeout.Humanize()} and polling each {pollingInterval.Humanize()}.");
 
+            builder.AppendLine();
+
             if (ignoredExceptionTypes != null)
             {
-                builder.AppendLine();
-
                 builder.AppendLine("  Ignored exceptions:");
 
-                foreach (Type ignoredExceptionType in ignoredExceptionTypes)
+                foreach (var ignoredExceptionType in ignoredExceptionTypes)
                 {
-                    builder.AppendLine($"   - {ignoredExceptionType.Name}");
+                    builder.AppendLine($"   - {ignoredExceptionType.Key.FullName} ({"time".ToQuantity(ignoredExceptionType.Value)})");
                 }
             }
 
