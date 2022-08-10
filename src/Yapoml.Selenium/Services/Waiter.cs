@@ -42,7 +42,14 @@ namespace Yapoml.Selenium.Services
                 {
                     var element = searchContext.FindElement(by);
 
-                    return element.Displayed ? element : null;
+                    if (element.Displayed)
+                    {
+                        return element;
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
                 catch (Exception ex) when (_ignoredExceptions.ContainsKey(ex.GetType()))
                 {
