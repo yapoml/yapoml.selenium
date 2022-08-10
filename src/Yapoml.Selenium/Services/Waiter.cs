@@ -27,7 +27,7 @@ namespace Yapoml.Selenium.Services
             throw new TimeoutException($"{condition} wasn't met during {timeout.TotalSeconds} seconds and polling each {pollingInterval.TotalSeconds} seconds.");
         }
 
-        public static IWebElement UntilDisplayed(string componentFriendlyName, ISearchContext searchContext, By by, TimeSpan timeout, TimeSpan pollingInterval)
+        public static IWebElement UntilComponentDisplayed(string componentFriendlyName, ISearchContext searchContext, By by, TimeSpan timeout, TimeSpan pollingInterval)
         {
             Exception lastError = null;
 
@@ -61,6 +61,30 @@ namespace Yapoml.Selenium.Services
             catch (TimeoutException)
             {
                 throw BuildTimeoutException($"{componentFriendlyName} component is not displayed yet '{by}'.", lastError, timeout, pollingInterval, _ignoredExceptions);
+            }
+        }
+
+        public static void UntilDisplayed(string componentFriendlyName, IWebElement webElement, TimeSpan timeout, TimeSpan pollingInterval)
+        {
+            bool? condition()
+            {
+                if (webElement.Displayed)
+                {
+                    return true;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            try
+            {
+                Until(condition, timeout, pollingInterval);
+            }
+            catch (TimeoutException)
+            {
+                throw BuildTimeoutException($"{componentFriendlyName} component is not displayed yet.", null, timeout, pollingInterval, null);
             }
         }
 
