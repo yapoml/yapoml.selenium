@@ -88,6 +88,30 @@ namespace Yapoml.Selenium.Services
             }
         }
 
+        public static void UntilEnabled(string componentFriendlyName, IWebElement webElement, TimeSpan timeout, TimeSpan pollingInterval)
+        {
+            bool? condition()
+            {
+                if (webElement.Enabled)
+                {
+                    return true;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            try
+            {
+                Until(condition, timeout, pollingInterval);
+            }
+            catch (TimeoutException)
+            {
+                throw BuildTimeoutException($"{componentFriendlyName} component is not enabled yet.", null, timeout, pollingInterval, null);
+            }
+        }
+
         public static TimeoutException BuildTimeoutException(string message, Exception innerException, TimeSpan timeout, TimeSpan pollingInterval, IDictionary<Type, uint> ignoredExceptionTypes)
         {
             var builder = new StringBuilder();
