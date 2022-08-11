@@ -23,6 +23,8 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build -c Release --no-restore
+    - name: Test
+      run: dotnet test test/Yapoml.Selenium.Test/Yapoml.Selenium.Test.csproj -c Release --no-build
     - name: Pack
       run: dotnet pack -c Release --no-build
     - name: Upload Artifacts
