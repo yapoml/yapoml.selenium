@@ -127,6 +127,23 @@
 		return this;
 	}
 
+	/// <summary>
+	/// Waits specific CSS value.
+	/// </summary>
+	/// <param name="propertyName">CSS property name.</param>
+	/// <param name="expectedValue">Expected value of the CSS property.</param>
+	/// <param name="timeout">How long to wait until CSS value becomes expected.</param>
+	/// <param name="pollingInterval">Interval between verifications in a loop.</param>
+	/// <returns></returns>
+	public {{if $1.is_plural}}{{$1.singular_name}}{{else}}{{$1.name}}{{end}}Component WaitCssValue(string propertyName, string expectedValue, System.TimeSpan? timeout = null, System.TimeSpan? pollingInterval = null)
+	{
+		var timeoutOptions = SpaceOptions.Services.Get<Yapoml.Selenium.Options.TimeoutOptions>();
+
+		Yapoml.Selenium.Services.Waiter.UntilCssValue(propertyName, expectedValue, "{{ $1.name }}", WrappedElement, timeout ?? timeoutOptions.Timeout, pollingInterval ?? timeoutOptions.PollingInterval);
+
+		return this;
+	}
+
 	{{- if (array.size $1.components) > 0 }}
 	{{ include 'WaiterTemplate' $1 "WrappedElement"}}
 	{{ end }}

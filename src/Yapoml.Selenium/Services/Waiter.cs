@@ -119,6 +119,34 @@ namespace Yapoml.Selenium.Services
             }
         }
 
+        public static void UntilCssValue(string propertyName, string expectedValue, string componentFriendlyName, IWebElement webElement, TimeSpan timeout, TimeSpan pollingInterval)
+        {
+            string latestValue = null;
+
+            bool? condition()
+            {
+                latestValue = webElement.GetCssValue(propertyName);
+
+                if (expectedValue.Equals(latestValue))
+                {
+                    return true;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            try
+            {
+                Until(condition, timeout, pollingInterval);
+            }
+            catch (TimeoutException)
+            {
+                throw BuildTimeoutException($"CSS '{propertyName} = {latestValue}' of the {componentFriendlyName} component is not '{expectedValue}' yet.", null, timeout, pollingInterval, null);
+            }
+        }
+
         public static TimeoutException BuildTimeoutException(string message, Exception innerException, TimeSpan timeout, TimeSpan pollingInterval, IDictionary<Type, uint> ignoredExceptionTypes)
         {
             var builder = new StringBuilder();
