@@ -10,7 +10,7 @@ namespace Yapoml.Selenium.Sample.Responsive.Pages
         }
     }
 
-    public partial class HomePage_1
+    public partial class HomePage1
     {
         public override void Navigate(string menuItemName)
         {

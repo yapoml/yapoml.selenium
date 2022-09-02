@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Yapoml.Framework.Workspace;
 using Yapoml.Framework.Workspace.Parsers;
+using static System.Net.WebRequestMethods;
 
 [assembly: InternalsVisibleTo("Yapoml.Selenium.Test")]
 [assembly: InternalsVisibleTo("Yapoml.Selenium.Benchmark")]
@@ -35,7 +36,12 @@ namespace Yapoml.Selenium.Generation
                 s.TryGetValue("build_property.ProjectDir", out _projectDir);
             });
 
-            var textFiles = context.AdditionalTextsProvider.Where(file => file.Path.EndsWith(".po.yaml", StringComparison.OrdinalIgnoreCase) || file.Path.EndsWith(".pc.yaml", StringComparison.OrdinalIgnoreCase)).Collect();
+            var textFiles = context.AdditionalTextsProvider.Where(file =>
+                file.Path.EndsWith(".po.yaml", StringComparison.OrdinalIgnoreCase)
+                || file.Path.EndsWith(".po.yml", StringComparison.OrdinalIgnoreCase)
+                || file.Path.EndsWith(".pc.yaml", StringComparison.OrdinalIgnoreCase)
+                || file.Path.EndsWith(".pc.yml", StringComparison.OrdinalIgnoreCase))
+                .Collect();
 
             context.RegisterSourceOutput(textFiles, (spc, files) =>
             {
