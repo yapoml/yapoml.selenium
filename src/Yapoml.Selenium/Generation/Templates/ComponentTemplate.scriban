@@ -1,4 +1,6 @@
-﻿namespace {{namespace}}
+﻿# pragma warning disable
+namespace {{namespace}}
 {
 	{{ include 'NestedComponentTemplate' this }}
 }
+# pragma warning restore

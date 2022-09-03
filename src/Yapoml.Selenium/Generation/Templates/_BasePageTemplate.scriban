@@ -1,15 +1,15 @@
-﻿using OpenQA.Selenium;
-
+﻿# pragma warning disable
 namespace {{root_namespace}}
 {
 	/// <inheritdoc/>
 	[System.Runtime.CompilerServices.CompilerGenerated]
 	public partial class Page : Yapoml.Selenium.Components.BasePage
 	{
-		public Page(IWebDriver webDriver, Yapoml.Framework.Options.ISpaceOptions spaceOptions)
+		public Page(OpenQA.Selenium.IWebDriver webDriver, Yapoml.Framework.Options.ISpaceOptions spaceOptions)
 			: base (webDriver, spaceOptions)
 		{
 
 		}
 	}
 }
+# pragma warning restore
