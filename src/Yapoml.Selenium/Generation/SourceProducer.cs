@@ -5,18 +5,20 @@ namespace Yapoml.Selenium.Generation
 {
     internal class SourceProducer
     {
-        private TemplateReader _templateReader;
+        private readonly TemplateReader _templateReader;
+        private readonly ITemplateLoader _templateLoader;
 
-        private Template _pageTemplate;
-        private Template _componentTemplate;
-        private Template _spaceTemplate;
-        private Template _entryPointTemplate;
-        private Template _basePageTemplate;
-        private Template _baseComponentTemplate;
+        private readonly Template _pageTemplate;
+        private readonly Template _componentTemplate;
+        private readonly Template _spaceTemplate;
+        private readonly Template _entryPointTemplate;
+        private readonly Template _basePageTemplate;
+        private readonly Template _baseComponentTemplate;
 
         public SourceProducer()
         {
             _templateReader = new TemplateReader();
+            _templateLoader = new ResourceTemplateLoader();
 
             _entryPointTemplate = Template.Parse(_templateReader.Read("_EntryPointTemplate"));
             _basePageTemplate = Template.Parse(_templateReader.Read("_BasePageTemplate"));
@@ -30,12 +32,14 @@ namespace Yapoml.Selenium.Generation
         public string ProducePage(Framework.Workspace.PageContext pageContext)
         {
             var ctx = CreateTemplateContext(pageContext);
+
             return _pageTemplate.Render(ctx);
         }
 
         public string ProduceComponent(Framework.Workspace.ComponentContext componentContext)
         {
             var ctx = CreateTemplateContext(componentContext);
+
             return _componentTemplate.Render(ctx);
         }
 
@@ -72,10 +76,12 @@ namespace Yapoml.Selenium.Generation
             var scriptObject = ScriptObject.From(obj);
             scriptObject.Import(typeof(Services.GenerationService));
 
-            var templateContext = new TemplateContext();
-            templateContext.TemplateLoader = new ResourceTemplateLoader();
-            templateContext.AutoIndent = true;
-
+            var templateContext = new TemplateContext
+            {
+                TemplateLoader = _templateLoader,
+                AutoIndent = true
+            };
+            
             templateContext.PushGlobal(scriptObject);
 
             return templateContext;
