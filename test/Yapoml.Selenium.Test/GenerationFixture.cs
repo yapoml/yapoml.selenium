@@ -41,6 +41,7 @@ SomeButton: ./qwe
             GeneratorDriverRunResult runResult = driver.GetRunResult();
 
             runResult.Diagnostics.Should().BeEmpty();
+            runResult.GeneratedTrees.Should().NotBeEmpty();
         }
 
         private static Compilation CreateCompilation()

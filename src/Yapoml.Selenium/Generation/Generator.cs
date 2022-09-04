@@ -5,11 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Yapoml.Framework.Workspace;
 using Yapoml.Framework.Workspace.Parsers;
-using static System.Net.WebRequestMethods;
 
 [assembly: InternalsVisibleTo("Yapoml.Selenium.Test")]
 [assembly: InternalsVisibleTo("Yapoml.Selenium.Benchmark")]
@@ -45,8 +43,6 @@ namespace Yapoml.Selenium.Generation
 
             context.RegisterSourceOutput(textFiles, (spc, files) =>
             {
-                var sw = Stopwatch.StartNew();
-
                 try
                 {
                     var sourceProducer = new SourceProducer();
@@ -70,7 +66,7 @@ namespace Yapoml.Selenium.Generation
                     // generate files
                     if (yaContext.Spaces.Any() || yaContext.Pages.Any() || yaContext.Components.Any())
                     {
-                        var tasks = new List<Task>();
+                        //var tasks = new List<Task>();
 
                         GenerateEntryPoint(spc, yaContext, sourceProducer);
                         GenerateBasePage(spc, yaContext, sourceProducer);
