@@ -5,7 +5,7 @@ using Yapoml.Selenium.Generation;
 
 var workspace = new WorkspaceContextBuilder(Environment.CurrentDirectory, "A.B", new WorkspaceParser());
 
-for (int i = 0; i < 500; i++)
+for (int i = 0; i < 50; i++)
 {
     workspace.AddFile($"{Environment.CurrentDirectory}/MyComponent{i}.pc.yaml",
         @"

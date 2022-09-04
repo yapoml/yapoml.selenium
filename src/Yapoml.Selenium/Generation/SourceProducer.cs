@@ -5,8 +5,7 @@ namespace Yapoml.Selenium.Generation
 {
     internal class SourceProducer
     {
-        private readonly TemplateReader _templateReader;
-        private readonly ITemplateLoader _templateLoader;
+        private readonly TemplateContext _ctx;
 
         private readonly Template _pageTemplate;
         private readonly Template _componentTemplate;
@@ -17,74 +16,73 @@ namespace Yapoml.Selenium.Generation
 
         public SourceProducer()
         {
-            _templateReader = new TemplateReader();
-            _templateLoader = new ResourceTemplateLoader();
+            var templateLoader = new ResourceTemplateLoader();
 
-            _entryPointTemplate = Template.Parse(_templateReader.Read("_EntryPointTemplate"));
-            _basePageTemplate = Template.Parse(_templateReader.Read("_BasePageTemplate"));
-            _baseComponentTemplate = Template.Parse(_templateReader.Read("_BaseComponentTemplate"));
+            _ctx = new TemplateContext
+            {
+                TemplateLoader = templateLoader,
+                AutoIndent = true
+            };
 
-            _pageTemplate = Template.Parse(_templateReader.Read("PageTemplate"));
-            _componentTemplate = Template.Parse(_templateReader.Read("ComponentTemplate"));
-            _spaceTemplate = Template.Parse(_templateReader.Read("SpaceTemplate"));
+            var templateReader = new TemplateReader();
+
+            _entryPointTemplate = Template.Parse(templateReader.Read("_EntryPointTemplate"));
+            _basePageTemplate = Template.Parse(templateReader.Read("_BasePageTemplate"));
+            _baseComponentTemplate = Template.Parse(templateReader.Read("_BaseComponentTemplate"));
+
+            _pageTemplate = Template.Parse(templateReader.Read("PageTemplate"));
+            _componentTemplate = Template.Parse(templateReader.Read("ComponentTemplate"));
+            _spaceTemplate = Template.Parse(templateReader.Read("SpaceTemplate"));
         }
 
         public string ProducePage(Framework.Workspace.PageContext pageContext)
         {
-            var ctx = CreateTemplateContext(pageContext);
+            PushIntoTemplateContext(pageContext);
 
-            return _pageTemplate.Render(ctx);
+            return _pageTemplate.Render(_ctx);
         }
 
         public string ProduceComponent(Framework.Workspace.ComponentContext componentContext)
         {
-            var ctx = CreateTemplateContext(componentContext);
+            PushIntoTemplateContext(componentContext);
 
-            return _componentTemplate.Render(ctx);
+            return _componentTemplate.Render(_ctx);
         }
 
         public string ProduceSpace(Framework.Workspace.SpaceContext spaceContext)
         {
-            var ctx = CreateTemplateContext(spaceContext);
+            PushIntoTemplateContext(spaceContext);
 
-            return _spaceTemplate.Render(ctx);
+            return _spaceTemplate.Render(_ctx);
         }
 
         public string ProduceEntryPoint(Framework.Workspace.WorkspaceContext workspaceContext)
         {
-            var ctx = CreateTemplateContext(workspaceContext);
+            PushIntoTemplateContext(workspaceContext);
 
-            return _entryPointTemplate.Render(ctx);
+            return _entryPointTemplate.Render(_ctx);
         }
 
         public string ProduceBasePage(Framework.Workspace.WorkspaceContext workspaceContext)
         {
-            var ctx = CreateTemplateContext(workspaceContext);
+            PushIntoTemplateContext(workspaceContext);
 
-            return _basePageTemplate.Render(ctx);
+            return _basePageTemplate.Render(_ctx);
         }
 
         public string ProduceBaseComponent(Framework.Workspace.WorkspaceContext workspaceContext)
         {
-            var ctx = CreateTemplateContext(workspaceContext);
+            PushIntoTemplateContext(workspaceContext);
 
-            return _baseComponentTemplate.Render(ctx);
+            return _baseComponentTemplate.Render(_ctx);
         }
 
-        private TemplateContext CreateTemplateContext(object obj)
+        private void PushIntoTemplateContext(object obj)
         {
             var scriptObject = ScriptObject.From(obj);
             scriptObject.Import(typeof(Services.GenerationService));
 
-            var templateContext = new TemplateContext
-            {
-                TemplateLoader = _templateLoader,
-                AutoIndent = true
-            };
-            
-            templateContext.PushGlobal(scriptObject);
-
-            return templateContext;
+            _ctx.PushGlobal(scriptObject);
         }
     }
 }
