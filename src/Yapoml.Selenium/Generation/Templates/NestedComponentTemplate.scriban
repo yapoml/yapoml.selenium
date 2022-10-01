@@ -144,6 +144,23 @@
 		return this;
 	}
 
+	/// <summary>
+	/// Waits specific attribute value.
+	/// </summary>
+	/// <param name="attributeName">Attribute name.</param>
+	/// <param name="expectedValue">Expected value of the attribute.</param>
+	/// <param name="timeout">How long to wait until attribute value becomes expected.</param>
+	/// <param name="pollingInterval">Interval between verifications in a loop.</param>
+	/// <returns></returns>
+	public {{if $1.is_plural}}{{$1.singular_name}}{{else}}{{$1.name}}{{end}}Component WaitAttributeValue(string attributeName, string expectedValue, System.TimeSpan? timeout = null, System.TimeSpan? pollingInterval = null)
+	{
+		var timeoutOptions = SpaceOptions.Services.Get<Yapoml.Selenium.Options.TimeoutOptions>();
+
+		Yapoml.Selenium.Services.Waiter.UntilAttributeValue(attributeName, expectedValue, "{{ $1.name }}", WrappedElement, timeout ?? timeoutOptions.Timeout, pollingInterval ?? timeoutOptions.PollingInterval);
+
+		return this;
+	}
+
 	{{- if (array.size $1.components) > 0 }}
 	{{ include 'WaiterTemplate' $1 "WrappedElement"}}
 	{{ end }}

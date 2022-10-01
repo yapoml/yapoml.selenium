@@ -127,7 +127,7 @@ namespace Yapoml.Selenium.Services
             {
                 latestValue = webElement.GetCssValue(propertyName);
 
-                if (expectedValue.Equals(latestValue))
+                if (expectedValue == latestValue)
                 {
                     return true;
                 }
@@ -144,6 +144,34 @@ namespace Yapoml.Selenium.Services
             catch (TimeoutException)
             {
                 throw BuildTimeoutException($"CSS '{propertyName} = {latestValue}' of the {componentFriendlyName} component is not '{expectedValue}' yet.", null, timeout, pollingInterval, null);
+            }
+        }
+
+        public static void UntilAttributeValue(string attributeName, string expectedValue, string componentFriendlyName, IWebElement webElement, TimeSpan timeout, TimeSpan pollingInterval)
+        {
+            string latestValue = null;
+
+            bool? condition()
+            {
+                latestValue = webElement.GetAttribute(attributeName);
+
+                if (expectedValue == latestValue)
+                {
+                    return true;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            try
+            {
+                Until(condition, timeout, pollingInterval);
+            }
+            catch (TimeoutException)
+            {
+                throw BuildTimeoutException($"Attribute '{attributeName} = {latestValue}' of the {componentFriendlyName} component is not '{expectedValue}' yet.", null, timeout, pollingInterval, null);
             }
         }
 
