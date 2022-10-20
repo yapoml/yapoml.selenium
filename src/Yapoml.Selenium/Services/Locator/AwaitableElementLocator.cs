@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Yapoml.Selenium.Options;
+using Yapoml.Selenium.Services;
 
 namespace Yapoml.Selenium.Services.Locator
 {

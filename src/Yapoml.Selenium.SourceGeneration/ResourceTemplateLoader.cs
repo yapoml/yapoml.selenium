@@ -4,7 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace Yapoml.Selenium.Generation
+namespace Yapoml.Selenium.SourceGeneration
 {
     internal class ResourceTemplateLoader : Scriban.Runtime.ITemplateLoader
     {
@@ -12,7 +12,7 @@ namespace Yapoml.Selenium.Generation
 
         public string GetPath(TemplateContext context, SourceSpan callerSpan, string templateName)
         {
-            return $"{_assembly.GetName().Name}.Generation.Templates.{templateName}.scriban";
+            return $"{_assembly.GetName().Name}.Templates.{templateName}.scriban";
         }
 
         public string Load(TemplateContext context, SourceSpan callerSpan, string templatePath)

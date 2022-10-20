@@ -19,8 +19,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+    <ProjectReference Include="..\..\src\Yapoml.Selenium\Yapoml.Selenium.csproj" />
 		<!--Specify OutputItemType and ReferenceOutputAssembly, not required when used via nuget package-->
-		<ProjectReference Include="..\..\src\Yapoml.Selenium\Yapoml.Selenium.csproj" OutputItemType="Analyzer" />
+    <ProjectReference Include="..\..\src\Yapoml.Selenium.SourceGeneration\Yapoml.Selenium.SourceGeneration.csproj" OutputItemType="Analyzer" />
 	</ItemGroup>
 
 	<!--Import targets explicitly, not required when used via nuget package-->

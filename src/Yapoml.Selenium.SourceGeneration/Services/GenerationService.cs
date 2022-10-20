@@ -1,6 +1,6 @@
 ﻿using Yapoml.Framework.Workspace;
 
-namespace Yapoml.Selenium.Services
+namespace Yapoml.Selenium.SourceGeneration.Services
 {
     internal class GenerationService
     {

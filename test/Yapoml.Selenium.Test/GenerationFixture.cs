@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis.Text;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using Yapoml.Selenium.Generation;
+using Yapoml.Selenium.SourceGeneration;
 
 namespace Yapoml.Selenium.Test
 {

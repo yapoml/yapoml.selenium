@@ -11,10 +11,11 @@
 
   <ItemGroup>
     <PackageReference Include="Scriban" Version="5.5.0" />
-    <PackageReference Include="Yapoml.Framework.Workspace" Version="0.6.6" />
+    <PackageReference Include="Yapoml.Framework.Workspace" Version="0.6.7" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Yapoml.Selenium.SourceGeneration\Yapoml.Selenium.SourceGeneration.csproj" />
     <ProjectReference Include="..\..\src\Yapoml.Selenium\Yapoml.Selenium.csproj" />
   </ItemGroup>
 

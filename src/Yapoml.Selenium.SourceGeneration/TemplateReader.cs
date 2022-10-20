@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Reflection;
 
-namespace Yapoml.Selenium.Generation
+namespace Yapoml.Selenium.SourceGeneration
 {
     internal class TemplateReader
     {
@@ -13,7 +13,7 @@ namespace Yapoml.Selenium.Generation
 
         public string Read(string templateName)
         {
-            using (Stream stream = assembly.GetManifestResourceStream(assembly.GetName().Name + ".Generation.Templates." + templateName + ".scriban"))
+            using (Stream stream = assembly.GetManifestResourceStream(assembly.GetName().Name + ".Templates." + templateName + ".scriban"))
             using (StreamReader reader = new StreamReader(stream))
             {
                 var content = reader.ReadToEnd();

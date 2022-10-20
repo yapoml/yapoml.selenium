@@ -3,7 +3,9 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using System;
 using System.Linq;
+using Yapoml.Framework.Options;
 using Yapoml.Selenium.Components;
+using Yapoml.Selenium.Services.Factory;
 
 namespace Yapoml.Selenium.Sample.Responsive
 {
@@ -50,7 +52,7 @@ namespace Yapoml.Selenium.Sample.Responsive
         public void NavigateToPackagesWithYapoml(bool isMobile)
         {
             var ya = _webDriver.Ya(
-                opts => opts.Services.Register<Services.Factory.IPageFactory>(new MyPageObjectFactory(isMobile)))
+                opts => opts.Services.Register<IPageFactory>(new MyPageObjectFactory(isMobile)))
                 .Responsive.Pages;
 
             if (isMobile) _webDriver.Manage().Window.Size = new System.Drawing.Size(320, 575);
@@ -66,7 +68,7 @@ namespace Yapoml.Selenium.Sample.Responsive
             }
         }
 
-        class MyPageObjectFactory : Services.Factory.IPageFactory
+        class MyPageObjectFactory : IPageFactory
         {
             public MyPageObjectFactory(bool isMobile)
             {
@@ -75,7 +77,7 @@ namespace Yapoml.Selenium.Sample.Responsive
 
             public bool IsMobile { get; }
 
-            public TPage Create<TPage>(IWebDriver webDriver, Framework.Options.ISpaceOptions spaceOptions) where TPage : BasePage
+            public TPage Create<TPage>(IWebDriver webDriver, ISpaceOptions spaceOptions) where TPage : BasePage
             {
                 Type pageType = typeof(TPage);
 

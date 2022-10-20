@@ -3,6 +3,7 @@ using System;
 using System.Drawing;
 using Yapoml.Framework.Options;
 using Yapoml.Selenium.Events;
+using Yapoml.Selenium.Events.Args.WebElement;
 
 namespace Yapoml.Selenium
 {
@@ -31,7 +32,7 @@ namespace Yapoml.Selenium
             return spaceOptions;
         }
 
-        private static void ComponentEventSource_OnFoundComponent(object sender, Events.Args.WebElement.FoundElementEventArgs e)
+        private static void ComponentEventSource_OnFoundComponent(object sender, FoundElementEventArgs e)
         {
             var jsExecutor = e.WebDriver as IJavaScriptExecutor;
 
@@ -47,7 +48,7 @@ namespace Yapoml.Selenium
 
                     jsExecutor.ExecuteScript($"arguments[0].setAttribute('style', 'background: {backgroundColor}; transition: all {_fadeOutSpeed}ms ease-in-out;');", e.WebElement);
 
-                    
+
                 }
                 catch (Exception) { }
             }

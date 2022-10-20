@@ -12,7 +12,7 @@ using Yapoml.Framework.Workspace.Parsers;
 [assembly: InternalsVisibleTo("Yapoml.Selenium.Test")]
 [assembly: InternalsVisibleTo("Yapoml.Selenium.Benchmark")]
 
-namespace Yapoml.Selenium.Generation
+namespace Yapoml.Selenium.SourceGeneration
 {
     [Generator]
     internal class Generator : IIncrementalGenerator
@@ -183,19 +183,19 @@ namespace Yapoml.Selenium.Generation
 
             if (args.Name.StartsWith("YamlDotNet"))
             {
-                resourceName = "Yapoml.Selenium.YamlDotNet.dll";
+                resourceName = "Yapoml.Selenium.SourceGeneration.YamlDotNet.dll";
             }
             else if (args.Name.StartsWith("Scriban"))
             {
-                resourceName = "Yapoml.Selenium.Scriban.dll";
+                resourceName = "Yapoml.Selenium.SourceGeneration.Scriban.dll";
             }
             else if (args.Name.StartsWith("Humanizer"))
             {
-                resourceName = "Yapoml.Selenium.Humanizer.dll";
+                resourceName = "Yapoml.Selenium.SourceGeneration.Humanizer.dll";
             }
             else if (args.Name.StartsWith("Yapoml.Framework.Workspace"))
             {
-                resourceName = "Yapoml.Selenium.Yapoml.Framework.Workspace.dll";
+                resourceName = "Yapoml.Selenium.SourceGeneration.Yapoml.Framework.Workspace.dll";
             }
 
             Assembly dep = null;

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Yapoml.Framework.Workspace;
 using Yapoml.Framework.Workspace.Parsers;
-using Yapoml.Selenium.Generation;
+using Yapoml.Selenium.SourceGeneration;
 
 var workspace = new WorkspaceContextBuilder(Environment.CurrentDirectory, "A.B", new WorkspaceParser());
 

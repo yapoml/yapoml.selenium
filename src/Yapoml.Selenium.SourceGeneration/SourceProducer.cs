@@ -1,7 +1,8 @@
 ﻿using Scriban;
 using Scriban.Runtime;
+using Yapoml.Framework.Workspace;
 
-namespace Yapoml.Selenium.Generation
+namespace Yapoml.Selenium.SourceGeneration
 {
     internal class SourceProducer
     {
@@ -35,42 +36,42 @@ namespace Yapoml.Selenium.Generation
             _spaceTemplate = Template.Parse(templateReader.Read("SpaceTemplate"));
         }
 
-        public string ProducePage(Framework.Workspace.PageContext pageContext)
+        public string ProducePage(PageContext pageContext)
         {
             PushIntoTemplateContext(pageContext);
 
             return _pageTemplate.Render(_ctx);
         }
 
-        public string ProduceComponent(Framework.Workspace.ComponentContext componentContext)
+        public string ProduceComponent(ComponentContext componentContext)
         {
             PushIntoTemplateContext(componentContext);
 
             return _componentTemplate.Render(_ctx);
         }
 
-        public string ProduceSpace(Framework.Workspace.SpaceContext spaceContext)
+        public string ProduceSpace(SpaceContext spaceContext)
         {
             PushIntoTemplateContext(spaceContext);
 
             return _spaceTemplate.Render(_ctx);
         }
 
-        public string ProduceEntryPoint(Framework.Workspace.WorkspaceContext workspaceContext)
+        public string ProduceEntryPoint(WorkspaceContext workspaceContext)
         {
             PushIntoTemplateContext(workspaceContext);
 
             return _entryPointTemplate.Render(_ctx);
         }
 
-        public string ProduceBasePage(Framework.Workspace.WorkspaceContext workspaceContext)
+        public string ProduceBasePage(WorkspaceContext workspaceContext)
         {
             PushIntoTemplateContext(workspaceContext);
 
             return _basePageTemplate.Render(_ctx);
         }
 
-        public string ProduceBaseComponent(Framework.Workspace.WorkspaceContext workspaceContext)
+        public string ProduceBaseComponent(WorkspaceContext workspaceContext)
         {
             PushIntoTemplateContext(workspaceContext);
 

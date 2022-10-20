@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using Yapoml.Framework.Options;
+using Yapoml.Selenium.Events;
 
 namespace Yapoml.Selenium.Components
 {
@@ -10,13 +11,13 @@ namespace Yapoml.Selenium.Components
             WebDriver = webDriver;
             SpaceOptions = spaceOptions;
 
-            EventSource = spaceOptions.Services.Get<Events.IEventSource>().ComponentEventSource;
+            EventSource = spaceOptions.Services.Get<IEventSource>().ComponentEventSource;
         }
 
         protected IWebDriver WebDriver { get; }
 
         protected ISpaceOptions SpaceOptions { get; }
 
-        protected Events.IComponentEventSource EventSource;
+        protected IComponentEventSource EventSource;
     }
 }
