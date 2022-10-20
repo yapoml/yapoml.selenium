@@ -15,7 +15,5 @@ public {{if $1.is_plural}}{{$1.singular_name}}{{else}}{{$1.name}}{{end}}Componen
 {
 	(WebDriver as OpenQA.Selenium.IJavaScriptExecutor).ExecuteScript("arguments[0].scrollIntoView();", WrappedElement);
 
-	System.Threading.Thread.Sleep(500);
-
 	return this;
 }
