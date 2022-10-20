@@ -1,0 +1,19 @@
+﻿/// <summary>
+/// Hover on component.
+/// </summary>
+public {{if $1.is_plural}}{{$1.singular_name}}{{else}}{{$1.name}}{{end}}Component Hover()
+{
+	new OpenQA.Selenium.Interactions.Actions(WebDriver).MoveToElement(WrappedElement).Build().Perform();
+
+	return this;
+}
+
+/// <summary>
+/// Scroll into view.
+/// </summary>
+public {{if $1.is_plural}}{{$1.singular_name}}{{else}}{{$1.name}}{{end}}Component ScrollIntoView()
+{
+	(WebDriver as OpenQA.Selenium.IJavaScriptExecutor).ExecuteScript("arguments[0].scrollIntoView();", WrappedElement);
+
+	return this;
+}
