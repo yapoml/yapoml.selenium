@@ -1,19 +1,33 @@
-﻿/// <summary>
-/// Hover on component.
+﻿partial void OnBeforeHovering();
+partial void OnAfterHovered();
+
+/// <summary>
+/// Moves the cursor onto the element or one of its child elements.
 /// </summary>
-public {{if $1.is_plural}}{{$1.singular_name}}{{else}}{{$1.name}}{{end}}Component Hover()
+public new {{if $1.is_plural}}{{$1.singular_name}}{{else}}{{$1.name}}{{end}}Component Hover()
 {
-	new OpenQA.Selenium.Interactions.Actions(WebDriver).MoveToElement(WrappedElement).Build().Perform();
+	OnBeforeHovering();
+
+	base.Hover();
+
+	OnAfterHovered();
 
 	return this;
 }
 
+partial void OnBeforeScrollingIntoView();
+partial void OnAfterScrolledIntoView();
+
 /// <summary>
-/// Scroll into view.
+/// Scrolls the element's ancestor containers is visible to the user.
 /// </summary>
-public {{if $1.is_plural}}{{$1.singular_name}}{{else}}{{$1.name}}{{end}}Component ScrollIntoView()
+public new {{if $1.is_plural}}{{$1.singular_name}}{{else}}{{$1.name}}{{end}}Component ScrollIntoView()
 {
-	(WebDriver as OpenQA.Selenium.IJavaScriptExecutor).ExecuteScript("arguments[0].scrollIntoView();", WrappedElement);
+	OnBeforeScrollingIntoView();
+
+	base.ScrollIntoView();
+
+	OnAfterScrolledIntoView();
 
 	return this;
 }

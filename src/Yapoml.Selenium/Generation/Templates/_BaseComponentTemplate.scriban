@@ -90,6 +90,36 @@ namespace {{root_namespace}}
 		{
 			return ((ITakesScreenshot)WrappedElement).GetScreenshot();
 		}
+
+		partial void OnBeforeHovering();
+		partial void OnAfterHovered();
+
+		/// <summary>
+		/// Moves the cursor onto the element or one of its child elements.
+		/// </summary>
+		protected virtual void Hover()
+		{
+			OnBeforeHovering();
+
+			new OpenQA.Selenium.Interactions.Actions(WebDriver).MoveToElement(WrappedElement).Build().Perform();
+
+			OnAfterHovered();
+		}
+
+		partial void OnBeforeScrollingIntoView();
+		partial void OnAfterScrolledIntoView();
+
+		/// <summary>
+		/// Scrolls the element's ancestor containers is visible to the user.
+		/// </summary>
+		protected virtual void ScrollIntoView()
+		{
+			OnBeforeScrollingIntoView();
+
+			(WebDriver as OpenQA.Selenium.IJavaScriptExecutor).ExecuteScript("arguments[0].scrollIntoView();", WrappedElement);
+
+			OnAfterScrolledIntoView();
+		}
 	}
 }
 # pragma warning restore

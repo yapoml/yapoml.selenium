@@ -4,7 +4,7 @@ using Yapoml.Selenium.Events;
 
 namespace Yapoml.Selenium.Components
 {
-    public partial class BaseComponent
+    public abstract class BaseComponent
     {
         protected IWebDriver WebDriver { get; private set; }
 

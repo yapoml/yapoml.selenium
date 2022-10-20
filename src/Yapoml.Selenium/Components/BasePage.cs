@@ -14,6 +14,7 @@ namespace Yapoml.Selenium.Components
         }
 
         protected IWebDriver WebDriver { get; }
+
         protected ISpaceOptions SpaceOptions { get; }
 
         protected Events.IComponentEventSource EventSource;
