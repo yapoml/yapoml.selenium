@@ -13,7 +13,7 @@ public {{if $1.is_plural}}{{$1.singular_name}}{{else}}{{$1.name}}{{end}}Componen
 /// </summary>
 public {{if $1.is_plural}}{{$1.singular_name}}{{else}}{{$1.name}}{{end}}Component ScrollIntoView()
 {
-	(WebDriver as OpenQA.Selenium.IJavaScriptExecutor).ExecuteScript("arguments[0].scrollIntoView();", WrappedElement);
+	(WebDriver as OpenQA.Selenium.IJavaScriptExecutor).ExecuteScript("arguments[0].scrollIntoView({block: \"center\"});", WrappedElement);
 
 	return this;
 }
