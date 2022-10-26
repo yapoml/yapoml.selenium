@@ -1,0 +1,1 @@
+﻿#line ({{$1.by.definition_source.start.line}}, {{$1.by.definition_source.start.column}}) - ({{$1.by.definition_source.end.line}}, {{$1.by.definition_source.end.column}}) 10000 "{{$1.relative_file_path}}"

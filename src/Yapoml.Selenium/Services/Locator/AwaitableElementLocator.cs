@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Yapoml.Selenium.Options;
 using Yapoml.Selenium.Services;
 
@@ -15,6 +16,7 @@ namespace Yapoml.Selenium.Services.Locator
             _timeoutOptions = timeoutOptions;
         }
 
+        [DebuggerHidden]
         public IWebElement FindElement(string componentFriendlyName, ISearchContext searchContext, By by)
         {
             Exception lastError = null;
@@ -48,6 +50,7 @@ namespace Yapoml.Selenium.Services.Locator
             }
         }
 
+        [DebuggerHidden]
         public IReadOnlyList<IWebElement> FindElements(ISearchContext searchContext, By by)
         {
             return Waiter.Until(() =>
