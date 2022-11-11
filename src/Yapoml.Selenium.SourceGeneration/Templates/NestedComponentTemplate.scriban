@@ -1,4 +1,4 @@
-﻿public partial class {{if $1.is_plural}}{{$1.singular_name}}{{else}}{{$1.name}}{{end}}Component : {{if $1.base_component}} {{$1.base_component.namespace}}.{{$1.base_component.name}}Component {{else}} {{workspace.root_namespace}}.Component {{end}}
+﻿public partial class {{if $1.is_plural}}{{$1.singular_name}}{{else}}{{$1.name}}{{end}}Component : {{if $1.base_component}} {{$1.base_component.namespace}}.{{$1.base_component.name}}Component {{else}} {{workspace.root_namespace}}.BaseComponent {{end}}
 {
 	public {{if $1.is_plural}}{{$1.singular_name}}{{else}}{{$1.name}}{{end}}Component(OpenQA.Selenium.IWebDriver webDriver, OpenQA.Selenium.IWebElement webElement, Yapoml.Framework.Options.ISpaceOptions spaceOptions)
 		: base(webDriver, webElement, spaceOptions)

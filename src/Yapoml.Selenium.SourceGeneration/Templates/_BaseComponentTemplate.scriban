@@ -9,9 +9,9 @@ namespace {{root_namespace}}
 {
 	/// <inheritdoc cref="IWebElement"/>
 	[System.Runtime.CompilerServices.CompilerGenerated]
-	public partial class Component : Yapoml.Selenium.Components.BaseComponent, IWebElement, IWrapsElement, ITakesScreenshot
+	public partial class BaseComponent : Yapoml.Selenium.Components.BaseComponent, IWebElement, IWrapsElement, ITakesScreenshot
 	{
-		public Component(IWebDriver webDriver, IWebElement webElement, ISpaceOptions spaceOptions)
+		public BaseComponent(IWebDriver webDriver, IWebElement webElement, ISpaceOptions spaceOptions)
 			: base (webDriver, webElement, spaceOptions)
 		{
 			
