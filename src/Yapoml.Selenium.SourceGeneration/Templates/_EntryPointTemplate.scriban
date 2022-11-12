@@ -8,9 +8,9 @@ namespace {{root_namespace}}
 	[System.Runtime.CompilerServices.CompilerGenerated]
 	public partial class YaSpace
 	{
-		private IWebDriver _webDriver;
+		private readonly IWebDriver _webDriver;
 
-		private Yapoml.Framework.Options.ISpaceOptions _spaceOptions;
+		private readonly Yapoml.Framework.Options.ISpaceOptions _spaceOptions;
 
 		public YaSpace(IWebDriver webDriver, Yapoml.Framework.Options.ISpaceOptions spaceOptions)
 		{
@@ -48,14 +48,29 @@ namespace {{root_namespace}}
 {{ end }}
 	}
 
+	/// <summary>
+	/// Provides entry points to access page components within Yapoml.
+	/// </summary>
 	[System.Runtime.CompilerServices.CompilerGenerated]
 	public static class YapomlExtensions
 	{
+		/// <summary>
+		/// Entry point to access page components within Yapoml.
+		/// </summary>
 		public static YaSpace Ya(this IWebDriver webDriver)
 		{
 			return webDriver.Ya((options) => { });
 		}
 
+		/// <summary>
+		/// Entry point to access page components within Yapoml.
+		/// <example>
+		/// For example:
+		/// <code>
+		/// driver.Ya(opts => opts.UseBaseUrl("https://sut.com"));
+		/// </code>
+		/// </example>
+		/// </summary>
 		public static YaSpace Ya(this IWebDriver webDriver, System.Action<Yapoml.Framework.Options.ISpaceOptions> spaceOptionsCallback)
 		{
 			var spaceOptions = new Yapoml.Framework.Options.SpaceOptions();
