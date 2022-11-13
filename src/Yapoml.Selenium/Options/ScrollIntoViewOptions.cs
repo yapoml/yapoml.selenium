@@ -4,16 +4,19 @@
     {
         /// <summary>
         /// Defines the transition animation.
+        /// Default <see cref="ScrollIntoViewBehavior.Auto" />
         /// </summary>
         public ScrollIntoViewBehavior Behavior { get; set; } = ScrollIntoViewBehavior.Auto;
 
         /// <summary>
         /// Defines vertical alignment.
+        /// Default <see cref="ScrollIntoViewBlock.Start" />
         /// </summary>
         public ScrollIntoViewBlock Block { get; set; } = ScrollIntoViewBlock.Start;
 
         /// <summary>
         /// Defines horizontal alignment.
+        /// Default <see cref="ScrollIntoViewInline.Start" />
         /// </summary>
         public ScrollIntoViewInline Inline { get; set; } = ScrollIntoViewInline.Start;
 

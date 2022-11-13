@@ -15,6 +15,23 @@ public new {{if $1.is_plural}}{{$1.singular_name}}{{else}}{{$1.name}}{{end}}Comp
 	return this;
 }
 
+partial void OnBeforeHovering(int x, int y);
+partial void OnAfterHovered(int x, int y);
+
+/// <summary>
+/// Moves the cursor onto the element or one of its child elements.
+/// </summary>
+public new {{if $1.is_plural}}{{$1.singular_name}}{{else}}{{$1.name}}{{end}}Component Hover(int x, int y)
+{
+	OnBeforeHovering(x, y);
+
+	base.Hover(x, y);
+
+	OnAfterHovered(x, y);
+
+	return this;
+}
+
 partial void OnBeforeScrollingIntoView();
 partial void OnAfterScrolledIntoView();
 

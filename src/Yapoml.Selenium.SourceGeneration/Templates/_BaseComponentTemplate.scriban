@@ -107,6 +107,21 @@ namespace {{root_namespace}}
 			OnAfterHovered();
 		}
 
+		partial void OnBeforeHovering(int x, int y);
+		partial void OnAfterHovered(int x, int y);
+
+		/// <summary>
+		/// Moves the cursor onto the element or one of its child elements.
+		/// </summary>
+		protected virtual void Hover(int x, int y)
+		{
+			OnBeforeHovering(x, y);
+
+			new OpenQA.Selenium.Interactions.Actions(WebDriver).MoveToElement(WrappedElement, x, y).Build().Perform();
+
+			OnAfterHovered(x, y);
+		}
+
 		partial void OnBeforeScrollingIntoView();
 		partial void OnAfterScrolledIntoView();
 
