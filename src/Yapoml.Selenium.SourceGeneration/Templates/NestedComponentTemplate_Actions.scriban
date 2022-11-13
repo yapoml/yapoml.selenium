@@ -31,3 +31,20 @@ public new {{if $1.is_plural}}{{$1.singular_name}}{{else}}{{$1.name}}{{end}}Comp
 
 	return this;
 }
+
+partial void OnBeforeScrollingIntoView(ScrollIntoViewOptions options);
+partial void OnAfterScrolledIntoView(ScrollIntoViewOptions options);
+
+/// <summary>
+/// Scrolls the element's ancestor containers is visible to the user.
+/// </summary>
+public new {{if $1.is_plural}}{{$1.singular_name}}{{else}}{{$1.name}}{{end}}Component ScrollIntoView(ScrollIntoViewOptions options)
+{
+	OnBeforeScrollingIntoView(options);
+
+	base.ScrollIntoView(options);
+
+	OnAfterScrolledIntoView(options);
+
+	return this;
+}

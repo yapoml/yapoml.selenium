@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Moq;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using Yapoml.Selenium.Services;
 

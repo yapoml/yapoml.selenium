@@ -1,6 +1,7 @@
 ﻿# pragma warning disable
 using OpenQA.Selenium;
 using System.Linq;
+using Yapoml.Selenium.Options;
 
 namespace {{namespace}}
 {

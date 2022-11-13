@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using Yapoml.Framework.Options;
 using Yapoml.Selenium.Events;
+using Yapoml.Selenium.Options;
 
 namespace {{root_namespace}}
 {
@@ -114,11 +115,39 @@ namespace {{root_namespace}}
 		/// </summary>
 		protected virtual void ScrollIntoView()
 		{
-			OnBeforeScrollingIntoView();
+			if (SpaceOptions.Services.TryGet<ScrollIntoViewOptions>(out var options))
+			{
+				ScrollIntoView(options);
+			}
+			else
+			{
+				OnBeforeScrollingIntoView();
 
-			(WebDriver as OpenQA.Selenium.IJavaScriptExecutor).ExecuteScript("arguments[0].scrollIntoView();", WrappedElement);
+				var js = "arguments[0].scrollIntoView();";
 
-			OnAfterScrolledIntoView();
+				(WebDriver as OpenQA.Selenium.IJavaScriptExecutor).ExecuteScript(js, WrappedElement);
+
+				OnAfterScrolledIntoView();
+			}
+		}
+
+		partial void OnBeforeScrollingIntoView(ScrollIntoViewOptions options);
+		partial void OnAfterScrolledIntoView(ScrollIntoViewOptions options);
+
+		/// <summary>
+		/// Scrolls the element's ancestor containers is visible to the user.
+		/// </summary>
+		protected virtual void ScrollIntoView(ScrollIntoViewOptions options)
+		{
+			if (options == null) throw new System.ArgumentNullException(nameof(options));
+
+			OnBeforeScrollingIntoView(options);
+
+			var js = $"arguments[0].scrollIntoView({%{{options.ToString()}}%});";
+
+			(WebDriver as OpenQA.Selenium.IJavaScriptExecutor).ExecuteScript(js, WrappedElement);
+
+			OnAfterScrolledIntoView(options);
 		}
 	}
 }
