@@ -11,13 +11,16 @@ namespace Yapoml.Selenium.Components
             WebDriver = webDriver;
             SpaceOptions = spaceOptions;
 
-            EventSource = spaceOptions.Services.Get<IEventSource>().ComponentEventSource;
+            PageEventSource = spaceOptions.Services.Get<IEventSource>().PageEventSource;
+            ComponentEventSource = spaceOptions.Services.Get<IEventSource>().ComponentEventSource;
         }
 
         protected IWebDriver WebDriver { get; }
 
         protected ISpaceOptions SpaceOptions { get; }
 
-        protected IComponentEventSource EventSource;
+        protected IPageEventSource PageEventSource;
+
+        protected IComponentEventSource ComponentEventSource { get; }
     }
 }

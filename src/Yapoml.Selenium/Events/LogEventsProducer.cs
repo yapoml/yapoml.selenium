@@ -1,5 +1,6 @@
 ﻿using Yapoml.Framework.Logging;
 using Yapoml.Framework.Options;
+using Yapoml.Selenium.Events.Args.Page;
 using Yapoml.Selenium.Events.Args.WebElement;
 
 namespace Yapoml.Selenium.Events
@@ -31,6 +32,13 @@ namespace Yapoml.Selenium.Events
             _source.ComponentEventSource.OnFindingComponent += ComponentEventSource_OnFindingComponent;
             _source.ComponentEventSource.OnFindingComponents += ComponentEventSource_OnFindingComponents;
             _source.ComponentEventSource.OnFoundComponents += ComponentEventSource_OnFoundComponents;
+
+            _source.PageEventSource.OnPageNavigating += PageEventSource_OnPageNavigating;
+        }
+
+        private void PageEventSource_OnPageNavigating(object sender, PageNavigatingEventArgs e)
+        {
+            _logger.Trace($"Opening {e.Page.GetType().Name} by {e.Uri}");
         }
 
         private void ComponentEventSource_OnFoundComponents(object sender, FoundElementsEventArgs e)
