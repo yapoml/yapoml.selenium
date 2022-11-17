@@ -7,5 +7,5 @@ public abstract partial class BaseComponent : {{if parent_space}}{{parent_space.
 
 	}
 
-	{{ include 'SpaceBaseComponentTemplate_Actions' 'Base' }}
+	{{ include 'SpaceBaseComponentTemplate_Actions' }}
 }

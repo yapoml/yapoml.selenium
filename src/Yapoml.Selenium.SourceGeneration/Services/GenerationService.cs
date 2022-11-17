@@ -1,8 +1,10 @@
-﻿using Yapoml.Framework.Workspace;
+﻿using Scriban.Runtime;
+using System.Collections.Generic;
+using Yapoml.Framework.Workspace;
 
 namespace Yapoml.Selenium.SourceGeneration.Services
 {
-    internal class GenerationService
+    internal class GenerationService : ScriptObject
     {
         public static bool IsXpath(string expression)
         {
@@ -17,29 +19,44 @@ namespace Yapoml.Selenium.SourceGeneration.Services
             return isXpath;
         }
 
+        private static Dictionary<ComponentContext, string> _returnTypesCache= new Dictionary<ComponentContext, string>();
+
         public static string GetComponentReturnType(ComponentContext component)
         {
-            if (component.ReferencedComponent == null)
+            if (_returnTypesCache.TryGetValue(component, out var chachedRetType))
             {
-                if (component.IsPlural)
-                {
-                    return $"{component.Namespace}.{component.SingularName}Component";
-                }
-                else
-                {
-                    return $"{component.Namespace}.{component.Name}Component";
-                }
+                return chachedRetType;
             }
             else
             {
-                if (component.ReferencedComponent.IsPlural)
+                string retType;
+
+                if (component.ReferencedComponent == null)
                 {
-                    return $"{component.ReferencedComponent.Namespace}.{component.ReferencedComponent.SingularName}Component";
+                    if (component.IsPlural)
+                    {
+                        retType = $"{component.Namespace}.{component.SingularName}Component";
+                    }
+                    else
+                    {
+                        retType = $"{component.Namespace}.{component.Name}Component";
+                    }
                 }
                 else
                 {
-                    return $"{component.ReferencedComponent.Namespace}.{component.ReferencedComponent.Name}Component";
+                    if (component.ReferencedComponent.IsPlural)
+                    {
+                        retType = $"{component.ReferencedComponent.Namespace}.{component.ReferencedComponent.SingularName}Component";
+                    }
+                    else
+                    {
+                        retType = $"{component.ReferencedComponent.Namespace}.{component.ReferencedComponent.Name}Component";
+                    }
                 }
+
+                _returnTypesCache[component] = retType;
+
+                return retType;
             }
         }
     }
