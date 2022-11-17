@@ -26,4 +26,9 @@
 
   <!--Import targets explicitly, not required when used via nuget package-->
   <Import Project="..\..\src\Yapoml.Selenium\Yapoml.Selenium.targets" />
+
+  <PropertyGroup>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\Generated</CompilerGeneratedFilesOutputPath>
+  </PropertyGroup>
 </Project>

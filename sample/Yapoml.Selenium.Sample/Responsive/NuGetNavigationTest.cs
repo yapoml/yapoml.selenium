@@ -4,7 +4,6 @@ using OpenQA.Selenium.Firefox;
 using System;
 using System.Linq;
 using Yapoml.Framework.Options;
-using Yapoml.Selenium.Components;
 using Yapoml.Selenium.Services.Factory;
 
 namespace Yapoml.Selenium.Sample.Responsive
@@ -77,7 +76,7 @@ namespace Yapoml.Selenium.Sample.Responsive
 
             public bool IsMobile { get; }
 
-            public TPage Create<TPage>(IWebDriver webDriver, ISpaceOptions spaceOptions) where TPage : BasePage
+            public TPage Create<TPage>(IWebDriver webDriver, ISpaceOptions spaceOptions) where TPage : Components.BasePage
             {
                 Type pageType = typeof(TPage);
 

@@ -10,7 +10,7 @@ namespace {{root_namespace}}
 {
 	/// <inheritdoc cref="IWebElement"/>
 	[System.Runtime.CompilerServices.CompilerGenerated]
-	public partial class BaseComponent : Yapoml.Selenium.Components.BaseComponent, IWebElement, IWrapsElement, ITakesScreenshot
+	public abstract partial class BaseComponent : Yapoml.Selenium.Components.BaseComponent, IWebElement, IWrapsElement, ITakesScreenshot
 	{
 		public BaseComponent(IWebDriver webDriver, IWebElement webElement, ISpaceOptions spaceOptions)
 			: base (webDriver, webElement, spaceOptions)
@@ -98,7 +98,7 @@ namespace {{root_namespace}}
 		/// <summary>
 		/// Moves the cursor onto the element or one of its child elements.
 		/// </summary>
-		protected virtual void Hover()
+		public virtual void Hover()
 		{
 			OnBeforeHovering();
 
@@ -113,7 +113,7 @@ namespace {{root_namespace}}
 		/// <summary>
 		/// Moves the cursor onto the element or one of its child elements.
 		/// </summary>
-		protected virtual void Hover(int x, int y)
+		public virtual void Hover(int x, int y)
 		{
 			OnBeforeHovering(x, y);
 
@@ -128,7 +128,7 @@ namespace {{root_namespace}}
 		/// <summary>
 		/// Scrolls the element's ancestor containers is visible to the user.
 		/// </summary>
-		protected virtual void ScrollIntoView()
+		public virtual void ScrollIntoView()
 		{
 			if (SpaceOptions.Services.TryGet<ScrollIntoViewOptions>(out var options))
 			{
@@ -152,7 +152,7 @@ namespace {{root_namespace}}
 		/// <summary>
 		/// Scrolls the element's ancestor containers is visible to the user.
 		/// </summary>
-		protected virtual void ScrollIntoView(ScrollIntoViewOptions options)
+		public virtual void ScrollIntoView(ScrollIntoViewOptions options)
 		{
 			if (options == null) throw new System.ArgumentNullException(nameof(options));
 

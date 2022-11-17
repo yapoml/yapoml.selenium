@@ -1,4 +1,4 @@
-﻿public partial class {{if $1.is_plural}}{{$1.singular_name}}{{else}}{{$1.name}}{{end}}Component : {{if $1.base_component}} {{$1.base_component.namespace}}.{{$1.base_component.name}}Component {{else}} {{workspace.root_namespace}}.BaseComponent {{end}}
+﻿public partial class {{if $1.is_plural}}{{$1.singular_name}}{{else}}{{$1.name}}{{end}}Component : {{if $1.base_component}} {{$1.base_component.namespace}}.{{$1.base_component.name}}Component{{else}}{{if $1.page}}{{$1.page.namespace}}{{else if $1.space}}{{$1.space.namespace}}{{else}}{{$1.workspace.root_namespace}}{{end}}.BaseComponent{{end}}
 {
 	public {{if $1.is_plural}}{{$1.singular_name}}{{else}}{{$1.name}}{{end}}Component(OpenQA.Selenium.IWebDriver webDriver, OpenQA.Selenium.IWebElement webElement, Yapoml.Framework.Options.ISpaceOptions spaceOptions)
 		: base(webDriver, webElement, spaceOptions)
@@ -169,7 +169,7 @@
 		return this;
 	}
 
-	{{ include 'NestedComponentTemplate_Actions' $1 "WrappedElement"}}
+	{{ include 'NestedComponentTemplate_Actions' $1 }}
 
 	{{- if (array.size $1.components) > 0 }}
 	{{ include 'WaiterTemplate' $1 "WrappedElement"}}

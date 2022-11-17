@@ -4,15 +4,15 @@ partial void OnAfterHovered();
 /// <summary>
 /// Moves the cursor onto the element or one of its child elements.
 /// </summary>
-public new {{$1.singular_name}}Component Hover()
+[System.Diagnostics.DebuggerHidden]
+[System.Diagnostics.StackTraceHidden]
+public override void Hover()
 {
 	OnBeforeHovering();
 
 	base.Hover();
 
 	OnAfterHovered();
-
-	return this;
 }
 
 partial void OnBeforeHovering(int x, int y);
@@ -21,15 +21,15 @@ partial void OnAfterHovered(int x, int y);
 /// <summary>
 /// Moves the cursor onto the element or one of its child elements.
 /// </summary>
-public new {{$1.singular_name}}Component Hover(int x, int y)
+[System.Diagnostics.DebuggerHidden]
+[System.Diagnostics.StackTraceHidden]
+public override void Hover(int x, int y)
 {
 	OnBeforeHovering(x, y);
 
 	base.Hover(x, y);
 
 	OnAfterHovered(x, y);
-
-	return this;
 }
 
 partial void OnBeforeScrollingIntoView();
@@ -38,15 +38,15 @@ partial void OnAfterScrolledIntoView();
 /// <summary>
 /// Scrolls the element's ancestor containers is visible to the user.
 /// </summary>
-public new {{$1.singular_name}}Component ScrollIntoView()
+[System.Diagnostics.DebuggerHidden]
+[System.Diagnostics.StackTraceHidden]
+public override void ScrollIntoView()
 {
 	OnBeforeScrollingIntoView();
 
 	base.ScrollIntoView();
 
 	OnAfterScrolledIntoView();
-
-	return this;
 }
 
 partial void OnBeforeScrollingIntoView(Yapoml.Selenium.Options.ScrollIntoViewOptions options);
@@ -55,13 +55,13 @@ partial void OnAfterScrolledIntoView(Yapoml.Selenium.Options.ScrollIntoViewOptio
 /// <summary>
 /// Scrolls the element's ancestor containers is visible to the user.
 /// </summary>
-public new {{$1.singular_name}}Component ScrollIntoView(Yapoml.Selenium.Options.ScrollIntoViewOptions options)
+[System.Diagnostics.DebuggerHidden]
+[System.Diagnostics.StackTraceHidden]
+public override void ScrollIntoView(Yapoml.Selenium.Options.ScrollIntoViewOptions options)
 {
 	OnBeforeScrollingIntoView(options);
 
 	base.ScrollIntoView(options);
 
 	OnAfterScrolledIntoView(options);
-
-	return this;
 }
