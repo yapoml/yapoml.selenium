@@ -88,5 +88,16 @@ namespace Yapoml.Selenium.Sample.Basics
             var searchInput3 = _webDriver.Ya(opts => opts.UseAwaitableComponents())
                 .Basics.Pages.HomePage.SearchInput;
         }
+
+        [Test]
+        public void ScrollEachPackageIntoView()
+        {
+            var packagesPage = _webDriver.Ya(opts => opts.UseBaseUrl("https://nuget.org")).Basics.Pages.PackagesPage;
+
+            foreach (var package in packagesPage.Open(q: "yaml").Packages)
+            {
+                package.ScrollIntoView();
+            }
+        }
     }
 }
