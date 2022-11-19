@@ -8,9 +8,8 @@ using Yapoml.Selenium.Options;
 
 namespace {{root_namespace}}
 {
-	/// <inheritdoc cref="IWebElement"/>
 	[System.Runtime.CompilerServices.CompilerGenerated]
-	public abstract partial class BaseComponent : Yapoml.Selenium.Components.BaseComponent, IWebElement, IWrapsElement, ITakesScreenshot
+	public abstract partial class BaseComponent : Yapoml.Selenium.Components.BaseComponent
 	{
 		public BaseComponent(IWebDriver webDriver, IWebElement webElement, ISpaceOptions spaceOptions)
 			: base (webDriver, webElement, spaceOptions)
@@ -18,152 +17,7 @@ namespace {{root_namespace}}
 			
 		}
 
-		public string TagName => WrappedElement.TagName;
-
-		public string Text => WrappedElement.Text;
-
-		public bool Enabled => WrappedElement.Enabled;
-
-		public bool Selected => WrappedElement.Selected;
-
-		public Point Location => WrappedElement.Location;
-
-		public Size Size => WrappedElement.Size;
-
-		public bool Displayed => WrappedElement.Displayed;
-
-		public void Clear()
-		{
-			WrappedElement.Clear();
-		}
-
-		public void Click()
-		{
-			WrappedElement.Click();
-		}
-
-		public IWebElement FindElement(By by)
-		{
-			return WrappedElement.FindElement(by);
-		}
-
-		public ReadOnlyCollection<IWebElement> FindElements(By by)
-		{
-			return WrappedElement.FindElements(by);
-		}
-
-		public string GetAttribute(string attributeName)
-		{
-			return WrappedElement.GetAttribute(attributeName);
-		}
-
-		public string GetCssValue(string propertyName)
-		{
-			return WrappedElement.GetCssValue(propertyName);
-		}
-
-		public string GetDomAttribute(string attributeName)
-		{
-			return WrappedElement.GetDomAttribute(attributeName);
-		}
-
-		public string GetDomProperty(string propertyName)
-		{
-			return WrappedElement.GetDomProperty(propertyName);
-		}
-
-		public ISearchContext GetShadowRoot()
-		{
-			return WrappedElement.GetShadowRoot();
-		}
-
-		public void SendKeys(string text)
-		{
-			WrappedElement.SendKeys(text);
-		}
-
-		public void Submit()
-		{
-			WrappedElement.Submit();
-		}
-
-		public Screenshot GetScreenshot()
-		{
-			return ((ITakesScreenshot)WrappedElement).GetScreenshot();
-		}
-
-		partial void OnBeforeHovering();
-		partial void OnAfterHovered();
-
-		/// <summary>
-		/// Moves the cursor onto the element or one of its child elements.
-		/// </summary>
-		public virtual void Hover()
-		{
-			OnBeforeHovering();
-
-			new OpenQA.Selenium.Interactions.Actions(WebDriver).MoveToElement(WrappedElement).Build().Perform();
-
-			OnAfterHovered();
-		}
-
-		partial void OnBeforeHovering(int x, int y);
-		partial void OnAfterHovered(int x, int y);
-
-		/// <summary>
-		/// Moves the cursor onto the element or one of its child elements.
-		/// </summary>
-		public virtual void Hover(int x, int y)
-		{
-			OnBeforeHovering(x, y);
-
-			new OpenQA.Selenium.Interactions.Actions(WebDriver).MoveToElement(WrappedElement, x, y).Build().Perform();
-
-			OnAfterHovered(x, y);
-		}
-
-		partial void OnBeforeScrollingIntoView();
-		partial void OnAfterScrolledIntoView();
-
-		/// <summary>
-		/// Scrolls the element's ancestor containers is visible to the user.
-		/// </summary>
-		public virtual void ScrollIntoView()
-		{
-			if (SpaceOptions.Services.TryGet<ScrollIntoViewOptions>(out var options))
-			{
-				ScrollIntoView(options);
-			}
-			else
-			{
-				OnBeforeScrollingIntoView();
-
-				var js = "arguments[0].scrollIntoView();";
-
-				(WebDriver as OpenQA.Selenium.IJavaScriptExecutor).ExecuteScript(js, WrappedElement);
-
-				OnAfterScrolledIntoView();
-			}
-		}
-
-		partial void OnBeforeScrollingIntoView(ScrollIntoViewOptions options);
-		partial void OnAfterScrolledIntoView(ScrollIntoViewOptions options);
-
-		/// <summary>
-		/// Scrolls the element's ancestor containers is visible to the user.
-		/// </summary>
-		public virtual void ScrollIntoView(ScrollIntoViewOptions options)
-		{
-			if (options == null) throw new System.ArgumentNullException(nameof(options));
-
-			OnBeforeScrollingIntoView(options);
-
-			var js = $"arguments[0].scrollIntoView({%{{options.ToString()}}%});";
-
-			(WebDriver as OpenQA.Selenium.IJavaScriptExecutor).ExecuteScript(js, WrappedElement);
-
-			OnAfterScrolledIntoView(options);
-		}
+		{{ include 'SpaceBaseComponentTemplate_Actions' this }}
 	}
 }
 # pragma warning restore
