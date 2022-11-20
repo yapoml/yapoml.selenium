@@ -7,6 +7,7 @@ using Yapoml.Selenium.Events;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using Yapoml.Selenium.Options;
+using OpenQA.Selenium.Interactions;
 
 namespace Yapoml.Selenium.Components
 {
@@ -148,6 +149,16 @@ namespace Yapoml.Selenium.Components
             if (options == null) throw new ArgumentNullException(nameof(options));
 
             var js = $"arguments[0].scrollIntoView({options});";
+
+            (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement);
+        }
+
+        /// <summary>
+        /// Removes keyboard focus from the element.
+        /// </summary>
+        public virtual void Blur()
+        {
+            var js = $"arguments[0].blur();";
 
             (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement);
         }

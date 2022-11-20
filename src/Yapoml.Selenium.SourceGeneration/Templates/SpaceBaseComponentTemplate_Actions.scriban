@@ -57,3 +57,15 @@ public override void ScrollIntoView(global::Yapoml.Selenium.Options.ScrollIntoVi
 {
 	if (HasImplementation<BaseComponent>("OnScrollIntoView", options)) { OnScrollIntoView(options); } else { base.ScrollIntoView(options); }
 }
+
+partial void OnBlur();
+
+/// <summary>
+/// Removes keyboard focus from the element.
+/// </summary>
+[global::System.Diagnostics.DebuggerHidden]
+[global::System.Diagnostics.StackTraceHidden]
+public override void Blur()
+{
+	if (HasImplementation<BaseComponent>("Blur")) { OnBlur(); } else { base.Blur(); }
+}
