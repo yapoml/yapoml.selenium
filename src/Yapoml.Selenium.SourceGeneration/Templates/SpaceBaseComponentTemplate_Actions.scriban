@@ -1,4 +1,16 @@
-﻿partial void OnHover();
+﻿partial void OnClick();
+
+/// <summary>
+/// Simulates a mouse click on an element.
+/// </summary>
+[global::System.Diagnostics.DebuggerHidden]
+[global::System.Diagnostics.StackTraceHidden]
+public override void Click()
+{
+	if (HasImplementation<BaseComponent>("OnClick")) { OnClick(); } else { base.Click(); }
+}
+
+partial void OnHover();
 
 /// <summary>
 /// Moves the cursor onto the element or one of its child elements.

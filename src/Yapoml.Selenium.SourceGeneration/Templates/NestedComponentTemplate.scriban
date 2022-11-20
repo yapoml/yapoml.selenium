@@ -105,7 +105,7 @@
 	/// <param name="timeout">How long to wait until {{ $1.name }} component is displayed.</param>
 	/// <param name="pollingInterval">Interval between verifications in a loop.</param>
 	/// <returns></returns>
-	public {{$1.singular_name}}Component WaitDisplayed(System.TimeSpan? timeout = null, System.TimeSpan? pollingInterval = null)
+	public {{$1.singular_name}}Component WaitDisplayed(global::System.TimeSpan? timeout = null, global::System.TimeSpan? pollingInterval = null)
 	{
 		var timeoutOptions = SpaceOptions.Services.Get<global::Yapoml.Selenium.Options.TimeoutOptions>();
 
@@ -120,7 +120,7 @@
 	/// <param name="timeout">How long to wait until {{ $1.name }} component is enabled.</param>
 	/// <param name="pollingInterval">Interval between verifications in a loop.</param>
 	/// <returns></returns>
-	public {{$1.singular_name}}Component WaitEnabled(System.TimeSpan? timeout = null, System.TimeSpan? pollingInterval = null)
+	public {{$1.singular_name}}Component WaitEnabled(global::System.TimeSpan? timeout = null, global::System.TimeSpan? pollingInterval = null)
 	{
 		var timeoutOptions = SpaceOptions.Services.Get<global::Yapoml.Selenium.Options.TimeoutOptions>();
 
@@ -137,7 +137,7 @@
 	/// <param name="timeout">How long to wait until CSS value becomes expected.</param>
 	/// <param name="pollingInterval">Interval between verifications in a loop.</param>
 	/// <returns></returns>
-	public {{$1.singular_name}}Component WaitCss(string propertyName, string expectedValue, System.TimeSpan? timeout = null, System.TimeSpan? pollingInterval = null)
+	public {{$1.singular_name}}Component WaitCss(string propertyName, string expectedValue, global::System.TimeSpan? timeout = null, global::System.TimeSpan? pollingInterval = null)
 	{
 		var timeoutOptions = SpaceOptions.Services.Get<global::Yapoml.Selenium.Options.TimeoutOptions>();
 
@@ -154,7 +154,7 @@
 	/// <param name="timeout">How long to wait until attribute value becomes expected.</param>
 	/// <param name="pollingInterval">Interval between verifications in a loop.</param>
 	/// <returns></returns>
-	public {{$1.singular_name}}Component WaitAttribute(string attributeName, string expectedValue, System.TimeSpan? timeout = null, System.TimeSpan? pollingInterval = null)
+	public {{$1.singular_name}}Component WaitAttribute(string attributeName, string expectedValue, global::System.TimeSpan? timeout = null, global::System.TimeSpan? pollingInterval = null)
 	{
 		var timeoutOptions = SpaceOptions.Services.Get<global::Yapoml.Selenium.Options.TimeoutOptions>();
 

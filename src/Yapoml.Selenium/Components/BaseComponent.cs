@@ -49,7 +49,10 @@ namespace Yapoml.Selenium.Components
             WrappedElement.Clear();
         }
 
-        public void Click()
+        /// <summary>
+        /// Simulates a mouse click on an element.
+        /// </summary>
+        public virtual void Click()
         {
             WrappedElement.Click();
         }

@@ -1,4 +1,16 @@
-﻿partial void OnHover();
+﻿partial void OnClick();
+
+/// <summary>
+/// Simulates a mouse click on an element.
+/// </summary>
+public new {{$1.singular_name}}Component Click()
+{
+	if (HasImplementation<{{$1.singular_name}}Component>("OnClick")) { OnClick(); } else { base.Click(); }
+
+	return this;
+}
+
+partial void OnHover();
 
 /// <summary>
 /// Moves the cursor onto the element or one of its child elements.
