@@ -57,7 +57,14 @@ namespace {{namespace}}
 			{
 				var byValue = "{{ component.by.value }}";
 
-				{{ if component.by.method == 'XPath' -}}
+				{{ if component.by.method == 'None' -}}
+				{{ if is_xpath component.by.value }}
+				var by = OpenQA.Selenium.By.XPath(byValue);
+				{{ else }}
+				var by = OpenQA.Selenium.By.CssSelector(byValue);
+				{{ end -}}
+
+				{{ else if component.by.method == 'XPath' -}}
 				var by = OpenQA.Selenium.By.XPath(byValue);
 
 				{{ else if component.by.method == 'Css' -}}
@@ -65,13 +72,6 @@ namespace {{namespace}}
 
 				{{ else if component.by.method == 'Id' -}}
 				var by = OpenQA.Selenium.By.Id(byValue);
-
-				{{ else if component.by.method == 'None' -}}
-				{{ if is_xpath component.by.value }}
-				var by = OpenQA.Selenium.By.XPath(byValue);
-				{{ else }}
-				var by = OpenQA.Selenium.By.CssSelector(byValue);
-				{{ end -}}
 				{{ end -}}
 		
 				{{- if component.is_plural }}
@@ -100,7 +100,14 @@ namespace {{namespace}}
 
 			var byValue = new Yapoml.Selenium.Services.SegmentService().Replace("{{ component.by.value }}", segments);
 
-			{{ if component.by.method == 'XPath' -}}
+			{{ if component.by.method == 'None' -}}
+			{{ if is_xpath component.by.value }}
+			var by = OpenQA.Selenium.By.XPath(byValue);
+			{{ else }}
+			var by = OpenQA.Selenium.By.CssSelector(byValue);
+			{{ end -}}
+
+			{{ else if component.by.method == 'XPath' -}}
 			var by = OpenQA.Selenium.By.XPath(byValue);
 
 			{{ else if component.by.method == 'Css' -}}
@@ -108,13 +115,6 @@ namespace {{namespace}}
 
 			{{ else if component.by.method == 'Id' -}}
 			var by = OpenQA.Selenium.By.Id(byValue);
-
-			{{ else if component.by.method == 'None' -}}
-			{{ if is_xpath component.by.value }}
-			var by = OpenQA.Selenium.By.XPath(byValue);
-			{{ else }}
-			var by = OpenQA.Selenium.By.CssSelector(byValue);
-			{{ end -}}
 			{{ end -}}
 		
 			{{- if component.is_plural -}}

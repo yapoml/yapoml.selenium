@@ -11,7 +11,14 @@ public {{ get_component_return_type component }} Wait{{ component.name }}Display
 {
 	var byValue = "{{ component.by.value }}";
 
-	{{ if component.by.method == 'XPath' -}}
+	{{ if component.by.method == 'None' -}}
+	{{ if is_xpath component.by.value }}
+	var by = OpenQA.Selenium.By.XPath(byValue);
+	{{ else }}
+	var by = OpenQA.Selenium.By.CssSelector(byValue);
+	{{ end -}}
+
+	{{ else if component.by.method == 'XPath' -}}
 	var by = OpenQA.Selenium.By.XPath(byValue);
 
 	{{ else if component.by.method == 'Css' -}}
@@ -19,13 +26,6 @@ public {{ get_component_return_type component }} Wait{{ component.name }}Display
 
 	{{ else if component.by.method == 'Id' -}}
 	var by = OpenQA.Selenium.By.Id(byValue);
-
-	{{ else if component.by.method == 'None' -}}
-	{{ if is_xpath component.by.value }}
-	var by = OpenQA.Selenium.By.XPath(byValue);
-	{{ else }}
-	var by = OpenQA.Selenium.By.CssSelector(byValue);
-	{{ end -}}
 	{{ end -}}
 
 	var timeoutOptions = SpaceOptions.Services.Get<Yapoml.Selenium.Options.TimeoutOptions>();
