@@ -36,54 +36,48 @@ namespace Yapoml.Selenium.SourceGeneration
             _spaceTemplate = Template.Parse(templateReader.Read("SpaceTemplate"));
         }
 
+        private string Render(Template template, object model)
+        {
+            var scriptObject = ScriptObject.From(model);
+            scriptObject.Import(typeof(Services.GenerationService));
+
+            _ctx.PushGlobal(scriptObject);
+
+            var res = template.Render(_ctx);
+
+            _ctx.PopGlobal();
+
+            return res;
+        }
+
         public string ProducePage(PageContext pageContext)
         {
-            PushIntoTemplateContext(pageContext);
-
-            return _pageTemplate.Render(_ctx);
+            return Render(_pageTemplate, pageContext);
         }
 
         public string ProduceComponent(ComponentContext componentContext)
         {
-            PushIntoTemplateContext(componentContext);
-
-            return _componentTemplate.Render(_ctx);
+            return Render(_componentTemplate, componentContext);
         }
 
         public string ProduceSpace(SpaceContext spaceContext)
         {
-            PushIntoTemplateContext(spaceContext);
-
-            return _spaceTemplate.Render(_ctx);
+            return Render(_spaceTemplate, spaceContext);
         }
 
         public string ProduceEntryPoint(WorkspaceContext workspaceContext)
         {
-            PushIntoTemplateContext(workspaceContext);
-
-            return _entryPointTemplate.Render(_ctx);
+            return Render(_entryPointTemplate, workspaceContext);
         }
 
         public string ProduceBasePage(WorkspaceContext workspaceContext)
         {
-            PushIntoTemplateContext(workspaceContext);
-
-            return _basePageTemplate.Render(_ctx);
+            return Render(_basePageTemplate, workspaceContext);
         }
 
         public string ProduceBaseComponent(WorkspaceContext workspaceContext)
         {
-            PushIntoTemplateContext(workspaceContext);
-
-            return _baseComponentTemplate.Render(_ctx);
-        }
-
-        private void PushIntoTemplateContext(object obj)
-        {
-            var scriptObject = ScriptObject.From(obj);
-            scriptObject.Import(typeof(Services.GenerationService));
-
-            _ctx.PushGlobal(scriptObject);
+            return Render(_baseComponentTemplate, workspaceContext);
         }
     }
 }
