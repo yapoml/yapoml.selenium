@@ -113,7 +113,7 @@ namespace Yapoml.Selenium.Components
         /// </summary>
         public virtual void Hover()
         {
-            new OpenQA.Selenium.Interactions.Actions(WebDriver).MoveToElement(WrappedElement).Build().Perform();
+            new Actions(WebDriver).MoveToElement(WrappedElement).Build().Perform();
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace Yapoml.Selenium.Components
         /// </summary>
         public virtual void Hover(int x, int y)
         {
-            new OpenQA.Selenium.Interactions.Actions(WebDriver).MoveToElement(WrappedElement, x, y).Build().Perform();
+            new Actions(WebDriver).MoveToElement(WrappedElement, x, y).Build().Perform();
         }
 
         /// <summary>
@@ -149,6 +149,37 @@ namespace Yapoml.Selenium.Components
             if (options == null) throw new ArgumentNullException(nameof(options));
 
             var js = $"arguments[0].scrollIntoView({options});";
+
+            (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement);
+        }
+
+        /// <summary>
+        /// Sets focus on the specified element, if it can be focused.
+        /// The focused element is the element that will receive keyboard and similar events by default.
+        /// </summary>
+        public virtual void Focus()
+        {
+            if (SpaceOptions.Services.TryGet<FocusOptions>(out var options))
+            {
+                Focus(options);
+            }
+            else
+            {
+                var js = "arguments[0].focus();";
+
+                (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement);
+            }
+        }
+
+        /// <summary>
+        /// Sets focus on the specified element, if it can be focused.
+        /// The focused element is the element that will receive keyboard and similar events by default.
+        /// </summary>
+        public virtual void Focus(FocusOptions options)
+        {
+            if (options == null) throw new ArgumentNullException(nameof(options));
+
+            var js = $"arguments[0].focus({options});";
 
             (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement);
         }

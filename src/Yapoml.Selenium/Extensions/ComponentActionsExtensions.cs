@@ -4,7 +4,7 @@ using Yapoml.Selenium.Options;
 namespace Yapoml.Selenium
 {
     /// <summary>
-    /// Provides a posssibility to set default behavior for actions.
+    /// Provides a possibility to set default behavior for actions.
     /// </summary>
     public static class ComponentActionsExtensions
     {
@@ -14,5 +14,14 @@ namespace Yapoml.Selenium
 
             return spaceOptions;
         }
+
+        public static ISpaceOptions WithFocusOptions(this ISpaceOptions spaceOptions, FocusOptions options)
+        {
+            spaceOptions.Services.Register(options);
+
+            return spaceOptions;
+        }
     }
+
+
 }

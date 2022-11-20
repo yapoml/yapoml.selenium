@@ -58,6 +58,31 @@ public new {{$1.singular_name}}Component ScrollIntoView(global::Yapoml.Selenium.
 	return this;
 }
 
+partial void OnFocus();
+
+/// Sets focus on the specified element, if it can be focused.
+/// The focused element is the element that will receive keyboard and similar events by default.
+/// </summary>
+public new {{$1.singular_name}}Component Focus()
+{
+	if (HasImplementation<{{$1.singular_name}}Component>("OnFocus")) { OnFocus(); } else { base.Focus(); }
+
+	return this;
+}
+
+partial void OnFocus(global::Yapoml.Selenium.Options.FocusOptions options);
+
+/// <summary>
+/// Sets focus on the specified element, if it can be focused.
+/// The focused element is the element that will receive keyboard and similar events by default.
+/// </summary>
+public new {{$1.singular_name}}Component Focus(global::Yapoml.Selenium.Options.FocusOptions options)
+{
+	if (HasImplementation<{{$1.singular_name}}Component>("OnFocus", options)) { OnFocus(options); } else { base.Focus(options); }
+
+	return this;
+}
+
 partial void OnBlur();
 
 /// <summary>
