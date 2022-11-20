@@ -1,6 +1,4 @@
 ﻿# pragma warning disable
-using Yapoml.Selenium.Options;
-
 namespace {{namespace}}
 {
 	{{ include 'NestedComponentTemplate' this }}

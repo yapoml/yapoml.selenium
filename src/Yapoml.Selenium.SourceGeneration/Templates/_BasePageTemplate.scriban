@@ -1,13 +1,11 @@
 ﻿# pragma warning disable
-using Yapoml.Selenium.Options;
-
 namespace {{root_namespace}}
 {
 	/// <inheritdoc/>
-	[System.Runtime.CompilerServices.CompilerGenerated]
-	public partial class Page : Yapoml.Selenium.Components.BasePage
+	[global::System.Runtime.CompilerServices.CompilerGenerated]
+	public partial class Page : global::Yapoml.Selenium.Components.BasePage
 	{
-		public Page(OpenQA.Selenium.IWebDriver webDriver, Yapoml.Framework.Options.ISpaceOptions spaceOptions)
+		public Page(global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
 			: base (webDriver, spaceOptions)
 		{
 

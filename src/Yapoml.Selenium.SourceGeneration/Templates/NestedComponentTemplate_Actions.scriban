@@ -34,12 +34,12 @@ public new {{$1.singular_name}}Component ScrollIntoView()
 	return this;
 }
 
-partial void OnScrollIntoView(Yapoml.Selenium.Options.ScrollIntoViewOptions options);
+partial void OnScrollIntoView(global::Yapoml.Selenium.Options.ScrollIntoViewOptions options);
 
 /// <summary>
 /// Scrolls the element's ancestor containers is visible to the user.
 /// </summary>
-public new {{$1.singular_name}}Component ScrollIntoView(Yapoml.Selenium.Options.ScrollIntoViewOptions options)
+public new {{$1.singular_name}}Component ScrollIntoView(global::Yapoml.Selenium.Options.ScrollIntoViewOptions options)
 {
 	if (HasImplementation<{{$1.singular_name}}Component>("OnScrollIntoView", options)) { OnScrollIntoView(options); } else { base.ScrollIntoView(options); }
 

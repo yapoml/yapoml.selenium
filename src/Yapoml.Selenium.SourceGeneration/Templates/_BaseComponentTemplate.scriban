@@ -1,17 +1,10 @@
 ﻿# pragma warning disable
-using OpenQA.Selenium;
-using System.Collections.ObjectModel;
-using System.Drawing;
-using Yapoml.Framework.Options;
-using Yapoml.Selenium.Events;
-using Yapoml.Selenium.Options;
-
 namespace {{root_namespace}}
 {
-	[System.Runtime.CompilerServices.CompilerGenerated]
-	public abstract partial class BaseComponent : Yapoml.Selenium.Components.BaseComponent
+	[global::System.Runtime.CompilerServices.CompilerGenerated]
+	public abstract partial class BaseComponent : global::Yapoml.Selenium.Components.BaseComponent
 	{
-		public BaseComponent(IWebDriver webDriver, IWebElement webElement, ISpaceOptions spaceOptions)
+		public BaseComponent(global::OpenQA.Selenium.IWebDriver webDriver, global::OpenQA.Selenium.IWebElement webElement, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
 			: base (webDriver, webElement, spaceOptions)
 		{
 			

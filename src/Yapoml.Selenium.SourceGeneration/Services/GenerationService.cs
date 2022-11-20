@@ -35,22 +35,22 @@ namespace Yapoml.Selenium.SourceGeneration.Services
                 {
                     if (component.IsPlural)
                     {
-                        retType = $"{component.Namespace}.{component.SingularName}Component";
+                        retType = $"global::{component.Namespace}.{component.SingularName}Component";
                     }
                     else
                     {
-                        retType = $"{component.Namespace}.{component.Name}Component";
+                        retType = $"global::{component.Namespace}.{component.Name}Component";
                     }
                 }
                 else
                 {
                     if (component.ReferencedComponent.IsPlural)
                     {
-                        retType = $"{component.ReferencedComponent.Namespace}.{component.ReferencedComponent.SingularName}Component";
+                        retType = $"global::{component.ReferencedComponent.Namespace}.{component.ReferencedComponent.SingularName}Component";
                     }
                     else
                     {
-                        retType = $"{component.ReferencedComponent.Namespace}.{component.ReferencedComponent.Name}Component";
+                        retType = $"global::{component.ReferencedComponent.Namespace}.{component.ReferencedComponent.Name}Component";
                     }
                 }
 
