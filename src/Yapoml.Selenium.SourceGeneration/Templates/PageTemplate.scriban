@@ -59,17 +59,14 @@ namespace {{namespace}}
 
 				{{ if component.by.method == 'XPath' -}}
 				var by = OpenQA.Selenium.By.XPath(byValue);
-				{{ end -}}
 
-				{{ if component.by.method == 'Css' -}}
+				{{ else if component.by.method == 'Css' -}}
 				var by = OpenQA.Selenium.By.CssSelector(byValue);
-				{{ end -}}
 
-				{{ if component.by.method == 'Id' -}}
+				{{ else if component.by.method == 'Id' -}}
 				var by = OpenQA.Selenium.By.Id(byValue);
-				{{ end -}}
 
-				{{ if component.by.method == 'None' -}}
+				{{ else if component.by.method == 'None' -}}
 				{{ if is_xpath component.by.value }}
 				var by = OpenQA.Selenium.By.XPath(byValue);
 				{{ else }}
@@ -105,17 +102,14 @@ namespace {{namespace}}
 
 			{{ if component.by.method == 'XPath' -}}
 			var by = OpenQA.Selenium.By.XPath(byValue);
-			{{ end -}}
 
-			{{ if component.by.method == 'Css' -}}
+			{{ else if component.by.method == 'Css' -}}
 			var by = OpenQA.Selenium.By.CssSelector(byValue);
-			{{ end -}}
 
-			{{ if component.by.method == 'Id' -}}
+			{{ else if component.by.method == 'Id' -}}
 			var by = OpenQA.Selenium.By.Id(byValue);
-			{{ end -}}
 
-			{{ if component.by.method == 'None' -}}
+			{{ else if component.by.method == 'None' -}}
 			{{ if is_xpath component.by.value }}
 			var by = OpenQA.Selenium.By.XPath(byValue);
 			{{ else }}
