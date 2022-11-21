@@ -43,4 +43,28 @@ SomeButton: ./qwe
             _sourceProducer.ProduceComponent(c);
         }
     }
+
+    [Benchmark]
+    public void GenerateComponentsIncludingParsing()
+    {
+        var workspaceBuilder = new WorkspaceContextBuilder(Environment.CurrentDirectory, "A.B", new WorkspaceParser());
+
+        for (int i = 0; i < N; i++)
+        {
+            workspaceBuilder.AddFile($"{Environment.CurrentDirectory}/MyComponent{i}.pc.yaml",
+                @"
+SomeButton: ./qwe
+"
+                );
+        }
+
+        var workspace = workspaceBuilder.Build();
+
+        var sourceProducer = new SourceProducer();
+
+        foreach (var c in workspace.Components)
+        {
+            sourceProducer.ProduceComponent(c);
+        }
+    }
 }
