@@ -20,9 +20,14 @@
         /// </summary>
         public ScrollIntoViewInline Inline { get; set; } = ScrollIntoViewInline.Start;
 
-        public override string ToString()
+        public string ToJson()
         {
             return $"{{behavior: \"{Behavior.ToString().ToLowerInvariant()}\", block: \"{Block.ToString().ToLowerInvariant()}\", inline: \"{Inline.ToString().ToLowerInvariant()}\"}}";
+        }
+
+        public override string ToString()
+        {
+            return $"Behavior: {Behavior}, Vertical aligment: {Block}, Horizontal aligment: {Inline}";
         }
     }
 

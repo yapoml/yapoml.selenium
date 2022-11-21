@@ -18,9 +18,14 @@
         /// </summary>
         public bool FocusVisible { get; set; } = true;
 
-        public override string ToString()
+        public string ToJson()
         {
             return $"{{preventScroll: \"{PreventScroll.ToString().ToLowerInvariant()}\", focusVisible: \"{FocusVisible.ToString().ToLowerInvariant()}\"}}";
+        }
+
+        public override string ToString()
+        {
+            return $"Prevent scroll: {PreventScroll}, Focus visible: {FocusVisible}";
         }
     }
 }

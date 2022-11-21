@@ -8,12 +8,15 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using Yapoml.Selenium.Options;
 using OpenQA.Selenium.Interactions;
+using Yapoml.Framework.Logging;
 
 namespace Yapoml.Selenium.Components
 {
     /// <inheritdoc cref="IWebElement"/>
     public abstract class BaseComponent : IWebElement, IWrapsElement, ITakesScreenshot
     {
+        private ILogger _logger;
+
         protected IWebDriver WebDriver { get; private set; }
 
         public IWebElement WrappedElement { get; private set; }
@@ -29,6 +32,7 @@ namespace Yapoml.Selenium.Components
             SpaceOptions = spaceOptions;
 
             EventSource = spaceOptions.Services.Get<IEventSource>().ComponentEventSource;
+            _logger = spaceOptions.Services.Get<ILogger>();
         }
 
         public string TagName => WrappedElement.TagName;
@@ -47,6 +51,8 @@ namespace Yapoml.Selenium.Components
 
         public void Clear()
         {
+            _logger.Trace($"Clearing {this.GetType().Name} component");
+
             WrappedElement.Clear();
         }
 
@@ -55,6 +61,8 @@ namespace Yapoml.Selenium.Components
         /// </summary>
         public virtual void Click()
         {
+            _logger.Trace($"Clicking on {this.GetType().Name} component");
+
             WrappedElement.Click();
         }
 
@@ -95,6 +103,16 @@ namespace Yapoml.Selenium.Components
 
         public void SendKeys(string text)
         {
+            // todo make it event based
+            if (this.GetType().Name.ToLowerInvariant().Contains("password") && text != null)
+            {
+                _logger.Trace($"Typing '{new string('*', text.Length)}' into {this.GetType().Name} component");
+            }
+            else
+            {
+                _logger.Trace($"Typing '{text}' into {this.GetType().Name} component");
+            }
+
             WrappedElement.SendKeys(text);
         }
 
@@ -113,6 +131,8 @@ namespace Yapoml.Selenium.Components
         /// </summary>
         public virtual void Hover()
         {
+            _logger.Trace($"Hovering over {this.GetType().Name} component");
+
             new Actions(WebDriver).MoveToElement(WrappedElement).Build().Perform();
         }
 
@@ -121,6 +141,8 @@ namespace Yapoml.Selenium.Components
         /// </summary>
         public virtual void Hover(int x, int y)
         {
+            _logger.Trace($"Hovering on {this.GetType().Name} component by X: {x}, Y: {y}");
+
             new Actions(WebDriver).MoveToElement(WrappedElement, x, y).Build().Perform();
         }
 
@@ -135,6 +157,8 @@ namespace Yapoml.Selenium.Components
             }
             else
             {
+                _logger.Trace($"Scrolling {this.GetType().Name} component into view");
+
                 var js = "arguments[0].scrollIntoView();";
 
                 (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement);
@@ -148,7 +172,9 @@ namespace Yapoml.Selenium.Components
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
 
-            var js = $"arguments[0].scrollIntoView({options});";
+            _logger.Trace($"Scrolling {this.GetType().Name} component into view with options {options}");
+
+            var js = $"arguments[0].scrollIntoView({options.ToJson()});";
 
             (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement);
         }
@@ -165,6 +191,8 @@ namespace Yapoml.Selenium.Components
             }
             else
             {
+                _logger.Trace($"Focusing {this.GetType().Name} component");
+
                 var js = "arguments[0].focus();";
 
                 (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement);
@@ -179,7 +207,9 @@ namespace Yapoml.Selenium.Components
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
 
-            var js = $"arguments[0].focus({options});";
+            _logger.Trace($"Focusing {this.GetType().Name} component with options {options}");
+
+            var js = $"arguments[0].focus({options.ToJson()});";
 
             (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement);
         }
@@ -189,6 +219,8 @@ namespace Yapoml.Selenium.Components
         /// </summary>
         public virtual void Blur()
         {
+            _logger.Trace($"Bluring {this.GetType().Name} component");
+
             var js = $"arguments[0].blur();";
 
             (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement);
