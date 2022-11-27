@@ -1,6 +1,6 @@
 using NUnit.Framework;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Chrome;
 using System;
 using System.Linq;
 using Yapoml.Framework.Options;
@@ -16,7 +16,7 @@ namespace Yapoml.Selenium.Sample.Responsive
         [SetUp]
         public void SetUp()
         {
-            _webDriver = new FirefoxDriver();
+            _webDriver = new ChromeDriver();
 
             _webDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 

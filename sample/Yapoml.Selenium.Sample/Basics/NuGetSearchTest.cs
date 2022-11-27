@@ -1,6 +1,6 @@
 using NUnit.Framework;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Chrome;
 using System;
 
 namespace Yapoml.Selenium.Sample.Basics
@@ -13,7 +13,7 @@ namespace Yapoml.Selenium.Sample.Basics
         [SetUp]
         public void SetUp()
         {
-            _webDriver = new FirefoxDriver();
+            _webDriver = new ChromeDriver();
 
             _webDriver.Navigate().GoToUrl("https://nuget.org");
         }
