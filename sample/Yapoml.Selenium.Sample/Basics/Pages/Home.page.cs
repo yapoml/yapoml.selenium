@@ -1,6 +1,6 @@
 ﻿namespace Yapoml.Selenium.Sample.Basics.Pages
 {
-    public partial class HomePage
+    partial class HomePage
     {
         public void Search(string text)
         {

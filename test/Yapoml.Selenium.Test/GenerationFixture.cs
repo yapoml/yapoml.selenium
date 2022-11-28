@@ -22,7 +22,7 @@ namespace Yapoml.Selenium.Test
 
             for (int i = 0; i < 50; i++)
             {
-                list.Add(new MyAdditionalText(Environment.CurrentDirectory + $"A/MyComponent{i}.pc.yaml",
+                list.Add(new MyAdditionalText(Environment.CurrentDirectory + $"A/MyComponent{i}.component.yaml",
 @"
 SomeButton: ./qwe
 "

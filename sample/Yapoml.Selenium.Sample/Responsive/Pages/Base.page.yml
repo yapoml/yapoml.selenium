@@ -9,7 +9,7 @@
 
 ---
 
-base: HomePage
+base: Home
 
 HamburgerButton:
   by: css .navbar-toggle
