@@ -125,9 +125,12 @@ namespace Yapoml.Selenium.SourceGeneration
 
         private void GenerateBaseComponent(SourceProductionContext spc, WorkspaceContext workspaceContext, SourceProducer sourceProducer)
         {
-            spc.CancellationToken.ThrowIfCancellationRequested();
+            if (workspaceContext.Components.FirstOrDefault(c => c.Name.Equals("Base", StringComparison.InvariantCultureIgnoreCase)) == null)
+            {
+                spc.CancellationToken.ThrowIfCancellationRequested();
 
-            spc.AddSource("_BaseComponent.cs", sourceProducer.ProduceBaseComponent(workspaceContext));
+                spc.AddSource("_BaseComponent.cs", sourceProducer.ProduceBaseComponent(workspaceContext));
+            }
         }
 
         private IList<(string file, string content)> GenerateSpace(SourceProductionContext spc, SpaceContext spaceContext, SourceProducer sourceProducer)

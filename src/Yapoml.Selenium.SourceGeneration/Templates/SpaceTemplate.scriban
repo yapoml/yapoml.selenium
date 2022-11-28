@@ -35,6 +35,8 @@ namespace {{namespace}}
 		{{- end }}
 	}
 
+	{{ if !(has_user_defined_base_component this) }}
 	{{ include 'SpaceBaseComponentTemplate' this }}
+	{{ end }}
 }
 # pragma warning restore

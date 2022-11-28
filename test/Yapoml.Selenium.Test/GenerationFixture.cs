@@ -22,7 +22,7 @@ namespace Yapoml.Selenium.Test
 
             for (int i = 0; i < 50; i++)
             {
-                list.Add(new MyAdditionalText(Environment.CurrentDirectory + $"/MyComponent{i}.pc.yaml",
+                list.Add(new MyAdditionalText(Environment.CurrentDirectory + $"A/MyComponent{i}.pc.yaml",
 @"
 SomeButton: ./qwe
 "
@@ -42,7 +42,7 @@ SomeButton: ./qwe
             GeneratorDriverRunResult runResult = driver.GetRunResult();
 
             runResult.Diagnostics.Should().BeEmpty();
-            runResult.GeneratedTrees.Should().HaveCount(53);
+            runResult.GeneratedTrees.Should().HaveCount(54);
         }
 
         private static Compilation CreateCompilation()

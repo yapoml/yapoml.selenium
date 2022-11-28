@@ -1,5 +1,6 @@
 ﻿using Scriban.Runtime;
 using System.Collections.Generic;
+using System.Linq;
 using Yapoml.Framework.Workspace;
 
 namespace Yapoml.Selenium.SourceGeneration.Services
@@ -58,6 +59,26 @@ namespace Yapoml.Selenium.SourceGeneration.Services
 
                 return retType;
             }
+        }
+
+        public static bool HasUserDefinedBaseComponent(ScriptObject space)
+        {
+            if (space.TryGetValue("components", out object oComponents))
+            {
+                var components = oComponents as IList<ComponentContext>;
+                
+                return components.FirstOrDefault(c => c.Name.Equals("base", System.StringComparison.InvariantCultureIgnoreCase)) != null;
+            }
+            else
+            {
+                return false;
+            }
+            
+        }
+
+        public static string A(ComponentContext c)
+        {
+            return "qwe";
         }
     }
 }

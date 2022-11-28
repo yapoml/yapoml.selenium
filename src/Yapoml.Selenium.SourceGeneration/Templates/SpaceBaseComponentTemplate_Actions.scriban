@@ -5,7 +5,7 @@
 /// </summary>
 [global::System.Diagnostics.DebuggerHidden]
 [global::System.Diagnostics.StackTraceHidden]
-public override void Click()
+public new void Click()
 {
 	if (HasImplementation<BaseComponent>("OnClick")) { OnClick(); } else { base.Click(); }
 }
@@ -17,7 +17,7 @@ partial void OnHover();
 /// </summary>
 [global::System.Diagnostics.DebuggerHidden]
 [global::System.Diagnostics.StackTraceHidden]
-public override void Hover()
+public new void Hover()
 {
 	if (HasImplementation<BaseComponent>("OnHover")) { OnHover(); } else { base.Hover(); }
 }
@@ -29,7 +29,7 @@ partial void OnHover(int x, int y);
 /// </summary>
 [global::System.Diagnostics.DebuggerHidden]
 [global::System.Diagnostics.StackTraceHidden]
-public override void Hover(int x, int y)
+public new void Hover(int x, int y)
 {
 	if (HasImplementation<BaseComponent>("OnHover", x, y)) { OnHover(x, y); } else { base.Hover(x, y); }
 }
@@ -41,7 +41,7 @@ partial void OnScrollIntoView();
 /// </summary>
 [global::System.Diagnostics.DebuggerHidden]
 [global::System.Diagnostics.StackTraceHidden]
-public override void ScrollIntoView()
+public new void ScrollIntoView()
 {
 	if (HasImplementation<BaseComponent>("OnScrollIntoView")) { OnScrollIntoView(); } else { base.ScrollIntoView(); }
 }
@@ -53,7 +53,7 @@ partial void OnScrollIntoView(global::Yapoml.Selenium.Options.ScrollIntoViewOpti
 /// </summary>
 [global::System.Diagnostics.DebuggerHidden]
 [global::System.Diagnostics.StackTraceHidden]
-public override void ScrollIntoView(global::Yapoml.Selenium.Options.ScrollIntoViewOptions options)
+public new void ScrollIntoView(global::Yapoml.Selenium.Options.ScrollIntoViewOptions options)
 {
 	if (HasImplementation<BaseComponent>("OnScrollIntoView", options)) { OnScrollIntoView(options); } else { base.ScrollIntoView(options); }
 }
@@ -66,7 +66,7 @@ partial void OnFocus();
 /// </summary>
 [global::System.Diagnostics.DebuggerHidden]
 [global::System.Diagnostics.StackTraceHidden]
-public override void Focus()
+public new void Focus()
 {
 	if (HasImplementation<BaseComponent>("OnFocus")) { OnFocus(); } else { base.Focus(); }
 }
@@ -79,7 +79,7 @@ partial void OnFocus(global::Yapoml.Selenium.Options.FocusOptions options);
 /// </summary>
 [global::System.Diagnostics.DebuggerHidden]
 [global::System.Diagnostics.StackTraceHidden]
-public override void Focus(global::Yapoml.Selenium.Options.FocusOptions options)
+public new void Focus(global::Yapoml.Selenium.Options.FocusOptions options)
 {
 	if (HasImplementation<BaseComponent>("OnFocus", options)) { OnFocus(options); } else { base.Focus(options); }
 }
@@ -91,7 +91,7 @@ partial void OnBlur();
 /// </summary>
 [global::System.Diagnostics.DebuggerHidden]
 [global::System.Diagnostics.StackTraceHidden]
-public override void Blur()
+public new void Blur()
 {
 	if (HasImplementation<BaseComponent>("Blur")) { OnBlur(); } else { base.Blur(); }
 }
