@@ -62,7 +62,7 @@ namespace Yapoml.Selenium.Sample.Basics
             var ya = _webDriver.Ya(opts =>
                 opts.UseBaseUrl("https://nuget.org"))
                 .Basics.Pages;
-
+            //ya.HomePage.qwe
             // it opens https://nuget.org/packages?q=yaml
             Assert.That(ya.PackagesPage.Open(q: "yaml").Packages.Count, Is.EqualTo(20));
 

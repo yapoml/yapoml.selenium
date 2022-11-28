@@ -4,9 +4,9 @@ using global::System.Linq;
 namespace {{namespace}}
 {
 	[global::System.Runtime.CompilerServices.CompilerGenerated]
-	public partial class {{name}} : {{ if base_page }}global::{{ base_page.namespace }}.{{base_page.name}}{{else}}global::{{workspace.root_namespace}}.Page{{end}}
+	public partial class {{ get_page_class_name this }} : {{ if base_page }}global::{{ base_page.namespace }}.{{base_page.name}}{{else}}{{if (get_page_class_name this) == 'BasePage'}}{{if parent_space.parent_space}}global::{{parent_space.parent_space.namespace}}.BasePage{{else}}global::Yapoml.Selenium.Components.BasePage{{end}}{{else}}global::{{parent_space.namespace}}.BasePage{{end}}{{end}}
 	{
-		public {{name}}(global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
+		public {{ get_page_class_name this }}(global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
 			: base(webDriver, spaceOptions)
 		{
 
@@ -17,7 +17,7 @@ namespace {{namespace}}
 		/// <summary>
 		/// Navigates to <c>{{ url.path }}</c>
 		/// </summary>
-		public {{ name }} Open(
+		public {{ get_page_class_name this }} Open(
 		{{- for segment in url.segments }}{{ if for.first == false }}, {{ end }}string {{ segment }}{{ end }}
 		{{- for param in url.params }} {{ if url.segments && for.first }}, {{ end }}{{ if for.first == false }}, {{ end }}string {{ param }} = null{{ end }})
 		{

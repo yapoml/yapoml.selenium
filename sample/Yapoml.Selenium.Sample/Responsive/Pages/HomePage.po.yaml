@@ -1,15 +1,1 @@
-﻿Navigation:
- by: id navbar
-
- MenuItems:
-   by: ./ul[1]/li
-
-   Title:
-     by: ./a/span
-
----
-
-base: HomePage
-
-HamburgerButton:
-  by: css .navbar-toggle
+﻿

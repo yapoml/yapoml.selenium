@@ -2,7 +2,7 @@
 
 namespace Yapoml.Selenium.Sample.Responsive.Pages
 {
-    public partial class HomePage
+    partial class BasePage
     {
         public virtual void Navigate(string menuItemName)
         {
@@ -10,7 +10,7 @@ namespace Yapoml.Selenium.Sample.Responsive.Pages
         }
     }
 
-    public partial class HomePage1
+    partial class Base1Page
     {
         public override void Navigate(string menuItemName)
         {

@@ -31,9 +31,13 @@ namespace {{namespace}}
 		{{- end }}
 		/// </list>
 		/// </summary>
-		public global::{{page.namespace}}.{{page.name}} {{page.name}} => _spaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IPageFactory>().Create<global::{{page.namespace}}.{{page.name}}>(_webDriver, _spaceOptions);
+		public global::{{page.namespace}}.{{get_page_class_name_for_page page}} {{page.name}} => _spaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IPageFactory>().Create<global::{{page.namespace}}.{{get_page_class_name_for_page page}}>(_webDriver, _spaceOptions);
 		{{- end }}
 	}
+
+	{{ if !(has_user_defined_base_page this) }}
+	{{ include 'SpaceBasePageTemplate' this }}
+	{{ end }}
 
 	{{ if !(has_user_defined_base_component this) }}
 	{{ include 'SpaceBaseComponentTemplate' this }}

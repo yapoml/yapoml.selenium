@@ -118,9 +118,12 @@ namespace Yapoml.Selenium.SourceGeneration
 
         private void GenerateBasePage(SourceProductionContext spc, WorkspaceContext workspaceContext, SourceProducer sourceProducer)
         {
-            spc.CancellationToken.ThrowIfCancellationRequested();
+            if (workspaceContext.Pages.FirstOrDefault(p => p.Name.Equals("Base", StringComparison.InvariantCultureIgnoreCase)) == null)
+            {
+                spc.CancellationToken.ThrowIfCancellationRequested();
 
-            spc.AddSource("_BasePage.cs", sourceProducer.ProduceBasePage(workspaceContext));
+                spc.AddSource("_BasePage.cs", sourceProducer.ProduceBasePage(workspaceContext));
+            }
         }
 
         private void GenerateBaseComponent(SourceProductionContext spc, WorkspaceContext workspaceContext, SourceProducer sourceProducer)

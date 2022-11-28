@@ -83,7 +83,7 @@ namespace Yapoml.Selenium.Sample.Responsive
                 if (IsMobile)
                 {
                     var mobilePageType = typeof(TPage).Assembly.GetTypes()
-                        .FirstOrDefault(t => t.IsAssignableTo(typeof(TPage)) && t.Name.EndsWith("1"));
+                        .FirstOrDefault(t => t.IsAssignableTo(typeof(TPage)) && t.Name.EndsWith("1Page"));
 
                     if (mobilePageType != null)
                     {

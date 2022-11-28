@@ -20,13 +20,13 @@ namespace Yapoml.Selenium.SourceGeneration.Services
             return isXpath;
         }
 
-        private static Dictionary<ComponentContext, string> _returnTypesCache= new Dictionary<ComponentContext, string>();
+        private static Dictionary<ComponentContext, string> _returnTypesCache = new Dictionary<ComponentContext, string>();
 
         public static string GetComponentReturnType(ComponentContext component)
         {
-            if (_returnTypesCache.TryGetValue(component, out var chachedRetType))
+            if (_returnTypesCache.TryGetValue(component, out var cachedRetType))
             {
-                return chachedRetType;
+                return cachedRetType;
             }
             else
             {
@@ -34,25 +34,11 @@ namespace Yapoml.Selenium.SourceGeneration.Services
 
                 if (component.ReferencedComponent == null)
                 {
-                    if (component.IsPlural)
-                    {
-                        retType = $"global::{component.Namespace}.{component.SingularName}Component";
-                    }
-                    else
-                    {
-                        retType = $"global::{component.Namespace}.{component.Name}Component";
-                    }
+                    retType = $"global::{component.Namespace}.{component.SingularName}Component";
                 }
                 else
                 {
-                    if (component.ReferencedComponent.IsPlural)
-                    {
-                        retType = $"global::{component.ReferencedComponent.Namespace}.{component.ReferencedComponent.SingularName}Component";
-                    }
-                    else
-                    {
-                        retType = $"global::{component.ReferencedComponent.Namespace}.{component.ReferencedComponent.Name}Component";
-                    }
+                    retType = $"global::{component.ReferencedComponent.Namespace}.{component.ReferencedComponent.SingularName}Component";
                 }
 
                 _returnTypesCache[component] = retType;
@@ -61,24 +47,58 @@ namespace Yapoml.Selenium.SourceGeneration.Services
             }
         }
 
+        public static string GetPageClassName(ScriptObject page)
+        {
+            var name = page.GetSafeValue<string>("name");
+
+            return GetPageClassName(name);
+        }
+
+        public static string GetPageClassNameForPage(PageContext page)
+        {
+            return GetPageClassName(page.Name);
+        }
+
+        private static string GetPageClassName(string name)
+        {
+            if (name.EndsWith("Page"))
+            {
+                return name;
+            }
+            else
+            {
+                return $"{name}Page";
+            }
+        }
+
         public static bool HasUserDefinedBaseComponent(ScriptObject space)
         {
             if (space.TryGetValue("components", out object oComponents))
             {
                 var components = oComponents as IList<ComponentContext>;
-                
+
                 return components.FirstOrDefault(c => c.Name.Equals("base", System.StringComparison.InvariantCultureIgnoreCase)) != null;
             }
             else
             {
                 return false;
             }
-            
         }
 
-        public static string A(ComponentContext c)
+        public static bool HasUserDefinedBasePage(ScriptObject space)
         {
-            return "qwe";
+            if (space.TryGetValue("pages", out object oPages))
+            {
+                var pages = oPages as IList<PageContext>;
+
+                return pages.FirstOrDefault(
+                    c => c.Name.Equals("Base", System.StringComparison.InvariantCultureIgnoreCase)
+                    || c.Name.Equals("BasePage", System.StringComparison.InvariantCultureIgnoreCase)) != null;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

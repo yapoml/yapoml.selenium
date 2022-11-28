@@ -3,10 +3,10 @@ namespace {{root_namespace}}
 {
 	/// <inheritdoc/>
 	[global::System.Runtime.CompilerServices.CompilerGenerated]
-	public partial class Page : global::Yapoml.Selenium.Components.BasePage
+	public abstract partial class BasePage : global::Yapoml.Selenium.Components.BasePage
 	{
-		public Page(global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
-			: base (webDriver, spaceOptions)
+		public BasePage(global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
+			: base(webDriver, spaceOptions)
 		{
 
 		}
