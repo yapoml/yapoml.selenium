@@ -20,16 +20,22 @@
     <AdditionalFiles Include="**\*.component.yml" />
     <None Remove="**\*.pc.yml" />
 
-    <Compile Update="**\*.cs">
+    <Compile Update="**\*.po.cs">
       <DependentUpon Condition="Exists('%(RecursiveDir)$([System.String]::Copy(%(Filename)).Split(.)[0]).po.yaml')">$([System.String]::Copy(%(Filename)).Split('.')[0]).po.yaml</DependentUpon>
       <DependentUpon Condition="Exists('%(RecursiveDir)$([System.String]::Copy(%(Filename)).Split(.)[0]).po.yml')">$([System.String]::Copy(%(Filename)).Split('.')[0]).po.yml</DependentUpon>
+    </Compile>
+
+    <Compile Update="**\*.pc.cs">
       <DependentUpon Condition="Exists('%(RecursiveDir)$([System.String]::Copy(%(Filename)).Split(.)[0]).pc.yaml')">$([System.String]::Copy(%(Filename)).Split('.')[0]).pc.yaml</DependentUpon>
       <DependentUpon Condition="Exists('%(RecursiveDir)$([System.String]::Copy(%(Filename)).Split(.)[0]).pc.yml')">$([System.String]::Copy(%(Filename)).Split('.')[0]).pc.yml</DependentUpon>
     </Compile>
 
-    <Compile Update="**\*.cs">
+    <Compile Update="**\*.page.cs">
       <DependentUpon Condition="Exists('%(RecursiveDir)$([System.String]::Copy(%(Filename)).Split(.)[0]).page.yaml')">$([System.String]::Copy(%(Filename)).Split('.')[0]).page.yaml</DependentUpon>
       <DependentUpon Condition="Exists('%(RecursiveDir)$([System.String]::Copy(%(Filename)).Split(.)[0]).page.yml')">$([System.String]::Copy(%(Filename)).Split('.')[0]).page.yml</DependentUpon>
+    </Compile>
+
+    <Compile Update="**\*.component.cs">
       <DependentUpon Condition="Exists('%(RecursiveDir)$([System.String]::Copy(%(Filename)).Split(.)[0]).component.yaml')">$([System.String]::Copy(%(Filename)).Split('.')[0]).component.yaml</DependentUpon>
       <DependentUpon Condition="Exists('%(RecursiveDir)$([System.String]::Copy(%(Filename)).Split(.)[0]).component.yml')">$([System.String]::Copy(%(Filename)).Split('.')[0]).component.yml</DependentUpon>
     </Compile>
