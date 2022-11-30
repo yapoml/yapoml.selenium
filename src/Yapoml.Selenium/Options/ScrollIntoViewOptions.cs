@@ -16,9 +16,9 @@
 
         /// <summary>
         /// Defines horizontal alignment.
-        /// Default <see cref="ScrollIntoViewInline.Start" />
+        /// Default <see cref="ScrollIntoViewInline.Nearest" />
         /// </summary>
-        public ScrollIntoViewInline Inline { get; set; } = ScrollIntoViewInline.Start;
+        public ScrollIntoViewInline Inline { get; set; } = ScrollIntoViewInline.Nearest;
 
         public string ToJson()
         {
