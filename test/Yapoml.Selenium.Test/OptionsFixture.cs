@@ -13,7 +13,7 @@ namespace Yapoml.Selenium.Test
 
             options.Behavior.Should().Be(ScrollIntoViewBehavior.Auto);
             options.Block.Should().Be(ScrollIntoViewBlock.Start);
-            options.Inline.Should().Be(ScrollIntoViewInline.Start);
+            options.Inline.Should().Be(ScrollIntoViewInline.Nearest);
         }
     }
 }
