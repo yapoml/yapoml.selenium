@@ -1,1 +1,1 @@
-﻿#line ({{$1.by.definition_source.start.line}}, {{$1.by.definition_source.start.column}}) - ({{$1.by.definition_source.end.line}}, {{$1.by.definition_source.end.column}}) 10000 "..\..\{{$1.relative_file_path}}"
+﻿#line ({{$1.by.definition_source.region.start.line}}, {{$1.by.definition_source.region.start.column}}) - ({{$1.by.definition_source.region.end.line}}, {{$1.by.definition_source.region.end.column}}) 10000 "..\..\{{$1.by.definition_source.relative_file_path}}"
