@@ -36,11 +36,11 @@ namespace {{root_namespace}}
 		{{ end -}}
 		/// </list>
 		/// </summary>
-		public global::{{page.namespace}}.{{page.name}} {{page.name}}
+		public {{ get_page_class_name_for_page page }} {{page.name}}
 		{
 			get
 			{
-				return _spaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IPageFactory>().Create<global::{{page.namespace}}.{{page.name}}>(_webDriver, _spaceOptions);
+				return _spaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IPageFactory>().Create<{{ get_page_class_name_for_page page }}>(_webDriver, _spaceOptions);
 			}
 		}
 {{ end }}

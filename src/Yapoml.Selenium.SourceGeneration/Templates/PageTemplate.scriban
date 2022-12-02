@@ -4,7 +4,7 @@ using global::System.Linq;
 namespace {{namespace}}
 {
 	[global::System.Runtime.CompilerServices.CompilerGenerated]
-	public partial class {{ get_page_class_name this }} : {{ if base_page }}global::{{ base_page.namespace }}.{{ get_page_class_name_for_page base_page }}{{else}}{{if (get_page_class_name this) == 'BasePage'}}{{if parent_space.parent_space}}global::{{parent_space.parent_space.namespace}}.BasePage{{else}}global::Yapoml.Selenium.Components.BasePage{{end}}{{else}}global::{{parent_space.namespace}}.BasePage{{end}}{{end}}
+	public partial class {{ get_page_class_name this }} : {{ if base_page }}global::{{ base_page.namespace }}.{{ get_page_class_name_for_page base_page }}{{else}}{{if (get_page_class_name this) == 'BasePage'}}{{if parent_space.parent_space}}global::{{parent_space.parent_space.namespace}}.BasePage{{else}}global::Yapoml.Selenium.Components.BasePage{{end}}{{else}}{{if parent_space}}global::{{parent_space.namespace}}.BasePage{{else}}global::Yapoml.Selenium.Components.BasePage{{end}}{{end}}{{end}}
 	{
 		public {{ get_page_class_name this }}(global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
 			: base(webDriver, spaceOptions)
