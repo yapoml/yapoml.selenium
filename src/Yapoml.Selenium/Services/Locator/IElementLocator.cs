@@ -5,7 +5,7 @@ namespace Yapoml.Selenium.Services.Locator
 {
     public interface IElementLocator
     {
-        IWebElement FindElement(string componentFriendlyName, ISearchContext searchContext, By by);
+        IWebElement FindElement(ISearchContext searchContext, By by);
 
         IReadOnlyList<IWebElement> FindElements(ISearchContext searchContext, By by);
     }

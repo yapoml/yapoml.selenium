@@ -3,10 +3,10 @@
   params:
     - q
 
-Packages: 
+packages: 
   ref: Package
 
-GetPackage:
-  by: .//article[@class='package' and .//a[text()='{name}']] # where {name} is parameter
+get package:
+  by: .//li[@class='package' and .//a[text()='{name}']] # where {name} is parameter
 
   ref: Package

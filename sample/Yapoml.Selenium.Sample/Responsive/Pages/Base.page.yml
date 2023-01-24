@@ -1,15 +1,15 @@
-﻿Navigation:
+﻿navigation:
  by: id navbar
 
- MenuItems:
+ menu items:
    by: ./ul[1]/li
 
-   Title:
+   title:
      by: ./a/span
 
 ---
 
 base: Home
 
-HamburgerButton:
+hamburger button:
   by: css .navbar-toggle

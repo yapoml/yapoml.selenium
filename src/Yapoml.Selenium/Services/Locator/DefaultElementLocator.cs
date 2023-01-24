@@ -7,7 +7,7 @@ namespace Yapoml.Selenium.Services.Locator
     public class DefaultElementLocator : IElementLocator
     {
         [DebuggerHidden]
-        public IWebElement FindElement(string componentFriendlyName, ISearchContext searchContext, By by)
+        public IWebElement FindElement(ISearchContext searchContext, By by)
         {
             return searchContext.FindElement(by);
         }

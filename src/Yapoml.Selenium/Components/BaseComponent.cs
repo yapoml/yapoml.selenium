@@ -9,6 +9,8 @@ using System.Drawing;
 using Yapoml.Selenium.Options;
 using OpenQA.Selenium.Interactions;
 using Yapoml.Framework.Logging;
+using Yapoml.Selenium.Services.Locator;
+using Yapoml.Selenium.Components.Metadata;
 
 namespace Yapoml.Selenium.Components
 {
@@ -19,19 +21,24 @@ namespace Yapoml.Selenium.Components
 
         protected IWebDriver WebDriver { get; private set; }
 
-        public IWebElement WrappedElement { get; private set; }
+        protected IElementHandler _elementHandler;
+
+        public virtual IWebElement WrappedElement => _elementHandler.Locate();
+
+        protected ComponentMetadata Metadata { get; }
 
         protected ISpaceOptions SpaceOptions { get; private set; }
 
-        protected IComponentEventSource EventSource { get; private set; }
+        protected IEventSource EventSource { get; private set; }
 
-        public BaseComponent(IWebDriver webDriver, IWebElement webElement, ISpaceOptions spaceOptions)
+        public BaseComponent(IWebDriver webDriver, IElementHandler elementHandler, ComponentMetadata metadata, ISpaceOptions spaceOptions)
         {
             WebDriver = webDriver;
-            WrappedElement = webElement;
+            _elementHandler = elementHandler;
+            Metadata = metadata;
             SpaceOptions = spaceOptions;
 
-            EventSource = spaceOptions.Services.Get<IEventSource>().ComponentEventSource;
+            EventSource = spaceOptions.Services.Get<IEventSource>();
             _logger = spaceOptions.Services.Get<ILogger>();
         }
 
@@ -51,7 +58,7 @@ namespace Yapoml.Selenium.Components
 
         public void Clear()
         {
-            _logger.Trace($"Clearing {this.GetType().Name} component");
+            _logger.Trace($"Clearing {Metadata.Name} component");
 
             WrappedElement.Clear();
         }
@@ -61,7 +68,7 @@ namespace Yapoml.Selenium.Components
         /// </summary>
         public virtual void Click()
         {
-            _logger.Trace($"Clicking on {this.GetType().Name} component");
+            _logger.Trace($"Clicking on {Metadata.Name} component");
 
             WrappedElement.Click();
         }
@@ -106,11 +113,11 @@ namespace Yapoml.Selenium.Components
             // todo make it event based
             if (this.GetType().Name.ToLowerInvariant().Contains("password") && text != null)
             {
-                _logger.Trace($"Typing '{new string('*', text.Length)}' into {this.GetType().Name} component");
+                _logger.Trace($"Typing '{new string('*', text.Length)}' into {Metadata.Name} component");
             }
             else
             {
-                _logger.Trace($"Typing '{text}' into {this.GetType().Name} component");
+                _logger.Trace($"Typing '{text}' into {Metadata.Name} component");
             }
 
             WrappedElement.SendKeys(text);
@@ -131,7 +138,7 @@ namespace Yapoml.Selenium.Components
         /// </summary>
         public virtual void Hover()
         {
-            _logger.Trace($"Hovering over {this.GetType().Name} component");
+            _logger.Trace($"Hovering over {Metadata.Name} component");
 
             new Actions(WebDriver).MoveToElement(WrappedElement).Build().Perform();
         }
@@ -141,7 +148,7 @@ namespace Yapoml.Selenium.Components
         /// </summary>
         public virtual void Hover(int x, int y)
         {
-            _logger.Trace($"Hovering on {this.GetType().Name} component by X: {x}, Y: {y}");
+            _logger.Trace($"Hovering on {Metadata.Name} component by X: {x}, Y: {y}");
 
             new Actions(WebDriver).MoveToElement(WrappedElement, x, y).Build().Perform();
         }
@@ -157,7 +164,7 @@ namespace Yapoml.Selenium.Components
             }
             else
             {
-                _logger.Trace($"Scrolling {this.GetType().Name} component into view");
+                _logger.Trace($"Scrolling {Metadata.Name} component into view");
 
                 var js = "arguments[0].scrollIntoView();";
 
@@ -172,7 +179,7 @@ namespace Yapoml.Selenium.Components
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
 
-            _logger.Trace($"Scrolling {this.GetType().Name} component into view with options {options}");
+            _logger.Trace($"Scrolling {Metadata.Name} component into view with options {options}");
 
             var js = $"arguments[0].scrollIntoView({options.ToJson()});";
 
@@ -191,7 +198,7 @@ namespace Yapoml.Selenium.Components
             }
             else
             {
-                _logger.Trace($"Focusing {this.GetType().Name} component");
+                _logger.Trace($"Focusing {Metadata.Name} component");
 
                 var js = "arguments[0].focus();";
 
@@ -207,7 +214,7 @@ namespace Yapoml.Selenium.Components
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
 
-            _logger.Trace($"Focusing {this.GetType().Name} component with options {options}");
+            _logger.Trace($"Focusing {Metadata.Name} component with options {options}");
 
             var js = $"arguments[0].focus({options.ToJson()});";
 
@@ -219,7 +226,7 @@ namespace Yapoml.Selenium.Components
         /// </summary>
         public virtual void Blur()
         {
-            _logger.Trace($"Bluring {this.GetType().Name} component");
+            _logger.Trace($"Bluring {Metadata.Name} component");
 
             var js = $"arguments[0].blur();";
 

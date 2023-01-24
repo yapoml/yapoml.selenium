@@ -4,7 +4,7 @@ using Yapoml.Selenium.Events.Args.Page;
 
 namespace Yapoml.Selenium.Events
 {
-    internal class PageEventSource : IPageEventSource
+    public class PageEventSource : IPageEventSource
     {
         public event EventHandler<PageNavigatingEventArgs> OnPageNavigating;
 

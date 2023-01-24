@@ -6,8 +6,8 @@ namespace {{namespace}}
 	[global::System.Runtime.CompilerServices.CompilerGenerated]
 	public partial class {{ get_page_class_name this }} : {{ if base_page }}global::{{ base_page.namespace }}.{{ get_page_class_name_for_page base_page }}{{else}}{{if (get_page_class_name this) == 'BasePage'}}{{if parent_space.parent_space}}global::{{parent_space.parent_space.namespace}}.BasePage{{else}}global::Yapoml.Selenium.Components.BasePage{{end}}{{else}}{{if parent_space}}global::{{parent_space.namespace}}.BasePage{{else}}global::Yapoml.Selenium.Components.BasePage{{end}}{{end}}{{end}}
 	{
-		public {{ get_page_class_name this }}(global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
-			: base(webDriver, spaceOptions)
+		public {{ get_page_class_name this }}(global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementHandlerRepository elementHandlerRepository, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
+			: base(webDriver, elementHandlerRepository, spaceOptions)
 		{
 
 		}
@@ -35,7 +35,7 @@ namespace {{namespace}}
 
 			var url = navService.BuildUri("{{ url.path }}", segments, queryParams);
 
-			PageEventSource.RaiseOnPageNavigating(this, url);
+			EventSource.PageEventSource.RaiseOnPageNavigating(this, url);
 
 			WebDriver.Navigate().GoToUrl(url);
 
@@ -49,7 +49,7 @@ namespace {{namespace}}
 		{{ include 'NestedComponentTemplate_Desc' component }}
 		/// </summary>
 		{{- if component.by.segments == null }}
-		public {{ if component.is_plural }}global::System.Collections.Generic.IList<{{get_component_return_type component}}>{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}
+		public {{ if component.is_plural }}global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}>{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}
 		{
 			get
 			{
@@ -71,26 +71,21 @@ namespace {{namespace}}
 				{{ else if component.by.method == 'Id' -}}
 				var by = global::OpenQA.Selenium.By.Id(byValue);
 				{{ end -}}
-		
+				
+				var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.name}}" };
+				var elementLocator = SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>();
+				var elementHandler = new global::Yapoml.Selenium.Services.Locator.ElementHandler(WebDriver, null, elementLocator, by, metadata, EventSource);
+
 				{{- if component.is_plural }}
-				ComponentEventSource.RaiseOnFindingComponents("{{component.name}}", by);
-				{{ include 'LineDirectiveTemplate' component }}
-				var webElements = SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>().FindElements(WebDriver, by);
-				#line default
-				ComponentEventSource.RaiseOnFoundComponents(by, webElements);
-				return webElements.Select(e => SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}>(WebDriver, e, SpaceOptions)).ToList();
+				var webElements = new global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}>(WebDriver, elementHandler, metadata, EventSource, SpaceOptions);
+				return webElements;
 				{{ else }}
-				ComponentEventSource.RaiseOnFindingComponent("{{component.name}}", by);
-				{{ include 'LineDirectiveTemplate' component }}
-				var webElement = SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>().FindElement("{{ component.name }}", WebDriver, by);
-				#line default
-				ComponentEventSource.RaiseOnFoundComponent(by, WebDriver, webElement);
-				return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}>(WebDriver, webElement, SpaceOptions);
+				return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}>(WebDriver, elementHandler, metadata, SpaceOptions);
 				{{- end}}
 			}
 		}
 		{{ else }}
-		public {{ if component.is_plural }}global::System.Collections.Generic.IList<{{get_component_return_type component}}>{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
+		public {{ if component.is_plural }}global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}>{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
 		{
 			var segments = new global::System.Collections.Generic.List<global::System.Collections.Generic.KeyValuePair<string, string>>() { 
 				{{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}new global::System.Collections.Generic.KeyValuePair<string, string>("{{ segment }}", {{ segment }}) {{ end }} 
@@ -115,21 +110,16 @@ namespace {{namespace}}
 			var by = global::OpenQA.Selenium.By.Id(byValue);
 			{{ end -}}
 		
+			var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.name}}" };
+			var elementLocator = SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>();
+			var elementHandler = new global::Yapoml.Selenium.Services.Locator.ElementHandler(WebDriver, null, elementLocator, by, metadata, EventSource);
+
 			{{- if component.is_plural -}}
-			ComponentEventSource.RaiseOnFindingComponents("{{component.name}}", by);
-			{{ include 'LineDirectiveTemplate' component }}
-			var webElements = SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>().FindElements(WebDriver, by);
-			#line default
-			ComponentEventSource.RaiseOnFoundComponents(by, webElements);
-			return webElements.Select(e => SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}>(WebDriver, e, SpaceOptions)).ToList();
+			var webElements = new global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}>(WebDriver, elementHandler, metadata, EventSource, SpaceOptions);
+			return webElements;
 			{{ else }}
-			ComponentEventSource.RaiseOnFindingComponent("{{component.name}}", by);
-			{{ include 'LineDirectiveTemplate' component }}
-			var webElement = SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>().FindElement("{{ component.name }}", WebDriver, by);
-			#line default
-			ComponentEventSource.RaiseOnFoundComponent(by, WebDriver, webElement);
-			return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}>(WebDriver, webElement, SpaceOptions);
-			{{- end -}}
+			return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}>(WebDriver, elementHandler, metadata, SpaceOptions);
+			{{- end }}
 		}
 		{{ end }}
 
@@ -138,9 +128,19 @@ namespace {{namespace}}
 		{{ end }}
 		{{ end }}
 
-		{{- if (array.size components) > 0 }}
-		{{ include 'WaiterTemplate' this "WebDriver"}}
-		{{ end }}
+		/// <summary>
+		/// Various awaitable conditions on the {{name}} page.
+		/// </summary>
+		public {{ get_page_class_name this }} When(global::System.Action<{{ get_page_class_name this }}.Conditions> it)
+		{
+			var timeoutOptions = SpaceOptions.Services.Get<global::Yapoml.Selenium.Options.TimeoutOptions>();
+
+			it(new Conditions(timeoutOptions));
+
+			return this;
+		}
+
+		{{ include 'PageConditionsTemplate' this }}
 	}
 }
 # pragma warning restore

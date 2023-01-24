@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Yapoml.Selenium.Options;
-using Yapoml.Selenium.Services;
 
 namespace Yapoml.Selenium.Services.Locator
 {
@@ -17,7 +16,7 @@ namespace Yapoml.Selenium.Services.Locator
         }
 
         [DebuggerHidden]
-        public IWebElement FindElement(string componentFriendlyName, ISearchContext searchContext, By by)
+        public IWebElement FindElement(ISearchContext searchContext, By by)
         {
             Exception lastError = null;
 
@@ -46,7 +45,7 @@ namespace Yapoml.Selenium.Services.Locator
             }
             catch (TimeoutException)
             {
-                throw Waiter.BuildTimeoutException($"{componentFriendlyName} component is not located yet '{by}'.", lastError, _timeoutOptions.Timeout, _timeoutOptions.PollingInterval, ignoredExceptions);
+                throw Waiter.BuildTimeoutException($"Component is not located yet '{by}'.", lastError, _timeoutOptions.Timeout, _timeoutOptions.PollingInterval, ignoredExceptions);
             }
         }
 

@@ -21,7 +21,7 @@ namespace Yapoml.Selenium.Sample.Basics
         [TearDown]
         public void TearDown()
         {
-            _webDriver.Quit();
+            _webDriver?.Quit();
         }
 
         [Test]
@@ -43,11 +43,17 @@ namespace Yapoml.Selenium.Sample.Basics
             var ya = _webDriver.Ya(
                 opts => opts.UseLighter(delay: 200, fadeOutSpeed: 400)
                 ).Basics.Pages;
+            
+            // ya.Home.When(it => it.IsLoaded());
+            // ya.Home.SearchButton.When(it => it.IsDisplayed()).Click();
 
             ya.Home.Search("yaml");
 
+            // ya.Packages.Packages[0].When(p => p.IsDisplayed());
+
             foreach (var package in ya.Packages.Packages)
             {
+                // Console.WriteLine(package.Title.Text);
                 Assert.That(package.Title.Text, Is.Not.Empty);
                 Assert.That(package.Description.Text, Is.Not.Empty);
             }
@@ -79,10 +85,10 @@ namespace Yapoml.Selenium.Sample.Basics
                 .Basics.Pages.Home;
 
             // used global timeout
-            var searchInput = homePage.WaitSearchInputDisplayed();
+            var searchInput = homePage.SearchInput.When(it => it.IsDisplayed());
 
             // or explicitly only here
-            var searchInput2 = homePage.WaitSearchInputDisplayed(timeout: TimeSpan.FromSeconds(20));
+            var searchInput2 = homePage.SearchInput.When(it => it.IsDisplayed(timeout: TimeSpan.FromSeconds(20)));
 
             // or using awaitable components by default
             var searchInput3 = _webDriver.Ya(opts => opts.UseAwaitableComponents())

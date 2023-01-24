@@ -1,0 +1,9 @@
+﻿[global::System.Runtime.CompilerServices.CompilerGenerated]
+public partial class Conditions : global::Yapoml.Selenium.Components.BasePageConditions<Conditions>
+{
+	public Conditions(global::Yapoml.Selenium.Options.TimeoutOptions timeoutOptions)
+		: base(timeoutOptions.Timeout, timeoutOptions.PollingInterval)
+	{
+		base.obj = this;
+	}
+}

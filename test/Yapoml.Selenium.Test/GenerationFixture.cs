@@ -22,6 +22,38 @@ namespace Yapoml.Selenium.Test
 
             for (int i = 0; i < 50; i++)
             {
+                list.Add(new MyAdditionalText(Environment.CurrentDirectory + $"A/MyPage{i}.page.yaml",
+@"
+SomeButton: ./qwe
+"
+                    ));
+            }
+
+            var files = ImmutableArray.Create<AdditionalText>(list.ToArray());
+
+            GeneratorDriver driver = CSharpGeneratorDriver.Create(generator)
+                .WithUpdatedAnalyzerConfigOptions(new MyConfigOptionsProvider())
+                .AddAdditionalTexts(files);
+
+            var inputCompilation = CreateCompilation();
+
+            driver = driver.RunGeneratorsAndUpdateCompilation(inputCompilation, out var outputCompilation, out var diagnostics);
+
+            GeneratorDriverRunResult runResult = driver.GetRunResult();
+
+            runResult.Diagnostics.Should().BeEmpty();
+            runResult.GeneratedTrees.Should().HaveCount(54);
+        }
+
+        [Test]
+        public void Test2()
+        {
+            Generator generator = new Generator();
+
+            var list = new List<MyAdditionalText>();
+
+            for (int i = 0; i < 50; i++)
+            {
                 list.Add(new MyAdditionalText(Environment.CurrentDirectory + $"A/MyComponent{i}.component.yaml",
 @"
 SomeButton: ./qwe

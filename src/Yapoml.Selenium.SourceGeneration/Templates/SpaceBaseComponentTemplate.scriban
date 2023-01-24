@@ -1,8 +1,8 @@
 ﻿[global::System.Runtime.CompilerServices.CompilerGenerated]
 public abstract partial class BaseComponent : {{if parent_space}}global::{{parent_space.namespace}}{{else}}global::{{workspace.root_namespace}}{{end}}.BaseComponent
 {
-	public BaseComponent(global::OpenQA.Selenium.IWebDriver webDriver, global::OpenQA.Selenium.IWebElement webElement, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
-		: base(webDriver, webElement, spaceOptions)
+	public BaseComponent(global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementHandler elementHandler, global::Yapoml.Selenium.Components.Metadata.ComponentMetadata metadata, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
+		: base(webDriver, elementHandler, metadata, spaceOptions)
 	{
 
 	}

@@ -1,26 +1,27 @@
 ﻿using OpenQA.Selenium;
 using Yapoml.Framework.Options;
 using Yapoml.Selenium.Events;
+using Yapoml.Selenium.Services.Locator;
 
 namespace Yapoml.Selenium.Components
 {
     public abstract class BasePage
     {
-        public BasePage(IWebDriver webDriver, ISpaceOptions spaceOptions)
+        public BasePage(IWebDriver webDriver, IElementHandlerRepository elementHandlerRepository, ISpaceOptions spaceOptions)
         {
             WebDriver = webDriver;
+            ElementHandlerRepository = elementHandlerRepository;
             SpaceOptions = spaceOptions;
 
-            PageEventSource = spaceOptions.Services.Get<IEventSource>().PageEventSource;
-            ComponentEventSource = spaceOptions.Services.Get<IEventSource>().ComponentEventSource;
+            EventSource = spaceOptions.Services.Get<IEventSource>();
         }
 
         protected IWebDriver WebDriver { get; }
 
+        protected IElementHandlerRepository ElementHandlerRepository { get; }
+
         protected ISpaceOptions SpaceOptions { get; }
 
-        protected IPageEventSource PageEventSource;
-
-        protected IComponentEventSource ComponentEventSource { get; }
+        protected IEventSource EventSource;
     }
 }

@@ -1,4 +1,3 @@
-﻿url:
-  path: /packages/{packageId}
+﻿url: /packages/{packageId}
 
-Version: .version-title
+version: .version-title

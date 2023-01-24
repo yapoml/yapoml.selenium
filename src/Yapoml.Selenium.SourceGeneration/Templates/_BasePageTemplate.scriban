@@ -5,8 +5,8 @@ namespace {{root_namespace}}
 	[global::System.Runtime.CompilerServices.CompilerGenerated]
 	public abstract partial class BasePage : global::Yapoml.Selenium.Components.BasePage
 	{
-		public BasePage(global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
-			: base(webDriver, spaceOptions)
+		public BasePage(global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementHandlerRepository elementHandlerRepository, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
+			: base(webDriver, elementHandlerRepository, spaceOptions)
 		{
 
 		}

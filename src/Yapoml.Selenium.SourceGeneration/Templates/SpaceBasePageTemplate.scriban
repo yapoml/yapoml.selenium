@@ -1,8 +1,8 @@
 ﻿[global::System.Runtime.CompilerServices.CompilerGenerated]
 public partial class BasePage : {{ if base_page }}global::{{ base_page.namespace }}.{{base_page.name}}{{else}}{{if parent_space}}global::{{parent_space.namespace}}{{else}}global::{{workspace.root_namespace}}{{end}}.BasePage{{end}}
 {
-	public BasePage(global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
-		: base(webDriver, spaceOptions)
+	public BasePage(global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementHandlerRepository elementHandlerRepository, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
+		: base(webDriver, elementHandlerRepository, spaceOptions)
 	{
 
 	}
