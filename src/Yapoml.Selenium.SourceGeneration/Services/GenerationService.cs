@@ -112,5 +112,10 @@ namespace Yapoml.Selenium.SourceGeneration.Services
                 return pageName + "Page";
             }
         }
+
+        public static string Escape(string str)
+        {
+            return str.Replace("\"", "\\\"");
+        }
     }
 }

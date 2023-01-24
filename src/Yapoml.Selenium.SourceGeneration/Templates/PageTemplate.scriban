@@ -53,7 +53,7 @@ namespace {{namespace}}
 		{
 			get
 			{
-				var byValue = "{{ component.by.value }}";
+				var byValue = "{{ escape component.by.value }}";
 
 				{{ if component.by.method == 'None' -}}
 				{{ if is_xpath component.by.value }}
@@ -91,7 +91,7 @@ namespace {{namespace}}
 				{{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}new global::System.Collections.Generic.KeyValuePair<string, string>("{{ segment }}", {{ segment }}) {{ end }} 
 			};
 
-			var byValue = new global::Yapoml.Selenium.Services.SegmentService().Replace("{{ component.by.value }}", segments);
+			var byValue = new global::Yapoml.Selenium.Services.SegmentService().Replace("{{ escape component.by.value }}", segments);
 
 			{{ if component.by.method == 'None' -}}
 			{{ if is_xpath component.by.value }}
