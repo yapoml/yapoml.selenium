@@ -36,7 +36,7 @@ namespace {{root_namespace}}
 		{{ end -}}
 		/// </list>
 		/// </summary>
-		public {{ get_page_class_name_for_page page }} {{page.name}}
+		public {{ get_page_class_name_for_page page }} {{get_page_accessor_name page.name}}
 		{
 			get
 			{

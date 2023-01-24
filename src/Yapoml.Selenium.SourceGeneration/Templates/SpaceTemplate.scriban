@@ -31,7 +31,7 @@ namespace {{namespace}}
 		{{- end }}
 		/// </list>
 		/// </summary>
-		public global::{{page.namespace}}.{{get_page_class_name_for_page page}} {{page.name}} => _spaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IPageFactory>().Create<global::{{page.namespace}}.{{get_page_class_name_for_page page}}>(_webDriver, new global::Yapoml.Selenium.Services.Locator.ElementHandlerRepository(), _spaceOptions);
+		public global::{{page.namespace}}.{{get_page_class_name_for_page page}} {{get_page_accessor_name page.name}} => _spaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IPageFactory>().Create<global::{{page.namespace}}.{{get_page_class_name_for_page page}}>(_webDriver, new global::Yapoml.Selenium.Services.Locator.ElementHandlerRepository(), _spaceOptions);
 		{{- end }}
 	}
 

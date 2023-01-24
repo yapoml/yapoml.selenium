@@ -100,5 +100,17 @@ namespace Yapoml.Selenium.SourceGeneration.Services
                 return false;
             }
         }
+
+        public static string GetPageAccessorName(string pageName)
+        {
+            if (pageName.EndsWith("page", System.StringComparison.OrdinalIgnoreCase))
+            {
+                return pageName;
+            }
+            else
+            {
+                return pageName + "Page";
+            }
+        }
     }
 }

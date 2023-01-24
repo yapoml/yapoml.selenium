@@ -44,21 +44,21 @@ namespace Yapoml.Selenium.Sample.Basics
                 opts => opts.UseLighter(delay: 200, fadeOutSpeed: 400)
                 ).Basics.Pages;
             
-            // ya.Home.When(it => it.IsLoaded());
-            // ya.Home.SearchButton.When(it => it.IsDisplayed()).Click();
+            // ya.HomePage.When(it => it.IsLoaded());
+            // ya.HomePage.SearchButton.When(it => it.IsDisplayed()).Click();
 
-            ya.Home.Search("yaml");
+            ya.HomePage.Search("yaml");
 
-            // ya.Packages.Packages[0].When(p => p.IsDisplayed());
+            // ya.PackagesPage.Packages[0].When(p => p.IsDisplayed());
 
-            foreach (var package in ya.Packages.Packages)
+            foreach (var package in ya.PackagesPage.Packages)
             {
                 // Console.WriteLine(package.Title.Text);
                 Assert.That(package.Title.Text, Is.Not.Empty);
                 Assert.That(package.Description.Text, Is.Not.Empty);
             }
 
-            var yamlPackage = ya.Packages.GetPackage(name: "YamlDotNet");
+            var yamlPackage = ya.PackagesPage.GetPackage(name: "YamlDotNet");
             Console.WriteLine(yamlPackage.Description.Text);
         }
 
@@ -68,12 +68,12 @@ namespace Yapoml.Selenium.Sample.Basics
             var ya = _webDriver.Ya(opts =>
                 opts.UseBaseUrl("https://nuget.org"))
                 .Basics.Pages;
-            //ya.HomePage.qwe
+
             // it opens https://nuget.org/packages?q=yaml
-            Assert.That(ya.Packages.Open(q: "yaml").Packages.Count, Is.EqualTo(20));
+            Assert.That(ya.PackagesPage.Open(q: "yaml").Packages.Count, Is.EqualTo(20));
 
             // it opens https://nuget.org/packages/Newtonsoft.Json
-            Console.WriteLine(ya.PackageDetails.Open("Newtonsoft.Json").Version.Text);
+            Console.WriteLine(ya.PackageDetailsPage.Open("Newtonsoft.Json").Version.Text);
         }
 
         [Test]
@@ -82,7 +82,7 @@ namespace Yapoml.Selenium.Sample.Basics
             // set global timeout
             var homePage = _webDriver.Ya(opts =>
                     opts.WithTimeout(timeout: TimeSpan.FromSeconds(10)))
-                .Basics.Pages.Home;
+                .Basics.Pages.HomePage;
 
             // used global timeout
             var searchInput = homePage.SearchInput.When(it => it.IsDisplayed());
@@ -92,13 +92,13 @@ namespace Yapoml.Selenium.Sample.Basics
 
             // or using awaitable components by default
             var searchInput3 = _webDriver.Ya(opts => opts.UseAwaitableComponents())
-                .Basics.Pages.Home.SearchInput;
+                .Basics.Pages.HomePage.SearchInput;
         }
 
         [Test]
         public void ScrollEachPackageIntoView()
         {
-            var packagesPage = _webDriver.Ya(opts => opts.UseBaseUrl("https://nuget.org")).Basics.Pages.Packages;
+            var packagesPage = _webDriver.Ya(opts => opts.UseBaseUrl("https://nuget.org")).Basics.Pages.PackagesPage;
 
             foreach (var package in packagesPage.Open(q: "yaml").Packages)
             {

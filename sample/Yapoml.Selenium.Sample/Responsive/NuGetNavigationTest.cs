@@ -59,9 +59,9 @@ namespace Yapoml.Selenium.Sample.Responsive
 
             // HomePage property returns instance of HomePage class or HomePage_1 class
             // depending on MyPageObjectFactory
-            ya.Home.Navigate("Packages");
+            ya.HomePage.Navigate("Packages");
 
-            foreach (var package in ya.Packages.Packages)
+            foreach (var package in ya.PackagesPage.Packages)
             {
                 Assert.That(package.Title.Text, Is.Not.Empty);
                 Assert.That(package.Description.Text, Is.Not.Empty);

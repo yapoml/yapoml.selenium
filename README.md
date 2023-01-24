@@ -7,11 +7,11 @@ Install [Yapoml.Selenium](https://www.nuget.org/packages/Yapoml.Selenium) nuget 
 Given that you have the following `Login.page.yaml` file
 
 ```yaml
-UsernameInput: id username
+username input: id username
 ```
 
-Then you are able to immediately interact with web elements
+Then you are immediately able to interact with web elements
 
 ```csharp
-webDriver.Ya().Login.UsernameInput.SendKeys("user01");
+webDriver.Ya().LoginPage.UsernameInput.SendKeys("user01");
 ```
