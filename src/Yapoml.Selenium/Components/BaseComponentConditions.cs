@@ -26,7 +26,7 @@ namespace Yapoml.Selenium.Components
         /// <returns></returns>
         public virtual TConditions IsDisplayed(TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
         {
-            Services.Waiter.UntilDisplayed("{{ $1.name }}", ElementHandler.Locate(), timeout ?? Timeout, pollingInterval ?? PollingInterval);
+            Services.Waiter.UntilDisplayed(ElementHandler.ComponentMetadata.Name, ElementHandler.Locate(), timeout ?? Timeout, pollingInterval ?? PollingInterval);
 
             return obj;
         }
@@ -39,7 +39,7 @@ namespace Yapoml.Selenium.Components
         /// <returns></returns>
         public virtual TConditions IsEnabled(TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
         {
-            Services.Waiter.UntilEnabled("{{ $1.name }}", ElementHandler.Locate(), timeout ?? Timeout, pollingInterval ?? PollingInterval);
+            Services.Waiter.UntilEnabled(ElementHandler.ComponentMetadata.Name, ElementHandler.Locate(), timeout ?? Timeout, pollingInterval ?? PollingInterval);
 
             return obj;
         }
@@ -54,7 +54,7 @@ namespace Yapoml.Selenium.Components
         /// <returns></returns>
         public virtual TConditions AttributeIs(string name, string value, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
         {
-            Services.Waiter.UntilAttributeValue(name, value, "{{ $1.name }}", ElementHandler.Locate(), timeout ?? Timeout, pollingInterval ?? PollingInterval);
+            Services.Waiter.UntilAttributeValue(name, value, ElementHandler.ComponentMetadata.Name, ElementHandler.Locate(), timeout ?? Timeout, pollingInterval ?? PollingInterval);
             return obj;
         }
 
@@ -68,7 +68,7 @@ namespace Yapoml.Selenium.Components
         /// <returns></returns>
         public virtual TConditions CssIs(string name, string value, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
         {
-            Services.Waiter.UntilCssValue(name, value, "{{ $1.name }}", ElementHandler.Locate(), timeout ?? Timeout, pollingInterval ?? PollingInterval);
+            Services.Waiter.UntilCssValue(name, value, ElementHandler.ComponentMetadata.Name, ElementHandler.Locate(), timeout ?? Timeout, pollingInterval ?? PollingInterval);
 
             return obj;
         }

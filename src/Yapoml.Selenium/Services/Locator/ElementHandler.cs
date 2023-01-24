@@ -10,7 +10,6 @@ namespace Yapoml.Selenium.Services.Locator
         private readonly IWebDriver _webDriver;
         private readonly IElementHandler _parentElementHandler;
         private readonly IElementLocator _elementLocator;
-        private readonly ComponentMetadata _componentMetadata;
         private readonly IEventSource _eventSource;
 
         public ElementHandler(IWebDriver webDriver, IElementHandler parentElementHandler, IElementLocator elementLocator, By by, ComponentMetadata componentMetadata, IEventSource eventSource)
@@ -19,7 +18,7 @@ namespace Yapoml.Selenium.Services.Locator
             _parentElementHandler = parentElementHandler;
             _elementLocator = elementLocator;
             By = by;
-            _componentMetadata = componentMetadata;
+            ComponentMetadata = componentMetadata;
             _eventSource = eventSource;
         }
 
@@ -32,6 +31,8 @@ namespace Yapoml.Selenium.Services.Locator
         private IWebElement _webElement;
 
         public By By { get; }
+
+        public ComponentMetadata ComponentMetadata { get; }
 
         public IWebElement Locate()
         {
@@ -47,7 +48,7 @@ namespace Yapoml.Selenium.Services.Locator
                     searchContext = _webDriver;
                 }
 
-                _eventSource.ComponentEventSource.RaiseOnFindingComponent(_componentMetadata.Name, By);
+                _eventSource.ComponentEventSource.RaiseOnFindingComponent(ComponentMetadata.Name, By);
 
                 _webElement = _elementLocator.FindElement(searchContext, By);
 
@@ -74,7 +75,7 @@ namespace Yapoml.Selenium.Services.Locator
                     searchContext = _webDriver;
                 }
 
-                _eventSource.ComponentEventSource.RaiseOnFindingComponents(_componentMetadata.Name, By);
+                _eventSource.ComponentEventSource.RaiseOnFindingComponents(ComponentMetadata.Name, By);
 
                 _webElements = _elementLocator.FindElements(searchContext, By);
 
