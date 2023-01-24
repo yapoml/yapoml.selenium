@@ -40,7 +40,7 @@ namespace {{root_namespace}}
 		{
 			get
 			{
-				return _spaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IPageFactory>().Create<{{ get_page_class_name_for_page page }}>(_webDriver, _spaceOptions);
+				return _spaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IPageFactory>().Create<{{ get_page_class_name_for_page page }}>(_webDriver, new global::Yapoml.Selenium.Services.Locator.ElementHandlerRepository(), _spaceOptions);
 			}
 		}
 {{ end }}
