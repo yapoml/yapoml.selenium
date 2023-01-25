@@ -56,9 +56,10 @@ namespace Yapoml.Selenium.Components
 
         public bool Displayed
         {
+            // TODO return bool for awaitable components (they throw )
             get
             {
-                var displayed = true;
+                bool displayed;
 
                 try
                 {
