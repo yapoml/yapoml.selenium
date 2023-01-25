@@ -54,7 +54,24 @@ namespace Yapoml.Selenium.Components
 
         public Size Size => WrappedElement.Size;
 
-        public bool Displayed => WrappedElement.Displayed;
+        public bool Displayed
+        {
+            get
+            {
+                var displayed = true;
+
+                try
+                {
+                    displayed = WrappedElement.Displayed;
+                }
+                catch (Exception ex) when (ex is NoSuchElementException || ex is StaleElementReferenceException)
+                {
+                    displayed = false;
+                }
+
+                return displayed;
+            }
+        }
 
         public void Clear()
         {
