@@ -2,15 +2,14 @@
 namespace {{root_namespace}}
 {
 	[global::System.Runtime.CompilerServices.CompilerGenerated]
-	public abstract partial class BaseComponent : global::Yapoml.Selenium.Components.BaseComponent
+	public abstract partial class BaseComponent<TComponent> : global::Yapoml.Selenium.Components.BaseComponent<TComponent> where TComponent: BaseComponent<TComponent>
 	{
 		public BaseComponent(global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementHandler elementHandler, global::Yapoml.Selenium.Components.Metadata.ComponentMetadata metadata, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
 			: base(webDriver, elementHandler, metadata, spaceOptions)
 		{
-			
+		
 		}
 
-		{{ include 'SpaceBaseComponentTemplate_Actions' this }}
 	}
 }
 # pragma warning restore

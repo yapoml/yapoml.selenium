@@ -53,6 +53,7 @@ namespace Yapoml.Selenium.Sample.Basics
 
             foreach (var package in ya.PackagesPage.Packages)
             {
+                package.ScrollIntoView();
                 // Console.WriteLine(package.Title.Text);
                 Assert.That(package.Title.Text, Is.Not.Empty);
                 Assert.That(package.Description.Text, Is.Not.Empty);

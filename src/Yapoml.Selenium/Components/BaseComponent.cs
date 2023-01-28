@@ -1,6 +1,4 @@
 ﻿using OpenQA.Selenium;
-using System.Linq;
-using System.Reflection;
 using System;
 using Yapoml.Framework.Options;
 using Yapoml.Selenium.Events;
@@ -15,8 +13,10 @@ using Yapoml.Selenium.Components.Metadata;
 namespace Yapoml.Selenium.Components
 {
     /// <inheritdoc cref="IWebElement"/>
-    public abstract class BaseComponent : IWebElement, IWrapsElement, ITakesScreenshot
+    public abstract class BaseComponent<TComponent> : IWebElement, IWrapsElement, ITakesScreenshot where TComponent: BaseComponent<TComponent>
     {
+        protected TComponent obj;
+
         private ILogger _logger;
 
         protected IWebDriver WebDriver { get; private set; }
@@ -249,22 +249,6 @@ namespace Yapoml.Selenium.Components
             var js = $"arguments[0].blur();";
 
             (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement);
-        }
-
-        /// <summary>
-        /// Determine whether component has private method with specific signature.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="methodName"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        protected bool HasImplementation<T>(string methodName, params object[] args) where T : BaseComponent
-        {
-            Type[] argTypes = args.Select(arg => arg.GetType()).ToArray();
-
-            var method = typeof(T).GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance, null, argTypes, null);
-
-            return method != null;
         }
     }
 }

@@ -4,6 +4,7 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using Yapoml.Framework.Options;
 using Yapoml.Selenium.Components;
+using Yapoml.Selenium.Components.Metadata;
 using Yapoml.Selenium.Services.Locator;
 
 namespace Yapoml.Selenium.Test.Components
@@ -21,10 +22,17 @@ namespace Yapoml.Selenium.Test.Components
             var spaceOptions = new Mock<ISpaceOptions>();
             spaceOptions.SetupGet(p => p.Services).Returns(container.Object);
 
-            var component = new Mock<BaseComponent>(webDriver.Object, elementHandler.Object, null, spaceOptions.Object);
+            var component = new Mock<BaseComponent<TestComponent>>(webDriver.Object, elementHandler.Object, null, spaceOptions.Object);
             component.CallBase = true;
 
             component.Object.Displayed.Should().BeFalse();
+        }
+    }
+
+    public class TestComponent : BaseComponent<TestComponent>
+    {
+        public TestComponent(IWebDriver webDriver, IElementHandler elementHandler, ComponentMetadata metadata, ISpaceOptions spaceOptions) : base(webDriver, elementHandler, metadata, spaceOptions)
+        {
         }
     }
 }

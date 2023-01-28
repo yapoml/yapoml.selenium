@@ -1,11 +1,9 @@
 ﻿[global::System.Runtime.CompilerServices.CompilerGenerated]
-public abstract partial class BaseComponent : {{if parent_space}}global::{{parent_space.namespace}}{{else}}global::{{workspace.root_namespace}}{{end}}.BaseComponent
+public abstract partial class BaseComponent<TComponent> : {{if parent_space}}global::{{parent_space.namespace}}{{else}}global::{{workspace.root_namespace}}{{end}}.BaseComponent<TComponent> where TComponent: BaseComponent<TComponent>
 {
 	public BaseComponent(global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementHandler elementHandler, global::Yapoml.Selenium.Components.Metadata.ComponentMetadata metadata, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
 		: base(webDriver, elementHandler, metadata, spaceOptions)
 	{
-
+		
 	}
-
-	{{ include 'SpaceBaseComponentTemplate_Actions' }}
 }

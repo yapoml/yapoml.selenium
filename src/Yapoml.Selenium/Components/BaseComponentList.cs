@@ -10,7 +10,7 @@ using Yapoml.Selenium.Services.Locator;
 
 namespace Yapoml.Selenium.Components
 {
-    public class BaseComponentList<T> : IReadOnlyList<T> where T : BaseComponent
+    public class BaseComponentList<T> : IReadOnlyList<T> where T : BaseComponent<T>
     {
         private IList<T> _list;
 

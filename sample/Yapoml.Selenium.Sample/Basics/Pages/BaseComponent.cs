@@ -2,9 +2,9 @@
 
 namespace Yapoml.Selenium.Sample.Basics.Pages
 {
-    partial class BaseComponent
+    partial class BaseComponent<TComponent>
     {
-        partial void OnScrollIntoView()
+        public override void ScrollIntoView()
         {
             Console.WriteLine("I am invoked each time when component is scrolling into view");
 
