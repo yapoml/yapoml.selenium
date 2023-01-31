@@ -154,27 +154,31 @@ namespace Yapoml.Selenium.Components
         /// <summary>
         /// Moves the cursor onto the element or one of its child elements.
         /// </summary>
-        public virtual void Hover()
+        public virtual TComponent Hover()
         {
             _logger.Trace($"Hovering over {Metadata.Name} component");
 
             new Actions(WebDriver).MoveToElement(WrappedElement).Build().Perform();
+
+            return obj;
         }
 
         /// <summary>
         /// Moves the cursor onto the element or one of its child elements.
         /// </summary>
-        public virtual void Hover(int x, int y)
+        public virtual TComponent Hover(int x, int y)
         {
             _logger.Trace($"Hovering on {Metadata.Name} component by X: {x}, Y: {y}");
 
             new Actions(WebDriver).MoveToElement(WrappedElement, x, y).Build().Perform();
+
+            return obj;
         }
 
         /// <summary>
         /// Scrolls the element's ancestor containers is visible to the user.
         /// </summary>
-        public virtual void ScrollIntoView()
+        public virtual TComponent ScrollIntoView()
         {
             if (SpaceOptions.Services.TryGet<ScrollIntoViewOptions>(out var options))
             {
@@ -188,12 +192,14 @@ namespace Yapoml.Selenium.Components
 
                 (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement);
             }
+
+            return obj;
         }
 
         /// <summary>
         /// Scrolls the element's ancestor containers is visible to the user.
         /// </summary>
-        public virtual void ScrollIntoView(ScrollIntoViewOptions options)
+        public virtual TComponent ScrollIntoView(ScrollIntoViewOptions options)
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
 
@@ -202,13 +208,15 @@ namespace Yapoml.Selenium.Components
             var js = $"arguments[0].scrollIntoView({options.ToJson()});";
 
             (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement);
+
+            return obj;
         }
 
         /// <summary>
         /// Sets focus on the specified element, if it can be focused.
         /// The focused element is the element that will receive keyboard and similar events by default.
         /// </summary>
-        public virtual void Focus()
+        public virtual TComponent Focus()
         {
             if (SpaceOptions.Services.TryGet<FocusOptions>(out var options))
             {
@@ -222,13 +230,15 @@ namespace Yapoml.Selenium.Components
 
                 (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement);
             }
+
+            return obj;
         }
 
         /// <summary>
         /// Sets focus on the specified element, if it can be focused.
         /// The focused element is the element that will receive keyboard and similar events by default.
         /// </summary>
-        public virtual void Focus(FocusOptions options)
+        public virtual TComponent Focus(FocusOptions options)
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
 
@@ -237,18 +247,22 @@ namespace Yapoml.Selenium.Components
             var js = $"arguments[0].focus({options.ToJson()});";
 
             (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement);
+
+            return obj;
         }
 
         /// <summary>
         /// Removes keyboard focus from the element.
         /// </summary>
-        public virtual void Blur()
+        public virtual TComponent Blur()
         {
             _logger.Trace($"Bluring {Metadata.Name} component");
 
             var js = $"arguments[0].blur();";
 
             (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement);
+
+            return obj;
         }
     }
 }
