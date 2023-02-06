@@ -4,8 +4,6 @@ using Yapoml.Framework.Options;
 using Yapoml.Selenium.Events;
 using System.Collections.ObjectModel;
 using System.Drawing;
-using Yapoml.Selenium.Options;
-using OpenQA.Selenium.Interactions;
 using Yapoml.Framework.Logging;
 using Yapoml.Selenium.Services.Locator;
 using Yapoml.Selenium.Components.Metadata;
@@ -13,13 +11,16 @@ using Yapoml.Selenium.Components.Metadata;
 namespace Yapoml.Selenium.Components
 {
     /// <inheritdoc cref="IWebElement"/>
-    public abstract class BaseComponent<TComponent> : IWebElement, IWrapsElement, ITakesScreenshot where TComponent: BaseComponent<TComponent>
+    public abstract partial class BaseComponent<TComponent, TConditions> : IWebElement, IWrapsElement, ITakesScreenshot where TComponent : BaseComponent<TComponent, TConditions>
     {
-        protected TComponent obj;
+        protected TComponent component;
+        protected TConditions conditions;
 
         private ILogger _logger;
 
         protected IWebDriver WebDriver { get; private set; }
+
+        protected IElementHandlerRepository ElementHandlerRepository { get; }
 
         protected IElementHandler _elementHandler;
 
@@ -31,9 +32,10 @@ namespace Yapoml.Selenium.Components
 
         protected IEventSource EventSource { get; private set; }
 
-        public BaseComponent(IWebDriver webDriver, IElementHandler elementHandler, ComponentMetadata metadata, ISpaceOptions spaceOptions)
+        public BaseComponent(IWebDriver webDriver, IElementHandlerRepository elementHandlerRepository, IElementHandler elementHandler, ComponentMetadata metadata, ISpaceOptions spaceOptions)
         {
             WebDriver = webDriver;
+            ElementHandlerRepository = elementHandlerRepository;
             _elementHandler = elementHandler;
             Metadata = metadata;
             SpaceOptions = spaceOptions;
@@ -42,17 +44,17 @@ namespace Yapoml.Selenium.Components
             _logger = spaceOptions.Services.Get<ILogger>();
         }
 
-        public string TagName => WrappedElement.TagName;
+        public string TagName => RelocateOnStaleReference(() => WrappedElement.TagName);
 
-        public string Text => WrappedElement.Text;
+        public string Text => RelocateOnStaleReference(() => WrappedElement.Text);
 
-        public bool Enabled => WrappedElement.Enabled;
+        public bool Enabled => RelocateOnStaleReference(() => WrappedElement.Enabled);
 
-        public bool Selected => WrappedElement.Selected;
+        public bool Selected => RelocateOnStaleReference(() => WrappedElement.Selected);
 
-        public Point Location => WrappedElement.Location;
+        public Point Location => RelocateOnStaleReference(() => WrappedElement.Location);
 
-        public Size Size => WrappedElement.Size;
+        public Size Size => RelocateOnStaleReference(() => WrappedElement.Size);
 
         public bool Displayed
         {
@@ -63,7 +65,7 @@ namespace Yapoml.Selenium.Components
 
                 try
                 {
-                    displayed = WrappedElement.Displayed;
+                    displayed = RelocateOnStaleReference(() => WrappedElement.Displayed);
                 }
                 catch (Exception ex) when (ex is NoSuchElementException || ex is StaleElementReferenceException)
                 {
@@ -74,195 +76,93 @@ namespace Yapoml.Selenium.Components
             }
         }
 
-        public void Clear()
-        {
-            _logger.Trace($"Clearing {Metadata.Name} component");
-
-            WrappedElement.Clear();
-        }
-
-        /// <summary>
-        /// Simulates a mouse click on an element.
-        /// </summary>
-        public virtual void Click()
-        {
-            _logger.Trace($"Clicking on {Metadata.Name} component");
-
-            WrappedElement.Click();
-        }
-
         public IWebElement FindElement(By by)
         {
-            return WrappedElement.FindElement(by);
+            return RelocateOnStaleReference(() => WrappedElement.FindElement(by));
         }
 
         public ReadOnlyCollection<IWebElement> FindElements(By by)
         {
-            return WrappedElement.FindElements(by);
+            return RelocateOnStaleReference(() => WrappedElement.FindElements(by));
         }
 
         public string GetAttribute(string attributeName)
         {
-            return WrappedElement.GetAttribute(attributeName);
+            return RelocateOnStaleReference(() => WrappedElement.GetAttribute(attributeName));
         }
 
         public string GetCssValue(string propertyName)
         {
-            return WrappedElement.GetCssValue(propertyName);
+            return RelocateOnStaleReference(() => WrappedElement.GetCssValue(propertyName));
         }
 
         public string GetDomAttribute(string attributeName)
         {
-            return WrappedElement.GetDomAttribute(attributeName);
+            return RelocateOnStaleReference(() => WrappedElement.GetDomAttribute(attributeName));
         }
 
         public string GetDomProperty(string propertyName)
         {
-            return WrappedElement.GetDomProperty(propertyName);
+            return RelocateOnStaleReference(() => WrappedElement.GetDomProperty(propertyName));
         }
 
         public ISearchContext GetShadowRoot()
         {
-            return WrappedElement.GetShadowRoot();
+            return RelocateOnStaleReference(() => WrappedElement.GetShadowRoot());
         }
 
-        public void SendKeys(string text)
-        {
-            // todo make it event based
-            if (this.GetType().Name.ToLowerInvariant().Contains("password") && text != null)
-            {
-                _logger.Trace($"Typing '{new string('*', text.Length)}' into {Metadata.Name} component");
-            }
-            else
-            {
-                _logger.Trace($"Typing '{text}' into {Metadata.Name} component");
-            }
-
-            WrappedElement.SendKeys(text);
-        }
+        
 
         public void Submit()
         {
-            WrappedElement.Submit();
+            RelocateOnStaleReference(() => WrappedElement.Submit());
         }
 
         public Screenshot GetScreenshot()
         {
-            return ((ITakesScreenshot)WrappedElement).GetScreenshot();
+            return RelocateOnStaleReference(() => ((ITakesScreenshot)WrappedElement).GetScreenshot());
         }
 
         /// <summary>
-        /// Moves the cursor onto the element or one of its child elements.
+        /// Various awaitable conditions on the component.
         /// </summary>
-        public virtual TComponent Hover()
+        public TComponent When(Action<TConditions> it)
         {
-            _logger.Trace($"Hovering over {Metadata.Name} component");
+            it(conditions);
 
-            new Actions(WebDriver).MoveToElement(WrappedElement).Build().Perform();
-
-            return obj;
+            return component;
         }
 
-        /// <summary>
-        /// Moves the cursor onto the element or one of its child elements.
-        /// </summary>
-        public virtual TComponent Hover(int x, int y)
+        private T RelocateOnStaleReference<T>(Func<T> act)
         {
-            _logger.Trace($"Hovering on {Metadata.Name} component by X: {x}, Y: {y}");
-
-            new Actions(WebDriver).MoveToElement(WrappedElement, x, y).Build().Perform();
-
-            return obj;
-        }
-
-        /// <summary>
-        /// Scrolls the element's ancestor containers is visible to the user.
-        /// </summary>
-        public virtual TComponent ScrollIntoView()
-        {
-            if (SpaceOptions.Services.TryGet<ScrollIntoViewOptions>(out var options))
+            try
             {
-                ScrollIntoView(options);
+                return act();
             }
-            else
+            catch (StaleElementReferenceException)
             {
-                _logger.Trace($"Scrolling {Metadata.Name} component into view");
+                _elementHandler.Invalidate();
 
-                var js = "arguments[0].scrollIntoView();";
+                _elementHandler.Locate();
 
-                (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement);
+                return act();
             }
-
-            return obj;
         }
 
-        /// <summary>
-        /// Scrolls the element's ancestor containers is visible to the user.
-        /// </summary>
-        public virtual TComponent ScrollIntoView(ScrollIntoViewOptions options)
+        private void RelocateOnStaleReference(Action act)
         {
-            if (options == null) throw new ArgumentNullException(nameof(options));
-
-            _logger.Trace($"Scrolling {Metadata.Name} component into view with options {options}");
-
-            var js = $"arguments[0].scrollIntoView({options.ToJson()});";
-
-            (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement);
-
-            return obj;
-        }
-
-        /// <summary>
-        /// Sets focus on the specified element, if it can be focused.
-        /// The focused element is the element that will receive keyboard and similar events by default.
-        /// </summary>
-        public virtual TComponent Focus()
-        {
-            if (SpaceOptions.Services.TryGet<FocusOptions>(out var options))
+            try
             {
-                Focus(options);
+                act();
             }
-            else
+            catch (StaleElementReferenceException)
             {
-                _logger.Trace($"Focusing {Metadata.Name} component");
+                _elementHandler.Invalidate();
 
-                var js = "arguments[0].focus();";
+                _elementHandler.Locate();
 
-                (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement);
+                act();
             }
-
-            return obj;
-        }
-
-        /// <summary>
-        /// Sets focus on the specified element, if it can be focused.
-        /// The focused element is the element that will receive keyboard and similar events by default.
-        /// </summary>
-        public virtual TComponent Focus(FocusOptions options)
-        {
-            if (options == null) throw new ArgumentNullException(nameof(options));
-
-            _logger.Trace($"Focusing {Metadata.Name} component with options {options}");
-
-            var js = $"arguments[0].focus({options.ToJson()});";
-
-            (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement);
-
-            return obj;
-        }
-
-        /// <summary>
-        /// Removes keyboard focus from the element.
-        /// </summary>
-        public virtual TComponent Blur()
-        {
-            _logger.Trace($"Bluring {Metadata.Name} component");
-
-            var js = $"arguments[0].blur();";
-
-            (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement);
-
-            return obj;
         }
     }
 }

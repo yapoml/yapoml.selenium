@@ -49,10 +49,11 @@ namespace {{namespace}}
 		{{ include 'NestedComponentTemplate_Desc' component }}
 		/// </summary>
 		{{- if component.by.segments == null }}
-		public {{ if component.is_plural }}global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}>{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}
+		public {{ if component.is_plural }}global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}, {{get_component_return_type component}}.Conditions>{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}
 		{
 			get
 			{
+				{{ if component.is_plural }}
 				var byValue = "{{ escape component.by.value }}";
 
 				{{ if component.by.method == 'None' -}}
@@ -75,17 +76,49 @@ namespace {{namespace}}
 				var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.name}}" };
 				var elementLocator = SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>();
 				var elementHandler = new global::Yapoml.Selenium.Services.Locator.ElementHandler(WebDriver, null, elementLocator, by, metadata, EventSource);
-
-				{{- if component.is_plural }}
-				var webElements = new global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}>(WebDriver, elementHandler, metadata, EventSource, SpaceOptions);
+				
+				var webElements = new global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}, {{get_component_return_type component}}.Conditions>(WebDriver, ElementHandlerRepository, elementHandler, metadata, EventSource, SpaceOptions);
 				return webElements;
-				{{ else }}
-				return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}>(WebDriver, elementHandler, metadata, SpaceOptions);
+				{{- else -}}
+				if (ElementHandlerRepository.TryGet("{{component.name}}", out var cachedElementHandler))
+				{
+					var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.name}}" };
+					return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}, {{get_component_return_type component}}.Conditions>(WebDriver, ElementHandlerRepository, cachedElementHandler, metadata, SpaceOptions);
+				}
+				else
+				{
+					var byValue = "{{ escape component.by.value }}";
+
+					{{ if component.by.method == 'None' -}}
+					{{ if is_xpath component.by.value }}
+					var by = global::OpenQA.Selenium.By.XPath(byValue);
+					{{ else }}
+					var by = global::OpenQA.Selenium.By.CssSelector(byValue);
+					{{ end -}}
+
+					{{ else if component.by.method == 'XPath' -}}
+					var by = global::OpenQA.Selenium.By.XPath(byValue);
+
+					{{ else if component.by.method == 'Css' -}}
+					var by = global::OpenQA.Selenium.By.CssSelector(byValue);
+
+					{{ else if component.by.method == 'Id' -}}
+					var by = global::OpenQA.Selenium.By.Id(byValue);
+					{{ end -}}
+
+					var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.name}}" };
+					var elementLocator = SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>();
+					var elementHandler = new global::Yapoml.Selenium.Services.Locator.ElementHandler(WebDriver, null, elementLocator, by, metadata, EventSource);
+				
+					ElementHandlerRepository.Set("{{component.name}}", elementHandler);
+
+					return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}, {{get_component_return_type component}}.Conditions>(WebDriver, ElementHandlerRepository, elementHandler, metadata, SpaceOptions);
+				}
 				{{- end}}
 			}
 		}
 		{{ else }}
-		public {{ if component.is_plural }}global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}>{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
+		public {{ if component.is_plural }}global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}, {{get_component_return_type component}}.Conditions>{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
 		{
 			var segments = new global::System.Collections.Generic.List<global::System.Collections.Generic.KeyValuePair<string, string>>() { 
 				{{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}new global::System.Collections.Generic.KeyValuePair<string, string>("{{ segment }}", {{ segment }}) {{ end }} 
@@ -115,10 +148,10 @@ namespace {{namespace}}
 			var elementHandler = new global::Yapoml.Selenium.Services.Locator.ElementHandler(WebDriver, null, elementLocator, by, metadata, EventSource);
 
 			{{- if component.is_plural -}}
-			var webElements = new global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}>(WebDriver, elementHandler, metadata, EventSource, SpaceOptions);
+			var webElements = new global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}, {{get_component_return_type component}}.Coonditions>(WebDriver, ElementHandlerRepository, elementHandler, metadata, EventSource, SpaceOptions);
 			return webElements;
 			{{ else }}
-			return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}>(WebDriver, elementHandler, metadata, SpaceOptions);
+			return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}, {{get_component_return_type component}}.Conditions>(WebDriver, ElementHandlerRepository, elementHandler, metadata, SpaceOptions);
 			{{- end }}
 		}
 		{{ end }}
@@ -134,8 +167,9 @@ namespace {{namespace}}
 		public {{ get_page_class_name this }} When(global::System.Action<{{ get_page_class_name this }}.Conditions> it)
 		{
 			var timeoutOptions = SpaceOptions.Services.Get<global::Yapoml.Selenium.Options.TimeoutOptions>();
+			var elementLocator = SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>();
 
-			it(new Conditions(timeoutOptions));
+			it(new Conditions(timeoutOptions.Timeout, timeoutOptions.PollingInterval, WebDriver, ElementHandlerRepository, elementLocator, EventSource));
 
 			return this;
 		}

@@ -2,7 +2,7 @@
 
 namespace Yapoml.Selenium.Sample.Basics.Pages
 {
-    partial class BaseComponent<TComponent>
+    partial class BaseComponent<TComponent, TConditions>
     {
         public override TComponent ScrollIntoView()
         {

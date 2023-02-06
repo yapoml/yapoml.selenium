@@ -41,15 +41,29 @@ namespace Yapoml.Selenium.Sample.Basics
         public void SearchWithYapoml()
         {
             var ya = _webDriver.Ya(
-                opts => opts.UseLighter(delay: 200, fadeOutSpeed: 400)
+                //opts => opts.UseLighter(delay: 200, fadeOutSpeed: 400)
                 ).Basics.Pages;
-            
+
             // ya.HomePage.When(it => it.IsLoaded());
             // ya.HomePage.SearchButton.When(it => it.IsDisplayed()).Click();
 
-            ya.HomePage.Search("yaml");
+            ya.HomePage.SearchButton.Click(when => when.IsEnabled());
+            ya.HomePage.SearchButton.When(it => it.IsEnabled()).Click();
 
-            // ya.PackagesPage.Packages[0].When(p => p.IsDisplayed());
+            var page = ya.HomePage;
+
+            // page.When(it => it.A.B.C.IsDisplayed(TimeSpan.FromSeconds(5)));
+
+            for (int i = 0; i < 5; i++)
+            {
+                //page.When(it => it.SearchButton.IsDisplayed()).SearchButton.Click();
+                //_webDriver.Navigate().Refresh();
+                Console.WriteLine(page.SearchButton.Displayed);
+            }
+
+            _webDriver.Navigate().Refresh();
+
+            page.Search("yaml");
 
             foreach (var package in ya.PackagesPage.Packages)
             {

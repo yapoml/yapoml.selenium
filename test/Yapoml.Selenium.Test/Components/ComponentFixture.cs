@@ -5,6 +5,7 @@ using OpenQA.Selenium;
 using Yapoml.Framework.Options;
 using Yapoml.Selenium.Components;
 using Yapoml.Selenium.Components.Metadata;
+using Yapoml.Selenium.Events;
 using Yapoml.Selenium.Services.Locator;
 
 namespace Yapoml.Selenium.Test.Components
@@ -22,17 +23,26 @@ namespace Yapoml.Selenium.Test.Components
             var spaceOptions = new Mock<ISpaceOptions>();
             spaceOptions.SetupGet(p => p.Services).Returns(container.Object);
 
-            var component = new Mock<BaseComponent<TestComponent>>(webDriver.Object, elementHandler.Object, null, spaceOptions.Object);
+            var component = new Mock<BaseComponent<TestComponent, TestComponent.TestConditions>>(webDriver.Object, null, elementHandler.Object, null, spaceOptions.Object);
             component.CallBase = true;
 
             component.Object.Displayed.Should().BeFalse();
         }
     }
 
-    public class TestComponent : BaseComponent<TestComponent>
+    public class TestComponent : BaseComponent<TestComponent, TestComponent.TestConditions>
     {
-        public TestComponent(IWebDriver webDriver, IElementHandler elementHandler, ComponentMetadata metadata, ISpaceOptions spaceOptions) : base(webDriver, elementHandler, metadata, spaceOptions)
+        public TestComponent(IWebDriver webDriver, IElementHandlerRepository elementHandlerRepository, IElementHandler elementHandler, ComponentMetadata metadata, ISpaceOptions spaceOptions)
+            : base(webDriver, elementHandlerRepository, elementHandler, metadata, spaceOptions)
         {
+        }
+
+        public class TestConditions : BaseComponentConditions<TestConditions>
+        {
+            public TestConditions(TimeSpan timeout, TimeSpan pollingInterval, IWebDriver webDriver, IElementHandlerRepository elementHandlerRepository, IElementHandler elementHandler, IElementLocator elementLocator, IEventSource eventSource)
+                : base(timeout, pollingInterval, webDriver, elementHandlerRepository, elementHandler, elementLocator, eventSource)
+            {
+            }
         }
     }
 }

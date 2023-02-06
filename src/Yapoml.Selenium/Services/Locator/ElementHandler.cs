@@ -38,24 +38,37 @@ namespace Yapoml.Selenium.Services.Locator
         {
             if (_webElement == null)
             {
-                ISearchContext searchContext;
+                _eventSource.ComponentEventSource.RaiseOnFindingComponent(ComponentMetadata.Name, By);
+
                 if (_parentElementHandler != null)
                 {
-                    searchContext = _parentElementHandler.Locate();
+                    try
+                    {
+                        _webElement = _elementLocator.FindElement(_parentElementHandler.Locate(), By);
+                    }
+                    catch (StaleElementReferenceException)
+                    {
+                        _parentElementHandler.Invalidate();
+
+                        _webElement = _elementLocator.FindElement(_parentElementHandler.Locate(), By);
+                    }
                 }
                 else
                 {
-                    searchContext = _webDriver;
+                    _webElement = _elementLocator.FindElement(_webDriver, By);
                 }
-
-                _eventSource.ComponentEventSource.RaiseOnFindingComponent(ComponentMetadata.Name, By);
-
-                _webElement = _elementLocator.FindElement(searchContext, By);
 
                 _eventSource.ComponentEventSource.RaiseOnFoundComponent(By, _webDriver, _webElement);
             }
 
             return _webElement;
+        }
+
+        public void Invalidate()
+        {
+            _webElement = null;
+
+            _webElements = null;
         }
 
         IReadOnlyList<IWebElement> _webElements;
@@ -64,20 +77,25 @@ namespace Yapoml.Selenium.Services.Locator
         {
             if (_webElements == null)
             {
+                _eventSource.ComponentEventSource.RaiseOnFindingComponents(ComponentMetadata.Name, By);
 
-                ISearchContext searchContext;
                 if (_parentElementHandler != null)
                 {
-                    searchContext = _parentElementHandler.Locate();
+                    try
+                    {
+                        _webElements = _elementLocator.FindElements(_parentElementHandler.Locate(), By);
+                    }
+                    catch (StaleElementReferenceException)
+                    {
+                        _parentElementHandler.Invalidate();
+
+                        _webElements = _elementLocator.FindElements(_parentElementHandler.Locate(), By);
+                    }
                 }
                 else
                 {
-                    searchContext = _webDriver;
+                    _webElements = _elementLocator.FindElements(_webDriver, By);
                 }
-
-                _eventSource.ComponentEventSource.RaiseOnFindingComponents(ComponentMetadata.Name, By);
-
-                _webElements = _elementLocator.FindElements(searchContext, By);
 
                 _eventSource.ComponentEventSource.RaiseOnFoundComponents(By, _webElements);
             }

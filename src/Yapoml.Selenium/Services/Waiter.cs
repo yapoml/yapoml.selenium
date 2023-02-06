@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Threading;
+using Yapoml.Selenium.Services.Locator;
 
 namespace Yapoml.Selenium.Services
 {
@@ -27,7 +28,7 @@ namespace Yapoml.Selenium.Services
             throw new TimeoutException($"{condition} wasn't met during {timeout.TotalSeconds} seconds and polling each {pollingInterval.TotalSeconds} seconds.");
         }
 
-        public static IWebElement UntilComponentDisplayed(string componentFriendlyName, ISearchContext searchContext, By by, TimeSpan timeout, TimeSpan pollingInterval)
+        public static IWebElement UntilDisplayed(IElementHandler elementHandler, TimeSpan timeout, TimeSpan pollingInterval)
         {
             Exception lastError = null;
 
@@ -40,7 +41,7 @@ namespace Yapoml.Selenium.Services
             {
                 try
                 {
-                    var element = searchContext.FindElement(by);
+                    var element = elementHandler.Locate();
 
                     if (element.Displayed)
                     {
@@ -67,15 +68,15 @@ namespace Yapoml.Selenium.Services
             }
             catch (TimeoutException)
             {
-                throw BuildTimeoutException($"{componentFriendlyName} component is not displayed yet '{by}'.", lastError, timeout, pollingInterval, _ignoredExceptions);
+                throw BuildTimeoutException($"{elementHandler.ComponentMetadata.Name} component is not displayed yet '{elementHandler.By}'.", lastError, timeout, pollingInterval, _ignoredExceptions);
             }
         }
 
-        public static void UntilDisplayed(string componentFriendlyName, IWebElement webElement, TimeSpan timeout, TimeSpan pollingInterval)
+        public static void UntilEnabled(IElementHandler elementHandler, TimeSpan timeout, TimeSpan pollingInterval)
         {
             bool? condition()
             {
-                if (webElement.Displayed)
+                if (elementHandler.Locate().Enabled)
                 {
                     return true;
                 }
@@ -91,41 +92,17 @@ namespace Yapoml.Selenium.Services
             }
             catch (TimeoutException)
             {
-                throw BuildTimeoutException($"{componentFriendlyName} component is not displayed yet.", null, timeout, pollingInterval, null);
+                throw BuildTimeoutException($"{elementHandler.ComponentMetadata.Name} component is not enabled yet.", null, timeout, pollingInterval, null);
             }
         }
 
-        public static void UntilEnabled(string componentFriendlyName, IWebElement webElement, TimeSpan timeout, TimeSpan pollingInterval)
-        {
-            bool? condition()
-            {
-                if (webElement.Enabled)
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-
-            try
-            {
-                Until(condition, timeout, pollingInterval);
-            }
-            catch (TimeoutException)
-            {
-                throw BuildTimeoutException($"{componentFriendlyName} component is not enabled yet.", null, timeout, pollingInterval, null);
-            }
-        }
-
-        public static void UntilCssValue(string propertyName, string expectedValue, string componentFriendlyName, IWebElement webElement, TimeSpan timeout, TimeSpan pollingInterval)
+        public static void UntilCssValue(IElementHandler elementHandler, string propertyName, string expectedValue, TimeSpan timeout, TimeSpan pollingInterval)
         {
             string latestValue = null;
 
             bool? condition()
             {
-                latestValue = webElement.GetCssValue(propertyName);
+                latestValue = elementHandler.Locate().GetCssValue(propertyName);
 
                 if (expectedValue == latestValue)
                 {
@@ -143,17 +120,17 @@ namespace Yapoml.Selenium.Services
             }
             catch (TimeoutException)
             {
-                throw BuildTimeoutException($"CSS '{propertyName} = {latestValue}' of the {componentFriendlyName} component is not '{expectedValue}' yet.", null, timeout, pollingInterval, null);
+                throw BuildTimeoutException($"CSS '{propertyName} = {latestValue}' of the {elementHandler.ComponentMetadata.Name} component is not '{expectedValue}' yet.", null, timeout, pollingInterval, null);
             }
         }
 
-        public static void UntilAttributeValue(string attributeName, string expectedValue, string componentFriendlyName, IWebElement webElement, TimeSpan timeout, TimeSpan pollingInterval)
+        public static void UntilAttributeValue(IElementHandler elementHandler, string attributeName, string expectedValue, TimeSpan timeout, TimeSpan pollingInterval)
         {
             string latestValue = null;
 
             bool? condition()
             {
-                latestValue = webElement.GetAttribute(attributeName);
+                latestValue = elementHandler.Locate().GetAttribute(attributeName);
 
                 if (expectedValue == latestValue)
                 {
@@ -171,7 +148,7 @@ namespace Yapoml.Selenium.Services
             }
             catch (TimeoutException)
             {
-                throw BuildTimeoutException($"Attribute '{attributeName} = {latestValue}' of the {componentFriendlyName} component is not '{expectedValue}' yet.", null, timeout, pollingInterval, null);
+                throw BuildTimeoutException($"Attribute '{attributeName} = {latestValue}' of the {elementHandler.ComponentMetadata.Name} component is not '{expectedValue}' yet.", null, timeout, pollingInterval, null);
             }
         }
 

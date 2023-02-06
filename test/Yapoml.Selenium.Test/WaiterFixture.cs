@@ -3,6 +3,7 @@ using Moq;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using Yapoml.Selenium.Services;
+using Yapoml.Selenium.Services.Locator;
 
 namespace Yapoml.Selenium.Test
 {
@@ -27,13 +28,15 @@ namespace Yapoml.Selenium.Test
         [Test]
         public void Should_Wait_Until_Component_Displayed()
         {
-            var searchContextMock = new Mock<ISearchContext>();
             var webElementMock = new Mock<IWebElement>();
             webElementMock.Setup(e => e.Displayed).Returns(false);
-            searchContextMock.Setup(sc => sc.FindElement(It.IsAny<By>())).Returns(webElementMock.Object);
 
-            Action act = () => Waiter.UntilComponentDisplayed("my", searchContextMock.Object, By.Id(""), TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(5));
-             
+            var elementHandler = new Mock<IElementHandler>();
+            elementHandler.Setup(h => h.Locate()).Returns(webElementMock.Object);
+            elementHandler.Setup(h => h.ComponentMetadata).Returns(new Selenium.Components.Metadata.ComponentMetadata { });
+
+            Action act = () => Waiter.UntilDisplayed(elementHandler.Object, TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(5));
+
             var ex = act.Should().Throw<TimeoutException>().Subject.First();
             Console.WriteLine(ex);
         }
@@ -41,10 +44,14 @@ namespace Yapoml.Selenium.Test
         [Test]
         public void Should_Wait_Until_Component_WithIgnored_NoSuchElementException()
         {
-            var searchContextMock = new Mock<ISearchContext>();
-            searchContextMock.Setup(sc => sc.FindElement(It.IsAny<By>())).Throws<NoSuchElementException>();
+            var webElementMock = new Mock<IWebElement>();
+            webElementMock.Setup(e => e.Displayed).Returns(false);
 
-            Action act = () => Waiter.UntilComponentDisplayed("my", searchContextMock.Object, By.Id(""), TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(5));
+            var elementHandler = new Mock<IElementHandler>();
+            elementHandler.Setup(h => h.Locate()).Throws<NoSuchElementException>();
+            elementHandler.Setup(h => h.ComponentMetadata).Returns(new Selenium.Components.Metadata.ComponentMetadata { });
+
+            Action act = () => Waiter.UntilDisplayed(elementHandler.Object, TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(5));
 
             var ex = act.Should().Throw<TimeoutException>().Subject.First();
             Console.WriteLine(ex);
@@ -53,33 +60,17 @@ namespace Yapoml.Selenium.Test
         [Test]
         public void Should_Wait_Until_Component_WithIgnored_StaleReferenceException()
         {
-            var searchContextMock = new Mock<ISearchContext>();
-            searchContextMock.Setup(sc => sc.FindElement(It.IsAny<By>())).Throws<StaleElementReferenceException>();
+            var webElementMock = new Mock<IWebElement>();
+            webElementMock.Setup(e => e.Displayed).Returns(false);
 
-            Action act = () => Waiter.UntilComponentDisplayed("my", searchContextMock.Object, By.Id(""), TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(5));
+            var elementHandler = new Mock<IElementHandler>();
+            elementHandler.Setup(h => h.Locate()).Throws<StaleElementReferenceException>();
+            elementHandler.Setup(h => h.ComponentMetadata).Returns(new Selenium.Components.Metadata.ComponentMetadata { });
+
+            Action act = () => Waiter.UntilDisplayed(elementHandler.Object, TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(5));
 
             var ex = act.Should().Throw<TimeoutException>().Subject.First();
             Console.WriteLine(ex);
-        }
-
-        [Test]
-        public void Should_Wait_Until_Displayed()
-        {
-            var elementMock = new Mock<IWebElement>();
-            elementMock.Setup(e => e.Displayed).Returns(false);
-
-            Action act = () => Waiter.UntilDisplayed("my", elementMock.Object, TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(5));
-            act.Should().Throw<TimeoutException>();
-        }
-
-        [Test]
-        public void Should_Wait_Until_Enabled()
-        {
-            var elementMock = new Mock<IWebElement>();
-            elementMock.Setup(e => e.Enabled).Returns(false);
-
-            Action act = () => Waiter.UntilEnabled("my", elementMock.Object, TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(5));
-            act.Should().Throw<TimeoutException>();
         }
     }
 }

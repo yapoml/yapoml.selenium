@@ -8,6 +8,8 @@ namespace Yapoml.Selenium.Services.Locator
     {
         IWebElement Locate();
 
+        void Invalidate();
+
         IReadOnlyList<IWebElement> LocateMany();
 
         By By { get; }

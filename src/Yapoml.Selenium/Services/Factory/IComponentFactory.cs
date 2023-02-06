@@ -8,6 +8,6 @@ namespace Yapoml.Selenium.Services.Factory
 {
     public interface IComponentFactory
     {
-        TComponent Create<TComponent>(IWebDriver webDriver, IElementHandler elementHandler, ComponentMetadata componentMetada, ISpaceOptions spaceOptions) where TComponent : BaseComponent<TComponent>;
+        TComponent Create<TComponent, TConditions>(IWebDriver webDriver, IElementHandlerRepository elementHandlerRepository, IElementHandler elementHandler, ComponentMetadata componentMetada, ISpaceOptions spaceOptions) where TComponent : BaseComponent<TComponent, TConditions>;
     }
 }

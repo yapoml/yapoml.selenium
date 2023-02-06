@@ -1,4 +1,6 @@
-﻿using System;
+﻿using OpenQA.Selenium;
+using System;
+using Yapoml.Selenium.Events;
 using Yapoml.Selenium.Services.Locator;
 
 namespace Yapoml.Selenium.Components
@@ -7,15 +9,23 @@ namespace Yapoml.Selenium.Components
     {
         protected TConditions obj;
 
-        protected IElementHandler ElementHandler { get; }
         protected TimeSpan Timeout { get; }
         protected TimeSpan PollingInterval { get; }
+        protected IWebDriver WebDriver { get; }
+        protected IElementHandlerRepository ElementHandlerRepository { get; }
+        protected IElementHandler ElementHandler { get; }
+        protected IElementLocator ElementLocator { get; }
+        protected IEventSource EventSource { get; }
 
-        public BaseComponentConditions(IElementHandler elementHandler, TimeSpan timeout, TimeSpan pollingInterval)
+        public BaseComponentConditions(TimeSpan timeout, TimeSpan pollingInterval, IWebDriver webDriver, IElementHandlerRepository elementHandlerRepository, IElementHandler elementHandler, IElementLocator elementLocator, IEventSource eventSource)
         {
-            ElementHandler = elementHandler;
             Timeout = timeout;
             PollingInterval = pollingInterval;
+            WebDriver = webDriver;
+            ElementHandlerRepository = elementHandlerRepository;
+            ElementHandler = elementHandler;
+            ElementLocator = elementLocator;
+            EventSource = eventSource;
         }
 
         /// <summary>
@@ -26,7 +36,7 @@ namespace Yapoml.Selenium.Components
         /// <returns></returns>
         public virtual TConditions IsDisplayed(TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
         {
-            Services.Waiter.UntilDisplayed(ElementHandler.ComponentMetadata.Name, ElementHandler.Locate(), timeout ?? Timeout, pollingInterval ?? PollingInterval);
+            Services.Waiter.UntilDisplayed(ElementHandler, timeout ?? Timeout, pollingInterval ?? PollingInterval);
 
             return obj;
         }
@@ -39,7 +49,7 @@ namespace Yapoml.Selenium.Components
         /// <returns></returns>
         public virtual TConditions IsEnabled(TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
         {
-            Services.Waiter.UntilEnabled(ElementHandler.ComponentMetadata.Name, ElementHandler.Locate(), timeout ?? Timeout, pollingInterval ?? PollingInterval);
+            Services.Waiter.UntilEnabled(ElementHandler, timeout ?? Timeout, pollingInterval ?? PollingInterval);
 
             return obj;
         }
@@ -54,7 +64,7 @@ namespace Yapoml.Selenium.Components
         /// <returns></returns>
         public virtual TConditions AttributeIs(string name, string value, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
         {
-            Services.Waiter.UntilAttributeValue(name, value, ElementHandler.ComponentMetadata.Name, ElementHandler.Locate(), timeout ?? Timeout, pollingInterval ?? PollingInterval);
+            Services.Waiter.UntilAttributeValue(ElementHandler, name, value, timeout ?? Timeout, pollingInterval ?? PollingInterval);
             return obj;
         }
 
@@ -68,7 +78,7 @@ namespace Yapoml.Selenium.Components
         /// <returns></returns>
         public virtual TConditions CssIs(string name, string value, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
         {
-            Services.Waiter.UntilCssValue(name, value, ElementHandler.ComponentMetadata.Name, ElementHandler.Locate(), timeout ?? Timeout, pollingInterval ?? PollingInterval);
+            Services.Waiter.UntilCssValue(ElementHandler, name, value, timeout ?? Timeout, pollingInterval ?? PollingInterval);
 
             return obj;
         }

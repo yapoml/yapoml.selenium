@@ -1,10 +1,13 @@
 ﻿[global::System.Runtime.CompilerServices.CompilerGenerated]
-public partial class {{$1.singular_name}}Component : {{if $1.base_component}}global::{{$1.base_component.namespace}}.{{$1.base_component.name}}Component{{else}}{{if $1.page}}global::{{$1.page.namespace}}{{else if $1.space}}{{if $1.name == 'Base' }}{{if $1.space.parent_space}}global::{{$1.space.parent_space.namespace}}{{else}}global::Yapoml.Selenium.Components{{end}}{{else}}global::{{$1.space.namespace}}{{end}}{{else}}global::Yapoml.Selenium.Components{{end}}.BaseComponent{{end}}<{{$1.singular_name}}Component>
+public partial class {{$1.singular_name}}Component : {{if $1.base_component}}global::{{$1.base_component.namespace}}.{{$1.base_component.name}}Component{{else}}{{if $1.page}}global::{{$1.page.namespace}}{{else if $1.space}}{{if $1.name == 'Base' }}{{if $1.space.parent_space}}global::{{$1.space.parent_space.namespace}}{{else}}global::Yapoml.Selenium.Components{{end}}{{else}}global::{{$1.space.namespace}}{{end}}{{else}}global::Yapoml.Selenium.Components{{end}}.BaseComponent{{end}}<{{$1.singular_name}}Component, {{$1.singular_name}}Component.Conditions>
 {
-	public {{$1.singular_name}}Component(global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementHandler elementHandler, global::Yapoml.Selenium.Components.Metadata.ComponentMetadata metadata, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
-		: base(webDriver, elementHandler, metadata, spaceOptions)
+	public {{$1.singular_name}}Component(global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementHandlerRepository elementHandlerRepository, global::Yapoml.Selenium.Services.Locator.IElementHandler elementHandler, global::Yapoml.Selenium.Components.Metadata.ComponentMetadata metadata, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
+		: base(webDriver, elementHandlerRepository, elementHandler, metadata, spaceOptions)
 	{
-		base.obj = this;
+		base.component = this;
+		var timeoutOptions = SpaceOptions.Services.Get<global::Yapoml.Selenium.Options.TimeoutOptions>();
+		var elementLocator = SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>();
+		base.conditions = new Conditions(timeoutOptions.Timeout, timeoutOptions.PollingInterval, webDriver, elementHandlerRepository, elementHandler, elementLocator, EventSource);
 	}
 
 	public override global::OpenQA.Selenium.IWebElement WrappedElement
@@ -23,7 +26,7 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 	{{ include 'NestedComponentTemplate_Desc' component }}
 	/// </summary>
 	{{- if component.by.segments == null }}
-	public {{ if component.is_plural }}global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}>{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}
+	public {{ if component.is_plural }}global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}, {{get_component_return_type component}}.Conditions>{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}
 	{
 		get
 		{
@@ -49,10 +52,10 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 			var elementHandler = new global::Yapoml.Selenium.Services.Locator.ElementHandler(WebDriver, _elementHandler, elementLocator, by, metadata, EventSource);
 
 			{{- if component.is_plural }}
-			var webElements = new global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}>(WebDriver, elementHandler, metadata, EventSource, SpaceOptions);
+			var webElements = new global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}, {{get_component_return_type component}}.Conditions>(WebDriver, ElementHandlerRepository, elementHandler, metadata, EventSource, SpaceOptions);
 			return webElements;
 			{{ else }}
-			return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}>(WebDriver, elementHandler, metadata, SpaceOptions);
+			return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}, {{get_component_return_type component}}.Conditions>(WebDriver, ElementHandlerRepository, elementHandler, metadata, SpaceOptions);
 			{{- end }}
 		}
 	}
@@ -87,10 +90,10 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 		var elementHandler = new global::Yapoml.Selenium.Services.Locator.ElementHandler(WebDriver, _elementHandler, elementLocator, by, metadata, EventSource);
 
 		{{- if component.is_plural }}
-		var webElements = new global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}>(WebDriver, elementHandler, metadata, EventSource, SpaceOptions);
+		var webElements = new global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}>(WebDriver, ElementHandlerRepository, elementHandler, metadata, EventSource, SpaceOptions);
 		return webElements;
 		{{ else }}
-		return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}>(WebDriver, elementHandler, metadata, SpaceOptions);
+		return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}, {{get_component_return_type component}}.Conditions>(WebDriver, ElementHandlerRepository, elementHandler, metadata, SpaceOptions);
 		{{- end }}
 	}
 	{{ end }}
@@ -100,29 +103,15 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 	{{ end }}
 	{{ end }}
 
-	/// <summary>
-	/// Various awaitable conditions on the {{$1.name}} component.
-	/// </summary>
-	public {{$1.singular_name}}Component When(global::System.Action<Conditions> it)
-	{
-		var timeoutOptions = SpaceOptions.Services.Get<global::Yapoml.Selenium.Options.TimeoutOptions>();
-
-		{{ include 'LineDirectiveTemplate' $1 }}
-		it(new Conditions(_elementHandler, timeoutOptions));
-		#line default
-
-		return this;
-	}
-
 	[global::System.Runtime.CompilerServices.CompilerGenerated]
 	public partial class Conditions : global::Yapoml.Selenium.Components.BaseComponentConditions<Conditions>
 	{
-		public Conditions(global::Yapoml.Selenium.Services.Locator.IElementHandler elementHandler, global::Yapoml.Selenium.Options.TimeoutOptions timeoutOptions)
-			: base(elementHandler, timeoutOptions.Timeout, timeoutOptions.PollingInterval)
+		public Conditions(global::System.TimeSpan timeout, global::System.TimeSpan pollingInterval, global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementHandlerRepository elementHandlerRepository, global::Yapoml.Selenium.Services.Locator.IElementHandler elementHandler, global::Yapoml.Selenium.Services.Locator.IElementLocator elementLocator, global::Yapoml.Selenium.Events.IEventSource eventSource)
+			: base(timeout, pollingInterval, webDriver, elementHandlerRepository, elementHandler, elementLocator, eventSource)
 		{
 			base.obj = this;
 		}
 
-
+		{{ include 'NestedComponentConditionsTemplate' $1 }}
 	}
 }
