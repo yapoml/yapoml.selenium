@@ -30,16 +30,7 @@ namespace Yapoml.Selenium.SourceGeneration.Services
             }
             else
             {
-                string retType;
-
-                if (component.ReferencedComponent == null)
-                {
-                    retType = $"global::{component.Namespace}.{component.SingularName}Component";
-                }
-                else
-                {
-                    retType = $"global::{component.ReferencedComponent.Namespace}.{component.ReferencedComponent.SingularName}Component";
-                }
+                var retType = $"{component.SingularName}Component";
 
                 _returnTypesCache[component] = retType;
 

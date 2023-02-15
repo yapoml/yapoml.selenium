@@ -1,6 +1,109 @@
 ﻿# pragma warning disable
 namespace {{namespace}}
 {
-	{{ include 'NestedComponentTemplate' this }}
+	[global::System.Runtime.CompilerServices.CompilerGenerated]
+	public abstract partial class {{singular_name}}Component<TComponent, TConditions> : {{if base_component}}global::{{base_component.namespace}}.{{base_component.name}}Component<TComponent, TConditions>{{else}}{{if page}}global::{{page.namespace}}{{else if space}}{{if name == 'Base' }}{{if space.parent_space}}global::{{space.parent_space.namespace}}{{else}}global::Yapoml.Selenium.Components{{end}}{{else}}global::{{space.namespace}}{{end}}{{else}}global::Yapoml.Selenium.Components{{end}}.BaseComponent<TComponent, TConditions>{{end}} where TComponent: global::Yapoml.Selenium.Components.BaseComponent<TComponent, TConditions>
+	{
+		public {{singular_name}}Component(global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementHandlerRepository elementHandlerRepository, global::Yapoml.Selenium.Services.Locator.IElementHandler elementHandler, global::Yapoml.Selenium.Components.Metadata.ComponentMetadata metadata, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
+			: base(webDriver, elementHandlerRepository, elementHandler, metadata, spaceOptions)
+		{
+		
+		}
+
+		public override global::OpenQA.Selenium.IWebElement WrappedElement
+		{
+			get
+			{
+				{{ include 'LineDirectiveTemplate' this }}
+				return base.WrappedElement;
+				#line default
+			}
+		}
+
+		{{- for component in components }}
+
+		/// <summary>
+		{{ include 'NestedComponentTemplate_Desc' component }}
+		/// </summary>
+		{{- if component.by.segments == null }}
+		public {{ if component.is_plural }}global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}, {{get_component_return_type component}}.Conditions>{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}
+		{
+			get
+			{
+				{{ if component.by.method == 'None' -}}
+				{{ if is_xpath component.by.value }}
+				var by = global::OpenQA.Selenium.By.XPath("{{ escape component.by.value }}");
+				{{ else }}
+				var by = global::OpenQA.Selenium.By.CssSelector("{{ escape component.by.value }}");
+				{{ end -}}
+
+				{{ else if component.by.method == 'XPath' -}}
+				var by = global::OpenQA.Selenium.By.XPath("{{ escape component.by.value }}");
+
+				{{ else if component.by.method == 'Css' -}}
+				var by = global::OpenQA.Selenium.By.CssSelector("{{ escape component.by.value }}");
+
+				{{ else if component.by.method == 'Id' -}}
+				var by = global::OpenQA.Selenium.By.Id("{{ escape component.by.value }}");
+				{{ end -}}
+		
+				var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.name}}" };
+				var elementLocator = SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>();
+				var elementHandler = new global::Yapoml.Selenium.Services.Locator.ElementHandler(WebDriver, _elementHandler, elementLocator, by, metadata, EventSource);
+
+				{{- if component.is_plural }}
+				var webElements = new global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}, {{get_component_return_type component}}.Conditions>(WebDriver, ElementHandlerRepository, elementHandler, metadata, EventSource, SpaceOptions);
+				return webElements;
+				{{ else }}
+				return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}, {{get_component_return_type component}}.Conditions>(WebDriver, ElementHandlerRepository, elementHandler, metadata, SpaceOptions);
+				{{- end }}
+			}
+		}
+		{{ else }}
+		public {{ if component.is_plural }}global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}>{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
+		{
+			var segments = new global::System.Collections.Generic.List<global::System.Collections.Generic.KeyValuePair<string, string>>() { 
+					{{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}new global::System.Collections.Generic.KeyValuePair<string, string>("{{ segment }}", {{ segment }}) {{ end }} 
+				};
+
+			var byValue = new global::Yapoml.Selenium.Services.SegmentService().Replace("{{ escape component.by.value }}", segments);
+
+			{{ if component.by.method == 'None' -}}
+			{{ if is_xpath component.by.value }}
+			var by = global::OpenQA.Selenium.By.XPath(byValue);
+			{{ else }}
+			var by = global::OpenQA.Selenium.By.CssSelector(byValue);
+			{{ end -}}
+
+			{{ else if component.by.method == 'XPath' -}}
+			var by = global::OpenQA.Selenium.By.XPath(byValue);
+
+			{{ else if component.by.method == 'Css' -}}
+			var by = global::OpenQA.Selenium.By.CssSelector(byValue);
+
+			{{ else if component.by.method == 'Id' -}}
+			var by = global::OpenQA.Selenium.By.Id(byValue);
+			{{ end -}}
+		
+			var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.name}}" };
+			var elementLocator = SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>();
+			var elementHandler = new global::Yapoml.Selenium.Services.Locator.ElementHandler(WebDriver, _elementHandler, elementLocator, by, metadata, EventSource);
+
+			{{- if component.is_plural }}
+			var webElements = new global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}>(WebDriver, ElementHandlerRepository, elementHandler, metadata, EventSource, SpaceOptions);
+			return webElements;
+			{{ else }}
+			return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}, {{get_component_return_type component}}.Conditions>(WebDriver, ElementHandlerRepository, elementHandler, metadata, SpaceOptions);
+			{{- end }}
+		}
+		{{ end }}
+
+
+		{{ include 'NestedComponentTemplate' component }}
+
+		{{ end }}
+
+		
+	}
 }
 # pragma warning restore
