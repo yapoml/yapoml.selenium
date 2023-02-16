@@ -2,7 +2,6 @@
 using System;
 using Yapoml.Framework.Options;
 using Yapoml.Selenium.Events;
-using System.Collections.ObjectModel;
 using System.Drawing;
 using Yapoml.Framework.Logging;
 using Yapoml.Selenium.Services.Locator;
@@ -42,6 +41,9 @@ namespace Yapoml.Selenium.Components
 
             EventSource = spaceOptions.Services.Get<IEventSource>();
             _logger = spaceOptions.Services.Get<ILogger>();
+
+            _attributes = new Lazy<AttributesCollection>(() => new AttributesCollection(elementHandler));
+            _styles = new Lazy<StylesCollection>(() => new StylesCollection(elementHandler));
         }
 
         public string Text => RelocateOnStaleReference(() => WrappedElement.Text);
@@ -74,25 +76,13 @@ namespace Yapoml.Selenium.Components
             }
         }
 
-        public string GetAttribute(string attributeName)
-        {
-            return RelocateOnStaleReference(() => WrappedElement.GetAttribute(attributeName));
-        }
+        private readonly Lazy<AttributesCollection> _attributes;
 
-        public string GetCssValue(string propertyName)
-        {
-            return RelocateOnStaleReference(() => WrappedElement.GetCssValue(propertyName));
-        }
+        public AttributesCollection Attributes => _attributes.Value;
 
-        public string GetDomAttribute(string attributeName)
-        {
-            return RelocateOnStaleReference(() => WrappedElement.GetDomAttribute(attributeName));
-        }
+        private readonly Lazy<StylesCollection> _styles;
 
-        public string GetDomProperty(string propertyName)
-        {
-            return RelocateOnStaleReference(() => WrappedElement.GetDomProperty(propertyName));
-        }
+        public StylesCollection Styles => _styles.Value;
 
         public ISearchContext GetShadowRoot()
         {
