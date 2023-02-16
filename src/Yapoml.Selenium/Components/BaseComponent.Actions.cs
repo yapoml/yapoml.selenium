@@ -58,7 +58,7 @@ namespace Yapoml.Selenium.Components
         {
             _logger.Trace($"Clicking on {Metadata.Name} component by X: {x}, Y: {y}");
 
-            RelocateOnStaleReference(() => new Actions(WebDriver).MoveToElement(WrappedElement, x, y).Click().Perform());
+            RelocateOnStaleReference(() => new Actions(WebDriver).MoveToElement(WrappedElement, x, y).Click().Build().Perform());
 
             return component;
         }
@@ -304,6 +304,28 @@ namespace Yapoml.Selenium.Components
             when(conditions);
 
             return Blur();
+        }
+
+        /// <summary>
+        /// Performs a drag and drop operation to another component.
+        /// </summary>
+        public virtual TComponent DragAndDrop(TComponent toComponent)
+        {
+            _logger.Trace($"Dragging {Metadata.Name} to {toComponent.Metadata.Name}");
+
+            RelocateOnStaleReference(() => new Actions(WebDriver).DragAndDrop(WrappedElement, toComponent.WrappedElement).Build().Perform());
+
+            return component;
+        }
+
+        /// <summary>
+        /// Performs a drag and drop operation to another component.
+        /// </summary>
+        public virtual TComponent DragAndDrop(TComponent toComponent, Action<TConditions> when)
+        {
+            when(conditions);
+
+            return DragAndDrop(toComponent);
         }
     }
 }
