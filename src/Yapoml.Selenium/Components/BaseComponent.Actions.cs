@@ -52,6 +52,28 @@ namespace Yapoml.Selenium.Components
         }
 
         /// <summary>
+        /// Simulates a mouse click on an element.
+        /// </summary>
+        public virtual TComponent Click(int x, int y)
+        {
+            _logger.Trace($"Clicking on {Metadata.Name} component by X: {x}, Y: {y}");
+
+            RelocateOnStaleReference(() => new Actions(WebDriver).MoveToElement(WrappedElement, x, y).Click().Perform());
+
+            return component;
+        }
+
+        /// <summary>
+        /// Simulates a mouse click on an element.
+        /// </summary>
+        public virtual TComponent Click(int x, int y, Action<TConditions> when)
+        {
+            when(conditions);
+
+            return Click(x, y);
+        }
+
+        /// <summary>
         /// Simulates typing text into the element.
         /// </summary>
         /// <param name="text">The text to type into the element.</param>
