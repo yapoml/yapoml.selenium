@@ -11,7 +11,7 @@ using Yapoml.Selenium.Components.Metadata;
 namespace Yapoml.Selenium.Components
 {
     /// <inheritdoc cref="IWebElement"/>
-    public abstract partial class BaseComponent<TComponent, TConditions> : IWebElement, IWrapsElement, ITakesScreenshot where TComponent : BaseComponent<TComponent, TConditions>
+    public abstract partial class BaseComponent<TComponent, TConditions> : IWrapsElement, ITakesScreenshot where TComponent : BaseComponent<TComponent, TConditions>
     {
         protected TComponent component;
         protected TConditions conditions;
@@ -44,8 +44,6 @@ namespace Yapoml.Selenium.Components
             _logger = spaceOptions.Services.Get<ILogger>();
         }
 
-        public string TagName => RelocateOnStaleReference(() => WrappedElement.TagName);
-
         public string Text => RelocateOnStaleReference(() => WrappedElement.Text);
 
         public bool Enabled => RelocateOnStaleReference(() => WrappedElement.Enabled);
@@ -76,16 +74,6 @@ namespace Yapoml.Selenium.Components
             }
         }
 
-        public IWebElement FindElement(By by)
-        {
-            return RelocateOnStaleReference(() => WrappedElement.FindElement(by));
-        }
-
-        public ReadOnlyCollection<IWebElement> FindElements(By by)
-        {
-            return RelocateOnStaleReference(() => WrappedElement.FindElements(by));
-        }
-
         public string GetAttribute(string attributeName)
         {
             return RelocateOnStaleReference(() => WrappedElement.GetAttribute(attributeName));
@@ -110,8 +98,6 @@ namespace Yapoml.Selenium.Components
         {
             return RelocateOnStaleReference(() => WrappedElement.GetShadowRoot());
         }
-
-        
 
         public void Submit()
         {

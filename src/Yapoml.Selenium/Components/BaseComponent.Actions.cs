@@ -7,41 +7,55 @@ namespace Yapoml.Selenium.Components
 {
     partial class BaseComponent<TComponent, TConditions>
     {
-        public void Clear()
+        /// <summary>
+        /// Clears the content of the element.
+        /// </summary>
+        public virtual TComponent Clear()
         {
             _logger.Trace($"Clearing {Metadata.Name} component");
 
             RelocateOnStaleReference(() => WrappedElement.Clear());
+
+            return component;
         }
 
-        public void Clear(Action<TConditions> when)
+        /// <summary>
+        /// Clears the content of the element.
+        /// </summary>
+        public virtual TComponent Clear(Action<TConditions> when)
         {
             when(conditions);
 
-            Clear();
+            return Clear();
         }
 
         /// <summary>
         /// Simulates a mouse click on an element.
         /// </summary>
-        public virtual void Click()
+        public virtual TComponent Click()
         {
             _logger.Trace($"Clicking on {Metadata.Name} component");
 
             RelocateOnStaleReference(() => WrappedElement.Click());
+
+            return component;
         }
 
         /// <summary>
         /// Simulates a mouse click on an element.
         /// </summary>
-        public virtual void Click(Action<TConditions> when)
+        public virtual TComponent Click(Action<TConditions> when)
         {
             when(conditions);
 
-            Click();
+            return Click();
         }
 
-        public void SendKeys(string text)
+        /// <summary>
+        /// Simulates typing text into the element.
+        /// </summary>
+        /// <param name="text">The text to type into the element.</param>
+        public virtual TComponent SendKeys(string text)
         {
             // todo make it event based
             if (this.GetType().Name.ToLowerInvariant().Contains("password") && text != null)
@@ -54,13 +68,19 @@ namespace Yapoml.Selenium.Components
             }
 
             RelocateOnStaleReference(() => WrappedElement.SendKeys(text));
+
+            return component;
         }
 
-        public void SendKeys(string text, Action<TConditions> when)
+        /// <summary>
+        /// Simulates typing text into the element.
+        /// </summary>
+        /// <param name="text">The text to type into the element.</param>
+        public virtual TComponent SendKeys(string text, Action<TConditions> when)
         {
             when(conditions);
 
-            SendKeys(text);
+            return SendKeys(text);
         }
 
         /// <summary>
