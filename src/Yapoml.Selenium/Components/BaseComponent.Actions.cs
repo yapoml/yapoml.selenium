@@ -307,9 +307,35 @@ namespace Yapoml.Selenium.Components
         }
 
         /// <summary>
+        /// Right-clicks the mouse on the element.
+        /// </summary>
+        /// <returns></returns>
+        public virtual TComponent RightClick()
+        {
+            _logger.Trace($"Right clicking on {Metadata.Name} component");
+
+            RelocateOnStaleReference(() => new Actions(WebDriver).ContextClick(WrappedElement).Build().Perform());
+
+            return component;
+        }
+
+        /// <summary>
+        /// Double-clicks the mouse on the element.
+        /// </summary>
+        /// <returns></returns>
+        public virtual TComponent DoubleClick()
+        {
+            _logger.Trace($"Double clicking on {Metadata.Name} component");
+
+            RelocateOnStaleReference(() => new Actions(WebDriver).DoubleClick(WrappedElement).Build().Perform());
+
+            return component;
+        }
+
+        /// <summary>
         /// Performs a drag and drop operation to another component.
         /// </summary>
-        public virtual TComponent DragAndDrop(TComponent toComponent)
+        public virtual TComponent DragAndDrop<TToComponent, TToConditions>(BaseComponent<TToComponent, TToConditions> toComponent) where TToComponent : BaseComponent<TToComponent, TToConditions>
         {
             _logger.Trace($"Dragging {Metadata.Name} to {toComponent.Metadata.Name}");
 
@@ -321,7 +347,7 @@ namespace Yapoml.Selenium.Components
         /// <summary>
         /// Performs a drag and drop operation to another component.
         /// </summary>
-        public virtual TComponent DragAndDrop(TComponent toComponent, Action<TConditions> when)
+        public virtual TComponent DragAndDrop<TToComponent, TToConditions>(BaseComponent<TToComponent, TToConditions> toComponent, Action<TConditions> when) where TToComponent : BaseComponent<TToComponent, TToConditions>
         {
             when(conditions);
 
