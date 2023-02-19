@@ -17,6 +17,7 @@ namespace {{root_namespace}}
 		}
 
 {{ for space in spaces }}
+		{{ include 'SpaceTemplate_Desc' space}}
 		public global::{{space.namespace}}.{{space.name}}Space {{space.name}}
 		{
 			get

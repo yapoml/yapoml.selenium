@@ -1,0 +1,27 @@
+﻿/// <summary>
+{{- if $1.spaces != blank }}
+/// <para>
+/// Provides an access to the following spaces:
+/// <list type="bullet">
+{{- for s in $1.spaces }}
+/// <item>
+/// <description>{{ s.name }}</description>
+/// </item>
+{{- end }}
+/// </list>
+/// </para>
+{{- end }}
+
+{{- if $1.pages != blank }}
+/// <para>
+/// Provides an access to the following pages:
+/// <list type="bullet">
+{{- for p in $1.pages }}
+/// <item>
+/// <description>{{ p.name }}</description>
+/// </item>
+{{- end }}
+/// </list>
+/// </para>
+{{- end }}
+/// </summary>

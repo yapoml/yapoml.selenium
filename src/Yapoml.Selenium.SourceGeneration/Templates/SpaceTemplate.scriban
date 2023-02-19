@@ -15,7 +15,7 @@ namespace {{namespace}}
 		}
 
 		{{- for space in spaces }}
-
+		{{ include 'SpaceTemplate_Desc' space}}
 		public global::{{space.namespace}}.{{space.name}}Space {{space.name}} => _spaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.ISpaceFactory>().Create<global::{{space.namespace}}.{{space.name}}Space>(_webDriver, _spaceOptions);
 		{{- end }}
 
