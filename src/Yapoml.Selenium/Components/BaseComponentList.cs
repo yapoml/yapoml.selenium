@@ -15,16 +15,14 @@ namespace Yapoml.Selenium.Components
         private IList<TComponent> _list;
 
         private readonly IWebDriver _webDriver;
-        private readonly IElementHandlerRepository _elementHandlerRepository;
         private readonly IElementHandler _elementHandler;
         private readonly ComponentMetadata _componentMetadata;
         private readonly IEventSource _eventSource;
         private readonly ISpaceOptions _spaceOptions;
 
-        public BaseComponentList(IWebDriver webDriver, IElementHandlerRepository elementHandlerRepository, IElementHandler elementHandler, ComponentMetadata componentMetadata, IEventSource eventSource, ISpaceOptions spaceOptions)
+        public BaseComponentList(IWebDriver webDriver, IElementHandler elementHandler, ComponentMetadata componentMetadata, IEventSource eventSource, ISpaceOptions spaceOptions)
         {
             _webDriver = webDriver;
-            _elementHandlerRepository = elementHandlerRepository;
             _elementHandler = elementHandler;
             _componentMetadata = componentMetadata;
             _eventSource = eventSource;
@@ -72,7 +70,7 @@ namespace Yapoml.Selenium.Components
 
                 var elements = _elementHandler.LocateMany();
 
-                _list = new List<TComponent>(elements.Select(e => factory.Create<TComponent, TConditions>(_webDriver, _elementHandlerRepository.CreateNestedRepository(), new ElementHandler(_webDriver, _elementHandler, locator, _elementHandler.By, e, _componentMetadata, _eventSource), _componentMetadata, _spaceOptions)));
+                _list = new List<TComponent>(elements.Select(e => factory.Create<TComponent, TConditions>(_webDriver, new ElementHandler(_webDriver, _elementHandler, locator, _elementHandler.By, e, _componentMetadata, _elementHandler.ElementHandlerRepository.CreateNestedRepository(), _eventSource), _componentMetadata, _spaceOptions)));
             }
         }
     }

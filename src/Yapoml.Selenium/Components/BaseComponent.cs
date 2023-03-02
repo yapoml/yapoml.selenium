@@ -19,8 +19,6 @@ namespace Yapoml.Selenium.Components
 
         protected IWebDriver WebDriver { get; private set; }
 
-        protected IElementHandlerRepository ElementHandlerRepository { get; }
-
         protected IElementHandler _elementHandler;
 
         public virtual IWebElement WrappedElement => _elementHandler.Locate();
@@ -31,10 +29,9 @@ namespace Yapoml.Selenium.Components
 
         protected IEventSource EventSource { get; private set; }
 
-        public BaseComponent(IWebDriver webDriver, IElementHandlerRepository elementHandlerRepository, IElementHandler elementHandler, ComponentMetadata metadata, ISpaceOptions spaceOptions)
+        public BaseComponent(IWebDriver webDriver, IElementHandler elementHandler, ComponentMetadata metadata, ISpaceOptions spaceOptions)
         {
             WebDriver = webDriver;
-            ElementHandlerRepository = elementHandlerRepository;
             _elementHandler = elementHandler;
             Metadata = metadata;
             SpaceOptions = spaceOptions;

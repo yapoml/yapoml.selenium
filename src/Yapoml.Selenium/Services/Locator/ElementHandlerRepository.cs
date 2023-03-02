@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Yapoml.Selenium.Services.Locator
 {
     public class ElementHandlerRepository : IElementHandlerRepository
     {
-        private readonly IDictionary<string, IElementHandler> _cache = new Dictionary<string, IElementHandler>();
+        private readonly IDictionary<string, IElementHandler> _elementHandlers = new Dictionary<string, IElementHandler>();
 
         public ElementHandlerRepository()
         {
@@ -20,29 +21,25 @@ namespace Yapoml.Selenium.Services.Locator
 
         public bool TryGet(string key, out IElementHandler elementHandler)
         {
-            return _cache.TryGetValue(key, out elementHandler);
+            return _elementHandlers.TryGetValue(key, out elementHandler);
         }
 
         public void Set(string key, IElementHandler elementHandler)
         {
-            _cache[key] = elementHandler;
-        }
-
-        private IElementHandlerRepository _nestedRepository;
-
-        public IElementHandlerRepository CreateOrGetNestedRepository()
-        {
-            if (_nestedRepository is null)
-            {
-                _nestedRepository = new ElementHandlerRepository(parentRepository: this);
-            }
-
-            return _nestedRepository;
+            _elementHandlers[key] = elementHandler;
         }
 
         public IElementHandlerRepository CreateNestedRepository()
         {
             return new ElementHandlerRepository(parentRepository: this);
+        }
+
+        public IReadOnlyCollection<IElementHandler> ElementHandlers
+        {
+            get
+            {
+                return _elementHandlers.Values.ToList().AsReadOnly();
+            }
         }
     }
 }

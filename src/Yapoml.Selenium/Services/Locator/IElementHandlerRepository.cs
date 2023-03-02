@@ -1,4 +1,6 @@
-﻿namespace Yapoml.Selenium.Services.Locator
+﻿using System.Collections.Generic;
+
+namespace Yapoml.Selenium.Services.Locator
 {
     public interface IElementHandlerRepository
     {
@@ -8,8 +10,8 @@
 
         IElementHandlerRepository ParentRepository { get; }
 
-        IElementHandlerRepository CreateOrGetNestedRepository();
-
         IElementHandlerRepository CreateNestedRepository();
+
+        IReadOnlyCollection<IElementHandler> ElementHandlers { get; }
     }
 }

@@ -10,3 +10,11 @@ get package:
   by: .//li[@class='package' and .//a[text()='{name}']] # where {name} is parameter
 
   ref: Package
+
+package0:
+  base: package
+  by: .//li[@class='package'][1]
+
+package1:
+  base: package
+  by: .//li[@class='package'][2]

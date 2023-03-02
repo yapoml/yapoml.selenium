@@ -15,5 +15,7 @@ namespace Yapoml.Selenium.Services.Locator
         By By { get; }
 
         ComponentMetadata ComponentMetadata { get; }
+
+        IElementHandlerRepository ElementHandlerRepository { get; }
     }
 }

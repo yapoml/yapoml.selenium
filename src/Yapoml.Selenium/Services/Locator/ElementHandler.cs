@@ -12,18 +12,19 @@ namespace Yapoml.Selenium.Services.Locator
         private readonly IElementLocator _elementLocator;
         private readonly IEventSource _eventSource;
 
-        public ElementHandler(IWebDriver webDriver, IElementHandler parentElementHandler, IElementLocator elementLocator, By by, ComponentMetadata componentMetadata, IEventSource eventSource)
+        public ElementHandler(IWebDriver webDriver, IElementHandler parentElementHandler, IElementLocator elementLocator, By by, ComponentMetadata componentMetadata, IElementHandlerRepository elementHandlerRepository, IEventSource eventSource)
         {
             _webDriver = webDriver;
             _parentElementHandler = parentElementHandler;
             _elementLocator = elementLocator;
             By = by;
             ComponentMetadata = componentMetadata;
+            ElementHandlerRepository = elementHandlerRepository;
             _eventSource = eventSource;
         }
 
-        public ElementHandler(IWebDriver webDriver, IElementHandler parentElementHandler, IElementLocator elementLocator, By by, IWebElement webElement, ComponentMetadata componentMetadata, IEventSource eventSource)
-            : this(webDriver, parentElementHandler, elementLocator, by, componentMetadata, eventSource)
+        public ElementHandler(IWebDriver webDriver, IElementHandler parentElementHandler, IElementLocator elementLocator, By by, IWebElement webElement, ComponentMetadata componentMetadata, IElementHandlerRepository elementHandlerRepository, IEventSource eventSource)
+            : this(webDriver, parentElementHandler, elementLocator, by, componentMetadata, elementHandlerRepository, eventSource)
         {
             _webElement = webElement;
         }
@@ -33,6 +34,8 @@ namespace Yapoml.Selenium.Services.Locator
         public By By { get; }
 
         public ComponentMetadata ComponentMetadata { get; }
+
+        public IElementHandlerRepository ElementHandlerRepository { get; }
 
         public IWebElement Locate()
         {
@@ -75,6 +78,11 @@ namespace Yapoml.Selenium.Services.Locator
             _webElement = null;
 
             _webElements = null;
+
+            foreach (var elementHandler in ElementHandlerRepository.ElementHandlers)
+            {
+                elementHandler.Invalidate();
+            }
         }
 
         IReadOnlyList<IWebElement> _webElements;

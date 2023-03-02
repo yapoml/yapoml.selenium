@@ -47,33 +47,32 @@ namespace Yapoml.Selenium.Sample.Basics
             // ya.HomePage.When(it => it.IsLoaded());
             // ya.HomePage.SearchButton.When(it => it.IsDisplayed()).Click();
 
-            ya.HomePage.SearchButton.Click(when => when.IsEnabled());
-            ya.HomePage.SearchButton.When(it => it.IsEnabled()).Click();
+            //ya.HomePage.SearchButton.Click(when => when.IsEnabled());
+            //ya.HomePage.SearchButton.When(it => it.IsEnabled()).Click();
 
             var page = ya.HomePage;
 
             // page.When(it => it.A.B.C.IsDisplayed(TimeSpan.FromSeconds(5)));
 
-            for (int i = 0; i < 5; i++)
-            {
-                //page.When(it => it.SearchButton.IsDisplayed()).SearchButton.Click();
-                //_webDriver.Navigate().Refresh();
-                Console.WriteLine(page.SearchButton.Displayed);
-            }
-
-            _webDriver.Navigate().Refresh();
+            //for (int i = 0; i < 5; i++)
+            //{
+            //    page.When(it => it.SearchButton.IsDisplayed()).SearchButton.Click();
+            //    _webDriver.Navigate().Refresh();
+            //    Console.WriteLine(page.SearchButton.Displayed);
+            //}
 
             page.Search("yaml");
 
             foreach (var package in ya.PackagesPage.Packages)
             {
                 package.ScrollIntoView();
-                // Console.WriteLine(package.Title.Text);
+                Console.WriteLine(package.Title.Text);
                 Assert.That(package.Title.Text, Is.Not.Empty);
                 Assert.That(package.Description.Text, Is.Not.Empty);
             }
 
             var yamlPackage = ya.PackagesPage.GetPackage(name: "YamlDotNet");
+            Console.WriteLine(yamlPackage.Title.Text);
             Console.WriteLine(yamlPackage.Description.Text);
         }
 
@@ -126,12 +125,17 @@ namespace Yapoml.Selenium.Sample.Basics
         {
             var page = _webDriver.Ya().Basics.Pages.HomePage;
 
-            page.Nav.Div.Row.Hover(when => when.IsDisplayed());
-            page.Nav.Div.Row.Hover();
+            //page.Nav.When(it => it.Div.IsDisplayed()).Div.Hover();
+            //page.Nav.When(it => it.Div.IsDisplayed()).Div.Hover();
+            //page.Nav.Div.Row.Hover();
 
             page.Search("yapoml");
 
             var packagesPage = _webDriver.Ya().Basics.Pages.PackagesPage;
+
+            Console.WriteLine(packagesPage.Package0.Title.Text);
+            Console.WriteLine(packagesPage.Package0.Title.Displayed);
+            Console.WriteLine(packagesPage.Package1.Title.Text);
 
             foreach (var package in packagesPage.Packages)
             {

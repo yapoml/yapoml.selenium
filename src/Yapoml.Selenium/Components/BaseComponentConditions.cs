@@ -12,17 +12,15 @@ namespace Yapoml.Selenium.Components
         protected TimeSpan Timeout { get; }
         protected TimeSpan PollingInterval { get; }
         protected IWebDriver WebDriver { get; }
-        protected IElementHandlerRepository ElementHandlerRepository { get; }
         protected IElementHandler ElementHandler { get; }
         protected IElementLocator ElementLocator { get; }
         protected IEventSource EventSource { get; }
 
-        public BaseComponentConditions(TimeSpan timeout, TimeSpan pollingInterval, IWebDriver webDriver, IElementHandlerRepository elementHandlerRepository, IElementHandler elementHandler, IElementLocator elementLocator, IEventSource eventSource)
+        public BaseComponentConditions(TimeSpan timeout, TimeSpan pollingInterval, IWebDriver webDriver, IElementHandler elementHandler, IElementLocator elementLocator, IEventSource eventSource)
         {
             Timeout = timeout;
             PollingInterval = pollingInterval;
             WebDriver = webDriver;
-            ElementHandlerRepository = elementHandlerRepository;
             ElementHandler = elementHandler;
             ElementLocator = elementLocator;
             EventSource = eventSource;

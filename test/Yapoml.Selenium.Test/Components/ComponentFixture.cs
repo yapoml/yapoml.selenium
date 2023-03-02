@@ -23,7 +23,7 @@ namespace Yapoml.Selenium.Test.Components
             var spaceOptions = new Mock<ISpaceOptions>();
             spaceOptions.SetupGet(p => p.Services).Returns(container.Object);
 
-            var component = new Mock<BaseComponent<TestComponent, TestComponent.TestConditions>>(webDriver.Object, null, elementHandler.Object, null, spaceOptions.Object);
+            var component = new Mock<BaseComponent<TestComponent, TestComponent.TestConditions>>(webDriver.Object, elementHandler.Object, null, spaceOptions.Object);
             component.CallBase = true;
 
             component.Object.Displayed.Should().BeFalse();
@@ -32,15 +32,15 @@ namespace Yapoml.Selenium.Test.Components
 
     public class TestComponent : BaseComponent<TestComponent, TestComponent.TestConditions>
     {
-        public TestComponent(IWebDriver webDriver, IElementHandlerRepository elementHandlerRepository, IElementHandler elementHandler, ComponentMetadata metadata, ISpaceOptions spaceOptions)
-            : base(webDriver, elementHandlerRepository, elementHandler, metadata, spaceOptions)
+        public TestComponent(IWebDriver webDriver, IElementHandler elementHandler, ComponentMetadata metadata, ISpaceOptions spaceOptions)
+            : base(webDriver, elementHandler, metadata, spaceOptions)
         {
         }
 
         public class TestConditions : BaseComponentConditions<TestConditions>
         {
-            public TestConditions(TimeSpan timeout, TimeSpan pollingInterval, IWebDriver webDriver, IElementHandlerRepository elementHandlerRepository, IElementHandler elementHandler, IElementLocator elementLocator, IEventSource eventSource)
-                : base(timeout, pollingInterval, webDriver, elementHandlerRepository, elementHandler, elementLocator, eventSource)
+            public TestConditions(TimeSpan timeout, TimeSpan pollingInterval, IWebDriver webDriver, IElementHandler elementHandler, IElementLocator elementLocator, IEventSource eventSource)
+                : base(timeout, pollingInterval, webDriver, elementHandler, elementLocator, eventSource)
             {
             }
         }

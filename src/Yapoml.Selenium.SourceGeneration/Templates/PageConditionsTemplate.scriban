@@ -15,7 +15,7 @@ public partial class Conditions : global::Yapoml.Selenium.Components.BasePageCon
 		{
 			if (ElementHandlerRepository.TryGet("{{component.name}}", out var cachedElementHandler))
 			{
-				return new {{get_component_return_type component}}.Conditions(Timeout, PollingInterval, WebDriver, ElementHandlerRepository, cachedElementHandler, ElementLocator, EventSource);
+				return new {{get_component_return_type component}}.Conditions(Timeout, PollingInterval, WebDriver, cachedElementHandler, ElementLocator, EventSource);
 			}
 			else
 			{
@@ -39,11 +39,11 @@ public partial class Conditions : global::Yapoml.Selenium.Components.BasePageCon
 				{{ end -}}
 
 				var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.name}}" };
-				var elementHandler = new global::Yapoml.Selenium.Services.Locator.ElementHandler(WebDriver, null, ElementLocator, by, metadata, EventSource);
+				var elementHandler = new global::Yapoml.Selenium.Services.Locator.ElementHandler(WebDriver, null, ElementLocator, by, metadata, ElementHandlerRepository.CreateNestedRepository(), EventSource);
 			
 				ElementHandlerRepository.Set("{{component.name}}", elementHandler);
 
-				return new {{get_component_return_type component}}.Conditions(Timeout, PollingInterval, WebDriver, ElementHandlerRepository, elementHandler, ElementLocator, EventSource);
+				return new {{get_component_return_type component}}.Conditions(Timeout, PollingInterval, WebDriver, elementHandler, ElementLocator, EventSource);
 			}
 		}
 	}
