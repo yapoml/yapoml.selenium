@@ -38,23 +38,29 @@ namespace Yapoml.Selenium.Services.Locator
         {
             if (_webElement == null)
             {
-                _eventSource.ComponentEventSource.RaiseOnFindingComponent(ComponentMetadata.Name, By);
-
                 if (_parentElementHandler != null)
                 {
                     try
                     {
-                        _webElement = _elementLocator.FindElement(_parentElementHandler.Locate(), By);
+                        var parentElement = _parentElementHandler.Locate();
+
+                        _eventSource.ComponentEventSource.RaiseOnFindingComponent(ComponentMetadata.Name, By);
+
+                        _webElement = _elementLocator.FindElement(parentElement, By);
                     }
                     catch (StaleElementReferenceException)
                     {
                         _parentElementHandler.Invalidate();
 
-                        _webElement = _elementLocator.FindElement(_parentElementHandler.Locate(), By);
+                        var parentElement = _parentElementHandler.Locate();
+
+                        _webElement = _elementLocator.FindElement(parentElement, By);
                     }
                 }
                 else
                 {
+                    _eventSource.ComponentEventSource.RaiseOnFindingComponent(ComponentMetadata.Name, By);
+
                     _webElement = _elementLocator.FindElement(_webDriver, By);
                 }
 
@@ -77,13 +83,15 @@ namespace Yapoml.Selenium.Services.Locator
         {
             if (_webElements == null)
             {
-                _eventSource.ComponentEventSource.RaiseOnFindingComponents(ComponentMetadata.Name, By);
-
                 if (_parentElementHandler != null)
                 {
                     try
                     {
-                        _webElements = _elementLocator.FindElements(_parentElementHandler.Locate(), By);
+                        var parentElement = _parentElementHandler.Locate();
+
+                        _eventSource.ComponentEventSource.RaiseOnFindingComponents(ComponentMetadata.Name, By);
+
+                        _webElements = _elementLocator.FindElements(parentElement, By);
                     }
                     catch (StaleElementReferenceException)
                     {
@@ -94,6 +102,8 @@ namespace Yapoml.Selenium.Services.Locator
                 }
                 else
                 {
+                    _eventSource.ComponentEventSource.RaiseOnFindingComponents(ComponentMetadata.Name, By);
+
                     _webElements = _elementLocator.FindElements(_webDriver, By);
                 }
 

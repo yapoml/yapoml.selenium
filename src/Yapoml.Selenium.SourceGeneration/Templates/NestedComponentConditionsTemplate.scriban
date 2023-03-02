@@ -4,7 +4,7 @@ public {{get_component_return_type component}}.Conditions {{component.name}}
 {
 	get
 	{
-		var elementHandlerRepository = ElementHandlerRepository.CreateNestedRepository();
+		var elementHandlerRepository = ElementHandlerRepository.CreateOrGetNestedRepository();
 
 		if (elementHandlerRepository.TryGet("{{component.name}}", out var cachedElementHandler))
 		{

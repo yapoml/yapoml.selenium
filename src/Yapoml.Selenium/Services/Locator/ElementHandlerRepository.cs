@@ -18,8 +18,6 @@ namespace Yapoml.Selenium.Services.Locator
 
         public IElementHandlerRepository ParentRepository { get; private set; }
 
-        public IElementHandlerRepository NestedRepository { get; private set; }
-
         public bool TryGet(string key, out IElementHandler elementHandler)
         {
             return _cache.TryGetValue(key, out elementHandler);
@@ -30,14 +28,21 @@ namespace Yapoml.Selenium.Services.Locator
             _cache[key] = elementHandler;
         }
 
-        public IElementHandlerRepository CreateNestedRepository()
+        private IElementHandlerRepository _nestedRepository;
+
+        public IElementHandlerRepository CreateOrGetNestedRepository()
         {
-            if (NestedRepository is null)
+            if (_nestedRepository is null)
             {
-                NestedRepository = new ElementHandlerRepository(parentRepository: this);
+                _nestedRepository = new ElementHandlerRepository(parentRepository: this);
             }
 
-            return NestedRepository;
+            return _nestedRepository;
+        }
+
+        public IElementHandlerRepository CreateNestedRepository()
+        {
+            return new ElementHandlerRepository(parentRepository: this);
         }
     }
 }

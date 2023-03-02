@@ -72,7 +72,7 @@ namespace Yapoml.Selenium.Components
 
                 var elements = _elementHandler.LocateMany();
 
-                _list = new List<TComponent>(elements.Select(e => factory.Create<TComponent, TConditions>(_webDriver, new ElementHandlerRepository(_elementHandlerRepository), new ElementHandler(_webDriver, _elementHandler, locator, _elementHandler.By, e, _componentMetadata, _eventSource), _componentMetadata, _spaceOptions)));
+                _list = new List<TComponent>(elements.Select(e => factory.Create<TComponent, TConditions>(_webDriver, _elementHandlerRepository.CreateNestedRepository(), new ElementHandler(_webDriver, _elementHandler, locator, _elementHandler.By, e, _componentMetadata, _eventSource), _componentMetadata, _spaceOptions)));
             }
         }
     }

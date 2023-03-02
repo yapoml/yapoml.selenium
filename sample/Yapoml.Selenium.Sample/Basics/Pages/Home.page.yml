@@ -2,11 +2,13 @@
   
 search button: .btn-search
 
-A:
-  by: a
+Nav:
+  by: css nav
 
-  B2: b2
-  B:
-    by: b
+  Div:
+    by: css div
 
-    C: c
+    Row:
+      by: .row
+
+      Div: css div

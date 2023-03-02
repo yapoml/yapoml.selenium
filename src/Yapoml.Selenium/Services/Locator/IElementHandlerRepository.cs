@@ -8,7 +8,7 @@
 
         IElementHandlerRepository ParentRepository { get; }
 
-        IElementHandlerRepository NestedRepository { get; }
+        IElementHandlerRepository CreateOrGetNestedRepository();
 
         IElementHandlerRepository CreateNestedRepository();
     }

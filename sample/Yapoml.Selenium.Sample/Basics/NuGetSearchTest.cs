@@ -41,7 +41,7 @@ namespace Yapoml.Selenium.Sample.Basics
         public void SearchWithYapoml()
         {
             var ya = _webDriver.Ya(
-                //opts => opts.UseLighter(delay: 200, fadeOutSpeed: 400)
+                opts => opts.UseLighter(delay: 200, fadeOutSpeed: 400)
                 ).Basics.Pages;
 
             // ya.HomePage.When(it => it.IsLoaded());
@@ -118,6 +118,25 @@ namespace Yapoml.Selenium.Sample.Basics
             foreach (var package in packagesPage.Open(q: "yaml").Packages)
             {
                 package.ScrollIntoView();
+            }
+        }
+
+        [Test]
+        public void Cache()
+        {
+            var page = _webDriver.Ya().Basics.Pages.HomePage;
+
+            page.Nav.Div.Row.Hover(when => when.IsDisplayed());
+            page.Nav.Div.Row.Hover();
+
+            page.Search("yapoml");
+
+            var packagesPage = _webDriver.Ya().Basics.Pages.PackagesPage;
+
+            foreach (var package in packagesPage.Packages)
+            {
+                Console.WriteLine(package.Title.Text);
+                Console.WriteLine(package.Title.Location.Y);
             }
         }
     }
