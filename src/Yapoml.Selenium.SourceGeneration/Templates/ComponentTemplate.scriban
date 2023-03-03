@@ -31,23 +31,10 @@ namespace {{namespace}}
 			get
 			{
 				{{ if component.is_plural }}
-				{{ if component.by.method == 'None' -}}
-				{{ if is_xpath component.by.value }}
-				var by = global::OpenQA.Selenium.By.XPath("{{ escape component.by.value }}");
-				{{ else }}
-				var by = global::OpenQA.Selenium.By.CssSelector("{{ escape component.by.value }}");
-				{{ end -}}
+				var byValue = "{{ escape component.by.value }}";
 
-				{{ else if component.by.method == 'XPath' -}}
-				var by = global::OpenQA.Selenium.By.XPath("{{ escape component.by.value }}");
-
-				{{ else if component.by.method == 'Css' -}}
-				var by = global::OpenQA.Selenium.By.CssSelector("{{ escape component.by.value }}");
-
-				{{ else if component.by.method == 'Id' -}}
-				var by = global::OpenQA.Selenium.By.Id("{{ escape component.by.value }}");
-				{{ end -}}
-		
+				{{ include 'ByTemplate' component }}
+				
 				var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.name}}" };
 				var elementLocator = SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>();
 				var elementHandler = new global::Yapoml.Selenium.Services.Locator.ElementHandler(WebDriver, _elementHandler, elementLocator, by, metadata, _elementHandler.ElementHandlerRepository.CreateNestedRepository(), EventSource);
@@ -62,23 +49,10 @@ namespace {{namespace}}
 				}
 				else
 				{
-					{{ if component.by.method == 'None' -}}
-					{{ if is_xpath component.by.value }}
-					var by = global::OpenQA.Selenium.By.XPath("{{ escape component.by.value }}");
-					{{ else }}
-					var by = global::OpenQA.Selenium.By.CssSelector("{{ escape component.by.value }}");
-					{{ end -}}
+					var byValue = "{{ escape component.by.value }}";
 
-					{{ else if component.by.method == 'XPath' -}}
-					var by = global::OpenQA.Selenium.By.XPath("{{ escape component.by.value }}");
-
-					{{ else if component.by.method == 'Css' -}}
-					var by = global::OpenQA.Selenium.By.CssSelector("{{ escape component.by.value }}");
-
-					{{ else if component.by.method == 'Id' -}}
-					var by = global::OpenQA.Selenium.By.Id("{{ escape component.by.value }}");
-					{{ end -}}
-		
+					{{ include 'ByTemplate' component }}
+					
 					var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.name}}" };
 					var elementLocator = SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>();
 					var elementHandler = new global::Yapoml.Selenium.Services.Locator.ElementHandler(WebDriver, _elementHandler, elementLocator, by, metadata, _elementHandler.ElementHandlerRepository.CreateNestedRepository(), EventSource);
@@ -99,23 +73,8 @@ namespace {{namespace}}
 
 			var byValue = new global::Yapoml.Selenium.Services.SegmentService().Replace("{{ escape component.by.value }}", segments);
 
-			{{ if component.by.method == 'None' -}}
-			{{ if is_xpath component.by.value }}
-			var by = global::OpenQA.Selenium.By.XPath(byValue);
-			{{ else }}
-			var by = global::OpenQA.Selenium.By.CssSelector(byValue);
-			{{ end -}}
-
-			{{ else if component.by.method == 'XPath' -}}
-			var by = global::OpenQA.Selenium.By.XPath(byValue);
-
-			{{ else if component.by.method == 'Css' -}}
-			var by = global::OpenQA.Selenium.By.CssSelector(byValue);
-
-			{{ else if component.by.method == 'Id' -}}
-			var by = global::OpenQA.Selenium.By.Id(byValue);
-			{{ end -}}
-		
+			{{ include 'ByTemplate' component }}
+			
 			var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.name}}" };
 			var elementLocator = SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>();
 			var elementHandler = new global::Yapoml.Selenium.Services.Locator.ElementHandler(WebDriver, _elementHandler, elementLocator, by, metadata, _elementHandler.ElementHandlerRepository.CreateNestedRepository(), EventSource);

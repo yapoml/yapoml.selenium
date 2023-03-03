@@ -1,0 +1,13 @@
+﻿{{- if $1.by.method == 'None' -}}
+	{{- if is_xpath $1.by.value -}}
+		var by = global::OpenQA.Selenium.By.XPath(byValue);
+	{{- else -}}
+		var by = global::OpenQA.Selenium.By.CssSelector(byValue);
+	{{- end -}}
+{{- else if $1.by.method == 'XPath' -}}
+	var by = global::OpenQA.Selenium.By.XPath(byValue);
+{{- else if $1.by.method == 'Css' -}}
+	var by = global::OpenQA.Selenium.By.CssSelector(byValue);
+{{- else if $1.by.method == 'Id' -}}
+	var by = global::OpenQA.Selenium.By.Id(byValue);
+{{- end -}}

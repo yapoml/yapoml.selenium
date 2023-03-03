@@ -21,22 +21,7 @@ public partial class Conditions : global::Yapoml.Selenium.Components.BasePageCon
 			{
 				var byValue = "{{ escape component.by.value }}";
 
-				{{ if component.by.method == 'None' -}}
-				{{ if is_xpath component.by.value }}
-				var by = global::OpenQA.Selenium.By.XPath(byValue);
-				{{ else }}
-				var by = global::OpenQA.Selenium.By.CssSelector(byValue);
-				{{ end -}}
-
-				{{ else if component.by.method == 'XPath' -}}
-				var by = global::OpenQA.Selenium.By.XPath(byValue);
-
-				{{ else if component.by.method == 'Css' -}}
-				var by = global::OpenQA.Selenium.By.CssSelector(byValue);
-
-				{{ else if component.by.method == 'Id' -}}
-				var by = global::OpenQA.Selenium.By.Id(byValue);
-				{{ end -}}
+				{{ include 'ByTemplate' component }}
 
 				var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.name}}" };
 				var elementHandler = new global::Yapoml.Selenium.Services.Locator.ElementHandler(WebDriver, null, ElementLocator, by, metadata, ElementHandlerRepository.CreateNestedRepository(), EventSource);
