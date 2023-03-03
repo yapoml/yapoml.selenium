@@ -10,9 +10,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.13.4" />
-    <PackageReference Include="Scriban" Version="5.5.2" />
-    <PackageReference Include="Yapoml.Framework.Workspace" Version="0.10.0" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.13.5" />
+    <PackageReference Include="Scriban" Version="5.7.0" />
+    <PackageReference Include="Yapoml.Framework.Workspace" Version="0.10.1" />
   </ItemGroup>
 
   <ItemGroup>

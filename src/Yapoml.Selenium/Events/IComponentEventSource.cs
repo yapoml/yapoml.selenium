@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
+using Yapoml.Selenium.Components.Metadata;
 using Yapoml.Selenium.Events.Args.WebElement;
 
 namespace Yapoml.Selenium.Events
@@ -15,12 +16,12 @@ namespace Yapoml.Selenium.Events
 
         event EventHandler<FoundElementsEventArgs> OnFoundComponents;
 
-        void RaiseOnFindingComponent(string componentName, By by);
+        void RaiseOnFindingComponent(By by, ComponentMetadata componentMetadata);
 
-        void RaiseOnFindingComponents(string componentName, By by);
+        void RaiseOnFindingComponents(By by, ComponentMetadata componentMetadata);
 
-        void RaiseOnFoundComponents(By by, IReadOnlyList<IWebElement> elements);
+        void RaiseOnFoundComponents(By by, IReadOnlyList<IWebElement> elements, ComponentMetadata componentMetadata);
 
-        void RaiseOnFoundComponent(By by, IWebDriver webDriver, IWebElement webElement);
+        void RaiseOnFoundComponent(By by, IWebDriver webDriver, IWebElement webElement, ComponentMetadata componentMetadata);
     }
 }

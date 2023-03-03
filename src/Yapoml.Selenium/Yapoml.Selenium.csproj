@@ -17,13 +17,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GitVersion.MsBuild" Version="5.11.1">
+    <PackageReference Include="GitVersion.MsBuild" Version="5.12.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
 
     <PackageReference Include="Selenium.WebDriver" Version="4.7.0" />
-    <PackageReference Include="Yapoml.Framework" Version="0.10.0" />
+    <PackageReference Include="Yapoml.Framework" Version="0.10.1" />
   </ItemGroup>
 
   <ItemGroup>

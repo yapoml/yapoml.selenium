@@ -35,7 +35,7 @@ namespace {{namespace}}
 
 				{{ include 'ByTemplate' component }}
 				
-				var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.name}}" };
+				var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.original_name}}" };
 				var elementLocator = SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>();
 				var elementHandler = new global::Yapoml.Selenium.Services.Locator.ElementHandler(WebDriver, _elementHandler, elementLocator, by, metadata, _elementHandler.ElementHandlerRepository.CreateNestedRepository(), EventSource);
 
@@ -44,7 +44,7 @@ namespace {{namespace}}
 				{{ else }}
 				if (_elementHandler.ElementHandlerRepository.TryGet("{{component.name}}", out var cachedElementHandler))
 				{
-					var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.name}}" };
+					var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.original_name}}" };
 					return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}, {{get_component_return_type component}}.Conditions>(WebDriver, cachedElementHandler, metadata, SpaceOptions);
 				}
 				else
@@ -53,7 +53,7 @@ namespace {{namespace}}
 
 					{{ include 'ByTemplate' component }}
 					
-					var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.name}}" };
+					var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.original_name}}" };
 					var elementLocator = SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>();
 					var elementHandler = new global::Yapoml.Selenium.Services.Locator.ElementHandler(WebDriver, _elementHandler, elementLocator, by, metadata, _elementHandler.ElementHandlerRepository.CreateNestedRepository(), EventSource);
 
@@ -75,7 +75,7 @@ namespace {{namespace}}
 
 			{{ include 'ByTemplate' component }}
 			
-			var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.name}}" };
+			var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.original_name}}" };
 			var elementLocator = SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>();
 			var elementHandler = new global::Yapoml.Selenium.Services.Locator.ElementHandler(WebDriver, _elementHandler, elementLocator, by, metadata, _elementHandler.ElementHandlerRepository.CreateNestedRepository(), EventSource);
 

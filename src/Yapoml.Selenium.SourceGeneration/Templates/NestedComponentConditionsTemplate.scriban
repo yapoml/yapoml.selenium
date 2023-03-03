@@ -14,7 +14,7 @@ public {{get_component_return_type component}}.Conditions {{component.name}}
 
 			{{ include 'ByTemplate' component }}
 
-			var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.name}}" };
+			var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.original_name}}" };
 			var elementHandler = new global::Yapoml.Selenium.Services.Locator.ElementHandler(WebDriver, ElementHandler, ElementLocator, by, metadata, ElementHandler.ElementHandlerRepository.CreateNestedRepository(), EventSource);
 
 			ElementHandler.ElementHandlerRepository.Set("{{component.name}}", elementHandler);

@@ -12,7 +12,7 @@ namespace Yapoml.Selenium.Components
         /// </summary>
         public virtual TComponent Clear()
         {
-            _logger.Trace($"Clearing {Metadata.Name} component");
+            _logger.Trace($"Clearing {Metadata.Name}");
 
             RelocateOnStaleReference(() => WrappedElement.Clear());
 
@@ -34,7 +34,7 @@ namespace Yapoml.Selenium.Components
         /// </summary>
         public virtual TComponent Click()
         {
-            _logger.Trace($"Clicking on {Metadata.Name} component");
+            _logger.Trace($"Clicking on {Metadata.Name}");
 
             RelocateOnStaleReference(() => WrappedElement.Click());
 
@@ -56,7 +56,7 @@ namespace Yapoml.Selenium.Components
         /// </summary>
         public virtual TComponent Click(int x, int y)
         {
-            _logger.Trace($"Clicking on {Metadata.Name} component by X: {x}, Y: {y}");
+            _logger.Trace($"Clicking on {Metadata.Name} by X: {x}, Y: {y}");
 
             RelocateOnStaleReference(() => new Actions(WebDriver).MoveToElement(WrappedElement, x, y).Click().Build().Perform());
 
@@ -82,11 +82,11 @@ namespace Yapoml.Selenium.Components
             // todo make it event based
             if (this.GetType().Name.ToLowerInvariant().Contains("password") && text != null)
             {
-                _logger.Trace($"Typing '{new string('*', text.Length)}' into {Metadata.Name} component");
+                _logger.Trace($"Typing '{new string('*', text.Length)}' into {Metadata.Name}");
             }
             else
             {
-                _logger.Trace($"Typing '{text}' into {Metadata.Name} component");
+                _logger.Trace($"Typing '{text}' into {Metadata.Name}");
             }
 
             RelocateOnStaleReference(() => WrappedElement.SendKeys(text));
@@ -110,7 +110,7 @@ namespace Yapoml.Selenium.Components
         /// </summary>
         public virtual TComponent Hover()
         {
-            _logger.Trace($"Hovering over {Metadata.Name} component");
+            _logger.Trace($"Hovering over {Metadata.Name}");
 
             RelocateOnStaleReference(() => new Actions(WebDriver).MoveToElement(WrappedElement).Build().Perform());
             return component;
@@ -131,7 +131,7 @@ namespace Yapoml.Selenium.Components
         /// </summary>
         public virtual TComponent Hover(int x, int y)
         {
-            _logger.Trace($"Hovering on {Metadata.Name} component by X: {x}, Y: {y}");
+            _logger.Trace($"Hovering on {Metadata.Name} by X: {x}, Y: {y}");
 
             RelocateOnStaleReference(() => new Actions(WebDriver).MoveToElement(WrappedElement, x, y).Build().Perform());
 
@@ -159,7 +159,7 @@ namespace Yapoml.Selenium.Components
             }
             else
             {
-                _logger.Trace($"Scrolling {Metadata.Name} component into view");
+                _logger.Trace($"Scrolling {Metadata.Name} into view");
 
                 var js = "arguments[0].scrollIntoView();";
 
@@ -195,7 +195,7 @@ namespace Yapoml.Selenium.Components
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
 
-            _logger.Trace($"Scrolling {Metadata.Name} component into view with options {options}");
+            _logger.Trace($"Scrolling {Metadata.Name} into view with options {options}");
 
             var js = $"arguments[0].scrollIntoView({options.ToJson()});";
 
@@ -226,7 +226,7 @@ namespace Yapoml.Selenium.Components
             }
             else
             {
-                _logger.Trace($"Focusing {Metadata.Name} component");
+                _logger.Trace($"Focusing {Metadata.Name}");
 
                 var js = "arguments[0].focus();";
 
@@ -262,7 +262,7 @@ namespace Yapoml.Selenium.Components
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
 
-            _logger.Trace($"Focusing {Metadata.Name} component with options {options}");
+            _logger.Trace($"Focusing {Metadata.Name} with options {options}");
 
             var js = $"arguments[0].focus({options.ToJson()});";
 
@@ -287,7 +287,7 @@ namespace Yapoml.Selenium.Components
         /// </summary>
         public virtual TComponent Blur()
         {
-            _logger.Trace($"Bluring {Metadata.Name} component");
+            _logger.Trace($"Bluring {Metadata.Name}");
 
             var js = $"arguments[0].blur();";
 
@@ -312,7 +312,7 @@ namespace Yapoml.Selenium.Components
         /// <returns></returns>
         public virtual TComponent RightClick()
         {
-            _logger.Trace($"Right clicking on {Metadata.Name} component");
+            _logger.Trace($"Right clicking on {Metadata.Name}");
 
             RelocateOnStaleReference(() => new Actions(WebDriver).ContextClick(WrappedElement).Build().Perform());
 
@@ -325,7 +325,7 @@ namespace Yapoml.Selenium.Components
         /// <returns></returns>
         public virtual TComponent DoubleClick()
         {
-            _logger.Trace($"Double clicking on {Metadata.Name} component");
+            _logger.Trace($"Double clicking on {Metadata.Name}");
 
             RelocateOnStaleReference(() => new Actions(WebDriver).DoubleClick(WrappedElement).Build().Perform());
 

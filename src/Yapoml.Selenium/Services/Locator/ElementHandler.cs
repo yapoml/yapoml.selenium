@@ -47,7 +47,7 @@ namespace Yapoml.Selenium.Services.Locator
                     {
                         var parentElement = _parentElementHandler.Locate();
 
-                        _eventSource.ComponentEventSource.RaiseOnFindingComponent(ComponentMetadata.Name, By);
+                        _eventSource.ComponentEventSource.RaiseOnFindingComponent(By, ComponentMetadata);
 
                         _webElement = _elementLocator.FindElement(parentElement, By);
                     }
@@ -62,12 +62,12 @@ namespace Yapoml.Selenium.Services.Locator
                 }
                 else
                 {
-                    _eventSource.ComponentEventSource.RaiseOnFindingComponent(ComponentMetadata.Name, By);
+                    _eventSource.ComponentEventSource.RaiseOnFindingComponent(By, ComponentMetadata);
 
                     _webElement = _elementLocator.FindElement(_webDriver, By);
                 }
 
-                _eventSource.ComponentEventSource.RaiseOnFoundComponent(By, _webDriver, _webElement);
+                _eventSource.ComponentEventSource.RaiseOnFoundComponent(By, _webDriver, _webElement, ComponentMetadata);
             }
 
             return _webElement;
@@ -97,7 +97,7 @@ namespace Yapoml.Selenium.Services.Locator
                     {
                         var parentElement = _parentElementHandler.Locate();
 
-                        _eventSource.ComponentEventSource.RaiseOnFindingComponents(ComponentMetadata.Name, By);
+                        _eventSource.ComponentEventSource.RaiseOnFindingComponents(By, ComponentMetadata);
 
                         _webElements = _elementLocator.FindElements(parentElement, By);
                     }
@@ -110,12 +110,12 @@ namespace Yapoml.Selenium.Services.Locator
                 }
                 else
                 {
-                    _eventSource.ComponentEventSource.RaiseOnFindingComponents(ComponentMetadata.Name, By);
+                    _eventSource.ComponentEventSource.RaiseOnFindingComponents(By, ComponentMetadata);
 
                     _webElements = _elementLocator.FindElements(_webDriver, By);
                 }
 
-                _eventSource.ComponentEventSource.RaiseOnFoundComponents(By, _webElements);
+                _eventSource.ComponentEventSource.RaiseOnFoundComponents(By, _webElements, ComponentMetadata);
             }
 
             return _webElements;

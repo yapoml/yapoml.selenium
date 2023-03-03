@@ -1,17 +1,19 @@
 ﻿using OpenQA.Selenium;
 using System;
+using Yapoml.Selenium.Components.Metadata;
 
 namespace Yapoml.Selenium.Events.Args.WebElement
 {
     public class FindingElementEventArgs : EventArgs
     {
-        public FindingElementEventArgs(string componentName, By by)
+        public FindingElementEventArgs(By by, ComponentMetadata componentMetadata)
         {
-            ComponentName = componentName;
             By = by;
+            ComponentMetadata = componentMetadata;
         }
 
-        public string ComponentName { get; }
         public By By { get; }
+
+        public ComponentMetadata ComponentMetadata { get; }
     }
 }

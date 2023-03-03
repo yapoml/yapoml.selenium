@@ -23,7 +23,7 @@ public partial class Conditions : global::Yapoml.Selenium.Components.BasePageCon
 
 				{{ include 'ByTemplate' component }}
 
-				var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.name}}" };
+				var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.original_name}}" };
 				var elementHandler = new global::Yapoml.Selenium.Services.Locator.ElementHandler(WebDriver, null, ElementLocator, by, metadata, ElementHandlerRepository.CreateNestedRepository(), EventSource);
 			
 				ElementHandlerRepository.Set("{{component.name}}", elementHandler);
