@@ -23,6 +23,8 @@ namespace Yapoml.Selenium.Components
 
         public string Href => this["href"];
 
+        public string Value => this["value"];
+
         private T RelocateOnStaleReference<T>(Func<T> act)
         {
             try
