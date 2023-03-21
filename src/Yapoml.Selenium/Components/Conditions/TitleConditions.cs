@@ -4,17 +4,17 @@ using System;
 namespace Yapoml.Selenium.Components.Conditions
 {
     /// <summary>
-    /// Various conditions for awaiting url.
+    /// Various conditions for page title.
     /// </summary>
     /// <typeparam name="TConditions">Fluent original instance for chaining conditions.</typeparam>
-    public class UrlConditions<TConditions>
+    public class TitleConditions<TConditions>
     {
         private readonly IWebDriver _webDriver;
         private readonly TConditions _conditions;
         private readonly TimeSpan _timeout;
         private readonly TimeSpan _pollingInterval;
 
-        public UrlConditions(IWebDriver webDriver, TConditions conditions, TimeSpan timeout, TimeSpan pollingInterval)
+        public TitleConditions(IWebDriver webDriver, TConditions conditions, TimeSpan timeout, TimeSpan pollingInterval)
         {
             _webDriver = webDriver;
             _conditions = conditions;
@@ -32,13 +32,13 @@ namespace Yapoml.Selenium.Components.Conditions
             var actualTimeout = timeout ?? _timeout;
             var actualPollingInterval = pollingInterval ?? _pollingInterval;
 
-            string latestUrl = null;
+            string latestTitle = null;
 
             bool? condition()
             {
-                latestUrl = _webDriver.Url;
+                latestTitle = _webDriver.Title;
 
-                if (latestUrl.Equals(value, comparisonType))
+                if (latestTitle.Equals(value, comparisonType))
                 {
                     return true;
                 }
@@ -54,7 +54,7 @@ namespace Yapoml.Selenium.Components.Conditions
             }
             catch (TimeoutException)
             {
-                throw Services.Waiter.BuildTimeoutException($"'{latestUrl}' url doesn't equal to '{value}'.", null, actualTimeout, actualPollingInterval, null);
+                throw Services.Waiter.BuildTimeoutException($"'{latestTitle}' title doesn't equal to '{value}'.", null, actualTimeout, actualPollingInterval, null);
             }
 
             return _conditions;
@@ -70,13 +70,13 @@ namespace Yapoml.Selenium.Components.Conditions
             var actualTimeout = timeout ?? _timeout;
             var actualPollingInterval = pollingInterval ?? _pollingInterval;
 
-            string latestUrl = null;
+            string latestTitle = null;
 
             bool? condition()
             {
-                latestUrl = _webDriver.Url;
+                latestTitle = _webDriver.Title;
 
-                if (latestUrl.StartsWith(value, comparisonType))
+                if (latestTitle.StartsWith(value, comparisonType))
                 {
                     return true;
                 }
@@ -92,7 +92,7 @@ namespace Yapoml.Selenium.Components.Conditions
             }
             catch (TimeoutException)
             {
-                throw Services.Waiter.BuildTimeoutException($"'{latestUrl}' url doesn't start with '{value}'.", null, actualTimeout, actualPollingInterval, null);
+                throw Services.Waiter.BuildTimeoutException($"'{latestTitle}' title doesn't start with '{value}'.", null, actualTimeout, actualPollingInterval, null);
             }
 
             return _conditions;
@@ -108,13 +108,13 @@ namespace Yapoml.Selenium.Components.Conditions
             var actualTimeout = timeout ?? _timeout;
             var actualPollingInterval = pollingInterval ?? _pollingInterval;
 
-            string latestUrl = null;
+            string latestTitle = null;
 
             bool? condition()
             {
-                latestUrl = _webDriver.Url;
+                latestTitle = _webDriver.Title;
 
-                if (latestUrl.EndsWith(value, comparisonType))
+                if (latestTitle.EndsWith(value, comparisonType))
                 {
                     return true;
                 }
@@ -130,7 +130,7 @@ namespace Yapoml.Selenium.Components.Conditions
             }
             catch (TimeoutException)
             {
-                throw Services.Waiter.BuildTimeoutException($"'{latestUrl}' url doesn't end with '{value}'.", null, actualTimeout, actualPollingInterval, null);
+                throw Services.Waiter.BuildTimeoutException($"'{latestTitle}' title doesn't end with '{value}'.", null, actualTimeout, actualPollingInterval, null);
             }
 
             return _conditions;

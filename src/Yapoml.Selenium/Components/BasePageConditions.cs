@@ -44,5 +44,16 @@ namespace Yapoml.Selenium.Components
                 return new UrlConditions<TConditions>(WebDriver, obj, Timeout, PollingInterval);
             }
         }
+
+        /// <summary>
+        /// Various conditions for page title.
+        /// </summary>
+        public TitleConditions<TConditions> Title
+        {
+            get
+            {
+                return new TitleConditions<TConditions>(WebDriver, obj, Timeout, PollingInterval);
+            }
+        }
     }
 }
