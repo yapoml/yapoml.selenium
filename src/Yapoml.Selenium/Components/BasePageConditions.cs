@@ -35,7 +35,7 @@ namespace Yapoml.Selenium.Components
         }
 
         /// <summary>
-        /// Various conditions for awaiting url.
+        /// Various expected conditions for awaiting url.
         /// </summary>
         public UrlConditions<TConditions> Url
         {
@@ -46,7 +46,7 @@ namespace Yapoml.Selenium.Components
         }
 
         /// <summary>
-        /// Various conditions for page title.
+        /// Various expected conditions for page title.
         /// </summary>
         public TitleConditions<TConditions> Title
         {

@@ -22,12 +22,12 @@ namespace Yapoml.Selenium.Components.Conditions
             _pollingInterval = pollingInterval;
         }
 
-        public new TConditions Is(string value, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        public TConditions Is(string value, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
         {
             return Is(value, StringComparison.CurrentCultureIgnoreCase, timeout, pollingInterval);
         }
 
-        public new TConditions Is(string value, StringComparison comparisonType, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        public TConditions Is(string value, StringComparison comparisonType, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
         {
             var actualTimeout = timeout ?? _timeout;
             var actualPollingInterval = pollingInterval ?? _pollingInterval;

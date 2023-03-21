@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using System;
+using Yapoml.Selenium.Components.Conditions;
 using Yapoml.Selenium.Events;
 using Yapoml.Selenium.Services.Locator;
 
@@ -53,33 +54,25 @@ namespace Yapoml.Selenium.Components
         }
 
         /// <summary>
-        /// Waits specific attribute value.
+        /// Various expected conditions for component attributes.
         /// </summary>
-        /// <param name="name">Attribute name.</param>
-        /// <param name="value">Expected value of the attribute.</param>
-        /// <param name="timeout">How long to wait until attribute value becomes expected.</param>
-        /// <param name="pollingInterval">Interval between verifications in a loop.</param>
-        /// <returns></returns>
-        public virtual TConditions AttributeIs(string name, string value, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        public virtual AttributesCollectionConditions<TConditions> Attributes
         {
-            Services.Waiter.UntilAttributeValue(ElementHandler, name, value, timeout ?? Timeout, pollingInterval ?? PollingInterval);
-            return obj;
+            get
+            {
+                return new AttributesCollectionConditions<TConditions>(obj, ElementHandler, Timeout, PollingInterval);
+            }
         }
 
         /// <summary>
-        /// Waits specific CSS value.
+        /// Various expected conditions for CSS styles.
         /// </summary>
-        /// <param name="name">CSS property name.</param>
-        /// <param name="value">Expected value of the CSS property.</param>
-        /// <param name="timeout">How long to wait until CSS value becomes expected.</param>
-        /// <param name="pollingInterval">Interval between verifications in a loop.</param>
-        /// <returns></returns>
-        public virtual TConditions CssIs(string name, string value, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        public virtual StylesCollectionConditions<TConditions> Styles
         {
-            Services.Waiter.UntilCssValue(ElementHandler, name, value, timeout ?? Timeout, pollingInterval ?? PollingInterval);
-
-            return obj;
+            get
+            {
+                return new StylesCollectionConditions<TConditions>(obj, ElementHandler, Timeout, PollingInterval);
+            }
         }
-
     }
 }

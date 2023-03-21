@@ -1,3 +1,4 @@
+using FluentAssertions;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -125,6 +126,8 @@ namespace Yapoml.Selenium.Sample.Basics
         {
             var page = _webDriver.Ya().Basics.Pages.HomePage;
 
+            page.Nav.When(it => it.Attributes.Class.Contains("").Div.IsDisplayed());
+            page.Nav.When(it => it.Styles.Opacity.Is(1.0).Div.IsDisplayed());
             //page.Nav.When(it => it.Div.IsDisplayed()).Div.Hover();
             //page.Nav.When(it => it.Div.IsDisplayed()).Div.Hover();
             //page.Nav.Div.Row.Hover();
