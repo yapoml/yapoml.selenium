@@ -54,6 +54,11 @@ namespace Yapoml.Selenium.Services
                 }
                 catch (Exception ex) when (_ignoredExceptions.ContainsKey(ex.GetType()))
                 {
+                    if (ex is StaleElementReferenceException)
+                    {
+                        elementHandler.Invalidate();
+                    }
+
                     lastError = ex;
 
                     _ignoredExceptions[ex.GetType()]++;
