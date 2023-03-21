@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using System;
+using Yapoml.Selenium.Components.Conditions;
 using Yapoml.Selenium.Events;
 using Yapoml.Selenium.Services.Locator;
 
@@ -31,6 +32,17 @@ namespace Yapoml.Selenium.Components
             throw new NotImplementedException();
 
             return obj;
+        }
+
+        /// <summary>
+        /// Various conditions for awaiting url.
+        /// </summary>
+        public UrlConditions<TConditions> Url
+        {
+            get
+            {
+                return new UrlConditions<TConditions>(WebDriver, obj, Timeout, PollingInterval);
+            }
         }
     }
 }
