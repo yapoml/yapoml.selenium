@@ -60,6 +60,44 @@ namespace Yapoml.Selenium.Components.Conditions
             return _conditions;
         }
 
+        public TConditions IsNot(string value, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        {
+            return IsNot(value, StringComparison.CurrentCultureIgnoreCase, timeout, pollingInterval);
+        }
+
+        public TConditions IsNot(string value, StringComparison comparisonType, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        {
+            var actualTimeout = timeout ?? _timeout;
+            var actualPollingInterval = pollingInterval ?? _pollingInterval;
+
+            string latestTitle = null;
+
+            bool? condition()
+            {
+                latestTitle = _webDriver.Title;
+
+                if (!latestTitle.Equals(value, comparisonType))
+                {
+                    return true;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            try
+            {
+                Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
+            }
+            catch (TimeoutException)
+            {
+                throw Services.Waiter.BuildTimeoutException($"'{latestTitle}' title doesn't equal to '{value}'.", null, actualTimeout, actualPollingInterval, null);
+            }
+
+            return _conditions;
+        }
+
         public TConditions StartsWith(string value, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
         {
             return StartsWith(value, StringComparison.CurrentCultureIgnoreCase, timeout, pollingInterval);
@@ -98,6 +136,44 @@ namespace Yapoml.Selenium.Components.Conditions
             return _conditions;
         }
 
+        public TConditions DoesNotStartWith(string value, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        {
+            return DoesNotStartWith(value, StringComparison.CurrentCultureIgnoreCase, timeout, pollingInterval);
+        }
+
+        public TConditions DoesNotStartWith(string value, StringComparison comparisonType, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        {
+            var actualTimeout = timeout ?? _timeout;
+            var actualPollingInterval = pollingInterval ?? _pollingInterval;
+
+            string latestTitle = null;
+
+            bool? condition()
+            {
+                latestTitle = _webDriver.Title;
+
+                if (!latestTitle.StartsWith(value, comparisonType))
+                {
+                    return true;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            try
+            {
+                Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
+            }
+            catch (TimeoutException)
+            {
+                throw Services.Waiter.BuildTimeoutException($"'{latestTitle}' title starts with '{value}'.", null, actualTimeout, actualPollingInterval, null);
+            }
+
+            return _conditions;
+        }
+
         public TConditions EndsWith(string value, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
         {
             return EndsWith(value, StringComparison.CurrentCultureIgnoreCase, timeout, pollingInterval);
@@ -131,6 +207,44 @@ namespace Yapoml.Selenium.Components.Conditions
             catch (TimeoutException)
             {
                 throw Services.Waiter.BuildTimeoutException($"'{latestTitle}' title doesn't end with '{value}'.", null, actualTimeout, actualPollingInterval, null);
+            }
+
+            return _conditions;
+        }
+
+        public TConditions DoesNotEndWith(string value, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        {
+            return DoesNotEndWith(value, StringComparison.CurrentCultureIgnoreCase, timeout, pollingInterval);
+        }
+
+        public TConditions DoesNotEndWith(string value, StringComparison comparisonType, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        {
+            var actualTimeout = timeout ?? _timeout;
+            var actualPollingInterval = pollingInterval ?? _pollingInterval;
+
+            string latestTitle = null;
+
+            bool? condition()
+            {
+                latestTitle = _webDriver.Title;
+
+                if (!latestTitle.EndsWith(value, comparisonType))
+                {
+                    return true;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            try
+            {
+                Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
+            }
+            catch (TimeoutException)
+            {
+                throw Services.Waiter.BuildTimeoutException($"'{latestTitle}' title ends with '{value}'.", null, actualTimeout, actualPollingInterval, null);
             }
 
             return _conditions;

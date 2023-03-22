@@ -26,6 +26,7 @@ namespace Yapoml.Selenium.Components.Conditions
             }
         }
 
+        // TODO make it strongly typed
         public StringStyleConditions<TConditions> Color => this["color"];
 
         public NumericStyleConditions<TConditions, double> Opacity =>
