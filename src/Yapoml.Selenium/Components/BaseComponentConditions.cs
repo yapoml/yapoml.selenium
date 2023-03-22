@@ -54,6 +54,17 @@ namespace Yapoml.Selenium.Components
         }
 
         /// <summary>
+        /// Various expected conditions for component's text.
+        /// </summary>
+        public virtual TextConditions<TConditions> Text
+        {
+            get
+            {
+                return new TextConditions<TConditions>(obj, ElementHandler, Timeout, PollingInterval);
+            }
+        }
+
+        /// <summary>
         /// Various expected conditions for component attributes.
         /// </summary>
         public virtual AttributesCollectionConditions<TConditions> Attributes
