@@ -101,62 +101,6 @@ namespace Yapoml.Selenium.Services
             }
         }
 
-        public static void UntilCssValue(IElementHandler elementHandler, string propertyName, string expectedValue, TimeSpan timeout, TimeSpan pollingInterval)
-        {
-            string latestValue = null;
-
-            bool? condition()
-            {
-                latestValue = elementHandler.Locate().GetCssValue(propertyName);
-
-                if (expectedValue == latestValue)
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-
-            try
-            {
-                Until(condition, timeout, pollingInterval);
-            }
-            catch (TimeoutException)
-            {
-                throw BuildTimeoutException($"CSS '{propertyName} = {latestValue}' of the {elementHandler.ComponentMetadata.Name} component is not '{expectedValue}' yet.", null, timeout, pollingInterval, null);
-            }
-        }
-
-        public static void UntilAttributeValue(IElementHandler elementHandler, string attributeName, string expectedValue, TimeSpan timeout, TimeSpan pollingInterval)
-        {
-            string latestValue = null;
-
-            bool? condition()
-            {
-                latestValue = elementHandler.Locate().GetAttribute(attributeName);
-
-                if (expectedValue == latestValue)
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-
-            try
-            {
-                Until(condition, timeout, pollingInterval);
-            }
-            catch (TimeoutException)
-            {
-                throw BuildTimeoutException($"Attribute '{attributeName} = {latestValue}' of the {elementHandler.ComponentMetadata.Name} component is not '{expectedValue}' yet.", null, timeout, pollingInterval, null);
-            }
-        }
-
         public static TimeoutException BuildTimeoutException(string message, Exception innerException, TimeSpan timeout, TimeSpan pollingInterval, IDictionary<Type, uint> ignoredExceptionTypes)
         {
             var builder = new StringBuilder();
