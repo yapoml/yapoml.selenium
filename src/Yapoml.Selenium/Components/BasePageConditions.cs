@@ -27,9 +27,36 @@ namespace Yapoml.Selenium.Components
         protected IElementLocator ElementLocator { get; }
         protected IEventSource EventSource { get; }
 
-        public TConditions IsLoaded()
+        public TConditions IsLoaded(TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
         {
-            throw new NotImplementedException();
+            var actualTimeout = timeout ?? Timeout;
+            var actualPollingInterval = pollingInterval ?? PollingInterval;
+
+            string latestValue = null;
+
+            bool? condition()
+            {
+                latestValue = (WebDriver as IJavaScriptExecutor).ExecuteScript("return document.readyState;").ToString();
+
+                if (latestValue.Equals("complete"))
+                {
+                    return true;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            try
+            {
+                Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
+            }
+            catch (TimeoutException)
+            {
+                // TODO Put page name in exception
+                throw Services.Waiter.BuildTimeoutException($"Page is not loaded yet. Current state is '{latestValue}'.", null, actualTimeout, actualPollingInterval, null);
+            }
 
             return obj;
         }
