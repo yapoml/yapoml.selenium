@@ -249,5 +249,81 @@ namespace Yapoml.Selenium.Components.Conditions
 
             return _conditions;
         }
+
+        public TConditions Contains(string value, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        {
+            return Contains(value, StringComparison.CurrentCultureIgnoreCase, timeout, pollingInterval);
+        }
+
+        public TConditions Contains(string value, StringComparison comparisonType, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        {
+            var actualTimeout = timeout ?? _timeout;
+            var actualPollingInterval = pollingInterval ?? _pollingInterval;
+
+            string latestValue = null;
+
+            bool? condition()
+            {
+                latestValue = _webDriver.Title;
+
+                if (latestValue.IndexOf(value, comparisonType) >= 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            try
+            {
+                Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
+            }
+            catch (TimeoutException)
+            {
+                throw Services.Waiter.BuildTimeoutException($"'{latestValue}' title doesn't contain '{value}' yet.", null, actualTimeout, actualPollingInterval, null);
+            }
+
+            return _conditions;
+        }
+
+        public TConditions DoesNotContain(string value, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        {
+            return DoesNotContain(value, StringComparison.CurrentCultureIgnoreCase, timeout, pollingInterval);
+        }
+
+        public TConditions DoesNotContain(string value, StringComparison comparisonType, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        {
+            var actualTimeout = timeout ?? _timeout;
+            var actualPollingInterval = pollingInterval ?? _pollingInterval;
+
+            string latestValue = null;
+
+            bool? condition()
+            {
+                latestValue = _webDriver.Title;
+
+                if (latestValue.IndexOf(value, comparisonType) == -1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            try
+            {
+                Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
+            }
+            catch (TimeoutException)
+            {
+                throw Services.Waiter.BuildTimeoutException($"'{latestValue}' title contains '{value}'.", null, actualTimeout, actualPollingInterval, null);
+            }
+
+            return _conditions;
+        }
     }
 }
