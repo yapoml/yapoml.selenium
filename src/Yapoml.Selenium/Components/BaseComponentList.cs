@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,6 +60,20 @@ namespace Yapoml.Selenium.Components
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        /// <summary>
+        /// Performs the specified action on each component.
+        /// </summary>
+        /// <param name="action">The action to be performed.</param>
+        public void ForEach(Action<TComponent> action)
+        {
+            EnsureLocated();
+
+            foreach (var item in _list)
+            {
+                action(item);
+            }
         }
 
         private void EnsureLocated()
