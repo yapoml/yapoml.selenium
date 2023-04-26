@@ -30,6 +30,38 @@ namespace Yapoml.Selenium.Components
         }
 
         /// <summary>
+        /// Types any text into the component.
+        /// </summary>
+        /// <param name="text">The text to be typed.</param>
+        public virtual TComponent Type(string text)
+        {
+            // todo make it event based
+            if (Metadata.Name.ToLowerInvariant().Contains("password") && text != null)
+            {
+                _logger.Trace($"Typing '{new string('*', text.Length)}' into {Metadata.Name}");
+            }
+            else
+            {
+                _logger.Trace($"Typing '{text}' into {Metadata.Name}");
+            }
+
+            RelocateOnStaleReference(() => WrappedElement.SendKeys(text));
+
+            return component;
+        }
+
+        /// <summary>
+        /// Types any text into the component.
+        /// </summary>
+        /// <param name="text">The text to be typed.</param>
+        public virtual TComponent Type(string text, Action<TConditions> when)
+        {
+            when(conditions);
+
+            return Type(text, when);
+        }
+
+        /// <summary>
         /// Simulates a mouse click on an element.
         /// </summary>
         public virtual TComponent Click()
@@ -77,6 +109,7 @@ namespace Yapoml.Selenium.Components
         /// Simulates typing text into the element.
         /// </summary>
         /// <param name="text">The text to type into the element.</param>
+        [Obsolete("SendKeys() method is replaced by Type()")]
         public virtual TComponent SendKeys(string text)
         {
             // todo make it event based
@@ -98,6 +131,7 @@ namespace Yapoml.Selenium.Components
         /// Simulates typing text into the element.
         /// </summary>
         /// <param name="text">The text to type into the element.</param>
+        [Obsolete("SendKeys() method is replaced by Type()")]
         public virtual TComponent SendKeys(string text, Action<TConditions> when)
         {
             when(conditions);

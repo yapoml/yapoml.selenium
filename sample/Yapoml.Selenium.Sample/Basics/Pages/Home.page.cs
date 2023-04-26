@@ -4,7 +4,7 @@
     {
         public void Search(string text)
         {
-            SearchInput.SendKeys(text);
+            SearchInput.Type(text);
             SearchButton.Click();
         }
     }
