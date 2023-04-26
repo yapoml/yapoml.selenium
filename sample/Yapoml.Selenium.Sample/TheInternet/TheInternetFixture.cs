@@ -17,7 +17,7 @@ namespace Yapoml.Selenium.Sample.TheInternet
         {
             _driver = new ChromeDriver();
 
-            _ya = _driver.Ya(opts => opts.UseBaseUrl("https://the-internet.herokuapp.com")).TheInternet.Pages;
+            _ya = _driver.Ya(opts => opts.WithBaseUrl("https://the-internet.herokuapp.com")).TheInternet.Pages;
         }
 
         [TearDown]

@@ -6,16 +6,16 @@ namespace Yapoml.Selenium
 {
     public static class BaseUrlExtensions
     {
-        public static ISpaceOptions UseBaseUrl(this ISpaceOptions spaceOptions, string url)
+        public static ISpaceOptions WithBaseUrl(this ISpaceOptions spaceOptions, string url)
         {
             spaceOptions.Services.Register(new BaseUrlOptions(url));
 
             return spaceOptions;
         }
 
-        public static ISpaceOptions UseBaseUrl(this ISpaceOptions spaceOptions, Uri url)
+        public static ISpaceOptions WithBaseUrl(this ISpaceOptions spaceOptions, Uri url)
         {
-            return spaceOptions.UseBaseUrl(url.ToString());
+            return spaceOptions.WithBaseUrl(url.ToString());
         }
     }
 }

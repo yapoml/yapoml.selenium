@@ -81,7 +81,7 @@ namespace Yapoml.Selenium.Sample.Basics
         public void NavigateWithYapoml()
         {
             var ya = _webDriver.Ya(opts =>
-                opts.UseBaseUrl("https://nuget.org"))
+                opts.WithBaseUrl("https://nuget.org"))
                 .Basics.Pages;
 
             // it opens https://nuget.org/packages?q=yaml
@@ -113,7 +113,7 @@ namespace Yapoml.Selenium.Sample.Basics
         [Test]
         public void ScrollEachPackageIntoView()
         {
-            var packagesPage = _webDriver.Ya(opts => opts.UseBaseUrl("https://nuget.org")).Basics.Pages.PackagesPage;
+            var packagesPage = _webDriver.Ya(opts => opts.WithBaseUrl("https://nuget.org")).Basics.Pages.PackagesPage;
 
             foreach (var package in packagesPage.Open(q: "yaml").Packages)
             {
