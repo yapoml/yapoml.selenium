@@ -73,8 +73,8 @@ namespace Yapoml.Selenium.Sample.Basics
             }
 
             var yamlPackage = ya.PackagesPage.GetPackage(name: "YamlDotNet");
-            Console.WriteLine(yamlPackage.Title.Text);
-            Console.WriteLine(yamlPackage.Description.Text);
+            Console.WriteLine(yamlPackage.Title);
+            Console.WriteLine(yamlPackage.Description);
         }
 
         [Test]

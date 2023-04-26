@@ -106,6 +106,15 @@ namespace Yapoml.Selenium.Components
             return component;
         }
 
+        /// <summary>
+        /// Returns a text for the current component.
+        /// </summary>
+        /// <returns>Text of the currrent component.</returns>
+        public override string ToString()
+        {
+            return Text;
+        }
+
         private T RelocateOnStaleReference<T>(Func<T> act)
         {
             try
