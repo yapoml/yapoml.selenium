@@ -115,6 +115,28 @@ namespace Yapoml.Selenium.Components
             return Text;
         }
 
+        public override bool Equals(object obj)
+        {
+            var str = obj as string;
+
+            if (str != null)
+            {
+                return str.Equals(Text);
+            }
+
+            return base.Equals(obj);
+        }
+
+        public static bool operator ==(BaseComponent<TComponent, TConditions> component, string value)
+        {
+            return component.Text == value;
+        }
+
+        public static bool operator !=(BaseComponent<TComponent, TConditions> component, string value)
+        {
+            return component.Text != value;
+        }
+
         private T RelocateOnStaleReference<T>(Func<T> act)
         {
             try

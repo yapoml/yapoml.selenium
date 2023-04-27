@@ -145,6 +145,9 @@ namespace Yapoml.Selenium.Sample.Basics
                 Console.WriteLine(package.Title.Text);
                 Console.WriteLine(package.Title.Location.Y);
             }
+
+            var myPackage = packagesPage.Packages[p => p.Title == "Yapoml.Selenium"];
+            Console.Write(myPackage);
         }
     }
 }
