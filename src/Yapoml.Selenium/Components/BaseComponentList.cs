@@ -40,6 +40,31 @@ namespace Yapoml.Selenium.Components
             }
         }
 
+#if NET6_0_OR_GREATER
+        public TComponent this[Func<TComponent, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression(nameof(predicate))] string predicateExpression = null]
+#else
+        public TComponent this[Func<TComponent, bool> predicate]
+#endif
+        {
+            get
+            {
+                EnsureLocated();
+
+                var component = _list.FirstOrDefault(predicate);
+
+                if (component is null)
+                {
+#if NET6_0_OR_GREATER
+                    throw new InvalidOperationException($"Sequence contains no matching {_componentMetadata.Name} satisfying condition {predicateExpression}");
+#else
+                    throw new InvalidOperationException($"Sequence contains no matching {_componentMetadata.Name}");
+#endif
+                }
+
+                return component;
+            }
+        }
+
         public int Count
         {
             get
