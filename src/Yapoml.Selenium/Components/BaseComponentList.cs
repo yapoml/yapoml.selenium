@@ -41,7 +41,7 @@ namespace Yapoml.Selenium.Components
         }
 
 #if NET6_0_OR_GREATER
-        public TComponent this[Func<TComponent, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression(nameof(predicate))] string predicateExpression = null]
+        public TComponent this[Func<TComponent, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string predicateExpression = null]
 #else
         public TComponent this[Func<TComponent, bool> predicate]
 #endif
