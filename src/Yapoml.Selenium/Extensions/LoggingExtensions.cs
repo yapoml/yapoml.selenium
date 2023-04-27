@@ -1,16 +1,14 @@
-﻿using Yapoml.Framework.Logging;
+﻿using System;
+using Yapoml.Framework.Logging;
 using Yapoml.Framework.Options;
 
 namespace Yapoml.Selenium
 {
     public static class LoggingExtensions
     {
-        public static ISpaceOptions WithLogger(this ISpaceOptions spaceOptions, ILogger logger = null)
+        public static ISpaceOptions WithLogger(this ISpaceOptions spaceOptions, ILogger logger)
         {
-            if (logger is null)
-            {
-                logger = new ConsoleLogger();
-            }
+            if (logger is null) throw new ArgumentNullException(nameof(logger));
 
             spaceOptions.Services.Register(logger);
 

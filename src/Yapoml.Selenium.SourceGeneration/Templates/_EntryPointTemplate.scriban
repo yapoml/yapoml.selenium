@@ -75,7 +75,7 @@ namespace {{root_namespace}}
 			var spaceOptions = new global::Yapoml.Framework.Options.SpaceOptions();
 
 			// default logger
-			spaceOptions.Services.Register<global::Yapoml.Framework.Logging.ILogger>(new global::Yapoml.Selenium.NullLogger());
+			spaceOptions.Services.Register<global::Yapoml.Framework.Logging.ILogger>(new global::Yapoml.Framework.Logging.Loggers.ConsoleLogger());
 
 			// default factories
 			spaceOptions.Services.Register<global::Yapoml.Selenium.Services.Factory.ISpaceFactory>(new global::Yapoml.Selenium.Services.Factory.DefaultSpaceFactory());
