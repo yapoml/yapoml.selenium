@@ -55,9 +55,9 @@ namespace Yapoml.Selenium.Components
                 if (component is null)
                 {
 #if NET6_0_OR_GREATER
-                    throw new InvalidOperationException($"Sequence contains no matching {_componentMetadata.Name} satisfying condition {predicateExpression}");
+                    throw new InvalidOperationException($"{_componentMetadata.Name} contain no matching component satisfying condition {predicateExpression}");
 #else
-                    throw new InvalidOperationException($"Sequence contains no matching {_componentMetadata.Name}");
+                    throw new InvalidOperationException($"{_componentMetadata.Name} contain no matching component.");
 #endif
                 }
 
