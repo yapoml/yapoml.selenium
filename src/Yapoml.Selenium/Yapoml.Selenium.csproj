@@ -9,7 +9,7 @@
     <PackageProjectUrl>https://yapoml.github.io</PackageProjectUrl>
     <PackageIcon>Logo.png</PackageIcon>
     <RepositoryType>GitHub</RepositoryType>
-    <RepositoryUrl>https://github.com/yapoml/selenium</RepositoryUrl>
+    <RepositoryUrl>https://github.com/yapoml/yapoml.selenium</RepositoryUrl>
     <PackageTags>page pageobject generation selenium framework</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
 
