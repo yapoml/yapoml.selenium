@@ -19,7 +19,7 @@ namespace Yapoml.Selenium.Services
 
             var urlBuilder = new UriBuilder(new Uri(new Uri(_baseUrl), url));
 
-            if (queryParams != null)
+            if (queryParams != null && queryParams.Count > 0)
             {
                 urlBuilder.Query = string.Join("&", queryParams.Select(qp => $"{qp.Key}={qp.Value}"));
             }
