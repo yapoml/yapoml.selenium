@@ -27,6 +27,9 @@ namespace Yapoml.Selenium.Components
         protected IElementLocator ElementLocator { get; }
         protected IEventSource EventSource { get; }
 
+        /// <summary>
+        /// Waits until current <c>document.readyState</c> is <c>complete</c>.
+        /// </summary>
         public TConditions IsLoaded(TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
         {
             var actualTimeout = timeout ?? Timeout;
