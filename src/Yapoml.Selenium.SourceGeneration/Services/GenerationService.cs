@@ -108,5 +108,10 @@ namespace Yapoml.Selenium.SourceGeneration.Services
         {
             return str.Replace("\"", "\\\"");
         }
+
+        public static string Singularize(string str)
+        {
+            return new Framework.Workspace.Services.PluralizationService().Singularize(str);
+        }
     }
 }

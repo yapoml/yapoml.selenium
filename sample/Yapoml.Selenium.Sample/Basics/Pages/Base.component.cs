@@ -6,7 +6,7 @@ namespace Yapoml.Selenium.Sample.Basics.Pages
     {
         public override TComponent ScrollIntoView()
         {
-            Console.WriteLine("I am invoked each time when component is scrolling into view");
+            Console.WriteLine($"I am invoked each time when {Metadata.Name} component is scrolling into view");
 
             return base.ScrollIntoView();
         }
