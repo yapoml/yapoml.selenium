@@ -93,7 +93,7 @@ namespace Yapoml.Selenium.Sample.Responsive
                     }
                 }
 
-                return (TPage)Activator.CreateInstance(pageType, webDriver, elementHandlerRepository, spaceOptions);
+                return (TPage)Activator.CreateInstance(pageType, webDriver, elementHandlerRepository, metadata, spaceOptions);
             }
         }
 
