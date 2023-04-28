@@ -6,8 +6,8 @@ namespace {{namespace}}
 	[global::System.Runtime.CompilerServices.CompilerGenerated]
 	public partial class {{ get_page_class_name this }} : {{ if base_page }}global::{{ base_page.namespace }}.{{ get_page_class_name_for_page base_page }}{{else}}{{if (get_page_class_name this) == 'BasePage'}}{{if parent_space.parent_space}}global::{{parent_space.parent_space.namespace}}.BasePage{{else}}global::Yapoml.Selenium.Components.BasePage{{end}}{{else}}{{if parent_space}}global::{{parent_space.namespace}}.BasePage{{else}}global::Yapoml.Selenium.Components.BasePage{{end}}{{end}}{{end}}
 	{
-		public {{ get_page_class_name this }}(global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementHandlerRepository elementHandlerRepository, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
-			: base(webDriver, elementHandlerRepository, spaceOptions)
+		public {{ get_page_class_name this }}(global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementHandlerRepository elementHandlerRepository, global::Yapoml.Selenium.Components.Metadata.PageMetadata metadata, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
+			: base(webDriver, elementHandlerRepository, metadata, spaceOptions)
 		{
 
 		}
@@ -35,7 +35,7 @@ namespace {{namespace}}
 
 			var url = navService.BuildUri("{{ url.path }}", segments, queryParams);
 
-			EventSource.PageEventSource.RaiseOnPageNavigating(this, url);
+			EventSource.PageEventSource.RaiseOnPageNavigating(this, url, Metadata);
 
 			WebDriver.Navigate().GoToUrl(url);
 

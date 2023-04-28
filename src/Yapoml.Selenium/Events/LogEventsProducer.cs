@@ -39,7 +39,7 @@ namespace Yapoml.Selenium.Events
 
         private void PageEventSource_OnPageNavigating(object sender, PageNavigatingEventArgs e)
         {
-            _logger.Trace($"Opening {e.Page.GetType().Name} by {e.Uri}");
+            _logger.Trace($"Opening {e.Metadata.Name} page by {e.Uri}");
         }
 
         private void ComponentEventSource_OnFoundComponents(object sender, FoundElementsEventArgs e)

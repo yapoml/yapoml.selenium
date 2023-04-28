@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using Yapoml.Framework.Options;
+using Yapoml.Selenium.Components.Metadata;
 using Yapoml.Selenium.Events;
 using Yapoml.Selenium.Services.Locator;
 
@@ -7,10 +8,11 @@ namespace Yapoml.Selenium.Components
 {
     public abstract class BasePage
     {
-        public BasePage(IWebDriver webDriver, IElementHandlerRepository elementHandlerRepository, ISpaceOptions spaceOptions)
+        public BasePage(IWebDriver webDriver, IElementHandlerRepository elementHandlerRepository, PageMetadata metadata, ISpaceOptions spaceOptions)
         {
             WebDriver = webDriver;
             ElementHandlerRepository = elementHandlerRepository;
+            Metadata = metadata;
             SpaceOptions = spaceOptions;
 
             EventSource = spaceOptions.Services.Get<IEventSource>();
@@ -19,6 +21,8 @@ namespace Yapoml.Selenium.Components
         protected IWebDriver WebDriver { get; }
 
         protected IElementHandlerRepository ElementHandlerRepository { get; }
+
+        protected PageMetadata Metadata { get; }
 
         protected ISpaceOptions SpaceOptions { get; }
 
