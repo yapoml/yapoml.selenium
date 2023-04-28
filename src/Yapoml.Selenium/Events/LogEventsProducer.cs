@@ -1,4 +1,5 @@
-﻿using Yapoml.Framework.Logging;
+﻿using OpenQA.Selenium;
+using Yapoml.Framework.Logging;
 using Yapoml.Framework.Options;
 using Yapoml.Selenium.Events.Args.Page;
 using Yapoml.Selenium.Events.Args.WebElement;
@@ -48,12 +49,17 @@ namespace Yapoml.Selenium.Events
 
         private void ComponentEventSource_OnFindingComponents(object sender, FindingElementEventArgs e)
         {
-            _logger.Trace($"Finding {e.ComponentMetadata.Name} {e.By}");
+            _logger.Trace($"Finding {e.ComponentMetadata.Name} {ByToString(e.By)}");
         }
 
         private void ComponentEventSource_OnFindingComponent(object sender, FindingElementEventArgs e)
         {
-            _logger.Trace($"Finding {e.ComponentMetadata.Name} {e.By}");
+            _logger.Trace($"Finding {e.ComponentMetadata.Name} {ByToString(e.By)}");
+        }
+
+        private string ByToString(By by)
+        {
+            return $"by {by.Mechanism} {by.Criteria}";
         }
     }
 }
