@@ -1,10 +1,8 @@
-﻿using OpenQA.Selenium;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Threading;
-using Yapoml.Selenium.Services.Locator;
 
 namespace Yapoml.Selenium.Services
 {
@@ -26,79 +24,6 @@ namespace Yapoml.Selenium.Services
             }
 
             throw new TimeoutException($"{condition} wasn't met during {timeout.TotalSeconds} seconds and polling each {pollingInterval.TotalSeconds} seconds.");
-        }
-
-        public static IWebElement UntilDisplayed(IElementHandler elementHandler, TimeSpan timeout, TimeSpan pollingInterval)
-        {
-            Exception lastError = null;
-
-            Dictionary<Type, uint> _ignoredExceptions = new Dictionary<Type, uint> {
-                { typeof(NoSuchElementException), 0 },
-                { typeof(StaleElementReferenceException), 0 }
-             };
-
-            IWebElement condition()
-            {
-                try
-                {
-                    var element = elementHandler.Locate();
-
-                    if (element.Displayed)
-                    {
-                        return element;
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-                catch (Exception ex) when (_ignoredExceptions.ContainsKey(ex.GetType()))
-                {
-                    if (ex is StaleElementReferenceException)
-                    {
-                        elementHandler.Invalidate();
-                    }
-
-                    lastError = ex;
-
-                    _ignoredExceptions[ex.GetType()]++;
-
-                    return null;
-                }
-            }
-
-            try
-            {
-                return Until(condition, timeout, pollingInterval);
-            }
-            catch (TimeoutException)
-            {
-                throw BuildTimeoutException($"{elementHandler.ComponentMetadata.Name} component is not displayed yet '{elementHandler.By}'.", lastError, timeout, pollingInterval, _ignoredExceptions);
-            }
-        }
-
-        public static void UntilEnabled(IElementHandler elementHandler, TimeSpan timeout, TimeSpan pollingInterval)
-        {
-            bool? condition()
-            {
-                if (elementHandler.Locate().Enabled)
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-
-            try
-            {
-                Until(condition, timeout, pollingInterval);
-            }
-            catch (TimeoutException)
-            {
-                throw BuildTimeoutException($"{elementHandler.ComponentMetadata.Name} component is not enabled yet.", null, timeout, pollingInterval, null);
-            }
         }
 
         public static TimeoutException BuildTimeoutException(string message, Exception innerException, TimeSpan timeout, TimeSpan pollingInterval, IDictionary<Type, uint> ignoredExceptionTypes)

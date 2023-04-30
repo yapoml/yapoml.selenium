@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using Yapoml.Selenium.Components.Conditions;
 using Yapoml.Selenium.Events;
@@ -31,12 +32,115 @@ namespace Yapoml.Selenium.Components
         /// <summary>
         /// Waits until the component is displayed.
         /// </summary>
-        /// <param name="timeout">How long to wait until the component component is displayed.</param>
+        /// <param name="timeout">How long to wait until the component is displayed.</param>
         /// <param name="pollingInterval">Interval between verifications in a loop.</param>
         /// <returns></returns>
         public virtual TConditions IsDisplayed(TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
         {
-            Services.Waiter.UntilDisplayed(ElementHandler, timeout ?? Timeout, pollingInterval ?? PollingInterval);
+            timeout = timeout ?? Timeout;
+            pollingInterval = pollingInterval ?? PollingInterval;
+
+            Exception lastError = null;
+
+            Dictionary<Type, uint> ignoredExceptions = new Dictionary<Type, uint> {
+                { typeof(NoSuchElementException), 0 },
+                { typeof(StaleElementReferenceException), 0 }
+             };
+
+            IWebElement attempt()
+            {
+                try
+                {
+                    var element = ElementHandler.Locate();
+
+                    if (element.Displayed)
+                    {
+                        return element;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                catch (Exception ex) when (ignoredExceptions.ContainsKey(ex.GetType()))
+                {
+                    if (ex is StaleElementReferenceException)
+                    {
+                        ElementHandler.Invalidate();
+                    }
+
+                    lastError = ex;
+
+                    ignoredExceptions[ex.GetType()]++;
+
+                    return null;
+                }
+            }
+
+            try
+            {
+                Services.Waiter.Until(attempt, timeout.Value, pollingInterval.Value);
+            }
+            catch (TimeoutException)
+            {
+                throw Services.Waiter.BuildTimeoutException($"{ElementHandler.ComponentMetadata.Name} is not displayed yet '{ElementHandler.By}'.", lastError, timeout.Value, pollingInterval.Value, ignoredExceptions);
+            }
+
+            return conditions;
+        }
+
+        /// <summary>
+        /// Waits until the component is appeared in the DOM.
+        /// </summary>
+        /// <param name="timeout">How long to wait until the component is appeared.</param>
+        /// <param name="pollingInterval">Interval between verifications in a loop.</param>
+        /// <returns></returns>
+        public virtual TConditions Exists(TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        {
+            timeout = timeout ?? Timeout;
+            pollingInterval = pollingInterval ?? PollingInterval;
+
+            Exception lastError = null;
+
+            Dictionary<Type, uint> ignoredExceptions = new Dictionary<Type, uint> {
+                { typeof(NoSuchElementException), 0 },
+                { typeof(StaleElementReferenceException), 0 }
+             };
+
+            IWebElement attempt()
+            {
+                try
+                {
+                    var element = ElementHandler.Locate();
+
+                    // ping element
+                    var tagName = element.TagName;
+
+                    return element;
+                }
+                catch (Exception ex) when (ignoredExceptions.ContainsKey(ex.GetType()))
+                {
+                    if (ex is StaleElementReferenceException)
+                    {
+                        ElementHandler.Invalidate();
+                    }
+
+                    lastError = ex;
+
+                    ignoredExceptions[ex.GetType()]++;
+
+                    return null;
+                }
+            }
+
+            try
+            {
+                Services.Waiter.Until(attempt, timeout.Value, pollingInterval.Value);
+            }
+            catch (TimeoutException)
+            {
+                throw Services.Waiter.BuildTimeoutException($"{ElementHandler.ComponentMetadata.Name} does not exist yet '{ElementHandler.By}'.", lastError, timeout.Value, pollingInterval.Value, ignoredExceptions);
+            }
 
             return conditions;
         }
@@ -49,7 +153,29 @@ namespace Yapoml.Selenium.Components
         /// <returns></returns>
         public virtual TConditions IsEnabled(TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
         {
-            Services.Waiter.UntilEnabled(ElementHandler, timeout ?? Timeout, pollingInterval ?? PollingInterval);
+            timeout = timeout ?? Timeout;
+            pollingInterval = pollingInterval ?? PollingInterval;
+
+            bool? attempt()
+            {
+                if (ElementHandler.Locate().Enabled)
+                {
+                    return true;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            try
+            {
+                Services.Waiter.Until(attempt, timeout.Value, pollingInterval.Value);
+            }
+            catch (TimeoutException)
+            {
+                throw Services.Waiter.BuildTimeoutException($"{ElementHandler.ComponentMetadata.Name} is not enabled yet.", null, timeout.Value, pollingInterval.Value, null);
+            }
 
             return conditions;
         }
