@@ -103,7 +103,7 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 		public Conditions(global::System.TimeSpan timeout, global::System.TimeSpan pollingInterval, global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementHandler elementHandler, global::Yapoml.Selenium.Services.Locator.IElementLocator elementLocator, global::Yapoml.Selenium.Events.IEventSource eventSource)
 			: base(timeout, pollingInterval, webDriver, elementHandler, elementLocator, eventSource)
 		{
-			base.obj = this;
+			base.conditions = this;
 		}
 
 		{{ include 'NestedComponentConditionsTemplate' $1 }}

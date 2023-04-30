@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using System;
+using System.Threading;
 using Yapoml.Selenium.Components.Conditions;
 using Yapoml.Selenium.Events;
 using Yapoml.Selenium.Services.Locator;
@@ -8,7 +9,7 @@ namespace Yapoml.Selenium.Components
 {
     public abstract class BasePageConditions<TConditions> where TConditions : BasePageConditions<TConditions>
     {
-        protected TConditions obj;
+        protected TConditions conditions;
 
         public BasePageConditions(TimeSpan timeout, TimeSpan pollingInterval, IWebDriver webDriver, IElementHandlerRepository elementHandlerRepository, IElementLocator elementLocator, IEventSource eventSource)
         {
@@ -30,7 +31,7 @@ namespace Yapoml.Selenium.Components
         /// <summary>
         /// Waits until current <c>document.readyState</c> is <c>complete</c>.
         /// </summary>
-        public TConditions IsLoaded(TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        public virtual TConditions IsLoaded(TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
         {
             var actualTimeout = timeout ?? Timeout;
             var actualPollingInterval = pollingInterval ?? PollingInterval;
@@ -61,29 +62,41 @@ namespace Yapoml.Selenium.Components
                 throw Services.Waiter.BuildTimeoutException($"Page is not loaded yet. Current state is '{latestValue}'.", null, actualTimeout, actualPollingInterval, null);
             }
 
-            return obj;
+            return conditions;
         }
 
         /// <summary>
         /// Various expected conditions for awaiting url.
         /// </summary>
-        public UrlConditions<TConditions> Url
+        public virtual UrlConditions<TConditions> Url
         {
             get
             {
-                return new UrlConditions<TConditions>(WebDriver, obj, Timeout, PollingInterval);
+                return new UrlConditions<TConditions>(WebDriver, conditions, Timeout, PollingInterval);
             }
         }
 
         /// <summary>
         /// Various expected conditions for page title.
         /// </summary>
-        public TitleConditions<TConditions> Title
+        public virtual TitleConditions<TConditions> Title
         {
             get
             {
-                return new TitleConditions<TConditions>(WebDriver, obj, Timeout, PollingInterval);
+                return new TitleConditions<TConditions>(WebDriver, conditions, Timeout, PollingInterval);
             }
+        }
+
+        /// <summary>
+        /// Waits specified amount of time.
+        /// </summary>
+        /// <param name="duration">Aamount of time to wait.</param>
+        /// <returns></returns>
+        public virtual TConditions Elapsed(TimeSpan duration)
+        {
+            Thread.Sleep(duration);
+
+            return conditions;
         }
     }
 }

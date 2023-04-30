@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using System;
+using System.Threading;
 using Yapoml.Selenium.Components.Conditions;
 using Yapoml.Selenium.Events;
 using Yapoml.Selenium.Services.Locator;
@@ -8,7 +9,7 @@ namespace Yapoml.Selenium.Components
 {
     public abstract class BaseComponentConditions<TConditions> where TConditions : BaseComponentConditions<TConditions>
     {
-        protected TConditions obj;
+        protected TConditions conditions;
 
         protected TimeSpan Timeout { get; }
         protected TimeSpan PollingInterval { get; }
@@ -37,7 +38,7 @@ namespace Yapoml.Selenium.Components
         {
             Services.Waiter.UntilDisplayed(ElementHandler, timeout ?? Timeout, pollingInterval ?? PollingInterval);
 
-            return obj;
+            return conditions;
         }
 
         /// <summary>
@@ -50,7 +51,7 @@ namespace Yapoml.Selenium.Components
         {
             Services.Waiter.UntilEnabled(ElementHandler, timeout ?? Timeout, pollingInterval ?? PollingInterval);
 
-            return obj;
+            return conditions;
         }
 
         /// <summary>
@@ -60,7 +61,7 @@ namespace Yapoml.Selenium.Components
         {
             get
             {
-                return new TextConditions<TConditions>(obj, ElementHandler, Timeout, PollingInterval);
+                return new TextConditions<TConditions>(conditions, ElementHandler, Timeout, PollingInterval);
             }
         }
 
@@ -71,7 +72,7 @@ namespace Yapoml.Selenium.Components
         {
             get
             {
-                return new AttributesCollectionConditions<TConditions>(obj, ElementHandler, Timeout, PollingInterval);
+                return new AttributesCollectionConditions<TConditions>(conditions, ElementHandler, Timeout, PollingInterval);
             }
         }
 
@@ -82,8 +83,20 @@ namespace Yapoml.Selenium.Components
         {
             get
             {
-                return new StylesCollectionConditions<TConditions>(obj, ElementHandler, Timeout, PollingInterval);
+                return new StylesCollectionConditions<TConditions>(conditions, ElementHandler, Timeout, PollingInterval);
             }
+        }
+
+        /// <summary>
+        /// Waits specified amount of time.
+        /// </summary>
+        /// <param name="duration">Aamount of time to wait.</param>
+        /// <returns></returns>
+        public virtual TConditions Elapsed(TimeSpan duration)
+        {
+            Thread.Sleep(duration);
+
+            return conditions;
         }
     }
 }

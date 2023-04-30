@@ -4,7 +4,7 @@ public partial class Conditions : global::Yapoml.Selenium.Components.BasePageCon
 	public Conditions(global::System.TimeSpan timeout, global::System.TimeSpan pollingInterval, global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementHandlerRepository elementHandlerRepository, global::Yapoml.Selenium.Services.Locator.IElementLocator elementLocator, global::Yapoml.Selenium.Events.IEventSource eventSource)
 		: base(timeout, pollingInterval, webDriver, elementHandlerRepository, elementLocator, eventSource)
 	{
-		base.obj = this;
+		base.conditions = this;
 	}
 
 	{{ for component in $1.components }}
