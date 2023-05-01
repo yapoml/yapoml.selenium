@@ -15,14 +15,18 @@ namespace Yapoml.Selenium.Components
     {
         private IList<TComponent> _list;
 
+        private readonly BasePage _page;
+        private readonly BaseComponent _parentComponent;
         private readonly IWebDriver _webDriver;
         private readonly IElementHandler _elementHandler;
         private readonly ComponentsListMetadata _componentsListMetadata;
         private readonly IEventSource _eventSource;
         private readonly ISpaceOptions _spaceOptions;
 
-        public BaseComponentList(IWebDriver webDriver, IElementHandler elementHandler, ComponentsListMetadata componentsListMetadata, IEventSource eventSource, ISpaceOptions spaceOptions)
+        public BaseComponentList(BasePage page, BaseComponent parentComponent, IWebDriver webDriver, IElementHandler elementHandler, ComponentsListMetadata componentsListMetadata, IEventSource eventSource, ISpaceOptions spaceOptions)
         {
+            _page = page;
+            _parentComponent = parentComponent;
             _webDriver = webDriver;
             _elementHandler = elementHandler;
             _componentsListMetadata = componentsListMetadata;
@@ -110,7 +114,7 @@ namespace Yapoml.Selenium.Components
 
                 var elements = _elementHandler.LocateMany();
 
-                _list = new List<TComponent>(elements.Select(e => factory.Create<TComponent, TConditions>(_webDriver, new ElementHandler(_webDriver, _elementHandler, locator, _elementHandler.By, e, _componentsListMetadata.ComponentMetadata, _elementHandler.ElementHandlerRepository.CreateNestedRepository(), _eventSource), _componentsListMetadata.ComponentMetadata, _spaceOptions)));
+                _list = new List<TComponent>(elements.Select(e => factory.Create<TComponent, TConditions>(_page, _parentComponent, _webDriver, new ElementHandler(_webDriver, _elementHandler, locator, _elementHandler.By, e, _componentsListMetadata.ComponentMetadata, _elementHandler.ElementHandlerRepository.CreateNestedRepository(), _eventSource), _componentsListMetadata.ComponentMetadata, _spaceOptions)));
             }
         }
     }

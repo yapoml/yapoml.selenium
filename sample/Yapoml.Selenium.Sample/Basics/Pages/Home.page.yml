@@ -11,4 +11,4 @@ Nav:
     Row:
       by: .row
 
-      Div: css div
+      Div: ./div

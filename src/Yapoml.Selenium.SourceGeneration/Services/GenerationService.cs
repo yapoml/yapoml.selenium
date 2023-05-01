@@ -38,6 +38,24 @@ namespace Yapoml.Selenium.SourceGeneration.Services
             }
         }
 
+        private static Dictionary<ComponentContext, string> _returnFullTypesCache = new Dictionary<ComponentContext, string>();
+
+        public static string GetComponentReturnFullType(ComponentContext component)
+        {
+            if (_returnFullTypesCache.TryGetValue(component, out var cachedRetType))
+            {
+                return cachedRetType;
+            }
+            else
+            {
+                var retType = $"global::{component.Namespace}.{component.SingularName}Component";
+
+                _returnFullTypesCache[component] = retType;
+
+                return retType;
+            }
+        }
+
         public static string GetPageClassName(ScriptObject page)
         {
             var name = page.GetSafeValue<string>("name");

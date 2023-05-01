@@ -10,13 +10,15 @@ using Yapoml.Selenium.Components.Metadata;
 namespace Yapoml.Selenium.Components
 {
     /// <inheritdoc cref="IWebElement"/>
-    public abstract partial class BaseComponent<TComponent, TConditions> : IWrapsElement, ITakesScreenshot where TComponent : BaseComponent<TComponent, TConditions>
+    public abstract partial class BaseComponent<TComponent, TConditions> : BaseComponent, IWrapsElement, ITakesScreenshot where TComponent : BaseComponent<TComponent, TConditions>
     {
         protected TComponent component;
+        protected BaseComponent parentComponent;
         protected TConditions conditions;
 
         private ILogger _logger;
 
+        protected BasePage Page { get; }
         protected IWebDriver WebDriver { get; private set; }
 
         protected IElementHandler _elementHandler;
@@ -29,8 +31,10 @@ namespace Yapoml.Selenium.Components
 
         protected IEventSource EventSource { get; private set; }
 
-        public BaseComponent(IWebDriver webDriver, IElementHandler elementHandler, ComponentMetadata metadata, ISpaceOptions spaceOptions)
+        public BaseComponent(BasePage page, BaseComponent parentComponent, IWebDriver webDriver, IElementHandler elementHandler, ComponentMetadata metadata, ISpaceOptions spaceOptions)
         {
+            Page = page;
+            this.parentComponent = parentComponent;
             WebDriver = webDriver;
             _elementHandler = elementHandler;
             Metadata = metadata;
@@ -168,5 +172,10 @@ namespace Yapoml.Selenium.Components
                 act();
             }
         }
+    }
+
+    public abstract class BaseComponent
+    {
+
     }
 }

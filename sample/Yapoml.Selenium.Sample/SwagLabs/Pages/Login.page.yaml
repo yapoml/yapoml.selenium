@@ -1,0 +1,14 @@
+url: /
+
+form:
+  by: .login-box
+  
+  username: id user-name
+  password: id password
+
+  login: id login-button
+
+  error:
+    by: .//h3
+
+    close: .error-button

@@ -23,7 +23,7 @@ namespace Yapoml.Selenium.Test.Components
             var spaceOptions = new Mock<ISpaceOptions>();
             spaceOptions.SetupGet(p => p.Services).Returns(container.Object);
 
-            var component = new Mock<BaseComponent<TestComponent, TestComponent.TestConditions>>(webDriver.Object, elementHandler.Object, null, spaceOptions.Object);
+            var component = new Mock<BaseComponent<TestComponent, TestComponent.TestConditions>>(null, null, webDriver.Object, elementHandler.Object, null, spaceOptions.Object);
             component.CallBase = true;
 
             component.Object.Displayed.Should().BeFalse();
@@ -32,8 +32,8 @@ namespace Yapoml.Selenium.Test.Components
 
     public class TestComponent : BaseComponent<TestComponent, TestComponent.TestConditions>
     {
-        public TestComponent(IWebDriver webDriver, IElementHandler elementHandler, ComponentMetadata metadata, ISpaceOptions spaceOptions)
-            : base(webDriver, elementHandler, metadata, spaceOptions)
+        public TestComponent(BasePage page, BaseComponent parentComponent, IWebDriver webDriver, IElementHandler elementHandler, ComponentMetadata metadata, ISpaceOptions spaceOptions)
+            : base(page, parentComponent, webDriver, elementHandler, metadata, spaceOptions)
         {
         }
 

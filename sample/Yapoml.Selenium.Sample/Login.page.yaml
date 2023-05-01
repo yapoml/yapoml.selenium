@@ -1,0 +1,9 @@
+url: /
+
+form:
+  by: .//body
+  
+  username:
+    by: ./d
+    placeholder: .asd
+  password: .//div
