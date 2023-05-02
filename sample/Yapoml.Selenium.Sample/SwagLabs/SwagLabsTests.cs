@@ -23,6 +23,9 @@ namespace Yapoml.Selenium.Sample.SwagLabs
             _webDriver?.Quit();
         }
 
+        public string A
+            => "qwe";
+
         [Test]
         public void Login()
         {
