@@ -1,6 +1,3 @@
 ﻿url: /packages/{packageId}
 
-title: ./qwe
-version:
-  by: .version-title
-  title: ./qwe
+version: .version-title
