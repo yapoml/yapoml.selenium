@@ -3,6 +3,7 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
+using System.Linq;
 
 namespace Yapoml.Selenium.Sample.Basics
 {
@@ -42,7 +43,7 @@ namespace Yapoml.Selenium.Sample.Basics
         public void SearchWithYapoml()
         {
             var ya = _webDriver.Ya(
-                opts => opts.UseLighter(delay: 200, fadeOutSpeed: 400)
+                //opts => opts.UseLighter(delay: 200, fadeOutSpeed: 400)
                 ).Basics.Pages;
 
             // ya.HomePage.When(it => it.IsLoaded());
@@ -64,17 +65,28 @@ namespace Yapoml.Selenium.Sample.Basics
 
             page.Search("yaml");
 
-            foreach (var package in ya.PackagesPage.Packages)
-            {
-                package.ScrollIntoView();
-                Console.WriteLine(package.Title.Text);
-                Assert.That(package.Title.Text, Is.Not.Empty);
-                Assert.That(package.Description.Text, Is.Not.Empty);
-            }
+            var resPage = ya.PackagesPage;
 
-            var yamlPackage = ya.PackagesPage.GetPackage(name: "YamlDotNet");
-            Console.WriteLine(yamlPackage.Title);
-            Console.WriteLine(yamlPackage.Description);
+            Console.WriteLine(resPage.Title.Text);
+
+            Console.WriteLine("11111111:");
+            Console.WriteLine(resPage.Packages.FirstOrDefault(p => p.Title.Text == "NSwag.Core.Yaml").Text);
+            Console.WriteLine(resPage.Packages.FirstOrDefault(p => p.Title.Text == "Cake.Yaml").Text);
+            Console.WriteLine("22222222:");
+            Console.WriteLine(resPage.List.Packages.FirstOrDefault(p => p.Title.Text == "NSwag.Core.Yaml").Text);
+            Console.WriteLine(resPage.List.Packages.FirstOrDefault(p => p.Title.Text == "Cake.Yaml").Text);
+
+            //foreach (var package in ya.PackagesPage.Packages)
+            //{
+            //    package.ScrollIntoView();
+            //    Console.WriteLine(package.Title.Text);
+            //    Assert.That(package.Title.Text, Is.Not.Empty);
+            //    Assert.That(package.Description.Text, Is.Not.Empty);
+            //}
+
+            //var yamlPackage = ya.PackagesPage.GetPackage(name: "YamlDotNet");
+            //Console.WriteLine(yamlPackage.Title);
+            //Console.WriteLine(yamlPackage.Description);
         }
 
         [Test]

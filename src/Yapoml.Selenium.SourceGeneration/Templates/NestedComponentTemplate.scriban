@@ -108,9 +108,10 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 		{{ include 'NestedComponentConditionsTemplate' $1 }}
 	}
 
+	#region sibling components
 	{{ if $1.page != null }}
 	{{ if $1.components == null || $1.components.length == 0 }}
-	{{ if $1.parent_component != null }}
+	{{ if $1.parent_component != null && $1.base_component == null }}
 	{{- for component in $1.parent_component.components }}
 		/// <summary>
 		{{ include 'NestedComponentTemplate_Desc' component }}
@@ -135,6 +136,7 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 	{{ end }}
 	{{ end }}
 	{{ end }}
+	#endregion
 
 	{{ if $1.page != null }}
 	/// <summary>

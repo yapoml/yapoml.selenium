@@ -18,3 +18,14 @@ package0:
 package1:
   base: package
   by: .//li[@class='package'][2]
+
+list:
+  by: .list-packages
+
+  title: ./qwe
+
+  packages:
+    by: .package
+    base: package
+
+title: .//a
