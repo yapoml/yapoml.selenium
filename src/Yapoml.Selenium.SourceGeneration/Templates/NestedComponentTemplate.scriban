@@ -116,7 +116,7 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 		{{ include 'NestedComponentTemplate_Desc' component }}
 		/// </summary>
 		{{- if component.by.segments == null }}
-		public {{ if component.is_plural }}global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}, {{get_component_return_type component}}.Conditions>{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}
+		public {{ if component.is_plural }}global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_full_type component}}, {{get_component_return_full_type component}}.Conditions>{{ else }}{{get_component_return_full_type component}}{{ end }} {{component.name}}
 		{
 			get
 			{
@@ -124,7 +124,7 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 			}
 		}
 		{{ else }}
-		public {{ if component.is_plural }}global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}>{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
+		public {{ if component.is_plural }}global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_full_type component}}>{{ else }}{{get_component_return_full_type component}}{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
 		{
 			return (({{get_component_return_full_type $1.parent_component}})parentComponent).{{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}{{ segment }}{{ end }});
 		}

@@ -3,6 +3,7 @@
   params:
     - q
 
+title: ./qwe
 packages: 
   ref: Package
 
@@ -14,6 +15,7 @@ get package:
 package0:
   base: package
   by: .//li[@class='package'][1]
+  title: ./qwe
 
 package1:
   base: package

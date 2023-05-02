@@ -1,9 +1,5 @@
-url: /
-
-form:
-  by: .//body
+header:
+  by: ./header
   
-  username:
-    by: ./d
-    placeholder: .asd
-  password: .//div
+  title:
+    base: my
