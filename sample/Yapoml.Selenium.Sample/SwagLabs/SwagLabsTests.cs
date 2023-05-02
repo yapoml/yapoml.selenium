@@ -28,15 +28,15 @@ namespace Yapoml.Selenium.Sample.SwagLabs
         {
             _ya.LoginPage.Open().Form
                 .Username.Type("standard_user")
-                .And.Password.Type("secret_sauce")
-                .And.Login.Click();
+                .Password.Type("secret_sauce")
+                .Login.Click();
         }
 
         [Test]
         public void IncorrectLogin()
         {
             var error = _ya.LoginPage.Open().Form
-                .Login.Click().And.Error;
+                .Login.Click().Error;
 
             Assert.That(error.Displayed, Is.True);
             Assert.That(error.Text, Is.EqualTo("Epic sadface: Username is required"));

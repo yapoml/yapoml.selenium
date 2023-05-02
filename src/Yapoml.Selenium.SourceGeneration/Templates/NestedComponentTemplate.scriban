@@ -92,7 +92,6 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 	}
 	{{ end }}
 
-
 	{{ include 'NestedComponentTemplate' component }}
 
 	{{ end }}
@@ -110,7 +109,34 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 	}
 
 	{{ if $1.page != null }}
+	{{ if $1.components == null || $1.components.length == 0 }}
+	{{ if $1.parent_component != null }}
+	{{- for component in $1.parent_component.components }}
+		/// <summary>
+		{{ include 'NestedComponentTemplate_Desc' component }}
+		/// </summary>
+		{{- if component.by.segments == null }}
+		public {{ if component.is_plural }}global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}, {{get_component_return_type component}}.Conditions>{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}
+		{
+			get
+			{
+				return (({{get_component_return_full_type $1.parent_component}})parentComponent).{{component.name}};
+			}
+		}
+		{{ else }}
+		public {{ if component.is_plural }}global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}>{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
+		{
+			return (({{get_component_return_full_type $1.parent_component}})parentComponent).{{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}{{ segment }}{{ end }});
+		}
+	{{ end }}
+	{{ end }}
+	{{ else }}
 
+	{{ end }}
+	{{ end }}
+	{{ end }}
+
+	{{ if $1.page != null }}
 	/// <summary>
 	/// Enables continuation of accessing parent components.
 	/// </summary>
