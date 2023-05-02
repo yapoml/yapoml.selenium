@@ -133,12 +133,17 @@ namespace Yapoml.Selenium.Components
 
         public static bool operator ==(BaseComponent<TComponent, TConditions> component, string value)
         {
+            if (component is null)
+            {
+                return value == null;
+            }
+
             return component.Text == value;
         }
 
         public static bool operator !=(BaseComponent<TComponent, TConditions> component, string value)
         {
-            return component.Text != value;
+            return !(component == value);
         }
 
         private T RelocateOnStaleReference<T>(Func<T> act)
