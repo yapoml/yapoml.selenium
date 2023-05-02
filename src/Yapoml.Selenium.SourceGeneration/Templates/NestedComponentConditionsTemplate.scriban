@@ -1,12 +1,12 @@
 ﻿{{ for component in $1.components }}
 {{if !component.is_plural && component.by.segments == null }}
-public {{get_component_return_full_type component}}.Conditions {{component.name}}
+public {{get_component_return_type component}}.Conditions {{component.name}}
 {
 	get
 	{
 		if (ElementHandler.ElementHandlerRepository.TryGet("{{component.name}}", out var cachedElementHandler))
 		{
-			return new {{get_component_return_full_type component}}.Conditions(Timeout, PollingInterval, WebDriver, cachedElementHandler, ElementLocator, EventSource);
+			return new {{get_component_return_type component}}.Conditions(Timeout, PollingInterval, WebDriver, cachedElementHandler, ElementLocator, EventSource);
 		}
 		else
 		{
@@ -19,7 +19,7 @@ public {{get_component_return_full_type component}}.Conditions {{component.name}
 
 			ElementHandler.ElementHandlerRepository.Set("{{component.name}}", elementHandler);
 
-			return new {{get_component_return_full_type component}}.Conditions(Timeout, PollingInterval, WebDriver, elementHandler, ElementLocator, EventSource);
+			return new {{get_component_return_type component}}.Conditions(Timeout, PollingInterval, WebDriver, elementHandler, ElementLocator, EventSource);
 		}
 	}
 }
