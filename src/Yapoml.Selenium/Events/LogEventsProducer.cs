@@ -44,12 +44,12 @@ namespace Yapoml.Selenium.Events
 
         private void ComponentEventSource_OnFoundComponents(object sender, FoundElementsEventArgs e)
         {
-            _logger.Trace($"Found {e.Elements.Count} {e.ComponentMetadata.Name}");
+            _logger.Trace($"Found {e.Elements.Count} {e.ComponentsListMetadata.Name}");
         }
 
-        private void ComponentEventSource_OnFindingComponents(object sender, FindingElementEventArgs e)
+        private void ComponentEventSource_OnFindingComponents(object sender, FindingElementsEventArgs e)
         {
-            _logger.Trace($"Finding {e.ComponentMetadata.Name} {ByToString(e.By)}");
+            _logger.Trace($"Finding {e.ComponentsListMetadata.Name} {ByToString(e.By)}");
         }
 
         private void ComponentEventSource_OnFindingComponent(object sender, FindingElementEventArgs e)

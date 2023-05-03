@@ -18,17 +18,17 @@ namespace Yapoml.Selenium.Components
         private readonly BasePage _page;
         private readonly BaseComponent _parentComponent;
         private readonly IWebDriver _webDriver;
-        private readonly IElementHandler _elementHandler;
+        private readonly IElementsListHandler _elementsListHandler;
         private readonly ComponentsListMetadata _componentsListMetadata;
         private readonly IEventSource _eventSource;
         private readonly ISpaceOptions _spaceOptions;
 
-        public BaseComponentList(BasePage page, BaseComponent parentComponent, IWebDriver webDriver, IElementHandler elementHandler, ComponentsListMetadata componentsListMetadata, IEventSource eventSource, ISpaceOptions spaceOptions)
+        public BaseComponentList(BasePage page, BaseComponent parentComponent, IWebDriver webDriver, IElementsListHandler elementsListHandler, ComponentsListMetadata componentsListMetadata, IEventSource eventSource, ISpaceOptions spaceOptions)
         {
             _page = page;
             _parentComponent = parentComponent;
             _webDriver = webDriver;
-            _elementHandler = elementHandler;
+            _elementsListHandler = elementsListHandler;
             _componentsListMetadata = componentsListMetadata;
             _eventSource = eventSource;
             _spaceOptions = spaceOptions;
@@ -112,9 +112,9 @@ namespace Yapoml.Selenium.Components
                 var factory = _spaceOptions.Services.Get<IComponentFactory>();
                 var locator = _spaceOptions.Services.Get<IElementLocator>();
 
-                var elements = _elementHandler.LocateMany();
+                var elements = _elementsListHandler.LocateMany();
 
-                _list = new List<TComponent>(elements.Select(e => factory.Create<TComponent, TConditions>(_page, _parentComponent, _webDriver, new ElementHandler(_webDriver, _elementHandler, locator, _elementHandler.By, e, _componentsListMetadata.ComponentMetadata, _elementHandler.ElementHandlerRepository.CreateNestedRepository(), _eventSource), _componentsListMetadata.ComponentMetadata, _spaceOptions)));
+                _list = new List<TComponent>(elements.Select(e => factory.Create<TComponent, TConditions>(_page, _parentComponent, _webDriver, new ElementHandler(_webDriver, null, locator, _elementsListHandler.By, e, _componentsListMetadata.ComponentMetadata, _elementsListHandler.ElementHandlerRepository.CreateNestedRepository(), _eventSource), _componentsListMetadata.ComponentMetadata, _spaceOptions)));
             }
         }
     }

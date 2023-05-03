@@ -1,17 +1,18 @@
 ﻿using OpenQA.Selenium;
+using System.Collections.Generic;
 using Yapoml.Selenium.Components.Metadata;
 
 namespace Yapoml.Selenium.Services.Locator
 {
-    public interface IElementHandler
+    public interface IElementsListHandler
     {
-        IWebElement Locate();
-
         void Invalidate();
+
+        IReadOnlyList<IWebElement> LocateMany();
 
         By By { get; }
 
-        ComponentMetadata ComponentMetadata { get; }
+        ComponentsListMetadata ComponentsListMetadata { get; }
 
         IElementHandlerRepository ElementHandlerRepository { get; }
     }

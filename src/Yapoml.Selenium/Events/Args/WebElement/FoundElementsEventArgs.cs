@@ -7,11 +7,11 @@ namespace Yapoml.Selenium.Events.Args.WebElement
 {
     public class FoundElementsEventArgs : EventArgs
     {
-        public FoundElementsEventArgs(By by, IReadOnlyList<IWebElement> elements, ComponentMetadata componentMetadata)
+        public FoundElementsEventArgs(By by, IReadOnlyList<IWebElement> elements, ComponentsListMetadata componentsListMetadata)
         {
             By = by;
             Elements = elements;
-            ComponentMetadata = componentMetadata;
+            ComponentsListMetadata = componentsListMetadata;
         }
 
         public By By { get; }
@@ -19,6 +19,6 @@ namespace Yapoml.Selenium.Events.Args.WebElement
         public IReadOnlyList<IWebElement> Elements { get; }
 
 
-        public ComponentMetadata ComponentMetadata { get; }
+        public ComponentsListMetadata ComponentsListMetadata { get; }
     }
 }

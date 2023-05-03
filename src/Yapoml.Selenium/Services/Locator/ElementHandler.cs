@@ -77,48 +77,10 @@ namespace Yapoml.Selenium.Services.Locator
         {
             _webElement = null;
 
-            _webElements = null;
-
             foreach (var elementHandler in ElementHandlerRepository.ElementHandlers)
             {
                 elementHandler.Invalidate();
             }
-        }
-
-        IReadOnlyList<IWebElement> _webElements;
-
-        public IReadOnlyList<IWebElement> LocateMany()
-        {
-            if (_webElements == null)
-            {
-                if (_parentElementHandler != null)
-                {
-                    try
-                    {
-                        var parentElement = _parentElementHandler.Locate();
-
-                        _eventSource.ComponentEventSource.RaiseOnFindingComponents(By, ComponentMetadata);
-
-                        _webElements = _elementLocator.FindElements(parentElement, By);
-                    }
-                    catch (StaleElementReferenceException)
-                    {
-                        _parentElementHandler.Invalidate();
-
-                        _webElements = _elementLocator.FindElements(_parentElementHandler.Locate(), By);
-                    }
-                }
-                else
-                {
-                    _eventSource.ComponentEventSource.RaiseOnFindingComponents(By, ComponentMetadata);
-
-                    _webElements = _elementLocator.FindElements(_webDriver, By);
-                }
-
-                _eventSource.ComponentEventSource.RaiseOnFoundComponents(By, _webElements, ComponentMetadata);
-            }
-
-            return _webElements;
         }
     }
 }

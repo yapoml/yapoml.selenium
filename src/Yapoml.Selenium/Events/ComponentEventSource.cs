@@ -9,7 +9,7 @@ namespace Yapoml.Selenium.Events
     public class ComponentEventSource : IComponentEventSource
     {
         public event EventHandler<FindingElementEventArgs> OnFindingComponent;
-        public event EventHandler<FindingElementEventArgs> OnFindingComponents;
+        public event EventHandler<FindingElementsEventArgs> OnFindingComponents;
         public event EventHandler<FoundElementsEventArgs> OnFoundComponents;
         public event EventHandler<FoundElementEventArgs> OnFoundComponent;
 
@@ -18,9 +18,9 @@ namespace Yapoml.Selenium.Events
             OnFindingComponent?.Invoke(this, new FindingElementEventArgs(by, componentMetadata));
         }
 
-        public void RaiseOnFindingComponents(By by, ComponentMetadata componentMetadata)
+        public void RaiseOnFindingComponents(By by, ComponentsListMetadata componentsListMetadata)
         {
-            OnFindingComponents?.Invoke(this, new FindingElementEventArgs(by, componentMetadata));
+            OnFindingComponents?.Invoke(this, new FindingElementsEventArgs(by, componentsListMetadata));
         }
 
         public void RaiseOnFoundComponent(By by, IWebDriver webDriver, IWebElement webElement, ComponentMetadata componentMetadata)
@@ -28,9 +28,9 @@ namespace Yapoml.Selenium.Events
             OnFoundComponent?.Invoke(this, new FoundElementEventArgs(by, webDriver, webElement, componentMetadata));
         }
 
-        public void RaiseOnFoundComponents(By by, IReadOnlyList<IWebElement> elements, ComponentMetadata componentMetadata)
+        public void RaiseOnFoundComponents(By by, IReadOnlyList<IWebElement> elements, ComponentsListMetadata componentsListMetadata)
         {
-            OnFoundComponents?.Invoke(this, new FoundElementsEventArgs(by, elements, componentMetadata));
+            OnFoundComponents?.Invoke(this, new FoundElementsEventArgs(by, elements, componentsListMetadata));
         }
     }
 }

@@ -12,15 +12,15 @@ namespace Yapoml.Selenium.Events
 
         event EventHandler<FoundElementEventArgs> OnFoundComponent;
 
-        event EventHandler<FindingElementEventArgs> OnFindingComponents;
+        event EventHandler<FindingElementsEventArgs> OnFindingComponents;
 
         event EventHandler<FoundElementsEventArgs> OnFoundComponents;
 
         void RaiseOnFindingComponent(By by, ComponentMetadata componentMetadata);
 
-        void RaiseOnFindingComponents(By by, ComponentMetadata componentMetadata);
+        void RaiseOnFindingComponents(By by, ComponentsListMetadata componentsListMetadata);
 
-        void RaiseOnFoundComponents(By by, IReadOnlyList<IWebElement> elements, ComponentMetadata componentMetadata);
+        void RaiseOnFoundComponents(By by, IReadOnlyList<IWebElement> elements, ComponentsListMetadata componentsListMetadata);
 
         void RaiseOnFoundComponent(By by, IWebDriver webDriver, IWebElement webElement, ComponentMetadata componentMetadata);
     }
