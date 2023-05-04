@@ -44,6 +44,23 @@ namespace Yapoml.Selenium.Components
             }
         }
 
+        public TComponent this[string text]
+        {
+            get
+            {
+                EnsureLocated();
+
+                var component = _list.FirstOrDefault(c => c == text);
+
+                if (component is null)
+                {
+                    throw new InvalidOperationException($"{_componentsListMetadata.Name} contain no matching {_componentsListMetadata.ComponentMetadata.Name} with '{text}' text");
+                }
+
+                return component;
+            }
+        }
+
 #if NET6_0_OR_GREATER
         public TComponent this[Func<TComponent, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string predicateExpression = null]
 #else
@@ -59,9 +76,9 @@ namespace Yapoml.Selenium.Components
                 if (component is null)
                 {
 #if NET6_0_OR_GREATER
-                    throw new InvalidOperationException($"{_componentsListMetadata.Name} contain no matching component satisfying condition {predicateExpression}");
+                    throw new InvalidOperationException($"{_componentsListMetadata.Name} contain no matching {_componentsListMetadata.ComponentMetadata.Name} satisfying condition {predicateExpression}");
 #else
-                    throw new InvalidOperationException($"{_componentsListMetadata.Name} contain no matching component.");
+                    throw new InvalidOperationException($"{_componentsListMetadata.Name} contain no matching {_componentsListMetadata.ComponentMetadata.Name}.");
 #endif
                 }
 
