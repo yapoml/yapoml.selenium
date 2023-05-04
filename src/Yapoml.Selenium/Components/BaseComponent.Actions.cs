@@ -58,7 +58,7 @@ namespace Yapoml.Selenium.Components
         {
             when(conditions);
 
-            return Type(text, when);
+            return Type(text);
         }
 
         /// <summary>
