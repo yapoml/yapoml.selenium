@@ -11,5 +11,5 @@ login: .//button
 Then you are immediately able to interact with web elements
 
 ```csharp
-webDriver.Ya().LoginPage.Username.SendKeys("user01");
+webDriver.Ya().LoginPage.Username.Type("user01");
 ```
