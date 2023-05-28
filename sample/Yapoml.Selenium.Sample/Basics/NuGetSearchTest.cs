@@ -118,10 +118,6 @@ namespace Yapoml.Selenium.Sample.Basics
 
             // or explicitly only here
             var searchInput2 = homePage.SearchInput.Expect(it => it.IsDisplayed(timeout: TimeSpan.FromSeconds(20)));
-
-            // or using awaitable components by default
-            var searchInput3 = _webDriver.Ya(opts => opts.UseAwaitableComponents())
-                .Basics.Pages.HomePage.SearchInput;
         }
 
         [Test]
