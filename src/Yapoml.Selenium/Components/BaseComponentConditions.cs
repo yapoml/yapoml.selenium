@@ -196,6 +196,51 @@ namespace Yapoml.Selenium.Components
         }
 
         /// <summary>
+        /// Waits until the component disappeared drom the DOM.
+        /// </summary>
+        /// <param name="timeout">How long to wait until the component disappeared.</param>
+        /// <param name="pollingInterval">Interval between verifications in a loop.</param>
+        /// <returns></returns>
+        public virtual TConditions DoesNotExist(TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        {
+            timeout = timeout ?? Timeout;
+            pollingInterval = pollingInterval ?? PollingInterval;
+
+            bool? attempt()
+            {
+                try
+                {
+                    var element = ElementHandler.Locate();
+
+                    // ping element
+                    var tagName = element.TagName;
+
+                    return null;
+                }
+                catch (Exception ex) when (ex is StaleElementReferenceException || ex is NoSuchElementException)
+                {
+                    if (ex is StaleElementReferenceException)
+                    {
+                        ElementHandler.Invalidate();
+                    }
+
+                    return true;
+                }
+            }
+
+            try
+            {
+                Services.Waiter.Until(attempt, timeout.Value, pollingInterval.Value);
+            }
+            catch (TimeoutException)
+            {
+                throw Services.Waiter.BuildTimeoutException($"{ElementHandler.ComponentMetadata.Name} still exists '{ElementHandler.By}'.", null, timeout.Value, pollingInterval.Value, null);
+            }
+
+            return conditions;
+        }
+
+        /// <summary>
         ///  Waits until the component is enabled.
         /// </summary>
         /// <param name="timeout">How long to wait until the component is enabled.</param>
