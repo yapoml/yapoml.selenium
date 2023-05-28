@@ -47,7 +47,7 @@ namespace Yapoml.Selenium.Components
                 { typeof(StaleElementReferenceException), 0 }
              };
 
-            IWebElement attempt()
+            bool? attempt()
             {
                 try
                 {
@@ -55,7 +55,7 @@ namespace Yapoml.Selenium.Components
 
                     if (element.Displayed)
                     {
-                        return element;
+                        return true;
                     }
                     else
                     {
@@ -84,6 +84,56 @@ namespace Yapoml.Selenium.Components
             catch (TimeoutException)
             {
                 throw Services.Waiter.BuildTimeoutException($"{ElementHandler.ComponentMetadata.Name} is not displayed yet '{ElementHandler.By}'.", lastError, timeout.Value, pollingInterval.Value, ignoredExceptions);
+            }
+
+            return conditions;
+        }
+
+        /// <summary>
+        /// Waits until the component is not displayed.
+        /// Detached component from DOM is also considered as not displayed.
+        /// </summary>
+        /// <param name="timeout">How long to wait until the component is not displayed.</param>
+        /// <param name="pollingInterval">Interval between verifications in a loop.</param>
+        /// <returns></returns>
+        public virtual TConditions IsNotDisplayed(TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        {
+            timeout = timeout ?? Timeout;
+            pollingInterval = pollingInterval ?? PollingInterval;
+
+            bool? attempt()
+            {
+                try
+                {
+                    var element = ElementHandler.Locate();
+
+                    if (!element.Displayed)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                catch (Exception ex) when (ex is StaleElementReferenceException || ex is NoSuchElementException)
+                {
+                    if (ex is StaleElementReferenceException)
+                    {
+                        ElementHandler.Invalidate();
+                    }
+
+                    return true;
+                }
+            }
+
+            try
+            {
+                Services.Waiter.Until(attempt, timeout.Value, pollingInterval.Value);
+            }
+            catch (TimeoutException)
+            {
+                throw Services.Waiter.BuildTimeoutException($"{ElementHandler.ComponentMetadata.Name} is still displayed '{ElementHandler.By}'.", null, timeout.Value, pollingInterval.Value, null);
             }
 
             return conditions;
