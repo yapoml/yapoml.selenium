@@ -63,6 +63,8 @@ namespace Yapoml.Selenium.Sample.Basics
             //    Console.WriteLine(page.SearchButton.Displayed);
             //}
 
+            Console.WriteLine(page.SearchInput.IsFocused);
+
             page.Search("yaml");
 
             var resPage = ya.PackagesPage;
@@ -112,10 +114,10 @@ namespace Yapoml.Selenium.Sample.Basics
                 .Basics.Pages.HomePage;
 
             // used global timeout
-            var searchInput = homePage.SearchInput.When(it => it.IsDisplayed());
+            var searchInput = homePage.SearchInput.Expect(it => it.IsDisplayed());
 
             // or explicitly only here
-            var searchInput2 = homePage.SearchInput.When(it => it.IsDisplayed(timeout: TimeSpan.FromSeconds(20)));
+            var searchInput2 = homePage.SearchInput.Expect(it => it.IsDisplayed(timeout: TimeSpan.FromSeconds(20)));
 
             // or using awaitable components by default
             var searchInput3 = _webDriver.Ya(opts => opts.UseAwaitableComponents())
@@ -138,8 +140,8 @@ namespace Yapoml.Selenium.Sample.Basics
         {
             var page = _webDriver.Ya().Basics.Pages.HomePage;
 
-            page.Nav.When(it => it.Attributes.Class.Contains("").Div.IsDisplayed());
-            page.Nav.When(it => it.Styles.Opacity.Is(1.0).Div.IsDisplayed());
+            page.Nav.Expect(it => it.Attributes.Class.Contains("").Div.IsDisplayed());
+            page.Nav.Expect(it => it.Styles.Opacity.Is(1.0).Div.IsDisplayed());
             //page.Nav.When(it => it.Div.IsDisplayed()).Div.Hover();
             //page.Nav.When(it => it.Div.IsDisplayed()).Div.Hover();
             //page.Nav.Div.Row.Hover();

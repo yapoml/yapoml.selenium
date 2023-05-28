@@ -77,6 +77,15 @@ namespace Yapoml.Selenium.Components
             }
         }
 
+        public bool IsFocused
+        {
+            get
+            {
+                var activeElement = WebDriver.SwitchTo().ActiveElement();
+                return WrappedElement.Equals(activeElement);
+            }
+        }
+
         private readonly Lazy<AttributesCollection> _attributes;
 
         public AttributesCollection Attributes => _attributes.Value;
@@ -103,7 +112,7 @@ namespace Yapoml.Selenium.Components
         /// <summary>
         /// Various awaitable conditions on the component.
         /// </summary>
-        public TComponent When(Action<TConditions> it)
+        public TComponent Expect(Action<TConditions> it)
         {
             it(conditions);
 

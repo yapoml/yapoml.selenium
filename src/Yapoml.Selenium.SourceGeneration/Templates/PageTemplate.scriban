@@ -123,7 +123,7 @@ namespace {{namespace}}
 		/// <summary>
 		/// Various awaitable conditions on the {{name}} page.
 		/// </summary>
-		public {{ get_page_class_name this }} When(global::System.Action<{{ get_page_class_name this }}.Conditions> it)
+		public {{ get_page_class_name this }} Expect(global::System.Action<{{ get_page_class_name this }}.Conditions> it)
 		{
 			var timeoutOptions = SpaceOptions.Services.Get<global::Yapoml.Selenium.Options.TimeoutOptions>();
 			var elementLocator = SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>();
