@@ -32,6 +32,8 @@ namespace Yapoml.Selenium.Components.Conditions
 
         public StringAttributeConditions<TConditions> Class => this["class"];
 
+        public StringAttributeConditions<TConditions> Style => this["style"];
+
         public NumericAttributeConditions<TConditions, int> Width =>
             new NumericAttributeConditions<TConditions, int>(_conditions, _elementHandler, "width", _timeout, _pollingInterval);
 

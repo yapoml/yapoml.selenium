@@ -27,6 +27,7 @@ namespace Yapoml.Selenium.Components
 
         public string Class => this["class"];
 
+        // or even more complex object?
         public string Style => this["style"];
 
         private T RelocateOnStaleReference<T>(Func<T> act)
