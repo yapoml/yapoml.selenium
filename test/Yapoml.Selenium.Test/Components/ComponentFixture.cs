@@ -26,7 +26,7 @@ namespace Yapoml.Selenium.Test.Components
             var component = new Mock<BaseComponent<TestComponent, TestComponent.TestConditions>>(null, null, webDriver.Object, elementHandler.Object, null, spaceOptions.Object);
             component.CallBase = true;
 
-            component.Object.Displayed.Should().BeFalse();
+            component.Object.IsDisplayed.Should().BeFalse();
         }
     }
 

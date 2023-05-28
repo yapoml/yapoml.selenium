@@ -31,7 +31,7 @@ namespace Yapoml.Selenium.Sample.TheInternet
         {
             var user = _ya.HoversPage.Open().Users[1].Hover();
 
-            user.Name.Displayed.Should().BeTrue();
+            user.Name.IsDisplayed.Should().BeTrue();
             user.Name.Text.Should().Be("name: user2");
         }
 

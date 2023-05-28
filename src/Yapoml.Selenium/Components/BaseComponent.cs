@@ -49,15 +49,15 @@ namespace Yapoml.Selenium.Components
 
         public string Text => RelocateOnStaleReference(() => WrappedElement.Text);
 
-        public bool Enabled => RelocateOnStaleReference(() => WrappedElement.Enabled);
+        public bool IsEnabled => RelocateOnStaleReference(() => WrappedElement.Enabled);
 
-        public bool Selected => RelocateOnStaleReference(() => WrappedElement.Selected);
+        public bool IsSelected => RelocateOnStaleReference(() => WrappedElement.Selected);
 
         public Point Location => RelocateOnStaleReference(() => WrappedElement.Location);
 
         public Size Size => RelocateOnStaleReference(() => WrappedElement.Size);
 
-        public bool Displayed
+        public bool IsDisplayed
         {
             // TODO return bool for awaitable components (they throw )
             get

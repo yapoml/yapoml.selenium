@@ -41,12 +41,12 @@ namespace Yapoml.Selenium.Sample.SwagLabs
             var error = _ya.LoginPage.Open().Form
                 .Login.Click().Error;
 
-            Assert.That(error.Displayed, Is.True);
+            Assert.That(error.IsDisplayed, Is.True);
             Assert.That(error.Text, Is.EqualTo("Epic sadface: Username is required"));
 
             error.Close.Click();
 
-            Assert.That(error.Displayed, Is.False);
+            Assert.That(error.IsDisplayed, Is.False);
         }
     }
 }

@@ -151,7 +151,7 @@ namespace Yapoml.Selenium.Sample.Basics
             var packagesPage = _webDriver.Ya().Basics.Pages.PackagesPage;
 
             Console.WriteLine(packagesPage.Package0.Title.Text);
-            Console.WriteLine(packagesPage.Package0.Title.Displayed);
+            Console.WriteLine(packagesPage.Package0.Title.IsDisplayed);
             Console.WriteLine(packagesPage.Package1.Title.Text);
 
             foreach (var package in packagesPage.Packages)
