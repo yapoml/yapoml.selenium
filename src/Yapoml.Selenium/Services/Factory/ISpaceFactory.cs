@@ -1,10 +1,11 @@
 ﻿using OpenQA.Selenium;
 using Yapoml.Framework.Options;
+using Yapoml.Selenium.Components;
 
 namespace Yapoml.Selenium.Services.Factory
 {
     public interface ISpaceFactory
     {
-        TSpace Create<TSpace>(IWebDriver webDriver, ISpaceOptions spaceOptions);
+        TSpace Create<TSpace>(BaseSpace rootSpace, BaseSpace parentSpace, IWebDriver webDriver, ISpaceOptions spaceOptions);
     }
 }

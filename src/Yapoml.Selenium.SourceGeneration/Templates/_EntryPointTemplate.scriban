@@ -4,16 +4,12 @@
 namespace {{root_namespace}}
 {
 	[global::System.Runtime.CompilerServices.CompilerGenerated]
-	public partial class YaSpace
+	public partial class YaSpace : global::Yapoml.Selenium.Components.BaseSpace<YaSpace, YaSpace>
 	{
-		private readonly global::OpenQA.Selenium.IWebDriver _webDriver;
-
-		private readonly global::Yapoml.Framework.Options.ISpaceOptions _spaceOptions;
-
-		public YaSpace(global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
+		public YaSpace(YaSpace rootSpace, YaSpace parentSpace, global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
+			: base(rootSpace, parentSpace, webDriver, spaceOptions)
 		{
-			_webDriver = webDriver;
-			_spaceOptions = spaceOptions;
+			
 		}
 
 {{ for space in spaces }}
@@ -22,7 +18,7 @@ namespace {{root_namespace}}
 		{
 			get
 			{
-				return _spaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.ISpaceFactory>().Create<global::{{space.namespace}}.{{space.name}}Space>(_webDriver, _spaceOptions);
+				return _spaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.ISpaceFactory>().Create<global::{{space.namespace}}.{{space.name}}Space>(this, this, _webDriver, _spaceOptions);
 			}
 		}
 {{ end }}
@@ -94,7 +90,7 @@ namespace {{root_namespace}}
 
 			spaceOptionsCallback?.Invoke(spaceOptions);
 
-			return new YaSpace(webDriver, spaceOptions);
+			return new YaSpace(null, null, webDriver, spaceOptions);
 		}
 	}
 }
