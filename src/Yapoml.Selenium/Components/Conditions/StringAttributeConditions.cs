@@ -337,7 +337,7 @@ namespace Yapoml.Selenium.Components.Conditions
             {
                 latestValue = RelocateOnStaleReference(() => _elementHandler.Locate().GetAttribute(_attributeName));
 
-                if (regex.IsMatch(latestValue))
+                if (latestValue != null && regex.IsMatch(latestValue))
                 {
                     return true;
                 }
@@ -370,7 +370,7 @@ namespace Yapoml.Selenium.Components.Conditions
             {
                 latestValue = RelocateOnStaleReference(() => _elementHandler.Locate().GetAttribute(_attributeName));
 
-                if (!regex.IsMatch(latestValue))
+                if (latestValue is null || !regex.IsMatch(latestValue))
                 {
                     return true;
                 }
