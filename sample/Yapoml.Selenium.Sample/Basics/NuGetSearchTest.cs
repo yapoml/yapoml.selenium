@@ -135,7 +135,7 @@ namespace Yapoml.Selenium.Sample.Basics
         public void Cache()
         {
             var page = _webDriver.Ya().Basics.Pages.HomePage;
-
+            page.Expect(it => it.Title.Matches(new System.Text.RegularExpressions.Regex("Home"), TimeSpan.FromSeconds(3)));
             page.Nav.Expect(it => it.Attributes.Class.Contains("").Div.IsDisplayed());
             page.Nav.Expect(it => it.Styles.Opacity.Is(1.0).Div.IsDisplayed());
             //page.Nav.When(it => it.Div.IsDisplayed()).Div.Hover();

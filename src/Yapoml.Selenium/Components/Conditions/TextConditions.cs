@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using System;
+using System.Text.RegularExpressions;
 using Yapoml.Selenium.Services.Locator;
 
 namespace Yapoml.Selenium.Components.Conditions
@@ -318,6 +319,72 @@ namespace Yapoml.Selenium.Components.Conditions
             catch (TimeoutException)
             {
                 throw Services.Waiter.BuildTimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component contains '{value}'.", null, actualTimeout, actualPollingInterval, null);
+            }
+
+            return _conditions;
+        }
+
+        public TConditions Matches(Regex regex, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        {
+            var actualTimeout = timeout ?? _timeout;
+            var actualPollingInterval = pollingInterval ?? _pollingInterval;
+
+            string latestValue = null;
+
+            bool? condition()
+            {
+                latestValue = RelocateOnStaleReference(() => _elementHandler.Locate().Text);
+
+                if (regex.IsMatch(latestValue))
+                {
+                    return true;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            try
+            {
+                Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
+            }
+            catch (TimeoutException)
+            {
+                throw Services.Waiter.BuildTimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component doesn't match '{regex}'.", null, actualTimeout, actualPollingInterval, null);
+            }
+
+            return _conditions;
+        }
+
+        public TConditions DoesNotMatch(Regex regex, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        {
+            var actualTimeout = timeout ?? _timeout;
+            var actualPollingInterval = pollingInterval ?? _pollingInterval;
+
+            string latestValue = null;
+
+            bool? condition()
+            {
+                latestValue = RelocateOnStaleReference(() => _elementHandler.Locate().Text);
+
+                if (!regex.IsMatch(latestValue))
+                {
+                    return true;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            try
+            {
+                Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
+            }
+            catch (TimeoutException)
+            {
+                throw Services.Waiter.BuildTimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component matches '{regex}'.", null, actualTimeout, actualPollingInterval, null);
             }
 
             return _conditions;

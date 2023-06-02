@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using System;
+using System.Text.RegularExpressions;
 
 namespace Yapoml.Selenium.Components.Conditions
 {
@@ -321,6 +322,72 @@ namespace Yapoml.Selenium.Components.Conditions
             catch (TimeoutException)
             {
                 throw Services.Waiter.BuildTimeoutException($"'{latestValue}' title contains '{value}'.", null, actualTimeout, actualPollingInterval, null);
+            }
+
+            return _conditions;
+        }
+
+        public TConditions Matches(Regex regex, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        {
+            var actualTimeout = timeout ?? _timeout;
+            var actualPollingInterval = pollingInterval ?? _pollingInterval;
+
+            string latestValue = null;
+
+            bool? condition()
+            {
+                latestValue = _webDriver.Title;
+
+                if (regex.IsMatch(latestValue))
+                {
+                    return true;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            try
+            {
+                Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
+            }
+            catch (TimeoutException)
+            {
+                throw Services.Waiter.BuildTimeoutException($"'{latestValue}' title doesn't match '{regex}'.", null, actualTimeout, actualPollingInterval, null);
+            }
+
+            return _conditions;
+        }
+
+        public TConditions DoesNotMatch(Regex regex, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        {
+            var actualTimeout = timeout ?? _timeout;
+            var actualPollingInterval = pollingInterval ?? _pollingInterval;
+
+            string latestValue = null;
+
+            bool? condition()
+            {
+                latestValue = _webDriver.Title;
+
+                if (!regex.IsMatch(latestValue))
+                {
+                    return true;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            try
+            {
+                Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
+            }
+            catch (TimeoutException)
+            {
+                throw Services.Waiter.BuildTimeoutException($"'{latestValue}' title matches '{regex}'.", null, actualTimeout, actualPollingInterval, null);
             }
 
             return _conditions;
