@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Yapoml.Framework.Options;
 using Yapoml.Selenium.Components.Metadata;
 using Yapoml.Selenium.Events;
@@ -61,25 +62,17 @@ namespace Yapoml.Selenium.Components
             }
         }
 
-#if NET6_0_OR_GREATER
-        public TComponent this[Func<TComponent, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string predicateExpression = null]
-#else
-        public TComponent this[Func<TComponent, bool> predicate]
-#endif
+        public TComponent this[Expression<Func<TComponent, bool>> predicate]
         {
             get
             {
                 EnsureLocated();
 
-                var component = _list.FirstOrDefault(predicate);
+                var component = _list.FirstOrDefault(predicate.Compile());
 
                 if (component is null)
                 {
-#if NET6_0_OR_GREATER
-                    throw new InvalidOperationException($"{_componentsListMetadata.Name} contain no matching {_componentsListMetadata.ComponentMetadata.Name} satisfying condition {predicateExpression}");
-#else
-                    throw new InvalidOperationException($"{_componentsListMetadata.Name} contain no matching {_componentsListMetadata.ComponentMetadata.Name}.");
-#endif
+                    throw new InvalidOperationException($"{_componentsListMetadata.Name} contain no matching {_componentsListMetadata.ComponentMetadata.Name} satisfying condition {predicate.Body}");
                 }
 
                 return component;
