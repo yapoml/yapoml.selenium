@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading;
 
@@ -8,47 +9,45 @@ namespace Yapoml.Selenium.Services
 {
     public static class Waiter
     {
-        public static TResult Until<TResult>(Func<TResult> condition, TimeSpan timeout, TimeSpan pollingInterval)
+        public static void Until(Func<bool> condition, TimeSpan timeout, TimeSpan pollingInterval)
         {
             var stopwatch = Stopwatch.StartNew();
 
+            Lazy<List<Exception>> occuredExceptions = new Lazy<List<Exception>>(() => new List<Exception>());
+
             while (stopwatch.Elapsed <= timeout)
             {
-                var result = condition();
-                if (result != null)
+                try
                 {
-                    return result;
+                    var isSuccessful = condition();
+
+                    if (isSuccessful)
+                    {
+                        return;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    occuredExceptions.Value.Add(ex);
                 }
 
                 Thread.Sleep(pollingInterval);
             }
 
-            throw new TimeoutException($"{condition} wasn't met during {timeout.TotalSeconds} seconds and polling each {pollingInterval.TotalSeconds} seconds.");
-        }
+            var timeoutMessageBuilder = new StringBuilder($"Condition was not satisfied within {timeout.TotalSeconds} seconds when polled every {pollingInterval.TotalSeconds} seconds.");
 
-        public static TimeoutException BuildTimeoutException(string message, Exception innerException, TimeSpan timeout, TimeSpan pollingInterval, IDictionary<Type, uint> ignoredExceptionTypes)
-        {
-            var builder = new StringBuilder();
-
-            builder.AppendLine(message);
-
-            builder.AppendLine();
-
-            builder.AppendLine($"  Timeout is {timeout.TotalSeconds} seconds and polling each {pollingInterval.TotalSeconds} seconds.");
-
-            builder.AppendLine();
-
-            if (ignoredExceptionTypes != null)
+            if (occuredExceptions.IsValueCreated)
             {
-                builder.AppendLine("  Ignored exceptions:");
+                timeoutMessageBuilder.AppendLine();
+                timeoutMessageBuilder.AppendLine("Occured errors:");
 
-                foreach (var ignoredExceptionType in ignoredExceptionTypes)
+                foreach (var occuredExceptionsGroup in occuredExceptions.Value.GroupBy(e => e.Message))
                 {
-                    builder.AppendLine($"   - {ignoredExceptionType.Key.FullName} ({ignoredExceptionType.Value} times)");
+                    timeoutMessageBuilder.AppendLine($" - {occuredExceptionsGroup.Key} ({occuredExceptionsGroup.Count()} times)");
                 }
             }
 
-            return new TimeoutException(builder.ToString(), innerException);
+            throw new TimeoutException(timeoutMessageBuilder.ToString());
         }
     }
 }

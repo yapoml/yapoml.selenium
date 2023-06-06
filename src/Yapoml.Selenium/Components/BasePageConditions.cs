@@ -38,28 +38,21 @@ namespace Yapoml.Selenium.Components
 
             string latestValue = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestValue = (WebDriver as IJavaScriptExecutor).ExecuteScript("return document.readyState;").ToString();
 
-                if (latestValue.Equals("complete"))
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return latestValue.Equals("complete");
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
                 // TODO Put page name in exception
-                throw Services.Waiter.BuildTimeoutException($"Page is not loaded yet. Current state is '{latestValue}'.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"Page is not loaded yet. Current state is '{latestValue}'.", ex);
             }
 
             return conditions;

@@ -47,7 +47,7 @@ namespace Yapoml.Selenium.Components
                 { typeof(StaleElementReferenceException), 0 }
              };
 
-            bool? attempt()
+            bool attempt()
             {
                 try
                 {
@@ -59,7 +59,7 @@ namespace Yapoml.Selenium.Components
                     }
                     else
                     {
-                        return null;
+                        return false;
                     }
                 }
                 catch (Exception ex) when (ignoredExceptions.ContainsKey(ex.GetType()))
@@ -73,7 +73,7 @@ namespace Yapoml.Selenium.Components
 
                     ignoredExceptions[ex.GetType()]++;
 
-                    return null;
+                    return false;
                 }
             }
 
@@ -81,9 +81,9 @@ namespace Yapoml.Selenium.Components
             {
                 Services.Waiter.Until(attempt, timeout.Value, pollingInterval.Value);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"{ElementHandler.ComponentMetadata.Name} is not displayed yet '{ElementHandler.By}'.", lastError, timeout.Value, pollingInterval.Value, ignoredExceptions);
+                throw new TimeoutException($"{ElementHandler.ComponentMetadata.Name} is not displayed yet '{ElementHandler.By}'.", ex);
             }
 
             return conditions;
@@ -101,20 +101,13 @@ namespace Yapoml.Selenium.Components
             timeout = timeout ?? Timeout;
             pollingInterval = pollingInterval ?? PollingInterval;
 
-            bool? attempt()
+            bool attempt()
             {
                 try
                 {
                     var element = ElementHandler.Locate();
 
-                    if (!element.Displayed)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    return !element.Displayed;
                 }
                 catch (Exception ex) when (ex is StaleElementReferenceException || ex is NoSuchElementException)
                 {
@@ -131,9 +124,9 @@ namespace Yapoml.Selenium.Components
             {
                 Services.Waiter.Until(attempt, timeout.Value, pollingInterval.Value);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"{ElementHandler.ComponentMetadata.Name} is still displayed '{ElementHandler.By}'.", null, timeout.Value, pollingInterval.Value, null);
+                throw new TimeoutException($"{ElementHandler.ComponentMetadata.Name} is still displayed '{ElementHandler.By}'.", ex);
             }
 
             return conditions;
@@ -157,7 +150,7 @@ namespace Yapoml.Selenium.Components
                 { typeof(StaleElementReferenceException), 0 }
              };
 
-            IWebElement attempt()
+            bool attempt()
             {
                 try
                 {
@@ -166,7 +159,7 @@ namespace Yapoml.Selenium.Components
                     // ping element
                     var tagName = element.TagName;
 
-                    return element;
+                    return true;
                 }
                 catch (Exception ex) when (ignoredExceptions.ContainsKey(ex.GetType()))
                 {
@@ -179,7 +172,7 @@ namespace Yapoml.Selenium.Components
 
                     ignoredExceptions[ex.GetType()]++;
 
-                    return null;
+                    return false;
                 }
             }
 
@@ -187,9 +180,9 @@ namespace Yapoml.Selenium.Components
             {
                 Services.Waiter.Until(attempt, timeout.Value, pollingInterval.Value);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"{ElementHandler.ComponentMetadata.Name} does not exist yet '{ElementHandler.By}'.", lastError, timeout.Value, pollingInterval.Value, ignoredExceptions);
+                throw new TimeoutException($"{ElementHandler.ComponentMetadata.Name} does not exist yet '{ElementHandler.By}'.", ex);
             }
 
             return conditions;
@@ -206,7 +199,7 @@ namespace Yapoml.Selenium.Components
             timeout = timeout ?? Timeout;
             pollingInterval = pollingInterval ?? PollingInterval;
 
-            bool? attempt()
+            bool attempt()
             {
                 try
                 {
@@ -215,7 +208,7 @@ namespace Yapoml.Selenium.Components
                     // ping element
                     var tagName = element.TagName;
 
-                    return null;
+                    return false;
                 }
                 catch (Exception ex) when (ex is StaleElementReferenceException || ex is NoSuchElementException)
                 {
@@ -232,9 +225,9 @@ namespace Yapoml.Selenium.Components
             {
                 Services.Waiter.Until(attempt, timeout.Value, pollingInterval.Value);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"{ElementHandler.ComponentMetadata.Name} still exists '{ElementHandler.By}'.", null, timeout.Value, pollingInterval.Value, null);
+                throw new TimeoutException($"{ElementHandler.ComponentMetadata.Name} still exists '{ElementHandler.By}'.", ex);
             }
 
             return conditions;
@@ -251,25 +244,18 @@ namespace Yapoml.Selenium.Components
             timeout = timeout ?? Timeout;
             pollingInterval = pollingInterval ?? PollingInterval;
 
-            bool? attempt()
+            bool attempt()
             {
-                if (ElementHandler.Locate().Enabled)
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return ElementHandler.Locate().Enabled;
             }
 
             try
             {
                 Services.Waiter.Until(attempt, timeout.Value, pollingInterval.Value);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"{ElementHandler.ComponentMetadata.Name} is not enabled yet.", null, timeout.Value, pollingInterval.Value, null);
+                throw new TimeoutException($"{ElementHandler.ComponentMetadata.Name} is not enabled yet.", ex);
             }
 
             return conditions;

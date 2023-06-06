@@ -32,27 +32,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestValue = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestValue = RelocateOnStaleReference(() => _elementHandler.Locate().Text);
 
-                if (latestValue.Equals(value, comparisonType))
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return latestValue.Equals(value, comparisonType);
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{value}' yet.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{value}' yet.", ex);
             }
 
             return _conditions;
@@ -70,27 +63,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestValue = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestValue = RelocateOnStaleReference(() => _elementHandler.Locate().Text);
 
-                if (latestValue.Equals(value, comparisonType) == false)
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return latestValue.Equals(value, comparisonType) == false;
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still '{value}'.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still '{value}'.", ex);
             }
 
             return _conditions;
@@ -108,27 +94,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestValue = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestValue = RelocateOnStaleReference(() => _elementHandler.Locate().Text);
 
-                if (latestValue.StartsWith(value, comparisonType))
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return latestValue.StartsWith(value, comparisonType);
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{value}' yet.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{value}' yet.", ex);
             }
 
             return _conditions;
@@ -146,27 +125,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestValue = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestValue = RelocateOnStaleReference(() => _elementHandler.Locate().Text);
 
-                if (latestValue.StartsWith(value, comparisonType) == false)
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return latestValue.StartsWith(value, comparisonType) == false;
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component starts with '{value}'.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component starts with '{value}'.", ex);
             }
 
             return _conditions;
@@ -184,27 +156,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestValue = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestValue = RelocateOnStaleReference(() => _elementHandler.Locate().Text);
 
-                if (latestValue.EndsWith(value, comparisonType) == true)
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return latestValue.EndsWith(value, comparisonType);
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{value}' yet.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{value}' yet.", ex);
             }
 
             return _conditions;
@@ -222,27 +187,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestValue = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestValue = RelocateOnStaleReference(() => _elementHandler.Locate().Text);
 
-                if (latestValue.EndsWith(value, comparisonType) == false)
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return latestValue.EndsWith(value, comparisonType) == false;
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component ends with '{value}'.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component ends with '{value}'.", ex);
             }
 
             return _conditions;
@@ -260,27 +218,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestValue = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestValue = RelocateOnStaleReference(() => _elementHandler.Locate().Text);
 
-                if (latestValue.IndexOf(value, comparisonType) >= 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return latestValue.IndexOf(value, comparisonType) >= 0;
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component doesn't contain '{value}' yet.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component doesn't contain '{value}' yet.", ex);
             }
 
             return _conditions;
@@ -298,27 +249,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestValue = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestValue = RelocateOnStaleReference(() => _elementHandler.Locate().Text);
 
-                if (latestValue.IndexOf(value, comparisonType) == -1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return latestValue.IndexOf(value, comparisonType) == -1;
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component contains '{value}'.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component contains '{value}'.", ex);
             }
 
             return _conditions;
@@ -331,27 +275,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestValue = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestValue = RelocateOnStaleReference(() => _elementHandler.Locate().Text);
 
-                if (regex.IsMatch(latestValue))
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return regex.IsMatch(latestValue);
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component doesn't match '{regex}'.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component doesn't match '{regex}'.", ex);
             }
 
             return _conditions;
@@ -364,27 +301,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestValue = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestValue = RelocateOnStaleReference(() => _elementHandler.Locate().Text);
 
-                if (!regex.IsMatch(latestValue))
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return !regex.IsMatch(latestValue);
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component matches '{regex}'.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component matches '{regex}'.", ex);
             }
 
             return _conditions;

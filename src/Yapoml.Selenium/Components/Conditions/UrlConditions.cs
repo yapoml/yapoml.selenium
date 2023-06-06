@@ -34,27 +34,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestUrl = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestUrl = _webDriver.Url;
 
-                if (latestUrl.Equals(value, comparisonType))
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return latestUrl.Equals(value, comparisonType);
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"'{latestUrl}' url doesn't equal to '{value}'.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"'{latestUrl}' url doesn't equal to '{value}'.", ex);
             }
 
             return _conditions;
@@ -72,27 +65,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestUrl = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestUrl = _webDriver.Url;
 
-                if (!latestUrl.Equals(value, comparisonType))
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return !latestUrl.Equals(value, comparisonType);
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"'{latestUrl}' url equals to '{value}'.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"'{latestUrl}' url equals to '{value}'.", ex);
             }
 
             return _conditions;
@@ -110,27 +96,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestUrl = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestUrl = _webDriver.Url;
 
-                if (latestUrl.StartsWith(value, comparisonType))
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return latestUrl.StartsWith(value, comparisonType);
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"'{latestUrl}' url doesn't start with '{value}'.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"'{latestUrl}' url doesn't start with '{value}'.", ex);
             }
 
             return _conditions;
@@ -148,27 +127,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestUrl = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestUrl = _webDriver.Url;
 
-                if (!latestUrl.StartsWith(value, comparisonType))
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return !latestUrl.StartsWith(value, comparisonType);
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"'{latestUrl}' url starts with '{value}'.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"'{latestUrl}' url starts with '{value}'.", ex);
             }
 
             return _conditions;
@@ -186,27 +158,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestUrl = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestUrl = _webDriver.Url;
 
-                if (latestUrl.EndsWith(value, comparisonType))
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return latestUrl.EndsWith(value, comparisonType);
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"'{latestUrl}' url doesn't end with '{value}'.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"'{latestUrl}' url doesn't end with '{value}'.", ex);
             }
 
             return _conditions;
@@ -224,27 +189,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestUrl = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestUrl = _webDriver.Url;
 
-                if (!latestUrl.EndsWith(value, comparisonType))
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return !latestUrl.EndsWith(value, comparisonType);
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"'{latestUrl}' url ends with '{value}'.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"'{latestUrl}' url ends with '{value}'.", ex);
             }
 
             return _conditions;
@@ -262,27 +220,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestValue = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestValue = _webDriver.Url;
 
-                if (latestValue.IndexOf(value, comparisonType) >= 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return latestValue.IndexOf(value, comparisonType) >= 0;
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"'{latestValue}' url doesn't contain '{value}' yet.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"'{latestValue}' url doesn't contain '{value}' yet.", ex);
             }
 
             return _conditions;
@@ -300,27 +251,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestValue = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestValue = _webDriver.Url;
 
-                if (latestValue.IndexOf(value, comparisonType) == -1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return latestValue.IndexOf(value, comparisonType) == -1;
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"'{latestValue}' url contains '{value}'.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"'{latestValue}' url contains '{value}'.", ex);
             }
 
             return _conditions;

@@ -28,7 +28,7 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestValue = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestValue = RelocateOnStaleReference(() => _elementHandler.Locate().GetAttribute(_attributeName));
 
@@ -36,18 +36,11 @@ namespace Yapoml.Selenium.Components.Conditions
                 {
                     var latestNumericValue = (TNumber)Convert.ChangeType(latestValue, typeof(TNumber));
 
-                    if (latestNumericValue.Equals(value))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    return latestNumericValue.Equals(value);
                 }
                 else
                 {
-                    return null;
+                    return false;
                 }
             }
 
@@ -55,9 +48,9 @@ namespace Yapoml.Selenium.Components.Conditions
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"Attribute '{_attributeName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{value}' yet.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"Attribute '{_attributeName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{value}' yet.", ex);
             }
 
             return _conditions;
@@ -70,7 +63,7 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestValue = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestValue = RelocateOnStaleReference(() => _elementHandler.Locate().GetAttribute(_attributeName));
 
@@ -78,14 +71,7 @@ namespace Yapoml.Selenium.Components.Conditions
                 {
                     var latestNumericValue = (TNumber)Convert.ChangeType(latestValue, typeof(TNumber));
 
-                    if (!latestNumericValue.Equals(value))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    return !latestNumericValue.Equals(value);
                 }
                 else
                 {
@@ -97,9 +83,9 @@ namespace Yapoml.Selenium.Components.Conditions
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"Attribute '{_attributeName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still '{value}'.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"Attribute '{_attributeName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still '{value}'.", ex);
             }
 
             return _conditions;

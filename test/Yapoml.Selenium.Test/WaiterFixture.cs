@@ -12,15 +12,15 @@ namespace Yapoml.Selenium.Test
         [Test]
         public void Should_Execute_Func()
         {
-            var res = Waiter.Until(() => true, TimeSpan.FromSeconds(1), TimeSpan.FromMilliseconds(100));
+            var act = () => Waiter.Until(() => true, TimeSpan.FromSeconds(1), TimeSpan.FromMilliseconds(100));
 
-            res.Should().BeTrue();
+            act.Should().NotThrow();
         }
 
         [Test]
         public void Should_Timeout()
         {
-            Action act = () => Waiter.Until<object>(() => throw new Exception(), TimeSpan.FromMilliseconds(50), TimeSpan.FromMilliseconds(10));
+            Action act = () => Waiter.Until(() => throw new Exception(), TimeSpan.FromMilliseconds(50), TimeSpan.FromMilliseconds(10));
 
             act.Should().Throw<Exception>();
         }

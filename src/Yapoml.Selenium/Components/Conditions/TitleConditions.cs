@@ -35,27 +35,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestTitle = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestTitle = _webDriver.Title;
 
-                if (latestTitle.Equals(value, comparisonType))
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return latestTitle.Equals(value, comparisonType);
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"'{latestTitle}' title doesn't equal to '{value}'.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"'{latestTitle}' title doesn't equal to '{value}'.", ex);
             }
 
             return _conditions;
@@ -73,27 +66,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestTitle = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestTitle = _webDriver.Title;
 
-                if (!latestTitle.Equals(value, comparisonType))
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return !latestTitle.Equals(value, comparisonType);
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"'{latestTitle}' title doesn't equal to '{value}'.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"'{latestTitle}' title doesn't equal to '{value}'.", ex);
             }
 
             return _conditions;
@@ -111,27 +97,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestTitle = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestTitle = _webDriver.Title;
 
-                if (latestTitle.StartsWith(value, comparisonType))
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return latestTitle.StartsWith(value, comparisonType);
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"'{latestTitle}' title doesn't start with '{value}'.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"'{latestTitle}' title doesn't start with '{value}'.", ex);
             }
 
             return _conditions;
@@ -149,27 +128,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestTitle = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestTitle = _webDriver.Title;
 
-                if (!latestTitle.StartsWith(value, comparisonType))
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return !latestTitle.StartsWith(value, comparisonType);
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"'{latestTitle}' title starts with '{value}'.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"'{latestTitle}' title starts with '{value}'.", ex);
             }
 
             return _conditions;
@@ -187,27 +159,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestTitle = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestTitle = _webDriver.Title;
 
-                if (latestTitle.EndsWith(value, comparisonType))
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return latestTitle.EndsWith(value, comparisonType);
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"'{latestTitle}' title doesn't end with '{value}'.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"'{latestTitle}' title doesn't end with '{value}'.", ex);
             }
 
             return _conditions;
@@ -225,27 +190,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestTitle = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestTitle = _webDriver.Title;
 
-                if (!latestTitle.EndsWith(value, comparisonType))
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return !latestTitle.EndsWith(value, comparisonType);
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"'{latestTitle}' title ends with '{value}'.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"'{latestTitle}' title ends with '{value}'.", ex);
             }
 
             return _conditions;
@@ -263,27 +221,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestValue = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestValue = _webDriver.Title;
 
-                if (latestValue.IndexOf(value, comparisonType) >= 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return latestValue.IndexOf(value, comparisonType) >= 0;
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"'{latestValue}' title doesn't contain '{value}' yet.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"'{latestValue}' title doesn't contain '{value}' yet.", ex);
             }
 
             return _conditions;
@@ -301,27 +252,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestValue = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestValue = _webDriver.Title;
 
-                if (latestValue.IndexOf(value, comparisonType) == -1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return latestValue.IndexOf(value, comparisonType) == -1;
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"'{latestValue}' title contains '{value}'.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"'{latestValue}' title contains '{value}'.", ex);
             }
 
             return _conditions;
@@ -334,27 +278,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestValue = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestValue = _webDriver.Title;
 
-                if (regex.IsMatch(latestValue))
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return regex.IsMatch(latestValue);
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"'{latestValue}' title doesn't match '{regex}'.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"'{latestValue}' title doesn't match '{regex}'.", ex);
             }
 
             return _conditions;
@@ -367,27 +304,20 @@ namespace Yapoml.Selenium.Components.Conditions
 
             string latestValue = null;
 
-            bool? condition()
+            bool condition()
             {
                 latestValue = _webDriver.Title;
 
-                if (!regex.IsMatch(latestValue))
-                {
-                    return true;
-                }
-                else
-                {
-                    return null;
-                }
+                return !regex.IsMatch(latestValue);
             }
 
             try
             {
                 Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                throw Services.Waiter.BuildTimeoutException($"'{latestValue}' title matches '{regex}'.", null, actualTimeout, actualPollingInterval, null);
+                throw new TimeoutException($"'{latestValue}' title matches '{regex}'.", ex);
             }
 
             return _conditions;
