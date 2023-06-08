@@ -11,9 +11,10 @@ using Yapoml.Selenium.Services.Locator;
 
 namespace Yapoml.Selenium.Components
 {
-    public class BaseComponentList<TComponent, TListConditions> : IReadOnlyList<TComponent>
+    public class BaseComponentList<TComponent, TListConditions, TComponentConditions> : IReadOnlyList<TComponent>
         where TComponent : BaseComponent
-        //where TListConditions : BaseComponentListConditions<TListConditions>
+        where TListConditions : BaseComponentListConditions<TListConditions, TComponentConditions>
+        where TComponentConditions: BaseComponentConditions<TComponentConditions>
     {
         protected TListConditions listConditions;
 
@@ -134,7 +135,7 @@ namespace Yapoml.Selenium.Components
         /// <summary>
         /// Various awaitable conditions on the list of components.
         /// </summary>
-        public BaseComponentList<TComponent, TListConditions> Expect(Action<TListConditions> it)
+        public BaseComponentList<TComponent, TListConditions, TComponentConditions> Expect(Action<TListConditions> it)
         {
             it(listConditions);
 

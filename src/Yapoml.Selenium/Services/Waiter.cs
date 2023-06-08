@@ -15,7 +15,7 @@ namespace Yapoml.Selenium.Services
 
             Lazy<List<Exception>> occuredExceptions = new Lazy<List<Exception>>(() => new List<Exception>());
 
-            while (stopwatch.Elapsed <= timeout)
+            do
             {
                 try
                 {
@@ -33,6 +33,7 @@ namespace Yapoml.Selenium.Services
 
                 Thread.Sleep(pollingInterval);
             }
+            while (stopwatch.Elapsed <= timeout);
 
             var timeoutMessageBuilder = new StringBuilder($"Condition was not satisfied within {timeout.TotalSeconds} seconds when polled every {pollingInterval.TotalSeconds} seconds.");
 

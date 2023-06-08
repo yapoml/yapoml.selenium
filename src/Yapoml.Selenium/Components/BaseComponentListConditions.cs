@@ -7,7 +7,9 @@ using Yapoml.Selenium.Services.Locator;
 
 namespace Yapoml.Selenium.Components
 {
-    public class BaseComponentListConditions<TListConditions> where TListConditions : BaseComponentListConditions<TListConditions>
+    public class BaseComponentListConditions<TListConditions, TComponentConditions>
+            where TListConditions : BaseComponentListConditions<TListConditions, TComponentConditions>
+            where TComponentConditions : BaseComponentConditions<TComponentConditions>
     {
         protected TListConditions listConditions;
 
@@ -29,6 +31,42 @@ namespace Yapoml.Selenium.Components
         }
 
         public CountCollectionConditions<TListConditions> Count => new CountCollectionConditions<TListConditions>(listConditions, ElementsListHandler, Timeout, PollingInterval);
+
+        public TListConditions All(Action<TComponentConditions> each)
+        {
+            bool condition()
+            {
+                var elements = ElementsListHandler.LocateMany();
+
+                for (int i = 0; i < elements.Count; i++)
+                {
+                    var elementHandler = new ElementHandler(WebDriver, null, ElementLocator, ElementsListHandler.By, elements[i], ElementsListHandler.ComponentsListMetadata.ComponentMetadata, ElementsListHandler.ElementHandlerRepository.CreateNestedRepository(), EventSource);
+                    var elementCondition = (TComponentConditions)Activator.CreateInstance(typeof(TComponentConditions), TimeSpan.Zero, PollingInterval, WebDriver, elementHandler, ElementLocator, EventSource);
+
+                    try
+                    {
+                        each(elementCondition);
+                    }
+                    catch(TimeoutException ex)
+                    {
+                        throw new TimeoutException($"The {i + 1}th {elementHandler.ComponentMetadata.Name} of {elements.Count} does not satisfy condition.", ex);
+                    }
+                }
+
+                return true;
+            }
+
+            try
+            {
+                Services.Waiter.Until(condition, Timeout, PollingInterval);
+            }
+            catch (TimeoutException ex)
+            {
+                throw new TimeoutException($"Not all {ElementsListHandler.ComponentsListMetadata.Name} satisfy condition.", ex);
+            }
+
+            return listConditions;
+        }
 
         /// <summary>
         /// Waits specified amount of time.

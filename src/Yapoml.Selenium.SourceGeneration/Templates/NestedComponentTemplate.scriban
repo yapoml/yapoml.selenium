@@ -200,7 +200,7 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 
 {{ if $1.is_plural -}}
 [global::System.Runtime.CompilerServices.CompilerGenerated]
-public partial class {{$1.singular_name}}ComponentList : global::Yapoml.Selenium.Components.BaseComponentList<{{$1.singular_name}}Component, {{$1.singular_name}}ComponentList.Conditions>
+public partial class {{$1.singular_name}}ComponentList : global::Yapoml.Selenium.Components.BaseComponentList<{{$1.singular_name}}Component, {{$1.singular_name}}ComponentList.Conditions, {{$1.singular_name}}Component.Conditions>
 {
 	public {{$1.singular_name}}ComponentList(global::Yapoml.Selenium.Components.BasePage page, global::Yapoml.Selenium.Components.BaseComponent parentComponent, global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementsListHandler elementsListHandler, global::Yapoml.Selenium.Components.Metadata.ComponentsListMetadata componentsListMetadata, global::Yapoml.Selenium.Events.IEventSource eventSource, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
 		: base(page, parentComponent, webDriver, elementsListHandler, componentsListMetadata, eventSource, spaceOptions)
@@ -211,7 +211,7 @@ public partial class {{$1.singular_name}}ComponentList : global::Yapoml.Selenium
 	}
 
 	[global::System.Runtime.CompilerServices.CompilerGenerated]
-	public partial class Conditions : global::Yapoml.Selenium.Components.BaseComponentListConditions<Conditions>
+	public partial class Conditions : global::Yapoml.Selenium.Components.BaseComponentListConditions<Conditions, {{$1.singular_name}}Component.Conditions>
 	{
 		public Conditions(global::System.TimeSpan timeout, global::System.TimeSpan pollingInterval, global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementsListHandler elementsListHandler, global::Yapoml.Selenium.Services.Locator.IElementLocator elementLocator, global::Yapoml.Selenium.Events.IEventSource eventSource)
 			: base(timeout, pollingInterval, webDriver, elementsListHandler, elementLocator, eventSource)

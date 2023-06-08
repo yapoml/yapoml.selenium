@@ -54,6 +54,8 @@ namespace Yapoml.Selenium.Sample.Basics
 
             var page = ya.HomePage;
 
+            //page.SearchButton.Expect(its => its.Styles["cursor"].Is("default"));
+
             // page.When(it => it.A.B.C.IsDisplayed(TimeSpan.FromSeconds(5)));
 
             //for (int i = 0; i < 5; i++)
@@ -68,8 +70,8 @@ namespace Yapoml.Selenium.Sample.Basics
             page.Search("yaml");
 
             var resPage = ya.PackagesPage;
-
-            resPage.Packages.Expect(it => it.Elapsed(TimeSpan.FromSeconds(3)).Count.Is(20));
+            
+            resPage.Packages.Expect(its => its.Count.Is(20).All(each => each.Text.Contains("Yaml")));
 
             Console.WriteLine(resPage.Title.Text);
 
