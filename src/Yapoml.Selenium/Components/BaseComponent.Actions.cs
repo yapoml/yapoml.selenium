@@ -335,7 +335,9 @@ namespace Yapoml.Selenium.Components
         /// <summary>
         /// Performs a drag and drop operation to another component.
         /// </summary>
-        public virtual TComponent DragAndDrop<TToComponent, TToConditions>(BaseComponent<TToComponent, TToConditions> toComponent) where TToComponent : BaseComponent<TToComponent, TToConditions>
+        public virtual TComponent DragAndDrop<TToComponent, TToConditions>(BaseComponent<TToComponent, TToConditions> toComponent)
+            where TToComponent : BaseComponent<TToComponent, TToConditions>
+            where TToConditions: BaseComponentConditions<TToConditions>
         {
             _logger.Trace($"Dragging {Metadata.Name} to {toComponent.Metadata.Name}");
 
@@ -347,7 +349,9 @@ namespace Yapoml.Selenium.Components
         /// <summary>
         /// Performs a drag and drop operation to another component.
         /// </summary>
-        public virtual TComponent DragAndDrop<TToComponent, TToConditions>(BaseComponent<TToComponent, TToConditions> toComponent, Action<TConditions> when) where TToComponent : BaseComponent<TToComponent, TToConditions>
+        public virtual TComponent DragAndDrop<TToComponent, TToConditions>(BaseComponent<TToComponent, TToConditions> toComponent, Action<TConditions> when)
+            where TToComponent : BaseComponent<TToComponent, TToConditions>
+            where TToConditions : BaseComponentConditions<TToConditions>
         {
             when(conditions);
 

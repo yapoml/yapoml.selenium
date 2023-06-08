@@ -11,8 +11,12 @@ using Yapoml.Selenium.Services.Locator;
 
 namespace Yapoml.Selenium.Components
 {
-    public class BaseComponentList<TComponent, TConditions> : IReadOnlyList<TComponent> where TComponent : BaseComponent<TComponent, TConditions>
+    public class BaseComponentList<TComponent, TListConditions> : IReadOnlyList<TComponent>
+        where TComponent : BaseComponent
+        //where TListConditions : BaseComponentListConditions<TListConditions>
     {
+        protected TListConditions listConditions;
+
         private IList<TComponent> _list;
 
         private readonly BasePage _page;
@@ -50,7 +54,7 @@ namespace Yapoml.Selenium.Components
             {
                 EnsureLocated();
 
-                var component = _list.FirstOrDefault(c => c == text);
+                var component = _list.FirstOrDefault(c => c.Text == text);
 
                 if (component is null)
                 {
@@ -122,6 +126,16 @@ namespace Yapoml.Selenium.Components
             }
         }
 
+        /// <summary>
+        /// Various awaitable conditions on the list of components.
+        /// </summary>
+        public BaseComponentList<TComponent, TListConditions> Expect(Action<TListConditions> it)
+        {
+            it(listConditions);
+
+            return this;
+        }
+
         private void EnsureLocated()
         {
             if (_list == null)
@@ -131,7 +145,7 @@ namespace Yapoml.Selenium.Components
 
                 var elements = _elementsListHandler.LocateMany();
 
-                _list = new List<TComponent>(elements.Select(e => factory.Create<TComponent, TConditions>(_page, _parentComponent, _webDriver, new ElementHandler(_webDriver, null, locator, _elementsListHandler.By, e, _componentsListMetadata.ComponentMetadata, _elementsListHandler.ElementHandlerRepository.CreateNestedRepository(), _eventSource), _componentsListMetadata.ComponentMetadata, _spaceOptions)));
+                _list = new List<TComponent>(elements.Select(e => factory.Create<TComponent, TListConditions>(_page, _parentComponent, _webDriver, new ElementHandler(_webDriver, null, locator, _elementsListHandler.By, e, _componentsListMetadata.ComponentMetadata, _elementsListHandler.ElementHandlerRepository.CreateNestedRepository(), _eventSource), _componentsListMetadata.ComponentMetadata, _spaceOptions)));
             }
         }
     }

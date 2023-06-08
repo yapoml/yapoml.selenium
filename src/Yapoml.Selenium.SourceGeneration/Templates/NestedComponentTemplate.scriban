@@ -26,7 +26,7 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 	{{ include 'NestedComponentTemplate_Desc' component }}
 	/// </summary>
 	{{- if component.by.segments == null }}
-	public {{ if component.is_plural }}global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}, {{get_component_return_type component}}.Conditions>{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}
+	public {{ if component.is_plural }}{{get_component_return_full_type component}}List{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}
 	{
 		get
 		{
@@ -40,7 +40,7 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 			var elementLocator = SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>();
 			var elementsListHandler = new global::Yapoml.Selenium.Services.Locator.ElementsListHandler(WebDriver, _elementHandler, elementLocator, by, listMetadata, _elementHandler.ElementHandlerRepository.CreateNestedRepository(), EventSource);
 
-			var webElements = new global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}, {{get_component_return_type component}}.Conditions>(Page, this, WebDriver, elementsListHandler, listMetadata, EventSource, SpaceOptions);
+			var webElements = new {{component.singular_name}}ComponentList(Page, this, WebDriver, elementsListHandler, listMetadata, EventSource, SpaceOptions);
 			return webElements;
 			{{ else }}
 			if (_elementHandler.ElementHandlerRepository.TryGet("{{component.name}}", out var cachedElementHandler))
@@ -66,7 +66,7 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 		}
 	}
 	{{ else }}
-	public {{ if component.is_plural }}global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}>{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
+	public {{ if component.is_plural }}{{component.singular_name}}ComponentList{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
 	{
 		var segments = new global::System.Collections.Generic.List<global::System.Collections.Generic.KeyValuePair<string, string>>() { 
 				{{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}new global::System.Collections.Generic.KeyValuePair<string, string>("{{ segment }}", {{ segment }}) {{ end }} 
@@ -82,7 +82,7 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 		var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{singularize(component.original_name)}}" };
 		var listMetadata = new global::Yapoml.Selenium.Components.Metadata.ComponentsListMetadata() { Name = "{{component.original_name}}", ComponentMetadata = metadata };
 		var elementsListHandler = new global::Yapoml.Selenium.Services.Locator.ElementsListHandler(WebDriver, _elementHandler, elementLocator, by, listMetadata, _elementHandler.ElementHandlerRepository.CreateNestedRepository(), EventSource);
-		var webElements = new global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_type component}}>(Page, this, WebDriver, elementsListHandler, listMetadata, EventSource, SpaceOptions);
+		var webElements = new {{component.singular_name}}ComponentList(Page, this, WebDriver, elementsListHandler, listMetadata, EventSource, SpaceOptions);
 		return webElements;
 		{{ else }}
 		var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.original_name}}" };
@@ -117,7 +117,7 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 		{{ include 'NestedComponentTemplate_Desc' component }}
 		/// </summary>
 		{{- if component.by.segments == null }}
-		public {{ if component.is_plural }}global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_full_type component}}, {{get_component_return_full_type component}}.Conditions>{{ else }}{{get_component_return_full_type component}}{{ end }} {{component.name}}
+		public {{ if component.is_plural }}{{get_component_return_full_type component}}List{{ else }}{{get_component_return_full_type component}}{{ end }} {{component.name}}
 		{
 			get
 			{
@@ -125,7 +125,7 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 			}
 		}
 		{{ else }}
-		public {{ if component.is_plural }}global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_full_type component}}>{{ else }}{{get_component_return_full_type component}}{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
+		public {{ if component.is_plural }}{{get_component_return_full_type component}}List{{ else }}{{get_component_return_full_type component}}{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
 		{
 			return (({{get_component_return_full_type $1.parent_component}})parentComponent).{{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}{{ segment }}{{ end }});
 		}
@@ -171,10 +171,10 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 			{{ include 'NestedComponentTemplate_Desc' component }}
 			/// </summary>
 			{{- if component.by.segments == null }}
-			public {{ if component.is_plural }}global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_full_type component}}, {{get_component_return_full_type component}}.Conditions>{{ else }}{{get_component_return_full_type component}}{{ end }} {{component.name}}
+			public {{ if component.is_plural }}{{get_component_return_full_type component}}List{{ else }}{{get_component_return_full_type component}}{{ end }} {{component.name}}
 				=> _component.{{component.name}};
 			{{ else }}
-			public {{ if component.is_plural }}global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_full_type component}}>{{ else }}{{get_component_return_full_type component}}{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
+			public {{ if component.is_plural }}{{get_component_return_full_type component}}List{{ else }}{{get_component_return_full_type component}}{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
 				=> _component.{{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}{{ segment }}{{ end }});
 			{{ end }}
 			{{ end }}
@@ -185,10 +185,10 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 			{{ include 'NestedComponentTemplate_Desc' component }}
 			/// </summary>
 			{{- if component.by.segments == null }}
-			public {{ if component.is_plural }}global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_full_type component}}, {{get_component_return_full_type component}}.Conditions>{{ else }}{{get_component_return_full_type component}}{{ end }} {{component.name}}
+			public {{ if component.is_plural }}{{get_component_return_full_type component}}List{{ else }}{{get_component_return_full_type component}}{{ end }} {{component.name}}
 				=> _page.{{component.name}};
 			{{ else }}
-			public {{ if component.is_plural }}global::Yapoml.Selenium.Components.BaseComponentList<{{get_component_return_full_type component}}>{{ else }}{{get_component_return_full_type component}}{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
+			public {{ if component.is_plural }}{{get_component_return_full_type component}}List{{ else }}{{get_component_return_full_type component}}{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
 				=> _page.{{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}{{ segment }}{{ end }});
 			{{ end }}
 			{{ end }}
@@ -197,3 +197,27 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 
 	{{ end }}
 }
+
+{{ if $1.is_plural -}}
+[global::System.Runtime.CompilerServices.CompilerGenerated]
+public partial class {{$1.singular_name}}ComponentList : global::Yapoml.Selenium.Components.BaseComponentList<{{$1.singular_name}}Component, {{$1.singular_name}}ComponentList.Conditions>
+{
+	public {{$1.singular_name}}ComponentList(global::Yapoml.Selenium.Components.BasePage page, global::Yapoml.Selenium.Components.BaseComponent parentComponent, global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementsListHandler elementsListHandler, global::Yapoml.Selenium.Components.Metadata.ComponentsListMetadata componentsListMetadata, global::Yapoml.Selenium.Events.IEventSource eventSource, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
+		: base(page, parentComponent, webDriver, elementsListHandler, componentsListMetadata, eventSource, spaceOptions)
+	{
+		var timeoutOptions = spaceOptions.Services.Get<global::Yapoml.Selenium.Options.TimeoutOptions>();
+		var elementLocator = spaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>();
+		base.listConditions = new Conditions(timeoutOptions.Timeout, timeoutOptions.PollingInterval, webDriver, elementsListHandler, elementLocator, eventSource);
+	}
+
+	[global::System.Runtime.CompilerServices.CompilerGenerated]
+	public partial class Conditions : global::Yapoml.Selenium.Components.BaseComponentListConditions<Conditions>
+	{
+		public Conditions(global::System.TimeSpan timeout, global::System.TimeSpan pollingInterval, global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementsListHandler elementsListHandler, global::Yapoml.Selenium.Services.Locator.IElementLocator elementLocator, global::Yapoml.Selenium.Events.IEventSource eventSource)
+			: base(timeout, pollingInterval, webDriver, elementsListHandler, elementLocator, eventSource)
+		{
+			base.listConditions = this;
+		}
+	}
+}
+{{ end -}}

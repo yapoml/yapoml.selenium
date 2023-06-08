@@ -69,6 +69,8 @@ namespace Yapoml.Selenium.Sample.Basics
 
             var resPage = ya.PackagesPage;
 
+            resPage.Packages.Expect(it => it.Elapsed(TimeSpan.FromSeconds(3)).Count.Is(20));
+
             Console.WriteLine(resPage.Title.Text);
 
             Console.WriteLine("11111111:");

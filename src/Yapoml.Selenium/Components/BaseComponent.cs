@@ -10,18 +10,56 @@ using Yapoml.Selenium.Components.Metadata;
 namespace Yapoml.Selenium.Components
 {
     /// <inheritdoc cref="IWebElement"/>
-    public abstract partial class BaseComponent<TComponent, TConditions> : BaseComponent, IWrapsElement, ITakesScreenshot where TComponent : BaseComponent<TComponent, TConditions>
+    public abstract partial class BaseComponent<TComponent, TConditions> : BaseComponent, IWrapsElement, ITakesScreenshot
+        where TComponent : BaseComponent<TComponent, TConditions>
+        where TConditions : BaseComponentConditions<TConditions>
     {
         protected TComponent component;
-        protected BaseComponent parentComponent;
+
         protected TConditions conditions;
 
-        private ILogger _logger;
+        public BaseComponent(BasePage page, BaseComponent parentComponent, IWebDriver webDriver, IElementHandler elementHandler, ComponentMetadata metadata, ISpaceOptions spaceOptions)
+            : base(page, parentComponent, webDriver, elementHandler, metadata, spaceOptions)
+        {
 
+        }
+
+        /// <summary>
+        /// Various awaitable conditions on the component.
+        /// </summary>
+        public TComponent Expect(Action<TConditions> it)
+        {
+            it(conditions);
+
+            return component;
+        }
+
+        public static bool operator ==(BaseComponent<TComponent, TConditions> component, string value)
+        {
+            if (component is null)
+            {
+                return value == null;
+            }
+
+            return component.Text == value;
+        }
+
+        public static bool operator !=(BaseComponent<TComponent, TConditions> component, string value)
+        {
+            return !(component == value);
+        }
+    }
+
+    public abstract class BaseComponent
+    {
+        protected BaseComponent parentComponent;
         protected BasePage Page { get; }
         protected IWebDriver WebDriver { get; private set; }
 
         protected IElementHandler _elementHandler;
+        private readonly Lazy<AttributesCollection> _attributes;
+        private readonly Lazy<StylesCollection> _styles;
+        protected ILogger _logger;
 
         public virtual IWebElement WrappedElement => _elementHandler.Locate();
 
@@ -46,6 +84,10 @@ namespace Yapoml.Selenium.Components
             _attributes = new Lazy<AttributesCollection>(() => new AttributesCollection(elementHandler));
             _styles = new Lazy<StylesCollection>(() => new StylesCollection(elementHandler));
         }
+
+        public AttributesCollection Attributes => _attributes.Value;
+
+        public StylesCollection Styles => _styles.Value;
 
         public string Text => RelocateOnStaleReference(() => WrappedElement.Text);
 
@@ -86,14 +128,6 @@ namespace Yapoml.Selenium.Components
             }
         }
 
-        private readonly Lazy<AttributesCollection> _attributes;
-
-        public AttributesCollection Attributes => _attributes.Value;
-
-        private readonly Lazy<StylesCollection> _styles;
-
-        public StylesCollection Styles => _styles.Value;
-
         public ISearchContext GetShadowRoot()
         {
             return RelocateOnStaleReference(() => WrappedElement.GetShadowRoot());
@@ -109,25 +143,6 @@ namespace Yapoml.Selenium.Components
             return RelocateOnStaleReference(() => ((ITakesScreenshot)WrappedElement).GetScreenshot());
         }
 
-        /// <summary>
-        /// Various awaitable conditions on the component.
-        /// </summary>
-        public TComponent Expect(Action<TConditions> it)
-        {
-            it(conditions);
-
-            return component;
-        }
-
-        /// <summary>
-        /// Returns a text for the current component.
-        /// </summary>
-        /// <returns>Text of the currrent component.</returns>
-        public override string ToString()
-        {
-            return Text;
-        }
-
         public override bool Equals(object obj)
         {
             var str = obj as string;
@@ -140,22 +155,16 @@ namespace Yapoml.Selenium.Components
             return base.Equals(obj);
         }
 
-        public static bool operator ==(BaseComponent<TComponent, TConditions> component, string value)
+        /// <summary>
+        /// Returns a text for the current component.
+        /// </summary>
+        /// <returns>Text of the currrent component.</returns>
+        public override string ToString()
         {
-            if (component is null)
-            {
-                return value == null;
-            }
-
-            return component.Text == value;
+            return Text;
         }
 
-        public static bool operator !=(BaseComponent<TComponent, TConditions> component, string value)
-        {
-            return !(component == value);
-        }
-
-        private T RelocateOnStaleReference<T>(Func<T> act)
+        protected T RelocateOnStaleReference<T>(Func<T> act)
         {
             try
             {
@@ -171,7 +180,7 @@ namespace Yapoml.Selenium.Components
             }
         }
 
-        private void RelocateOnStaleReference(Action act)
+        protected void RelocateOnStaleReference(Action act)
         {
             try
             {
@@ -186,10 +195,5 @@ namespace Yapoml.Selenium.Components
                 act();
             }
         }
-    }
-
-    public abstract class BaseComponent
-    {
-
     }
 }
