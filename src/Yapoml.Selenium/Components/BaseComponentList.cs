@@ -44,6 +44,11 @@ namespace Yapoml.Selenium.Components
             {
                 EnsureLocated();
 
+                if (index >= _list.Count)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(index), $"Couldn't get a {_componentsListMetadata.ComponentMetadata.Name} by index {index} from {_list.Count} {_componentsListMetadata.Name}.");
+                }
+
                 return _list[index];
             }
         }
