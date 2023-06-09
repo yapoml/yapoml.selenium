@@ -2,7 +2,7 @@
 
 namespace Yapoml.Selenium.Components.Conditions.Generic
 {
-    public abstract class NumericConditions<TConditions, TNumber> : Conditions<TConditions> where TNumber : struct
+    public abstract class NumericConditions<TConditions, TNumber> : Conditions<TConditions> where TNumber : struct, IComparable<TNumber>
     {
         public NumericConditions(TConditions conditions, TimeSpan timeout, TimeSpan pollingInterval)
             : base(conditions, timeout, pollingInterval)
@@ -82,8 +82,45 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             return _conditions;
         }
 
+        public TConditions IsGreaterThan(TNumber value)
+        {
+            return IsGreaterThan(value, _timeout);
+        }
+
+        public TConditions IsGreaterThan(TNumber value, TimeSpan timeout)
+        {
+            TNumber? latestValue = null;
+
+            bool condition()
+            {
+                latestValue = FetchValueFunc();
+
+                if (latestValue != null)
+                {
+                    return ((IComparable<TNumber>)latestValue).CompareTo(value) > 0;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            try
+            {
+                Services.Waiter.Until(condition, timeout, _pollingInterval);
+            }
+            catch (TimeoutException ex)
+            {
+                throw new TimeoutException(GetIsGreaterThanError(latestValue, value), ex);
+            }
+
+            return _conditions;
+        }
+
         protected abstract string GetIsError(TNumber? latestValue, TNumber expectedValue);
 
         protected abstract string GetIsNotError(TNumber? latestValue, TNumber expectedValue);
+
+        protected abstract string GetIsGreaterThanError(TNumber? latestValue, TNumber expectedValue);
     }
 }

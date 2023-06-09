@@ -6,7 +6,7 @@ using Yapoml.Selenium.Services.Locator;
 namespace Yapoml.Selenium.Components.Conditions
 {
     public class NumericStyleConditions<TConditions, TNumber> : NumericConditions<TConditions, TNumber>
-        where TNumber : struct
+        where TNumber : struct, IComparable<TNumber>
     {
         private readonly IElementHandler _elementHandler;
         private readonly string _styleName;
@@ -40,6 +40,11 @@ namespace Yapoml.Selenium.Components.Conditions
         protected override string GetIsNotError(TNumber? latestValue, TNumber expectedValue)
         {
             return $"Style '{_styleName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still '{expectedValue}'.";
+        }
+
+        protected override string GetIsGreaterThanError(TNumber? latestValue, TNumber expectedValue)
+        {
+            return $"Style '{_styleName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still not greater than '{expectedValue}'.";
         }
 
         private T RelocateOnStaleReference<T>(Func<T> act)
