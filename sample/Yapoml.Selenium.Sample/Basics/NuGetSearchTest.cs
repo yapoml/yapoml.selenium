@@ -73,7 +73,7 @@ namespace Yapoml.Selenium.Sample.Basics
 
             var resPage = ya.PackagesPage;
             
-            resPage.Packages.Expect(its => its.Count.IsGreaterThan(21).Count.Is(20).All(each => each.Text.Contains("Yaml")));
+            resPage.Packages.Expect(its => its.Count.IsGreaterThan(10).Count.IsLessThan(30).Count.Is(20).All(each => each.Text.Contains("Yaml")));
 
             Console.WriteLine(resPage.Title.Text);
 
