@@ -35,5 +35,10 @@ namespace Yapoml.Selenium.Components.Conditions
         {
             return $"The count of the {_elementsListHandler.ComponentsListMetadata.Name} is not greater than'{expectedValue}' yet. The latest count is {latestValue}.";
         }
+
+        protected override string GetIsLessThanError(int? latestValue, int expectedValue)
+        {
+            return $"The count of the {_elementsListHandler.ComponentsListMetadata.Name} is not less than'{expectedValue}' yet. The latest count is {latestValue}.";
+        }
     }
 }

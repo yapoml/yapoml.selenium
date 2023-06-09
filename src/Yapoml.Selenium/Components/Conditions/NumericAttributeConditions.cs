@@ -47,6 +47,11 @@ namespace Yapoml.Selenium.Components.Conditions
             return $"Attribute '{_attributeName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not still greater than '{expectedValue}'.";
         }
 
+        protected override string GetIsLessThanError(TNumber? latestValue, TNumber expectedValue)
+        {
+            return $"Attribute '{_attributeName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not still less than '{expectedValue}'.";
+        }
+
         private T RelocateOnStaleReference<T>(Func<T> act)
         {
             try
