@@ -4,13 +4,13 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 {
     public abstract class NumericConditions<TConditions, TNumber> : Conditions<TConditions> where TNumber : struct
     {
-        protected Func<TNumber?> _fetchFunc;
-
         public NumericConditions(TConditions conditions, TimeSpan timeout, TimeSpan pollingInterval)
             : base(conditions, timeout, pollingInterval)
         {
 
         }
+
+        protected abstract Func<TNumber?> FetchValueFunc { get; }
 
         public TConditions Is(TNumber value)
         {
@@ -23,7 +23,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             bool condition()
             {
-                latestValue = _fetchFunc();
+                latestValue = FetchValueFunc();
 
                 if (latestValue != null)
                 {
@@ -41,7 +41,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw GetIsError(latestValue, value, ex);
+                throw new TimeoutException(GetIsError(latestValue, value), ex);
             }
 
             return _conditions;
@@ -58,7 +58,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             bool condition()
             {
-                latestValue = _fetchFunc();
+                latestValue = FetchValueFunc();
 
                 if (latestValue != null)
                 {
@@ -76,20 +76,14 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw GetIsNotError(latestValue, value, ex);
+                throw new TimeoutException(GetIsNotError(latestValue, value), ex);
             }
 
             return _conditions;
         }
 
-        protected virtual Exception GetIsError(Nullable<TNumber> latestValue, TNumber expectedValue, Exception innerException)
-        {
-            return new TimeoutException($"The '{latestValue}' is not '{expectedValue}' yet.", innerException);
-        }
+        protected abstract string GetIsError(TNumber? latestValue, TNumber expectedValue);
 
-        protected virtual Exception GetIsNotError(Nullable<TNumber> latestValue, TNumber expectedValue, Exception innerException)
-        {
-            return new TimeoutException($"The '{latestValue}' is still '{expectedValue}'.", innerException);
-        }
+        protected abstract string GetIsNotError(TNumber? latestValue, TNumber expectedValue);
     }
 }

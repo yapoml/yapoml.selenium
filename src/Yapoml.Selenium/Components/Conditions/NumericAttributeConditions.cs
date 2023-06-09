@@ -16,30 +16,30 @@ namespace Yapoml.Selenium.Components.Conditions
         {
             _elementHandler = elementHandler;
             _attributeName = attributeName;
+        }
 
-            _fetchFunc = () =>
+        protected override Func<TNumber?> FetchValueFunc => () =>
+        {
+            var value = RelocateOnStaleReference(() => _elementHandler.Locate().GetAttribute(_attributeName));
+
+            if (value is null)
             {
-                var value = RelocateOnStaleReference(() => _elementHandler.Locate().GetAttribute(_attributeName));
+                return null;
+            }
+            else
+            {
+                return (TNumber)Convert.ChangeType(value, typeof(TNumber));
+            }
+        };
 
-                if (value is null)
-                {
-                    return null;
-                }
-                else
-                {
-                    return (TNumber)Convert.ChangeType(value, typeof(TNumber));
-                }
-            };
+        protected override string GetIsError(TNumber? latestValue, TNumber expectedValue)
+        {
+            return $"Attribute '{_attributeName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{expectedValue}' yet.";
         }
 
-        protected override Exception GetIsError(TNumber? latestValue, TNumber expectedValue, Exception innerException)
+        protected override string GetIsNotError(TNumber? latestValue, TNumber expectedValue)
         {
-            return new TimeoutException($"Attribute '{_attributeName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{expectedValue}' yet.", innerException);
-        }
-
-        protected override Exception GetIsNotError(TNumber? latestValue, TNumber expectedValue, Exception innerException)
-        {
-            return new TimeoutException($"Attribute '{_attributeName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still '{expectedValue}'.", innerException);
+            return $"Attribute '{_attributeName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still '{expectedValue}'.";
         }
 
         private T RelocateOnStaleReference<T>(Func<T> act)

@@ -5,13 +5,13 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 {
     public abstract class StringConditions<TConditions> : Conditions<TConditions>
     {
-        protected Func<string> _fetchFunc;
-
         public StringConditions(TConditions conditions, TimeSpan timeout, TimeSpan pollingInterval)
             : base(conditions, timeout, pollingInterval)
         {
 
         }
+
+        protected abstract Func<string> FetchValueFunc { get; }
 
         public TConditions Is(string value)
         {
@@ -34,7 +34,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             bool condition()
             {
-                latestValue = _fetchFunc();
+                latestValue = FetchValueFunc();
 
                 return latestValue.Equals(value, comparisonType);
             }
@@ -45,7 +45,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw GetIsError(latestValue, value, ex);
+                throw new TimeoutException(GetIsError(latestValue, value), ex);
             }
 
             return _conditions;
@@ -72,7 +72,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             bool condition()
             {
-                latestValue = _fetchFunc();
+                latestValue = FetchValueFunc();
 
                 return latestValue.Equals(value, comparisonType) == false;
             }
@@ -83,7 +83,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw GetIsNotError(latestValue, value, ex);
+                throw new TimeoutException(GetIsNotError(latestValue, value), ex);
             }
 
             return _conditions;
@@ -110,7 +110,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             bool condition()
             {
-                latestValue = _fetchFunc();
+                latestValue = FetchValueFunc();
 
                 return latestValue.StartsWith(value, comparisonType);
             }
@@ -121,7 +121,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw GetStartsWithError(latestValue, value, ex);
+                throw new TimeoutException(GetStartsWithError(latestValue, value), ex);
             }
 
             return _conditions;
@@ -148,7 +148,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             bool condition()
             {
-                latestValue = _fetchFunc();
+                latestValue = FetchValueFunc();
 
                 return latestValue.StartsWith(value, comparisonType) == false;
             }
@@ -159,7 +159,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw GetDoesNotStartWithError(latestValue, value, ex);
+                throw new TimeoutException(GetDoesNotStartWithError(latestValue, value), ex);
             }
 
             return _conditions;
@@ -186,7 +186,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             bool condition()
             {
-                latestValue = _fetchFunc();
+                latestValue = FetchValueFunc();
 
                 return latestValue.EndsWith(value, comparisonType);
             }
@@ -197,7 +197,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw GetEndsWithError(latestValue, value, ex);
+                throw new TimeoutException(GetEndsWithError(latestValue, value), ex);
             }
 
             return _conditions;
@@ -224,7 +224,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             bool condition()
             {
-                latestValue = _fetchFunc();
+                latestValue = FetchValueFunc();
 
                 return latestValue.EndsWith(value, comparisonType) == false;
             }
@@ -235,7 +235,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw GetDoesNotEndWithError(latestValue, value, ex);
+                throw new TimeoutException(GetDoesNotEndWithError(latestValue, value), ex);
             }
 
             return _conditions;
@@ -262,7 +262,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             bool condition()
             {
-                latestValue = _fetchFunc();
+                latestValue = FetchValueFunc();
 
                 return latestValue.IndexOf(value, comparisonType) >= 0;
             }
@@ -273,7 +273,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw GetContainsError(latestValue, value, ex);
+                throw new TimeoutException(GetContainsError(latestValue, value), ex);
             }
 
             return _conditions;
@@ -300,7 +300,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             bool condition()
             {
-                latestValue = _fetchFunc();
+                latestValue = FetchValueFunc();
 
                 return latestValue.IndexOf(value, comparisonType) == -1;
             }
@@ -311,7 +311,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw GetDoesNotContainError(latestValue, value, ex);
+                throw new TimeoutException(GetDoesNotContainError(latestValue, value), ex);
             }
 
             return _conditions;
@@ -328,7 +328,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             bool condition()
             {
-                latestValue = _fetchFunc();
+                latestValue = FetchValueFunc();
 
                 return regex.IsMatch(latestValue);
             }
@@ -339,7 +339,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw GetMatchesError(latestValue, regex, ex);
+                throw new TimeoutException(GetMatchesError(latestValue, regex), ex);
             }
 
             return _conditions;
@@ -356,7 +356,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             bool condition()
             {
-                latestValue = _fetchFunc();
+                latestValue = FetchValueFunc();
 
                 return !regex.IsMatch(latestValue);
             }
@@ -367,60 +367,30 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw GetDoesNotMatchError(latestValue, regex, ex);
+                throw new TimeoutException(GetDoesNotMatchError(latestValue, regex), ex);
             }
 
             return _conditions;
         }
 
-        protected virtual Exception GetIsError(string latestValue, string expectedValue, Exception innerException)
-        {
-            return new TimeoutException($"Text '{latestValue}' is not '{expectedValue}' yet.", innerException);
-        }
+        protected abstract string GetIsError(string latestValue, string expectedValue);
 
-        protected virtual Exception GetIsNotError(string latestValue, string expectedValue, Exception innerException)
-        {
-            return new TimeoutException($"Text '{latestValue}' is still '{expectedValue}'.", innerException);
-        }
+        protected abstract string GetIsNotError(string latestValue, string expectedValue);
 
-        protected virtual Exception GetStartsWithError(string latestValue, string expectedValue, Exception innerException)
-        {
-            return new TimeoutException($"Text '{latestValue}' is not '{latestValue}' yet.", innerException);
-        }
+        protected abstract string GetStartsWithError(string latestValue, string expectedValue);
 
-        protected virtual Exception GetDoesNotStartWithError(string latestValue, string expectedValue, Exception innerException)
-        {
-            return new TimeoutException($"Text '{latestValue}' starts with '{expectedValue}'.", innerException);
-        }
+        protected abstract string GetDoesNotStartWithError(string latestValue, string expectedValue);
 
-        protected virtual Exception GetEndsWithError(string latestValue, string expectedValue, Exception innerException)
-        {
-            return new TimeoutException($"Text '{latestValue}' is not '{expectedValue}' yet.", innerException);
-        }
+        protected abstract string GetEndsWithError(string latestValue, string expectedValue);
 
-        protected virtual Exception GetDoesNotEndWithError(string latestValue, string expectedValue, Exception innerException)
-        {
-            return new TimeoutException($"Text '{latestValue}' ends with '{expectedValue}'.", innerException);
-        }
+        protected abstract string GetDoesNotEndWithError(string latestValue, string expectedValue);
 
-        protected virtual Exception GetContainsError(string latestValue, string expectedValue, Exception innerException)
-        {
-            return new TimeoutException($"Text '{latestValue}' doesn't contain '{expectedValue}' yet.", innerException);
-        }
+        protected abstract string GetContainsError(string latestValue, string expectedValue);
 
-        protected virtual Exception GetDoesNotContainError(string latestValue, string expectedValue, Exception innerException)
-        {
-            return new TimeoutException($"Text '{latestValue}' contains '{expectedValue}'.", innerException);
-        }
+        protected abstract string GetDoesNotContainError(string latestValue, string expectedValue);
 
-        protected virtual Exception GetMatchesError(string latestValue, Regex regex, Exception innerException)
-        {
-            return new TimeoutException($"Text '{latestValue}' doesn't match '{regex}'.", innerException);
-        }
+        protected abstract string GetMatchesError(string latestValue, Regex regex);
 
-        protected virtual Exception GetDoesNotMatchError(string latestValue, Regex regex, Exception innerException)
-        {
-            return new TimeoutException($"Text '{latestValue}' matches '{regex}'.", innerException);
-        }
+        protected abstract string GetDoesNotMatchError(string latestValue, Regex regex);
     }
 }

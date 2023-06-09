@@ -16,30 +16,30 @@ namespace Yapoml.Selenium.Components.Conditions
         {
             _elementHandler = elementHandler;
             _styleName = styleName;
+        }
 
-            _fetchFunc = () =>
+        protected override Func<TNumber?> FetchValueFunc => () =>
+        {
+            var value = RelocateOnStaleReference(() => _elementHandler.Locate().GetCssValue(_styleName));
+
+            if (string.IsNullOrEmpty(value))
             {
-                var value = RelocateOnStaleReference(() => _elementHandler.Locate().GetCssValue(_styleName));
+                return null;
+            }
+            else
+            {
+                return (TNumber)Convert.ChangeType(value, typeof(TNumber));
+            }
+        };
 
-                if (string.IsNullOrEmpty(value))
-                {
-                    return null;
-                }
-                else
-                {
-                    return (TNumber)Convert.ChangeType(value, typeof(TNumber));
-                }
-            };
+        protected override string GetIsError(TNumber? latestValue, TNumber expectedValue)
+        {
+            return $"Style '{_styleName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{expectedValue}' yet.";
         }
 
-        protected override Exception GetIsError(TNumber? latestValue, TNumber expectedValue, Exception innerException)
+        protected override string GetIsNotError(TNumber? latestValue, TNumber expectedValue)
         {
-            return new TimeoutException($"Style '{_styleName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{expectedValue}' yet.", innerException);
-        }
-
-        protected override Exception GetIsNotError(TNumber? latestValue, TNumber expectedValue, Exception innerException)
-        {
-            return new TimeoutException($"Style '{_styleName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still '{expectedValue}'.", innerException);
+            return $"Style '{_styleName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still '{expectedValue}'.";
         }
 
         private T RelocateOnStaleReference<T>(Func<T> act)

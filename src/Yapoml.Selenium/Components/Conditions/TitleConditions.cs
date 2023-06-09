@@ -16,59 +16,59 @@ namespace Yapoml.Selenium.Components.Conditions
         public TitleConditions(IWebDriver webDriver, TConditions conditions, TimeSpan timeout, TimeSpan pollingInterval)
             : base(conditions, timeout, pollingInterval)
         {
-            _fetchFunc = () => _webDriver.Title;
-
             _webDriver = webDriver;
         }
 
-        protected override Exception GetIsError(string latestValue, string expectedValue, Exception innerException)
+        protected override Func<string> FetchValueFunc => () => _webDriver.Title;
+
+        protected override string GetIsError(string latestValue, string expectedValue)
         {
-            return new TimeoutException($"'{latestValue}' title doesn't equal to '{expectedValue}'.", innerException);
+            return $"'{latestValue}' title doesn't equal to '{expectedValue}'.";
         }
 
-        protected override Exception GetIsNotError(string latestValue, string expectedValue, Exception innerException)
+        protected override string GetIsNotError(string latestValue, string expectedValue)
         {
-            return new TimeoutException($"'{latestValue}' title doesn't equal to '{expectedValue}'.", innerException);
+            return $"'{latestValue}' title doesn't equal to '{expectedValue}'.";
         }
 
-        protected override Exception GetStartsWithError(string latestValue, string expectedValue, Exception innerException)
+        protected override string GetStartsWithError(string latestValue, string expectedValue)
         {
-            return new TimeoutException($"'{latestValue}' title doesn't start with '{expectedValue}'.", innerException);
+            return $"'{latestValue}' title doesn't start with '{expectedValue}'.";
         }
 
-        protected override Exception GetDoesNotStartWithError(string latestValue, string expectedValue, Exception innerException)
+        protected override string GetDoesNotStartWithError(string latestValue, string expectedValue)
         {
-            return new TimeoutException($"'{latestValue}' title starts with '{expectedValue}'.", innerException);
+            return $"'{latestValue}' title starts with '{expectedValue}'.";
         }
 
-        protected override Exception GetEndsWithError(string latestValue, string expectedValue, Exception innerException)
+        protected override string GetEndsWithError(string latestValue, string expectedValue)
         {
-            return new TimeoutException($"'{latestValue}' title doesn't end with '{expectedValue}'.", innerException);
+            return $"'{latestValue}' title doesn't end with '{expectedValue}'.";
         }
 
-        protected override Exception GetDoesNotEndWithError(string latestValue, string expectedValue, Exception innerException)
+        protected override string GetDoesNotEndWithError(string latestValue, string expectedValue)
         {
-            return new TimeoutException($"'{latestValue}' title ends with '{expectedValue}'.", innerException);
+            return $"'{latestValue}' title ends with '{expectedValue}'.";
         }
 
-        protected override Exception GetContainsError(string latestValue, string expectedValue, Exception innerException)
+        protected override string GetContainsError(string latestValue, string expectedValue)
         {
-            return new TimeoutException($"'{latestValue}' title doesn't contain '{expectedValue}' yet.", innerException);
+            return $"'{latestValue}' title doesn't contain '{expectedValue}' yet.";
         }
 
-        protected override Exception GetDoesNotContainError(string latestValue, string expectedValue, Exception innerException)
+        protected override string GetDoesNotContainError(string latestValue, string expectedValue)
         {
-            return new TimeoutException($"'{latestValue}' title contains '{expectedValue}'.", innerException);
+            return $"'{latestValue}' title contains '{expectedValue}'.";
         }
 
-        protected override Exception GetMatchesError(string latestValue, Regex regex, Exception innerException)
+        protected override string GetMatchesError(string latestValue, Regex regex)
         {
-            return new TimeoutException($"'{latestValue}' title doesn't match '{regex}'.", innerException);
+            return $"'{latestValue}' title doesn't match '{regex}'.";
         }
 
-        protected override Exception GetDoesNotMatchError(string latestValue, Regex regex, Exception innerException)
+        protected override string GetDoesNotMatchError(string latestValue, Regex regex)
         {
-            return new TimeoutException($"'{latestValue}' title matches '{regex}'.", innerException);
+            return $"'{latestValue}' title matches '{regex}'.";
         }
     }
 }

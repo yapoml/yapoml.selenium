@@ -14,58 +14,58 @@ namespace Yapoml.Selenium.Components.Conditions
             : base(conditions, timeout, pollingInterval)
         {
             _elementHandler = elementHandler;
-
-            _fetchFunc = () => RelocateOnStaleReference(() => elementHandler.Locate().Text);
         }
 
-        protected override Exception GetIsError(string latestValue, string expectedValue, Exception innerException)
+        protected override Func<string> FetchValueFunc => () => RelocateOnStaleReference(() => _elementHandler.Locate().Text);
+
+        protected override string GetIsError(string latestValue, string expectedValue)
         {
-            return new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{expectedValue}' yet.", innerException);
+            return $"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{expectedValue}' yet.";
         }
 
-        protected override Exception GetIsNotError(string latestValue, string expectedValue, Exception innerException)
+        protected override string GetIsNotError(string latestValue, string expectedValue)
         {
-            return new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still '{expectedValue}'.", innerException);
+            return $"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still '{expectedValue}'.";
         }
 
-        protected override Exception GetStartsWithError(string latestValue, string expectedValue, Exception innerException)
+        protected override string GetStartsWithError(string latestValue, string expectedValue)
         {
-            return new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{latestValue}' yet.", innerException);
+            return $"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{latestValue}' yet.";
         }
 
-        protected override Exception GetDoesNotStartWithError(string latestValue, string expectedValue, Exception innerException)
+        protected override string GetDoesNotStartWithError(string latestValue, string expectedValue)
         {
-            return new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component starts with '{expectedValue}'.", innerException);
+            return $"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component starts with '{expectedValue}'.";
         }
 
-        protected override Exception GetEndsWithError(string latestValue, string expectedValue, Exception innerException)
+        protected override string GetEndsWithError(string latestValue, string expectedValue)
         {
-            return new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{expectedValue}' yet.", innerException);
+            return $"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{expectedValue}' yet.";
         }
 
-        protected override Exception GetDoesNotEndWithError(string latestValue, string expectedValue, Exception innerException)
+        protected override string GetDoesNotEndWithError(string latestValue, string expectedValue)
         {
-            return new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component ends with '{expectedValue}'.", innerException);
+            return $"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component ends with '{expectedValue}'.";
         }
 
-        protected override Exception GetContainsError(string latestValue, string expectedValue, Exception innerException)
+        protected override string GetContainsError(string latestValue, string expectedValue)
         {
-            return new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component doesn't contain '{expectedValue}' yet.", innerException);
+            return $"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component doesn't contain '{expectedValue}' yet.";
         }
 
-        protected override Exception GetDoesNotContainError(string latestValue, string expectedValue, Exception innerException)
+        protected override string GetDoesNotContainError(string latestValue, string expectedValue)
         {
-            return new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component contains '{expectedValue}'.", innerException);
+            return $"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component contains '{expectedValue}'.";
         }
 
-        protected override Exception GetMatchesError(string latestValue, Regex regex, Exception innerException)
+        protected override string GetMatchesError(string latestValue, Regex regex)
         {
-            return new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component doesn't match '{regex}'.", innerException);
+            return $"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component doesn't match '{regex}'.";
         }
 
-        protected override Exception GetDoesNotMatchError(string latestValue, Regex regex, Exception innerException)
+        protected override string GetDoesNotMatchError(string latestValue, Regex regex)
         {
-            return new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component matches '{regex}'.", innerException);
+            return $"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component matches '{regex}'.";
         }
 
         private T RelocateOnStaleReference<T>(Func<T> act)

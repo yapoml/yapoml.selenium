@@ -11,60 +11,64 @@ namespace Yapoml.Selenium.Components.Conditions
     /// <typeparam name="TConditions">Fluent original instance for chaining conditions.</typeparam>
     public class UrlConditions<TConditions> : StringConditions<TConditions>
     {
+        private readonly IWebDriver _webDriver;
+
         public UrlConditions(IWebDriver webDriver, TConditions conditions, TimeSpan timeout, TimeSpan pollingInterval)
             : base(conditions, timeout, pollingInterval)
         {
-            _fetchFunc = () => webDriver.Url;
+            _webDriver = webDriver;
         }
 
-        protected override Exception GetIsError(string latestValue, string expectedValue, Exception innerException)
+        protected override Func<string> FetchValueFunc => () => _webDriver.Url;
+
+        protected override string GetIsError(string latestValue, string expectedValue)
         {
-            return new TimeoutException($"'{latestValue}' url doesn't equal to '{expectedValue}'.", innerException);
+            return $"'{latestValue}' url doesn't equal to '{expectedValue}'.";
         }
 
-        protected override Exception GetIsNotError(string latestValue, string expectedValue, Exception innerException)
+        protected override string GetIsNotError(string latestValue, string expectedValue)
         {
-            return new TimeoutException($"'{latestValue}' url doesn't equal to '{expectedValue}'.", innerException);
+            return $"'{latestValue}' url doesn't equal to '{expectedValue}'.";
         }
 
-        protected override Exception GetStartsWithError(string latestValue, string expectedValue, Exception innerException)
+        protected override string GetStartsWithError(string latestValue, string expectedValue)
         {
-            return new TimeoutException($"'{latestValue}' url doesn't start with '{expectedValue}'.", innerException);
+            return $"'{latestValue}' url doesn't start with '{expectedValue}'.";
         }
 
-        protected override Exception GetDoesNotStartWithError(string latestValue, string expectedValue, Exception innerException)
+        protected override string GetDoesNotStartWithError(string latestValue, string expectedValue)
         {
-            return new TimeoutException($"'{latestValue}' url starts with '{expectedValue}'.", innerException);
+            return $"'{latestValue}' url starts with '{expectedValue}'.";
         }
 
-        protected override Exception GetEndsWithError(string latestValue, string expectedValue, Exception innerException)
+        protected override string GetEndsWithError(string latestValue, string expectedValue)
         {
-            return new TimeoutException($"'{latestValue}' url doesn't end with '{expectedValue}'.", innerException);
+            return $"'{latestValue}' url doesn't end with '{expectedValue}'.";
         }
 
-        protected override Exception GetDoesNotEndWithError(string latestValue, string expectedValue, Exception innerException)
+        protected override string GetDoesNotEndWithError(string latestValue, string expectedValue)
         {
-            return new TimeoutException($"'{latestValue}' url ends with '{expectedValue}'.", innerException);
+            return $"'{latestValue}' url ends with '{expectedValue}'.";
         }
 
-        protected override Exception GetContainsError(string latestValue, string expectedValue, Exception innerException)
+        protected override string GetContainsError(string latestValue, string expectedValue)
         {
-            return new TimeoutException($"'{latestValue}' url doesn't contain '{expectedValue}' yet.", innerException);
+            return $"'{latestValue}' url doesn't contain '{expectedValue}' yet.";
         }
 
-        protected override Exception GetDoesNotContainError(string latestValue, string expectedValue, Exception innerException)
+        protected override string GetDoesNotContainError(string latestValue, string expectedValue)
         {
-            return new TimeoutException($"'{latestValue}' url contains '{expectedValue}'.", innerException);
+            return $"'{latestValue}' url contains '{expectedValue}'.";
         }
 
-        protected override Exception GetMatchesError(string latestValue, Regex regex, Exception innerException)
+        protected override string GetMatchesError(string latestValue, Regex regex)
         {
-            return new TimeoutException($"'{latestValue}' url doesn't match '{regex}'.", innerException);
+            return $"'{latestValue}' url doesn't match '{regex}'.";
         }
 
-        protected override Exception GetDoesNotMatchError(string latestValue, Regex regex, Exception innerException)
+        protected override string GetDoesNotMatchError(string latestValue, Regex regex)
         {
-            return new TimeoutException($"'{latestValue}' url matches '{regex}'.", innerException);
+            return $"'{latestValue}' url matches '{regex}'.";
         }
     }
 }

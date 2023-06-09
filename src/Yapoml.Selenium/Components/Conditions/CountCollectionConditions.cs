@@ -12,23 +12,23 @@ namespace Yapoml.Selenium.Components.Conditions
             : base(listConditions, timeout, pollingInterval)
         {
             _elementsListHandler = elementsListHandler;
-
-            _fetchFunc = () =>
-            {
-                _elementsListHandler.Invalidate();
-
-                return _elementsListHandler.LocateMany().Count;
-            };
         }
 
-        protected override Exception GetIsError(int? latestValue, int expectedValue, Exception innerException)
+        protected override Func<int?> FetchValueFunc => () =>
         {
-            return new TimeoutException($"The count of the {_elementsListHandler.ComponentsListMetadata.Name} is not '{expectedValue}' yet. The latest count is {latestValue}.", innerException);
+            _elementsListHandler.Invalidate();
+
+            return _elementsListHandler.LocateMany().Count;
+        };
+
+        protected override string GetIsError(int? latestValue, int expectedValue)
+        {
+            return $"The count of the {_elementsListHandler.ComponentsListMetadata.Name} is not '{expectedValue}' yet. The latest count is {latestValue}.";
         }
 
-        protected override Exception GetIsNotError(int? latestValue, int expectedValue, Exception innerException)
+        protected override string GetIsNotError(int? latestValue, int expectedValue)
         {
-            return new TimeoutException($"The count of the {_elementsListHandler.ComponentsListMetadata.Name} is not '{expectedValue}' yet. The latest count is {latestValue}.", innerException);
+            return $"The count of the {_elementsListHandler.ComponentsListMetadata.Name} is not '{expectedValue}' yet. The latest count is {latestValue}.";
         }
     }
 }
