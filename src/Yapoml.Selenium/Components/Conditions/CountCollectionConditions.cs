@@ -20,8 +20,8 @@ namespace Yapoml.Selenium.Components.Conditions
 
         public TListConditions Is(uint value, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
         {
-            var actualTimeout = timeout ?? _timeout;
-            var actualPollingInterval = pollingInterval ?? _pollingInterval;
+            timeout = timeout ?? _timeout;
+            pollingInterval = pollingInterval ?? _pollingInterval;
 
             int? latestCount = null;
 
@@ -36,7 +36,7 @@ namespace Yapoml.Selenium.Components.Conditions
 
             try
             {
-                Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
+                Services.Waiter.Until(condition, timeout.Value, pollingInterval.Value);
             }
             catch (TimeoutException ex)
             {
