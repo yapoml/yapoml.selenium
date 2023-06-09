@@ -65,6 +65,8 @@ namespace Yapoml.Selenium.Sample.Basics
             //    Console.WriteLine(page.SearchButton.Displayed);
             //}
 
+            ya.HomePage.SearchButton.Expect(it => it.Styles.Opacity.Is(1.0, TimeSpan.FromSeconds(3)));
+
             Console.WriteLine(page.SearchInput.IsFocused);
 
             page.Search("yaml");

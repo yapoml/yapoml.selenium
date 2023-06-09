@@ -1,323 +1,71 @@
 ﻿using OpenQA.Selenium;
 using System;
 using System.Text.RegularExpressions;
+using Yapoml.Selenium.Components.Conditions.Generic;
 using Yapoml.Selenium.Services.Locator;
 
 namespace Yapoml.Selenium.Components.Conditions
 {
-    public class TextConditions<TConditions>
+    public class TextConditions<TConditions> : StringConditions<TConditions>
     {
-        private readonly TConditions _conditions;
         private readonly IElementHandler _elementHandler;
-        private readonly TimeSpan _timeout;
-        private readonly TimeSpan _pollingInterval;
 
         public TextConditions(TConditions conditions, IElementHandler elementHandler, TimeSpan timeout, TimeSpan pollingInterval)
+            : base(conditions, timeout, pollingInterval)
         {
-            _conditions = conditions;
             _elementHandler = elementHandler;
-            _timeout = timeout;
-            _pollingInterval = pollingInterval;
+
+            _fetchFunc = () => RelocateOnStaleReference(() => elementHandler.Locate().Text);
         }
 
-        public TConditions Is(string value, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        protected override Exception GetIsError(string latestValue, string expectedValue, Exception innerException)
         {
-            return Is(value, StringComparison.CurrentCultureIgnoreCase, timeout, pollingInterval);
+            return new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{expectedValue}' yet.", innerException);
         }
 
-        public TConditions Is(string value, StringComparison comparisonType, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        protected override Exception GetIsNotError(string latestValue, string expectedValue, Exception innerException)
         {
-            var actualTimeout = timeout ?? _timeout;
-            var actualPollingInterval = pollingInterval ?? _pollingInterval;
-
-            string latestValue = null;
-
-            bool condition()
-            {
-                latestValue = RelocateOnStaleReference(() => _elementHandler.Locate().Text);
-
-                return latestValue.Equals(value, comparisonType);
-            }
-
-            try
-            {
-                Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
-            }
-            catch (TimeoutException ex)
-            {
-                throw new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{value}' yet.", ex);
-            }
-
-            return _conditions;
+            return new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still '{expectedValue}'.", innerException);
         }
 
-        public TConditions IsNot(string value, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        protected override Exception GetStartsWithError(string latestValue, string expectedValue, Exception innerException)
         {
-            return IsNot(value, StringComparison.CurrentCultureIgnoreCase, timeout, pollingInterval);
+            return new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{latestValue}' yet.", innerException);
         }
 
-        public TConditions IsNot(string value, StringComparison comparisonType, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        protected override Exception GetDoesNotStartWithError(string latestValue, string expectedValue, Exception innerException)
         {
-            var actualTimeout = timeout ?? _timeout;
-            var actualPollingInterval = pollingInterval ?? _pollingInterval;
-
-            string latestValue = null;
-
-            bool condition()
-            {
-                latestValue = RelocateOnStaleReference(() => _elementHandler.Locate().Text);
-
-                return latestValue.Equals(value, comparisonType) == false;
-            }
-
-            try
-            {
-                Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
-            }
-            catch (TimeoutException ex)
-            {
-                throw new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still '{value}'.", ex);
-            }
-
-            return _conditions;
+            return new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component starts with '{expectedValue}'.", innerException);
         }
 
-        public TConditions StartsWith(string value, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        protected override Exception GetEndsWithError(string latestValue, string expectedValue, Exception innerException)
         {
-            return StartsWith(value, StringComparison.CurrentCultureIgnoreCase, timeout, pollingInterval);
+            return new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{expectedValue}' yet.", innerException);
         }
 
-        public TConditions StartsWith(string value, StringComparison comparisonType, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        protected override Exception GetDoesNotEndWithError(string latestValue, string expectedValue, Exception innerException)
         {
-            var actualTimeout = timeout ?? _timeout;
-            var actualPollingInterval = pollingInterval ?? _pollingInterval;
-
-            string latestValue = null;
-
-            bool condition()
-            {
-                latestValue = RelocateOnStaleReference(() => _elementHandler.Locate().Text);
-
-                return latestValue.StartsWith(value, comparisonType);
-            }
-
-            try
-            {
-                Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
-            }
-            catch (TimeoutException ex)
-            {
-                throw new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{value}' yet.", ex);
-            }
-
-            return _conditions;
+            return new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component ends with '{expectedValue}'.", innerException);
         }
 
-        public TConditions DoesNotStartWith(string value, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        protected override Exception GetContainsError(string latestValue, string expectedValue, Exception innerException)
         {
-            return DoesNotStartWith(value, StringComparison.CurrentCultureIgnoreCase, timeout, pollingInterval);
+            return new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component doesn't contain '{expectedValue}' yet.", innerException);
         }
 
-        public TConditions DoesNotStartWith(string value, StringComparison comparisonType, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        protected override Exception GetDoesNotContainError(string latestValue, string expectedValue, Exception innerException)
         {
-            var actualTimeout = timeout ?? _timeout;
-            var actualPollingInterval = pollingInterval ?? _pollingInterval;
-
-            string latestValue = null;
-
-            bool condition()
-            {
-                latestValue = RelocateOnStaleReference(() => _elementHandler.Locate().Text);
-
-                return latestValue.StartsWith(value, comparisonType) == false;
-            }
-
-            try
-            {
-                Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
-            }
-            catch (TimeoutException ex)
-            {
-                throw new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component starts with '{value}'.", ex);
-            }
-
-            return _conditions;
+            return new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component contains '{expectedValue}'.", innerException);
         }
 
-        public TConditions EndsWith(string value, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        protected override Exception GetMatchesError(string latestValue, Regex regex, Exception innerException)
         {
-            return EndsWith(value, StringComparison.CurrentCultureIgnoreCase, timeout, pollingInterval);
+            return new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component doesn't match '{regex}'.", innerException);
         }
 
-        public TConditions EndsWith(string value, StringComparison comparisonType, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        protected override Exception GetDoesNotMatchError(string latestValue, Regex regex, Exception innerException)
         {
-            var actualTimeout = timeout ?? _timeout;
-            var actualPollingInterval = pollingInterval ?? _pollingInterval;
-
-            string latestValue = null;
-
-            bool condition()
-            {
-                latestValue = RelocateOnStaleReference(() => _elementHandler.Locate().Text);
-
-                return latestValue.EndsWith(value, comparisonType);
-            }
-
-            try
-            {
-                Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
-            }
-            catch (TimeoutException ex)
-            {
-                throw new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{value}' yet.", ex);
-            }
-
-            return _conditions;
-        }
-
-        public TConditions DoesNotEndWith(string value, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
-        {
-            return DoesNotEndWith(value, StringComparison.CurrentCultureIgnoreCase, timeout, pollingInterval);
-        }
-
-        public TConditions DoesNotEndWith(string value, StringComparison comparisonType, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
-        {
-            var actualTimeout = timeout ?? _timeout;
-            var actualPollingInterval = pollingInterval ?? _pollingInterval;
-
-            string latestValue = null;
-
-            bool condition()
-            {
-                latestValue = RelocateOnStaleReference(() => _elementHandler.Locate().Text);
-
-                return latestValue.EndsWith(value, comparisonType) == false;
-            }
-
-            try
-            {
-                Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
-            }
-            catch (TimeoutException ex)
-            {
-                throw new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component ends with '{value}'.", ex);
-            }
-
-            return _conditions;
-        }
-
-        public TConditions Contains(string value, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
-        {
-            return Contains(value, StringComparison.CurrentCultureIgnoreCase, timeout, pollingInterval);
-        }
-
-        public TConditions Contains(string value, StringComparison comparisonType, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
-        {
-            var actualTimeout = timeout ?? _timeout;
-            var actualPollingInterval = pollingInterval ?? _pollingInterval;
-
-            string latestValue = null;
-
-            bool condition()
-            {
-                latestValue = RelocateOnStaleReference(() => _elementHandler.Locate().Text);
-
-                return latestValue.IndexOf(value, comparisonType) >= 0;
-            }
-
-            try
-            {
-                Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
-            }
-            catch (TimeoutException ex)
-            {
-                throw new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component doesn't contain '{value}' yet.", ex);
-            }
-
-            return _conditions;
-        }
-
-        public TConditions DoesNotContain(string value, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
-        {
-            return DoesNotContain(value, StringComparison.CurrentCultureIgnoreCase, timeout, pollingInterval);
-        }
-
-        public TConditions DoesNotContain(string value, StringComparison comparisonType, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
-        {
-            var actualTimeout = timeout ?? _timeout;
-            var actualPollingInterval = pollingInterval ?? _pollingInterval;
-
-            string latestValue = null;
-
-            bool condition()
-            {
-                latestValue = RelocateOnStaleReference(() => _elementHandler.Locate().Text);
-
-                return latestValue.IndexOf(value, comparisonType) == -1;
-            }
-
-            try
-            {
-                Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
-            }
-            catch (TimeoutException ex)
-            {
-                throw new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component contains '{value}'.", ex);
-            }
-
-            return _conditions;
-        }
-
-        public TConditions Matches(Regex regex, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
-        {
-            var actualTimeout = timeout ?? _timeout;
-            var actualPollingInterval = pollingInterval ?? _pollingInterval;
-
-            string latestValue = null;
-
-            bool condition()
-            {
-                latestValue = RelocateOnStaleReference(() => _elementHandler.Locate().Text);
-
-                return regex.IsMatch(latestValue);
-            }
-
-            try
-            {
-                Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
-            }
-            catch (TimeoutException ex)
-            {
-                throw new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component doesn't match '{regex}'.", ex);
-            }
-
-            return _conditions;
-        }
-
-        public TConditions DoesNotMatch(Regex regex, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
-        {
-            var actualTimeout = timeout ?? _timeout;
-            var actualPollingInterval = pollingInterval ?? _pollingInterval;
-
-            string latestValue = null;
-
-            bool condition()
-            {
-                latestValue = RelocateOnStaleReference(() => _elementHandler.Locate().Text);
-
-                return !regex.IsMatch(latestValue);
-            }
-
-            try
-            {
-                Services.Waiter.Until(condition, actualTimeout, actualPollingInterval);
-            }
-            catch (TimeoutException ex)
-            {
-                throw new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component matches '{regex}'.", ex);
-            }
-
-            return _conditions;
+            return new TimeoutException($"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component matches '{regex}'.", innerException);
         }
 
         private T RelocateOnStaleReference<T>(Func<T> act)

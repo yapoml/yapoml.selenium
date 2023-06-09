@@ -32,14 +32,19 @@ namespace Yapoml.Selenium.Components
         /// <summary>
         /// Waits until the component is displayed.
         /// </summary>
-        /// <param name="timeout">How long to wait until the component is displayed.</param>
-        /// <param name="pollingInterval">Interval between verifications in a loop.</param>
         /// <returns></returns>
-        public virtual TConditions IsDisplayed(TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        public virtual TConditions IsDisplayed()
         {
-            timeout = timeout ?? Timeout;
-            pollingInterval = pollingInterval ?? PollingInterval;
+            return IsDisplayed(Timeout);
+        }
 
+        /// <summary>
+        /// Waits until the component is displayed.
+        /// </summary>
+        /// <param name="timeout">How long to wait until the component is displayed.</param>
+        /// <returns></returns>
+        public virtual TConditions IsDisplayed(TimeSpan timeout)
+        {
             Exception lastError = null;
 
             Dictionary<Type, uint> ignoredExceptions = new Dictionary<Type, uint> {
@@ -79,7 +84,7 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                Services.Waiter.Until(attempt, timeout.Value, pollingInterval.Value);
+                Services.Waiter.Until(attempt, timeout, PollingInterval);
             }
             catch (TimeoutException ex)
             {
@@ -93,14 +98,20 @@ namespace Yapoml.Selenium.Components
         /// Waits until the component is not displayed.
         /// Detached component from DOM is also considered as not displayed.
         /// </summary>
-        /// <param name="timeout">How long to wait until the component is not displayed.</param>
-        /// <param name="pollingInterval">Interval between verifications in a loop.</param>
         /// <returns></returns>
-        public virtual TConditions IsNotDisplayed(TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        public virtual TConditions IsNotDisplayed()
         {
-            timeout = timeout ?? Timeout;
-            pollingInterval = pollingInterval ?? PollingInterval;
+            return IsNotDisplayed(Timeout);
+        }
 
+        /// <summary>
+        /// Waits until the component is not displayed.
+        /// Detached component from DOM is also considered as not displayed.
+        /// </summary>
+        /// <param name="timeout">How long to wait until the component is not displayed.</param>
+        /// <returns></returns>
+        public virtual TConditions IsNotDisplayed(TimeSpan timeout)
+        {
             bool attempt()
             {
                 try
@@ -122,7 +133,7 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                Services.Waiter.Until(attempt, timeout.Value, pollingInterval.Value);
+                Services.Waiter.Until(attempt, timeout, PollingInterval);
             }
             catch (TimeoutException ex)
             {
@@ -135,14 +146,19 @@ namespace Yapoml.Selenium.Components
         /// <summary>
         /// Waits until the component is appeared in the DOM.
         /// </summary>
-        /// <param name="timeout">How long to wait until the component is appeared.</param>
-        /// <param name="pollingInterval">Interval between verifications in a loop.</param>
         /// <returns></returns>
-        public virtual TConditions Exists(TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        public virtual TConditions Exists()
         {
-            timeout = timeout ?? Timeout;
-            pollingInterval = pollingInterval ?? PollingInterval;
+            return Exists(Timeout);
+        }
 
+        /// <summary>
+        /// Waits until the component is appeared in the DOM.
+        /// </summary>
+        /// <param name="timeout">How long to wait until the component is appeared.</param>
+        /// <returns></returns>
+        public virtual TConditions Exists(TimeSpan timeout)
+        {
             Exception lastError = null;
 
             Dictionary<Type, uint> ignoredExceptions = new Dictionary<Type, uint> {
@@ -178,7 +194,7 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                Services.Waiter.Until(attempt, timeout.Value, pollingInterval.Value);
+                Services.Waiter.Until(attempt, timeout, PollingInterval);
             }
             catch (TimeoutException ex)
             {
@@ -191,14 +207,19 @@ namespace Yapoml.Selenium.Components
         /// <summary>
         /// Waits until the component disappeared drom the DOM.
         /// </summary>
-        /// <param name="timeout">How long to wait until the component disappeared.</param>
-        /// <param name="pollingInterval">Interval between verifications in a loop.</param>
         /// <returns></returns>
-        public virtual TConditions DoesNotExist(TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        public virtual TConditions DoesNotExist()
         {
-            timeout = timeout ?? Timeout;
-            pollingInterval = pollingInterval ?? PollingInterval;
+            return DoesNotExist(Timeout);
+        }
 
+        /// <summary>
+        /// Waits until the component disappeared drom the DOM.
+        /// </summary>
+        /// <param name="timeout">How long to wait until the component disappeared.</param>
+        /// <returns></returns>
+        public virtual TConditions DoesNotExist(TimeSpan timeout)
+        {
             bool attempt()
             {
                 try
@@ -223,7 +244,7 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                Services.Waiter.Until(attempt, timeout.Value, pollingInterval.Value);
+                Services.Waiter.Until(attempt, timeout, PollingInterval);
             }
             catch (TimeoutException ex)
             {
@@ -236,14 +257,19 @@ namespace Yapoml.Selenium.Components
         /// <summary>
         ///  Waits until the component is enabled.
         /// </summary>
-        /// <param name="timeout">How long to wait until the component is enabled.</param>
-        /// <param name="pollingInterval">Interval between verifications in a loop.</param>
         /// <returns></returns>
-        public virtual TConditions IsEnabled(TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
+        public virtual TConditions IsEnabled()
         {
-            timeout = timeout ?? Timeout;
-            pollingInterval = pollingInterval ?? PollingInterval;
+            return IsEnabled(Timeout);
+        }
 
+        /// <summary>
+        ///  Waits until the component is enabled.
+        /// </summary>
+        /// <param name="timeout">How long to wait until the component is enabled.</param>
+        /// <returns></returns>
+        public virtual TConditions IsEnabled(TimeSpan timeout)
+        {
             bool attempt()
             {
                 return ElementHandler.Locate().Enabled;
@@ -251,7 +277,7 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                Services.Waiter.Until(attempt, timeout.Value, pollingInterval.Value);
+                Services.Waiter.Until(attempt, timeout, PollingInterval);
             }
             catch (TimeoutException ex)
             {

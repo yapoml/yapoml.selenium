@@ -3,9 +3,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Yapoml.Framework.Options;
 using Yapoml.Selenium.Components.Metadata;
 using Yapoml.Selenium.Events;
+using Yapoml.Selenium.Extensions;
 using Yapoml.Selenium.Services.Factory;
 using Yapoml.Selenium.Services.Locator;
 
@@ -14,7 +16,7 @@ namespace Yapoml.Selenium.Components
     public class BaseComponentList<TComponent, TListConditions, TComponentConditions> : IReadOnlyList<TComponent>
         where TComponent : BaseComponent
         where TListConditions : BaseComponentListConditions<TListConditions, TComponentConditions>
-        where TComponentConditions: BaseComponentConditions<TComponentConditions>
+        where TComponentConditions : BaseComponentConditions<TComponentConditions>
     {
         protected TListConditions listConditions;
 
@@ -71,25 +73,19 @@ namespace Yapoml.Selenium.Components
             }
         }
 
-#if NET6_0_OR_GREATER
-        public TComponent this[Func<TComponent, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string predicateExpression = null]
-#else
-        public TComponent this[Func<TComponent, bool> predicate]
-#endif
+        public TComponent this[Expression<Func<TComponent, bool>> predicate]
         {
             get
             {
                 EnsureLocated();
 
-                var component = _list.FirstOrDefault(predicate);
+                var compiledPredicate = predicate.Compile();
+
+                var component = _list.FirstOrDefault(compiledPredicate);
 
                 if (component is null)
                 {
-#if NET6_0_OR_GREATER
-                    throw new InvalidOperationException($"{_componentsListMetadata.Name} contain no matching {_componentsListMetadata.ComponentMetadata.Name} satisfying condition {predicateExpression}");
-#else
-                    throw new InvalidOperationException($"{_componentsListMetadata.Name} contain no matching {_componentsListMetadata.ComponentMetadata.Name}.");
-#endif
+                    throw new InvalidOperationException($"{_componentsListMetadata.Name} contain no matching {_componentsListMetadata.ComponentMetadata.Name} satisfying condition {predicate.ToReadable()}");
                 }
 
                 return component;

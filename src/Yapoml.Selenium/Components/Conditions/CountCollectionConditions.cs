@@ -1,49 +1,34 @@
 ﻿using System;
+using Yapoml.Selenium.Components.Conditions.Generic;
 using Yapoml.Selenium.Services.Locator;
 
 namespace Yapoml.Selenium.Components.Conditions
 {
-    public class CountCollectionConditions<TListConditions>
+    public class CountCollectionConditions<TListConditions> : NumericConditions<TListConditions, int>
     {
-        private readonly TListConditions _listConditions;
         private readonly IElementsListHandler _elementsListHandler;
-        private readonly TimeSpan _timeout;
-        private readonly TimeSpan _pollingInterval;
 
         public CountCollectionConditions(TListConditions listConditions, IElementsListHandler elementsListHandler, TimeSpan timeout, TimeSpan pollingInterval)
+            : base(listConditions, timeout, pollingInterval)
         {
-            _listConditions = listConditions;
             _elementsListHandler = elementsListHandler;
-            _timeout = timeout;
-            _pollingInterval = pollingInterval;
-        }
 
-        public TListConditions Is(uint value, TimeSpan? timeout = null, TimeSpan? pollingInterval = null)
-        {
-            timeout = timeout ?? _timeout;
-            pollingInterval = pollingInterval ?? _pollingInterval;
-
-            int? latestCount = null;
-
-            bool condition()
+            _fetchFunc = () =>
             {
                 _elementsListHandler.Invalidate();
 
-                latestCount = _elementsListHandler.LocateMany().Count;
+                return _elementsListHandler.LocateMany().Count;
+            };
+        }
 
-                return latestCount == value;
-            }
+        protected override Exception GetIsError(int? latestValue, int expectedValue, Exception innerException)
+        {
+            return new TimeoutException($"The count of the {_elementsListHandler.ComponentsListMetadata.Name} is not '{expectedValue}' yet. The latest count is {latestValue}.", innerException);
+        }
 
-            try
-            {
-                Services.Waiter.Until(condition, timeout.Value, pollingInterval.Value);
-            }
-            catch (TimeoutException ex)
-            {
-                throw new TimeoutException($"The count of the {_elementsListHandler.ComponentsListMetadata.Name} is not '{value}' yet. The latest count is {latestCount}.", ex);
-            }
-
-            return _listConditions;
+        protected override Exception GetIsNotError(int? latestValue, int expectedValue, Exception innerException)
+        {
+            return new TimeoutException($"The count of the {_elementsListHandler.ComponentsListMetadata.Name} is not '{expectedValue}' yet. The latest count is {latestValue}.", innerException);
         }
     }
 }
