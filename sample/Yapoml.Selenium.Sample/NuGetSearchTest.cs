@@ -52,11 +52,11 @@ namespace Yapoml.Selenium.Sample
         {
             _webDriver.Ya(opts => opts.WithBaseUrl("https://nuget.org"))
                 .HomePage.Open().Search("Selenium")
-                .Packages.Expect(that => that.Count.Is(20).All(package =>
+                .Packages.Expect(that => that.Count.Is(20).Each(package =>
                     {
                         package.Title.Text.Contains("Selenium");
                         package.Description.Text.IsNotEmpty();
-                        package.Tags.All(tag => tag.Text.IsNotEmpty());
+                        package.Tags.Each(tag => tag.Text.IsNotEmpty());
                     }));
         }
     }

@@ -1,6 +1,5 @@
 ﻿using OpenQA.Selenium;
 using System;
-using System.Linq.Expressions;
 using System.Threading;
 using Yapoml.Selenium.Components.Conditions;
 using Yapoml.Selenium.Events;
@@ -33,12 +32,12 @@ namespace Yapoml.Selenium.Components
 
         public CountCollectionConditions<TListConditions> Count => new CountCollectionConditions<TListConditions>(listConditions, ElementsListHandler, Timeout, PollingInterval);
 
-        public TListConditions All(Action<TComponentConditions> each)
+        public TListConditions Each(Action<TComponentConditions> item)
         {
-            return All(each, Timeout);
+            return Each(item, Timeout);
         }
 
-        public TListConditions All(Action<TComponentConditions> each, TimeSpan timeout)
+        public TListConditions Each(Action<TComponentConditions> item, TimeSpan timeout)
         {
             bool condition()
             {
@@ -51,11 +50,11 @@ namespace Yapoml.Selenium.Components
 
                     try
                     {
-                        each(elementCondition);
+                        item(elementCondition);
                     }
                     catch (TimeoutException ex)
                     {
-                        throw new TimeoutException($"The {i + 1}th {elementHandler.ComponentMetadata.Name} of {elements.Count} does not satisfy condition {each}", ex);
+                        throw new TimeoutException($"The {i + 1}th {elementHandler.ComponentMetadata.Name} of {elements.Count} does not satisfy condition {item}", ex);
                     }
                 }
 
