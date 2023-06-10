@@ -1,14 +1,16 @@
 ﻿using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Threading;
 using Yapoml.Selenium.Components.Conditions;
+using Yapoml.Selenium.Components.Conditions.Generic;
 using Yapoml.Selenium.Events;
 using Yapoml.Selenium.Services.Locator;
 
 namespace Yapoml.Selenium.Components
 {
-    public abstract class BaseComponentConditions<TConditions> where TConditions : BaseComponentConditions<TConditions>
+    public abstract class BaseComponentConditions<TConditions> : IStringConditions<TConditions> where TConditions : BaseComponentConditions<TConditions>
     {
         protected TConditions conditions;
 
@@ -331,5 +333,207 @@ namespace Yapoml.Selenium.Components
 
             return conditions;
         }
+
+        #region String Conditions
+        public TConditions Is(string value)
+        {
+            return Text.Is(value);
+        }
+
+        public TConditions Is(string value, TimeSpan timeout)
+        {
+            return Text.Is(value, timeout);
+        }
+
+        public TConditions Is(string value, StringComparison comparisonType)
+        {
+            return Text.Is(value, comparisonType);
+        }
+
+        public TConditions Is(string value, StringComparison comparisonType, TimeSpan timeout)
+        {
+            return Text.Is(value, comparisonType, timeout);
+        }
+
+        public TConditions IsNot(string value)
+        {
+            return Text.IsNot(value);
+        }
+
+        public TConditions IsNot(string value, TimeSpan timeout)
+        {
+            return Text.IsNot(value, timeout);
+        }
+
+        public TConditions IsNot(string value, StringComparison comparisonType)
+        {
+            return Text.IsNot(value, comparisonType);
+        }
+
+        public TConditions IsNot(string value, StringComparison comparisonType, TimeSpan timeout)
+        {
+            return Text.IsNot(value, comparisonType, timeout);
+        }
+
+        public TConditions IsEmpty()
+        {
+            return Text.IsEmpty();
+        }
+
+        public TConditions IsEmpty(TimeSpan timeout)
+        {
+            return Text.IsEmpty(timeout);
+        }
+
+        public TConditions IsNotEmpty()
+        {
+            return Text.IsNotEmpty();
+        }
+
+        public TConditions IsNotEmpty(TimeSpan timeout)
+        {
+            return Text.IsNotEmpty(timeout);
+        }
+
+        public TConditions StartsWith(string value)
+        {
+            return Text.StartsWith(value);
+        }
+
+        public TConditions StartsWith(string value, TimeSpan timeout)
+        {
+            return Text.StartsWith(value, timeout);
+        }
+
+        public TConditions StartsWith(string value, StringComparison comparisonType)
+        {
+            return Text.StartsWith(value, comparisonType);
+        }
+
+        public TConditions StartsWith(string value, StringComparison comparisonType, TimeSpan timeout)
+        {
+            return Text.StartsWith(value, comparisonType, timeout);
+        }
+
+        public TConditions DoesNotStartWith(string value)
+        {
+            return Text.DoesNotStartWith(value);
+        }
+
+        public TConditions DoesNotStartWith(string value, TimeSpan timeout)
+        {
+            return Text.DoesNotStartWith(value, timeout);
+        }
+
+        public TConditions DoesNotStartWith(string value, StringComparison comparisonType)
+        {
+            return Text.DoesNotStartWith(value, comparisonType);
+        }
+
+        public TConditions DoesNotStartWith(string value, StringComparison comparisonType, TimeSpan timeout)
+        {
+            return Text.DoesNotStartWith(value, comparisonType, timeout);
+        }
+
+        public TConditions EndsWith(string value)
+        {
+            return Text.EndsWith(value);
+        }
+
+        public TConditions EndsWith(string value, TimeSpan timeout)
+        {
+            return Text.EndsWith(value, timeout);
+        }
+
+        public TConditions EndsWith(string value, StringComparison comparisonType)
+        {
+            return Text.EndsWith(value, comparisonType);
+        }
+
+        public TConditions EndsWith(string value, StringComparison comparisonType, TimeSpan timeout)
+        {
+            return Text.EndsWith(value, comparisonType, timeout);
+        }
+
+        public TConditions DoesNotEndWith(string value)
+        {
+            return Text.DoesNotEndWith(value);
+        }
+
+        public TConditions DoesNotEndWith(string value, TimeSpan timeout)
+        {
+            return Text.DoesNotEndWith(value, timeout);
+        }
+
+        public TConditions DoesNotEndWith(string value, StringComparison comparisonType)
+        {
+            return Text.DoesNotEndWith(value, comparisonType);
+        }
+
+        public TConditions DoesNotEndWith(string value, StringComparison comparisonType, TimeSpan timeout)
+        {
+            return Text.DoesNotEndWith(value, comparisonType, timeout);
+        }
+
+        public TConditions Contains(string value)
+        {
+            return Text.Contains(value);
+        }
+
+        public TConditions Contains(string value, TimeSpan timeout)
+        {
+            return Text.Contains(value, timeout);
+        }
+
+        public TConditions Contains(string value, StringComparison comparisonType)
+        {
+            return Text.Contains(value, comparisonType);
+        }
+
+        public TConditions Contains(string value, StringComparison comparisonType, TimeSpan timeout)
+        {
+            return Text.Contains(value, comparisonType, timeout);
+        }
+
+        public TConditions DoesNotContain(string value)
+        {
+            return Text.DoesNotContain(value);
+        }
+
+        public TConditions DoesNotContain(string value, TimeSpan timeout)
+        {
+            return Text.DoesNotContain(value, timeout);
+        }
+
+        public TConditions DoesNotContain(string value, StringComparison comparisonType)
+        {
+            return Text.DoesNotContain(value, comparisonType);
+        }
+
+        public TConditions DoesNotContain(string value, StringComparison comparisonType, TimeSpan timeout)
+        {
+            return Text.DoesNotContain(value, comparisonType, timeout);
+        }
+
+        public TConditions Matches(Regex regex)
+        {
+            return Text.Matches(regex);
+        }
+
+        public TConditions Matches(Regex regex, TimeSpan timeout)
+        {
+            return Text.Matches(regex, timeout);
+        }
+
+        public TConditions DoesNotMatch(Regex regex)
+        {
+            return Text.DoesNotMatch(regex);
+        }
+
+        public TConditions DoesNotMatch(Regex regex, TimeSpan timeout)
+        {
+            return Text.DoesNotMatch(regex, timeout);
+        }
+        #endregion
     }
 }

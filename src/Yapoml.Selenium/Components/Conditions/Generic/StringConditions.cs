@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace Yapoml.Selenium.Components.Conditions.Generic
 {
-    public abstract class StringConditions<TConditions> : Conditions<TConditions>
+    public abstract class StringConditions<TConditions> : Conditions<TConditions>, IStringConditions<TConditions>
     {
         public StringConditions(TConditions conditions, TimeSpan timeout, TimeSpan pollingInterval)
             : base(conditions, timeout, pollingInterval)

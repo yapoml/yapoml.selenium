@@ -54,9 +54,9 @@ namespace Yapoml.Selenium.Sample
                 .HomePage.Open().Search("Selenium")
                 .Packages.Expect(that => that.Count.Is(20).Each(package =>
                     {
-                        package.Title.Text.Contains("Selenium");
-                        package.Description.Text.IsNotEmpty();
-                        package.Tags.Each(tag => tag.Text.IsNotEmpty());
+                        package.Title.Contains("Selenium");
+                        package.Description.IsNotEmpty();
+                        package.Tags.Each(tag => tag.IsNotEmpty());
                     })
                 );
         }
