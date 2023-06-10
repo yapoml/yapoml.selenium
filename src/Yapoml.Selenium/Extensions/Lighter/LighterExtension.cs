@@ -28,25 +28,39 @@ namespace Yapoml.Selenium
             var eventSource = spaceOptions.Services.Get<IEventSource>();
 
             eventSource.ComponentEventSource.OnFoundComponent += ComponentEventSource_OnFoundComponent;
+            eventSource.ComponentEventSource.OnFoundComponents += ComponentEventSource_OnFoundComponents;
 
             return spaceOptions;
         }
 
         private static void ComponentEventSource_OnFoundComponent(object sender, FoundElementEventArgs e)
         {
-            var jsExecutor = e.WebDriver as IJavaScriptExecutor;
+            HightlightElement(e.WebDriver, e.WebElement);
+        }
+
+        private static void ComponentEventSource_OnFoundComponents(object sender, FoundElementsEventArgs e)
+        {
+            foreach (var element in e.Elements)
+            {
+                HightlightElement(e.WebDriver, element);
+            }
+        }
+
+        private static void HightlightElement(IWebDriver webDriver, IWebElement webElement)
+        {
+            var jsExecutor = webDriver as IJavaScriptExecutor;
 
             if (jsExecutor != null)
             {
                 try
                 {
-                    var backgroundColor = e.WebElement.GetCssValue("background-color");
+                    var backgroundColor = webElement.GetCssValue("background-color");
 
-                    jsExecutor.ExecuteScript($"arguments[0].setAttribute('style', 'background: rgba({_color.R}, {_color.G}, {_color.B}, {(float)_color.A / 100});');", e.WebElement);
+                    jsExecutor.ExecuteScript($"arguments[0].setAttribute('style', 'background: rgba({_color.R}, {_color.G}, {_color.B}, {(float)_color.A / 100});');", webElement);
 
                     System.Threading.Thread.Sleep(_delay);
 
-                    jsExecutor.ExecuteScript($"arguments[0].setAttribute('style', 'background: {backgroundColor}; transition: all {_fadeOutSpeed}ms ease-in-out;');", e.WebElement);
+                    jsExecutor.ExecuteScript($"arguments[0].setAttribute('style', 'background: {backgroundColor}; transition: all {_fadeOutSpeed}ms ease-in-out;');", webElement);
 
 
                 }

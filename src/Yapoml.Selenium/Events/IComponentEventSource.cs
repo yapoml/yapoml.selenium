@@ -20,7 +20,7 @@ namespace Yapoml.Selenium.Events
 
         void RaiseOnFindingComponents(By by, ComponentsListMetadata componentsListMetadata);
 
-        void RaiseOnFoundComponents(By by, IReadOnlyList<IWebElement> elements, ComponentsListMetadata componentsListMetadata);
+        void RaiseOnFoundComponents(By by, IWebDriver webDriver, IReadOnlyList<IWebElement> elements, ComponentsListMetadata componentsListMetadata);
 
         void RaiseOnFoundComponent(By by, IWebDriver webDriver, IWebElement webElement, ComponentMetadata componentMetadata);
     }

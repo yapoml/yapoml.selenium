@@ -28,9 +28,9 @@ namespace Yapoml.Selenium.Events
             OnFoundComponent?.Invoke(this, new FoundElementEventArgs(by, webDriver, webElement, componentMetadata));
         }
 
-        public void RaiseOnFoundComponents(By by, IReadOnlyList<IWebElement> elements, ComponentsListMetadata componentsListMetadata)
+        public void RaiseOnFoundComponents(By by, IWebDriver webDriver, IReadOnlyList<IWebElement> elements, ComponentsListMetadata componentsListMetadata)
         {
-            OnFoundComponents?.Invoke(this, new FoundElementsEventArgs(by, elements, componentsListMetadata));
+            OnFoundComponents?.Invoke(this, new FoundElementsEventArgs(by, webDriver, elements, componentsListMetadata));
         }
     }
 }

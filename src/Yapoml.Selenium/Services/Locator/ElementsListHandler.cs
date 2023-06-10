@@ -69,7 +69,7 @@ namespace Yapoml.Selenium.Services.Locator
                     _webElements = _elementLocator.FindElements(_webDriver, By);
                 }
 
-                _eventSource.ComponentEventSource.RaiseOnFoundComponents(By, _webElements, ComponentsListMetadata);
+                _eventSource.ComponentEventSource.RaiseOnFoundComponents(By, _webDriver, _webElements, ComponentsListMetadata);
             }
 
             return _webElements;
