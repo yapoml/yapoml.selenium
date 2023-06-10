@@ -35,7 +35,7 @@ namespace Yapoml.Selenium.Sample
 
             foreach (var package in packages)
             {
-                Assert.That(package.FindElement(By.XPath(".//a")).Text, Is.Not.Empty);
+                StringAssert.Contains("Selenium", package.FindElement(By.XPath(".//a")).Text);
                 Assert.That(package.FindElement(By.CssSelector(".package-details")).Text, Is.Not.Empty);
 
                 var tags = package.FindElements(By.CssSelector(".package-tags a"));
@@ -51,10 +51,10 @@ namespace Yapoml.Selenium.Sample
         public void SearchWithYapoml()
         {
             _webDriver.Ya(opts => opts.WithBaseUrl("https://nuget.org"))
-                .HomePage.Open().Search("selenium")
+                .HomePage.Open().Search("Selenium")
                 .Packages.Expect(that => that.Count.Is(20).All(package =>
                     {
-                        package.Title.Text.IsNotEmpty();
+                        package.Title.Text.Contains("Selenium");
                         package.Description.Text.IsNotEmpty();
                         package.Tags.All(tag => tag.Text.IsNotEmpty());
                     }));
