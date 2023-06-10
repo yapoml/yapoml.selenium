@@ -28,6 +28,11 @@ namespace Yapoml.Selenium.Components.Conditions
             return $"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still '{expectedValue}'.";
         }
 
+        protected override string GetIsEmptyError(string latestValue)
+        {
+            return $"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not empty yet.";
+        }
+
         protected override string GetStartsWithError(string latestValue, string expectedValue)
         {
             return $"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{latestValue}' yet.";
