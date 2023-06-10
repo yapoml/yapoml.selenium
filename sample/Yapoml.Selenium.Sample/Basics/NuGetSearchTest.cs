@@ -69,9 +69,7 @@ namespace Yapoml.Selenium.Sample.Basics
 
             Console.WriteLine(page.SearchInput.IsFocused);
 
-            page.Search("yaml");
-
-            var resPage = ya.PackagesPage;
+            var resPage = page.Search("yaml");
             
             resPage.Packages.Expect(its => its.Count.IsGreaterThan(10).Count.IsLessThan(30).Count.Is(20).All(each => each.Text.Contains("Yaml")));
 

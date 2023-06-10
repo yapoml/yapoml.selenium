@@ -2,10 +2,12 @@
 {
     partial class HomePage
     {
-        public void Search(string text)
+        public PackagesPage Search(string text)
         {
             SearchInput.Type(text);
             SearchButton.Click();
+
+            return SpaceOptions.Services.Get<YaSpace>().Basics.Pages.PackagesPage;
         }
     }
 }
