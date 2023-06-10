@@ -82,6 +82,8 @@ namespace Yapoml.Selenium.Sample.Basics
             Console.WriteLine(resPage.List.OtherPackages.FirstOrDefault(p => p.Title.Text == "NSwag.Core.Yaml").Text);
             Console.WriteLine(resPage.List.OtherPackages.FirstOrDefault(p => p.Title.Text == "Cake.Yaml").Text);
 
+            resPage.Packages.ForEach(package => package.Tags.ForEach(tag => Console.WriteLine(tag)));
+
             //foreach (var package in ya.PackagesPage.Packages)
             //{
             //    package.ScrollIntoView();
