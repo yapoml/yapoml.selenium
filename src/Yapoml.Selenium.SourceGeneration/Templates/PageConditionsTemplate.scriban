@@ -32,6 +32,22 @@ public partial class Conditions : global::Yapoml.Selenium.Components.BasePageCon
 			}
 		}
 	}
+	{{ else if component.is_plural && component.by.segments == null }}
+	public {{get_component_return_type component}}List.Conditions {{component.name}}
+	{
+		get
+		{
+			var byValue = "{{ escape component.by.value }}";
+
+			{{ include 'ByTemplate' component }}
+				
+			var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{singularize(component.original_name)}}" };
+			var listMetadata = new global::Yapoml.Selenium.Components.Metadata.ComponentsListMetadata() { Name = "{{component.original_name}}", ComponentMetadata = metadata };
+			var elementsListHandler = new global::Yapoml.Selenium.Services.Locator.ElementsListHandler(WebDriver, null, ElementLocator, by, listMetadata, ElementHandlerRepository.CreateNestedRepository(), EventSource);
+			
+			return new {{component.singular_name}}ComponentList.Conditions(Timeout, PollingInterval, WebDriver, elementsListHandler, ElementLocator, EventSource);
+		}
+	}
 	{{ end }}
 	{{ end }}
 }

@@ -4,7 +4,6 @@ using System.Linq.Expressions;
 using System.Threading;
 using Yapoml.Selenium.Components.Conditions;
 using Yapoml.Selenium.Events;
-using Yapoml.Selenium.Extensions;
 using Yapoml.Selenium.Services.Locator;
 
 namespace Yapoml.Selenium.Components
@@ -34,15 +33,13 @@ namespace Yapoml.Selenium.Components
 
         public CountCollectionConditions<TListConditions> Count => new CountCollectionConditions<TListConditions>(listConditions, ElementsListHandler, Timeout, PollingInterval);
 
-        public TListConditions All(Expression<Action<TComponentConditions>> each)
+        public TListConditions All(Action<TComponentConditions> each)
         {
             return All(each, Timeout);
         }
 
-        public TListConditions All(Expression<Action<TComponentConditions>> each, TimeSpan timeout)
+        public TListConditions All(Action<TComponentConditions> each, TimeSpan timeout)
         {
-            var compiledPredicate = each.Compile();
-
             bool condition()
             {
                 var elements = ElementsListHandler.LocateMany();
@@ -54,11 +51,11 @@ namespace Yapoml.Selenium.Components
 
                     try
                     {
-                        compiledPredicate(elementCondition);
+                        each(elementCondition);
                     }
                     catch (TimeoutException ex)
                     {
-                        throw new TimeoutException($"The {i + 1}th {elementHandler.ComponentMetadata.Name} of {elements.Count} does not satisfy condition {each.ToReadable()}", ex);
+                        throw new TimeoutException($"The {i + 1}th {elementHandler.ComponentMetadata.Name} of {elements.Count} does not satisfy condition {each}", ex);
                     }
                 }
 

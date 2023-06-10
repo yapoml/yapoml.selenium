@@ -7,7 +7,6 @@ using System.Linq.Expressions;
 using Yapoml.Framework.Options;
 using Yapoml.Selenium.Components.Metadata;
 using Yapoml.Selenium.Events;
-using Yapoml.Selenium.Extensions;
 using Yapoml.Selenium.Services.Factory;
 using Yapoml.Selenium.Services.Locator;
 
@@ -73,19 +72,17 @@ namespace Yapoml.Selenium.Components
             }
         }
 
-        public TComponent this[Expression<Func<TComponent, bool>> predicate]
+        public TComponent this[Func<TComponent, bool> predicate]
         {
             get
             {
                 EnsureLocated();
 
-                var compiledPredicate = predicate.Compile();
-
-                var component = _list.FirstOrDefault(compiledPredicate);
+                var component = _list.FirstOrDefault(predicate);
 
                 if (component is null)
                 {
-                    throw new InvalidOperationException($"{_componentsListMetadata.Name} contain no matching {_componentsListMetadata.ComponentMetadata.Name} satisfying condition {predicate.ToReadable()}");
+                    throw new InvalidOperationException($"{_componentsListMetadata.Name} contain no matching {_componentsListMetadata.ComponentMetadata.Name} satisfying condition {predicate}");
                 }
 
                 return component;
