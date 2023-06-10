@@ -24,7 +24,7 @@ list:
 
   title: ./qwe
 
-  packages:
+  otherPackages: # if we name it 'packages' - then bug in "And" keyword continuation
     by: .package
     base: package
 

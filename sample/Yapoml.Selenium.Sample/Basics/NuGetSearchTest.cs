@@ -81,8 +81,8 @@ namespace Yapoml.Selenium.Sample.Basics
             Console.WriteLine(resPage.Packages.FirstOrDefault(p => p.Title.Text == "NSwag.Core.Yaml").Text);
             Console.WriteLine(resPage.Packages.FirstOrDefault(p => p.Title.Text == "Cake.Yaml").Text);
             Console.WriteLine("22222222:");
-            Console.WriteLine(resPage.List.Packages.FirstOrDefault(p => p.Title.Text == "NSwag.Core.Yaml").Text);
-            Console.WriteLine(resPage.List.Packages.FirstOrDefault(p => p.Title.Text == "Cake.Yaml").Text);
+            Console.WriteLine(resPage.List.OtherPackages.FirstOrDefault(p => p.Title.Text == "NSwag.Core.Yaml").Text);
+            Console.WriteLine(resPage.List.OtherPackages.FirstOrDefault(p => p.Title.Text == "Cake.Yaml").Text);
 
             //foreach (var package in ya.PackagesPage.Packages)
             //{

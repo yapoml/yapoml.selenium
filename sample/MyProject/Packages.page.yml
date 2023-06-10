@@ -1,0 +1,14 @@
+﻿url:
+  path: /packages
+  params:
+    - q
+
+packages: 
+  ref: Package
+
+list:
+  by: .list-packages
+
+  packagesOther:
+    by: .package
+    base: package

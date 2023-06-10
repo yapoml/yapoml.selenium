@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yapoml.Selenium.Test", "tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yapoml.Selenium.Benchmark", "test\Yapoml.Selenium.Benchmark\Yapoml.Selenium.Benchmark.csproj", "{EFE7B1FD-77EE-42CF-923A-B3BBA9B1526C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yapoml.Selenium.SourceGeneration", "src\Yapoml.Selenium.SourceGeneration\Yapoml.Selenium.SourceGeneration.csproj", "{0322A0AD-5F5B-4E40-AD81-924809F641AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yapoml.Selenium.SourceGeneration", "src\Yapoml.Selenium.SourceGeneration\Yapoml.Selenium.SourceGeneration.csproj", "{0322A0AD-5F5B-4E40-AD81-924809F641AC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyProject", "sample\MyProject\MyProject.csproj", "{E98B876F-55A2-4DF4-8450-52960B89DD49}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +89,18 @@ Global
 		{0322A0AD-5F5B-4E40-AD81-924809F641AC}.Release|x64.Build.0 = Release|Any CPU
 		{0322A0AD-5F5B-4E40-AD81-924809F641AC}.Release|x86.ActiveCfg = Release|Any CPU
 		{0322A0AD-5F5B-4E40-AD81-924809F641AC}.Release|x86.Build.0 = Release|Any CPU
+		{E98B876F-55A2-4DF4-8450-52960B89DD49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E98B876F-55A2-4DF4-8450-52960B89DD49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E98B876F-55A2-4DF4-8450-52960B89DD49}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E98B876F-55A2-4DF4-8450-52960B89DD49}.Debug|x64.Build.0 = Debug|Any CPU
+		{E98B876F-55A2-4DF4-8450-52960B89DD49}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E98B876F-55A2-4DF4-8450-52960B89DD49}.Debug|x86.Build.0 = Debug|Any CPU
+		{E98B876F-55A2-4DF4-8450-52960B89DD49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E98B876F-55A2-4DF4-8450-52960B89DD49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E98B876F-55A2-4DF4-8450-52960B89DD49}.Release|x64.ActiveCfg = Release|Any CPU
+		{E98B876F-55A2-4DF4-8450-52960B89DD49}.Release|x64.Build.0 = Release|Any CPU
+		{E98B876F-55A2-4DF4-8450-52960B89DD49}.Release|x86.ActiveCfg = Release|Any CPU
+		{E98B876F-55A2-4DF4-8450-52960B89DD49}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,6 +109,7 @@ Global
 		{F2F04FD0-10AB-4E69-961F-F2435E751AE4} = {3B1D1964-C938-428D-B387-FE2DCC947672}
 		{E7FBC744-4459-4DF1-80E4-B632CE04F0DA} = {3F9E8B3F-7A84-4328-BEA6-49DF5C766AFD}
 		{EFE7B1FD-77EE-42CF-923A-B3BBA9B1526C} = {3F9E8B3F-7A84-4328-BEA6-49DF5C766AFD}
+		{E98B876F-55A2-4DF4-8450-52960B89DD49} = {3B1D1964-C938-428D-B387-FE2DCC947672}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BE5EBFB9-D0AA-48E8-91D2-ED421E7164C0}

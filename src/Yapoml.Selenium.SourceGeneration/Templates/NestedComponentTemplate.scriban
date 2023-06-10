@@ -26,7 +26,7 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 	{{ include 'NestedComponentTemplate_Desc' component }}
 	/// </summary>
 	{{- if component.by.segments == null }}
-	public {{ if component.is_plural }}{{get_component_return_full_type component}}List{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}
+	public {{ if component.is_plural }}{{component.singular_name}}ComponentList{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}
 	{
 		get
 		{
@@ -117,7 +117,7 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 		{{ include 'NestedComponentTemplate_Desc' component }}
 		/// </summary>
 		{{- if component.by.segments == null }}
-		public {{ if component.is_plural }}{{get_component_return_full_type component}}List{{ else }}{{get_component_return_full_type component}}{{ end }} {{component.name}}
+		public {{ if component.is_plural }}{{component.singular_name}}ComponentList{{ else }}{{get_component_return_full_type component}}{{ end }} {{component.name}}
 		{
 			get
 			{
@@ -125,7 +125,7 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 			}
 		}
 		{{ else }}
-		public {{ if component.is_plural }}{{get_component_return_full_type component}}List{{ else }}{{get_component_return_full_type component}}{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
+		public {{ if component.is_plural }}{{component.singular_name}}ComponentList{{ else }}{{get_component_return_full_type component}}{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
 		{
 			return (({{get_component_return_full_type $1.parent_component}})parentComponent).{{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}{{ segment }}{{ end }});
 		}
@@ -171,10 +171,10 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 			{{ include 'NestedComponentTemplate_Desc' component }}
 			/// </summary>
 			{{- if component.by.segments == null }}
-			public {{ if component.is_plural }}{{get_component_return_full_type component}}List{{ else }}{{get_component_return_full_type component}}{{ end }} {{component.name}}
+			public {{ if component.is_plural }}{{component.singular_name}}ComponentList{{ else }}{{get_component_return_full_type component}}{{ end }} {{component.name}}
 				=> _component.{{component.name}};
 			{{ else }}
-			public {{ if component.is_plural }}{{get_component_return_full_type component}}List{{ else }}{{get_component_return_full_type component}}{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
+			public {{ if component.is_plural }}{{component.singular_name}}ComponentList{{ else }}{{get_component_return_full_type component}}{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
 				=> _component.{{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}{{ segment }}{{ end }});
 			{{ end }}
 			{{ end }}
@@ -185,10 +185,10 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 			{{ include 'NestedComponentTemplate_Desc' component }}
 			/// </summary>
 			{{- if component.by.segments == null }}
-			public {{ if component.is_plural }}{{get_component_return_full_type component}}List{{ else }}{{get_component_return_full_type component}}{{ end }} {{component.name}}
+			public {{ if component.is_plural }}{{component.singular_name}}ComponentList{{ else }}{{get_component_return_full_type component}}{{ end }} {{component.name}}
 				=> _page.{{component.name}};
 			{{ else }}
-			public {{ if component.is_plural }}{{get_component_return_full_type component}}List{{ else }}{{get_component_return_full_type component}}{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
+			public {{ if component.is_plural }}{{component.singular_name}}ComponentList{{ else }}{{get_component_return_full_type component}}{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
 				=> _page.{{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}{{ segment }}{{ end }});
 			{{ end }}
 			{{ end }}

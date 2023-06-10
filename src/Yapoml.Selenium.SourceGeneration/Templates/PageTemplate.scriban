@@ -49,7 +49,7 @@ namespace {{namespace}}
 		{{ include 'NestedComponentTemplate_Desc' component }}
 		/// </summary>
 		{{- if component.by.segments == null }}
-		public {{ if component.is_plural }}{{get_component_return_full_type component}}List{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}
+		public {{ if component.is_plural }}{{component.singular_name}}ComponentList{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}
 		{
 			get
 			{
@@ -63,7 +63,7 @@ namespace {{namespace}}
 				var elementLocator = SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>();
 				var elementsListHandler = new global::Yapoml.Selenium.Services.Locator.ElementsListHandler(WebDriver, null, elementLocator, by, listMetadata, ElementHandlerRepository.CreateNestedRepository(), EventSource);
 				
-				var webElements = new {{get_component_return_full_type component}}List(this, null, WebDriver, elementsListHandler, listMetadata, EventSource, SpaceOptions);
+				var webElements = new {{component.singular_name}}ComponentList(this, null, WebDriver, elementsListHandler, listMetadata, EventSource, SpaceOptions);
 				return webElements;
 				{{- else -}}
 				if (ElementHandlerRepository.TryGet("{{component.name}}", out var cachedElementHandler))
@@ -89,7 +89,7 @@ namespace {{namespace}}
 			}
 		}
 		{{ else }}
-		public {{ if component.is_plural }}{{get_component_return_full_type component}}List{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
+		public {{ if component.is_plural }}{{component.singular_name}}ComponentList{{ else }}{{get_component_return_type component}}{{ end }} {{component.name}}({{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}string {{ segment }}{{ end }})
 		{
 			var segments = new global::System.Collections.Generic.List<global::System.Collections.Generic.KeyValuePair<string, string>>() { 
 				{{ for segment in component.by.segments }}{{ if for.first == false }}, {{end}}new global::System.Collections.Generic.KeyValuePair<string, string>("{{ segment }}", {{ segment }}) {{ end }} 
@@ -105,7 +105,7 @@ namespace {{namespace}}
 			var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{singularize(component.original_name)}}" };
 			var listMetadata = new global::Yapoml.Selenium.Components.Metadata.ComponentsListMetadata() { Name = "{{component.original_name}}", ComponentMetadata = metadata };
 			var elementsListHandler = new global::Yapoml.Selenium.Services.Locator.ElementsListHandler(WebDriver, null, elementLocator, by, listMetadata, ElementHandlerRepository.CreateNestedRepository(), EventSource);
-			var webElements = new {{get_component_return_full_type component}}List(this, null, WebDriver, elementsListHandler, listMetadata, EventSource, SpaceOptions);
+			var webElements = new {{component.singular_name}}ComponentList(this, null, WebDriver, elementsListHandler, listMetadata, EventSource, SpaceOptions);
 			return webElements;
 			{{ else }}
 			var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.original_name}}" };
