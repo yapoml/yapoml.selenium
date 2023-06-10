@@ -57,7 +57,8 @@ namespace Yapoml.Selenium.Sample
                         package.Title.Text.Contains("Selenium");
                         package.Description.Text.IsNotEmpty();
                         package.Tags.Each(tag => tag.Text.IsNotEmpty());
-                    }));
+                    })
+                );
         }
     }
 }
