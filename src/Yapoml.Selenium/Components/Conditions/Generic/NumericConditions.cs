@@ -2,7 +2,7 @@
 
 namespace Yapoml.Selenium.Components.Conditions.Generic
 {
-    public abstract class NumericConditions<TConditions, TNumber> : Conditions<TConditions> where TNumber : struct, IComparable<TNumber>
+    public abstract class NumericConditions<TConditions, TNumber> : Conditions<TConditions>, INumericConditions<TConditions, TNumber> where TNumber : struct, IComparable<TNumber>
     {
         public NumericConditions(TConditions conditions, TimeSpan timeout, TimeSpan pollingInterval)
             : base(conditions, timeout, pollingInterval)

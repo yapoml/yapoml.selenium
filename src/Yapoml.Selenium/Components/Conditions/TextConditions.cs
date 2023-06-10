@@ -6,7 +6,7 @@ using Yapoml.Selenium.Services.Locator;
 
 namespace Yapoml.Selenium.Components.Conditions
 {
-    public class TextConditions<TConditions> : StringConditions<TConditions>
+    public class TextConditions<TConditions> : TextualConditions<TConditions>
     {
         private readonly IElementHandler _elementHandler;
 

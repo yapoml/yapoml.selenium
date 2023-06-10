@@ -9,7 +9,7 @@ namespace Yapoml.Selenium.Components.Conditions
     /// Various conditions for page title.
     /// </summary>
     /// <typeparam name="TConditions">Fluent original instance for chaining conditions.</typeparam>
-    public class TitleConditions<TConditions> : StringConditions<TConditions>
+    public class TitleConditions<TConditions> : TextualConditions<TConditions>
     {
         private readonly IWebDriver _webDriver;
 

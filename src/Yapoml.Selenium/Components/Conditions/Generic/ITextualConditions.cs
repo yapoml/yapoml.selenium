@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace Yapoml.Selenium.Components.Conditions.Generic
 {
-    public interface IStringConditions<TConditions>
+    public interface ITextualConditions<TConditions>
     {
         TConditions Is(string value);
 

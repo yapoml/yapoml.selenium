@@ -9,7 +9,7 @@ namespace Yapoml.Selenium.Components.Conditions
     /// Various conditions for awaiting url.
     /// </summary>
     /// <typeparam name="TConditions">Fluent original instance for chaining conditions.</typeparam>
-    public class UrlConditions<TConditions> : StringConditions<TConditions>
+    public class UrlConditions<TConditions> : TextualConditions<TConditions>
     {
         private readonly IWebDriver _webDriver;
 

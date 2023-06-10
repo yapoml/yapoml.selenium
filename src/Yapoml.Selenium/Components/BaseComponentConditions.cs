@@ -10,7 +10,7 @@ using Yapoml.Selenium.Services.Locator;
 
 namespace Yapoml.Selenium.Components
 {
-    public abstract class BaseComponentConditions<TConditions> : IStringConditions<TConditions> where TConditions : BaseComponentConditions<TConditions>
+    public abstract class BaseComponentConditions<TConditions> : ITextualConditions<TConditions> where TConditions : BaseComponentConditions<TConditions>
     {
         protected TConditions conditions;
 
