@@ -15,12 +15,7 @@ namespace {{root_namespace}}
 {{ for space in spaces }}
 		{{ include 'SpaceTemplate_Desc' space}}
 		public global::{{space.namespace}}.{{space.name}}Space {{space.name}}
-		{
-			get
-			{
-				return _spaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.ISpaceFactory>().Create<global::{{space.namespace}}.{{space.name}}Space>(this, _webDriver, _spaceOptions);
-			}
-		}
+			=> _spaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.ISpaceFactory>().Create<global::{{space.namespace}}.{{space.name}}Space>(this, _webDriver, _spaceOptions);
 {{ end }}
 {{ for page in pages }}
 		/// <summary>
@@ -34,12 +29,7 @@ namespace {{root_namespace}}
 		/// </list>
 		/// </summary>
 		public {{ get_page_class_name_for_page page }} {{get_page_accessor_name page.name}}
-		{
-			get
-			{
-				return _spaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IPageFactory>().Create<{{ get_page_class_name_for_page page }}>(_webDriver, new global::Yapoml.Selenium.Services.Locator.ElementHandlerRepository(), new global::Yapoml.Selenium.Components.Metadata.PageMetadata { Name = "{{ page.name }}"}, _spaceOptions);
-			}
-		}
+			=> _spaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IPageFactory>().Create<{{ get_page_class_name_for_page page }}>(_webDriver, new global::Yapoml.Selenium.Services.Locator.ElementHandlerRepository(), new global::Yapoml.Selenium.Components.Metadata.PageMetadata { Name = "{{ page.name }}"}, _spaceOptions);
 {{ end }}
 	}
 
@@ -52,10 +42,7 @@ namespace {{root_namespace}}
 		/// <summary>
 		/// Entry point to access page components within Yapoml.
 		/// </summary>
-		public static YaSpace Ya(this global::OpenQA.Selenium.IWebDriver webDriver)
-		{
-			return webDriver.Ya((options) => { });
-		}
+		public static YaSpace Ya(this global::OpenQA.Selenium.IWebDriver webDriver) => webDriver.Ya((options) => { });
 
 		/// <summary>
 		/// Entry point to access page components within Yapoml.
