@@ -6,6 +6,6 @@ namespace Yapoml.Selenium.Services.Factory
 {
     public interface ISpaceFactory
     {
-        TSpace Create<TSpace>(BaseSpace rootSpace, BaseSpace parentSpace, IWebDriver webDriver, ISpaceOptions spaceOptions);
+        TSpace Create<TSpace>(BaseSpace parentSpace, IWebDriver webDriver, ISpaceOptions spaceOptions);
     }
 }

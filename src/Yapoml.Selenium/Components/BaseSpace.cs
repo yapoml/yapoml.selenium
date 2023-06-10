@@ -3,16 +3,13 @@ using Yapoml.Framework.Options;
 
 namespace Yapoml.Selenium.Components
 {
-    public abstract class BaseSpace<TRootSpace, TParentSpace> : BaseSpace
+    public abstract class BaseSpace<TParentSpace> : BaseSpace
     {
-        protected TRootSpace _rootSpace;
-
         protected TParentSpace _parentSpace;
 
-        public BaseSpace(TRootSpace rootSpace, TParentSpace parentSpace, IWebDriver webDriver, ISpaceOptions spaceOptions)
+        public BaseSpace(TParentSpace parentSpace, IWebDriver webDriver, ISpaceOptions spaceOptions)
             : base(webDriver, spaceOptions)
         {
-            _rootSpace = rootSpace;
             _parentSpace = parentSpace;
             
         }

@@ -2,17 +2,17 @@
 namespace {{namespace}}
 {
 	[global::System.Runtime.CompilerServices.CompilerGenerated]
-	public partial class {{name}}Space : global::Yapoml.Selenium.Components.BaseSpace<global::{{workspace.root_namespace}}.YaSpace, {{ if parent_space != null }}global::{{parent_space.namespace}}.{{parent_space.name}}Space{{else}}global::{{workspace.root_namespace}}.YaSpace{{end}}>
+	public partial class {{name}}Space : global::Yapoml.Selenium.Components.BaseSpace<{{ if parent_space != null }}global::{{parent_space.namespace}}.{{parent_space.name}}Space{{else}}global::{{workspace.root_namespace}}.YaSpace{{end}}>
 	{
-		public {{name}}Space(global::{{workspace.root_namespace}}.YaSpace rootSpace, {{ if parent_space != null }}global::{{parent_space.namespace}}.{{parent_space.name}}Space{{else}}global::{{workspace.root_namespace}}.YaSpace{{end}} parentSpace, global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
-			: base(rootSpace, parentSpace, webDriver, spaceOptions)
+		public {{name}}Space({{ if parent_space != null }}global::{{parent_space.namespace}}.{{parent_space.name}}Space{{else}}global::{{workspace.root_namespace}}.YaSpace{{end}} parentSpace, global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
+			: base(parentSpace, webDriver, spaceOptions)
 		{
 			
 		}
 
 		{{- for space in spaces }}
 		{{ include 'SpaceTemplate_Desc' space}}
-		public global::{{space.namespace}}.{{space.name}}Space {{space.name}} => _spaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.ISpaceFactory>().Create<global::{{space.namespace}}.{{space.name}}Space>(_rootSpace, this, _webDriver, _spaceOptions);
+		public global::{{space.namespace}}.{{space.name}}Space {{space.name}} => _spaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.ISpaceFactory>().Create<global::{{space.namespace}}.{{space.name}}Space>(this, _webDriver, _spaceOptions);
 		{{- end }}
 
 		{{- for page in pages }}
