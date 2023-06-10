@@ -1,9 +1,7 @@
-using FluentAssertions;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
-using System.Linq;
 
 namespace Yapoml.Selenium.Sample.Basics
 {
@@ -29,72 +27,39 @@ namespace Yapoml.Selenium.Sample.Basics
         [Test]
         public void SearchWithSelenium()
         {
-            _webDriver.FindElement(By.Id("search")).SendKeys("yaml");
+            _webDriver.FindElement(By.Id("search")).SendKeys("selenium");
             _webDriver.FindElement(By.CssSelector(".btn-search")).Click();
 
-            foreach (var package in _webDriver.FindElements(By.CssSelector(".package")))
+            var packages = _webDriver.FindElements(By.CssSelector(".package"));
+
+            Assert.That(packages.Count, Is.EqualTo(20));
+
+            foreach (var package in packages)
             {
                 Assert.That(package.FindElement(By.XPath(".//a")).Text, Is.Not.Empty);
                 Assert.That(package.FindElement(By.CssSelector(".package-details")).Text, Is.Not.Empty);
+
+                var tags = package.FindElements(By.CssSelector(".package-tags a"));
+
+                foreach (var tag in tags)
+                {
+                    Assert.That(tag.Text, Is.Not.Empty);
+                }
             }
         }
 
         [Test]
         public void SearchWithYapoml()
         {
-            var ya = _webDriver.Ya(
-                //opts => opts.UseLighter(delay: 200, fadeOutSpeed: 400)
-                ).Basics.Pages;
-
-            // ya.HomePage.When(it => it.IsLoaded());
-            // ya.HomePage.SearchButton.When(it => it.IsDisplayed()).Click();
-
-            //ya.HomePage.SearchButton.Click(when => when.IsEnabled());
-            //ya.HomePage.SearchButton.When(it => it.IsEnabled()).Click();
-
-            var page = ya.HomePage;
-
-            //page.SearchButton.Expect(its => its.Styles["cursor"].Is("default"));
-
-            // page.When(it => it.A.B.C.IsDisplayed(TimeSpan.FromSeconds(5)));
-
-            //for (int i = 0; i < 5; i++)
-            //{
-            //    page.When(it => it.SearchButton.IsDisplayed()).SearchButton.Click();
-            //    _webDriver.Navigate().Refresh();
-            //    Console.WriteLine(page.SearchButton.Displayed);
-            //}
-
-            ya.HomePage.SearchButton.Expect(it => it.Styles.Opacity.Is(1.0, TimeSpan.FromSeconds(3)));
-
-            Console.WriteLine(page.SearchInput.IsFocused);
-
-            var resPage = page.Search("yaml");
-            
-            resPage.Packages.Expect(its => its.Count.IsGreaterThan(10).Count.IsLessThan(30).Count.Is(20).All(each => each.Text.Contains("Yaml")));
-
-            Console.WriteLine(resPage.Title.Text);
-
-            Console.WriteLine("11111111:");
-            Console.WriteLine(resPage.Packages.FirstOrDefault(p => p.Title.Text == "NSwag.Core.Yaml").Text);
-            Console.WriteLine(resPage.Packages.FirstOrDefault(p => p.Title.Text == "Cake.Yaml").Text);
-            Console.WriteLine("22222222:");
-            Console.WriteLine(resPage.List.OtherPackages.FirstOrDefault(p => p.Title.Text == "NSwag.Core.Yaml").Text);
-            Console.WriteLine(resPage.List.OtherPackages.FirstOrDefault(p => p.Title.Text == "Cake.Yaml").Text);
-
-            resPage.Packages.ForEach(package => package.Tags.ForEach(tag => Console.WriteLine(tag)));
-
-            //foreach (var package in ya.PackagesPage.Packages)
-            //{
-            //    package.ScrollIntoView();
-            //    Console.WriteLine(package.Title.Text);
-            //    Assert.That(package.Title.Text, Is.Not.Empty);
-            //    Assert.That(package.Description.Text, Is.Not.Empty);
-            //}
-
-            //var yamlPackage = ya.PackagesPage.GetPackage(name: "YamlDotNet");
-            //Console.WriteLine(yamlPackage.Title);
-            //Console.WriteLine(yamlPackage.Description);
+            _webDriver.Ya().Basics.Pages
+                .HomePage.Search("selenium")
+                .Packages.Expect(its => its.Count.Is(20))
+                .ForEach(package =>
+                    {
+                        package.Title.Expect(it => it.Text.IsNot(""));
+                        package.Description.Expect(it => it.Text.IsNot(""));
+                        package.Tags.ForEach(tag => tag.Expect(it => it.Text.IsNot("")));
+                    });
         }
 
         [Test]
@@ -142,19 +107,10 @@ namespace Yapoml.Selenium.Sample.Basics
         {
             var page = _webDriver.Ya().Basics.Pages.HomePage;
             page.Expect(it => it.Title.Matches(new System.Text.RegularExpressions.Regex("Home"), TimeSpan.FromSeconds(3)));
-            page.Nav.Expect(it => it.Attributes.Class.Contains("").Div.IsDisplayed());
-            page.Nav.Expect(it => it.Styles.Opacity.Is(1.0).Div.IsDisplayed());
-            //page.Nav.When(it => it.Div.IsDisplayed()).Div.Hover();
-            //page.Nav.When(it => it.Div.IsDisplayed()).Div.Hover();
-            //page.Nav.Div.Row.Hover();
 
             page.Search("yapoml");
 
             var packagesPage = _webDriver.Ya().Basics.Pages.PackagesPage;
-
-            Console.WriteLine(packagesPage.Package0.Title.Text);
-            Console.WriteLine(packagesPage.Package0.Title.IsDisplayed);
-            Console.WriteLine(packagesPage.Package1.Title.Text);
 
             foreach (var package in packagesPage.Packages)
             {

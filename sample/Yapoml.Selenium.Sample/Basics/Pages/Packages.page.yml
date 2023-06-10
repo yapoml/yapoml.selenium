@@ -5,27 +5,3 @@
 
 packages: 
   ref: Package
-
-get package:
-  by: .//li[@class='package' and .//a[text()='{name}']] # where {name} is parameter
-
-  ref: Package
-
-package0:
-  base: package
-  by: .//li[@class='package'][1]
-
-package1:
-  base: package
-  by: .//li[@class='package'][2]
-
-list:
-  by: .list-packages
-
-  title: ./qwe
-
-  otherPackages: # if we name it 'packages' - then bug in "And" keyword continuation
-    by: .package
-    base: package
-
-title: .//a

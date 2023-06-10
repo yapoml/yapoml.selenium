@@ -24,6 +24,12 @@
     <ProjectReference Include="..\..\src\Yapoml.Selenium.SourceGeneration\Yapoml.Selenium.SourceGeneration.csproj" OutputItemType="Analyzer" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Home.page.cs">
+      <DependentUpon>$([System.String]::Copy(%(Filename)).Split('.')[0]).page.yml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
   <!--Import targets explicitly, not required when used via nuget package-->
   <Import Project="..\..\src\Yapoml.Selenium\Yapoml.Selenium.targets" />
 

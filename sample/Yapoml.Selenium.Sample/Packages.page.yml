@@ -1,0 +1,7 @@
+﻿packages: 
+  by: .package
+
+  title: .//a
+  description: .package-details
+
+  tags: .package-tags a
