@@ -117,6 +117,34 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             return _conditions;
         }
 
+        public TConditions IsNotEmpty()
+        {
+            return IsNotEmpty(_timeout);
+        }
+
+        public TConditions IsNotEmpty(TimeSpan timeout)
+        {
+            string latestValue = null;
+
+            bool condition()
+            {
+                latestValue = FetchValueFunc();
+
+                return !latestValue.Equals(string.Empty);
+            }
+
+            try
+            {
+                Services.Waiter.Until(condition, timeout, _pollingInterval);
+            }
+            catch (TimeoutException ex)
+            {
+                throw new TimeoutException(GetIsNotEmptyError(latestValue), ex);
+            }
+
+            return _conditions;
+        }
+
         public TConditions StartsWith(string value)
         {
             return StartsWith(value, StringComparison.CurrentCultureIgnoreCase);
@@ -406,6 +434,8 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
         protected abstract string GetIsNotError(string latestValue, string expectedValue);
 
         protected abstract string GetIsEmptyError(string latestValue);
+
+        protected abstract string GetIsNotEmptyError(string latestValue);
 
         protected abstract string GetStartsWithError(string latestValue, string expectedValue);
 

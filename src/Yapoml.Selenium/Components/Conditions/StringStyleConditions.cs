@@ -35,6 +35,11 @@ namespace Yapoml.Selenium.Components.Conditions
             return $"Style '{_styleName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not empty yet.";
         }
 
+        protected override string GetIsNotEmptyError(string latestValue)
+        {
+            return $"Style '{_styleName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still empty.";
+        }
+
         protected override string GetStartsWithError(string latestValue, string expectedValue)
         {
             return $"Style '{_styleName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component does not start with '{expectedValue}' yet.";

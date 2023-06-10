@@ -36,6 +36,11 @@ namespace Yapoml.Selenium.Components.Conditions
             return $"'{latestValue}' url is not empty yet.";
         }
 
+        protected override string GetIsNotEmptyError(string latestValue)
+        {
+            return $"'{latestValue}' url is still empty.";
+        }
+
         protected override string GetStartsWithError(string latestValue, string expectedValue)
         {
             return $"'{latestValue}' url doesn't start with '{expectedValue}'.";
