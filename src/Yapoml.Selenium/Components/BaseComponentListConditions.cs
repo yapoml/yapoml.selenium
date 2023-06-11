@@ -58,10 +58,17 @@ namespace Yapoml.Selenium.Components
                     }
                     catch (TimeoutException ex)
                     {
+                        var indexPostfix = (i + 1) switch
+                        {
+                            1 => "st",
+                            2 => "nd",
+                            3 => "rd",
+                            _ => "th"
+                        };
 #if NET6_0_OR_GREATER
-                        throw new TimeoutException($"The {i + 1}th {elementHandler.ComponentMetadata.Name} of {elements.Count} does not satisfy condition '{predicateExpression}'.", ex);
+                        throw new TimeoutException($"The {i + 1}{indexPostfix} {elementHandler.ComponentMetadata.Name} of {elements.Count} does not satisfy condition '{predicateExpression}'.", ex);
 #else
-                        throw new TimeoutException($"The {i + 1}th {elementHandler.ComponentMetadata.Name} of {elements.Count} does not satisfy condition.", ex);
+                        throw new TimeoutException($"The {i + 1}{indexPostfix} {elementHandler.ComponentMetadata.Name} of {elements.Count} does not satisfy condition.", ex);
 #endif
                     }
                 }
