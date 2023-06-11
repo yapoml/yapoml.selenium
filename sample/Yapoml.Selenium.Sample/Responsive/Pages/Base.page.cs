@@ -1,12 +1,10 @@
-﻿using System.Linq;
-
-namespace Yapoml.Selenium.Sample.Responsive.Pages
+﻿namespace Yapoml.Selenium.Sample.Responsive.Pages
 {
     partial class BasePage
     {
         public virtual void Navigate(string menuItemName)
         {
-            Navigation.MenuItems.First(mi => mi.Title.Text == menuItemName).Click();
+            Navigation.MenuItems[mi => mi.Title == menuItemName].Click();
         }
     }
 

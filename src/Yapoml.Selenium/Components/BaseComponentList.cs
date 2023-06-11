@@ -3,7 +3,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
+#if NET6_0_OR_GREATER
+using System.Runtime.CompilerServices;
+#endif
 using Yapoml.Framework.Options;
 using Yapoml.Selenium.Components.Metadata;
 using Yapoml.Selenium.Events;
@@ -72,7 +74,11 @@ namespace Yapoml.Selenium.Components
             }
         }
 
+#if NET6_0_OR_GREATER
+        public TComponent this[Func<TComponent, bool> predicate, [CallerArgumentExpression(nameof(predicate))] string predicateExpression = null]
+#else
         public TComponent this[Func<TComponent, bool> predicate]
+#endif
         {
             get
             {
@@ -82,7 +88,12 @@ namespace Yapoml.Selenium.Components
 
                 if (component is null)
                 {
-                    throw new InvalidOperationException($"{_componentsListMetadata.Name} contain no matching {_componentsListMetadata.ComponentMetadata.Name} satisfying condition {predicate}");
+#if NET6_0_OR_GREATER
+                    throw new InvalidOperationException($"{_componentsListMetadata.Name} contain no matching {_componentsListMetadata.ComponentMetadata.Name} satisfying condition '{predicateExpression}'.");
+#else
+                    throw new InvalidOperationException($"{_componentsListMetadata.Name} contain no matching {_componentsListMetadata.ComponentMetadata.Name} satisfying condition.");
+#endif
+
                 }
 
                 return component;

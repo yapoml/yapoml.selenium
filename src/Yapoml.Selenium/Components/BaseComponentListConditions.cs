@@ -1,5 +1,8 @@
 ﻿using OpenQA.Selenium;
 using System;
+#if NET6_0_OR_GREATER
+using System.Runtime.CompilerServices;
+#endif
 using System.Threading;
 using Yapoml.Selenium.Components.Conditions;
 using Yapoml.Selenium.Events;
@@ -32,7 +35,11 @@ namespace Yapoml.Selenium.Components
 
         public CountCollectionConditions<TListConditions> Count => new CountCollectionConditions<TListConditions>(listConditions, ElementsListHandler, Timeout, PollingInterval);
 
-        public TListConditions Each(Action<TComponentConditions> item, TimeSpan? timeout = default)
+#if NET6_0_OR_GREATER
+        public TListConditions Each(Action<TComponentConditions> predicate, TimeSpan? timeout = default, [CallerArgumentExpression(nameof(predicate))] string predicateExpression = null)
+#else
+        public TListConditions Each(Action<TComponentConditions> predicate, TimeSpan? timeout = default)
+#endif
         {
             timeout ??= Timeout;
 
@@ -47,11 +54,15 @@ namespace Yapoml.Selenium.Components
 
                     try
                     {
-                        item(elementCondition);
+                        predicate(elementCondition);
                     }
                     catch (TimeoutException ex)
                     {
-                        throw new TimeoutException($"The {i + 1}th {elementHandler.ComponentMetadata.Name} of {elements.Count} does not satisfy condition {item}", ex);
+#if NET6_0_OR_GREATER
+                        throw new TimeoutException($"The {i + 1}th {elementHandler.ComponentMetadata.Name} of {elements.Count} does not satisfy condition '{predicateExpression}'.", ex);
+#else
+                        throw new TimeoutException($"The {i + 1}th {elementHandler.ComponentMetadata.Name} of {elements.Count} does not satisfy condition.", ex);
+#endif
                     }
                 }
 
