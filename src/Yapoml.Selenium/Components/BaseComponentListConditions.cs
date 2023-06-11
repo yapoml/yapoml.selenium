@@ -138,6 +138,57 @@ namespace Yapoml.Selenium.Components
             return listConditions;
         }
 
+#if NET6_0_OR_GREATER
+        public TListConditions DoNotContain(Action<TComponentConditions> predicate, TimeSpan? timeout = default, [CallerArgumentExpression("predicate")] string predicateExpression = null)
+#else
+        public TListConditions DoNotContain(Action<TComponentConditions> predicate, TimeSpan? timeout = default)
+#endif
+        {
+            timeout ??= Timeout;
+
+            bool condition()
+            {
+                var elements = ElementsListHandler.LocateMany();
+
+                bool result = true;
+
+                foreach (var element in elements)
+                {
+                    try
+                    {
+                        var elementHandler = new ElementHandler(WebDriver, null, ElementLocator, ElementsListHandler.By, element, ElementsListHandler.ComponentsListMetadata.ComponentMetadata, ElementsListHandler.ElementHandlerRepository.CreateNestedRepository(), EventSource);
+                        var elementCondition = (TComponentConditions)Activator.CreateInstance(typeof(TComponentConditions), TimeSpan.Zero, PollingInterval, WebDriver, elementHandler, ElementLocator, EventSource);
+
+                        predicate(elementCondition);
+
+                        // this one still satisfy condition, so returning false for reiterating
+                        result = false;
+                    }
+                    catch (TimeoutException)
+                    {
+                        // do noting and leave result true b default, proceding next item
+                    }
+                }
+
+                return result;
+            }
+
+            try
+            {
+                Waiter.Until(condition, timeout.Value, PollingInterval);
+            }
+            catch (TimeoutException ex)
+            {
+#if NET6_0_OR_GREATER
+                throw new TimeoutException($"The {ElementsListHandler.ComponentsListMetadata.Name} contain at least one {ElementsListHandler.ComponentsListMetadata.ComponentMetadata.Name} satisfying condition '{predicateExpression}'.", ex);
+#else
+                throw new TimeoutException($"The {ElementsListHandler.ComponentsListMetadata.Name} contain at least one {ElementsListHandler.ComponentsListMetadata.ComponentMetadata.Name} satisfying condition.", ex);
+#endif
+            }
+
+            return listConditions;
+        }
+
         /// <summary>
         /// Waits specified amount of time.
         /// </summary>

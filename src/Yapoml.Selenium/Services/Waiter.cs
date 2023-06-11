@@ -29,9 +29,9 @@ namespace Yapoml.Selenium.Services
                 catch (Exception ex)
                 {
                     occuredExceptions.Value.Add(ex);
-                }
 
-                Thread.Sleep(pollingInterval);
+                    Thread.Sleep(pollingInterval);
+                }
             }
             while (stopwatch.Elapsed <= timeout);
 
