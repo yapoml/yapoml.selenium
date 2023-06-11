@@ -12,13 +12,11 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
         protected abstract Func<TNumber?> FetchValueFunc { get; }
 
-        public TConditions Is(TNumber value)
-        {
-            return Is(value, _timeout);
-        }
 
-        public TConditions Is(TNumber value, TimeSpan timeout)
+        public TConditions Is(TNumber value, TimeSpan? timeout = default)
         {
+            timeout ??= _timeout;
+
             TNumber? latestValue = null;
 
             bool condition()
@@ -37,7 +35,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout, _pollingInterval);
+                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
             }
             catch (TimeoutException ex)
             {
@@ -47,13 +45,10 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             return _conditions;
         }
 
-        public TConditions IsNot(TNumber value)
+        public TConditions IsNot(TNumber value, TimeSpan? timeout = default)
         {
-            return IsNot(value, _timeout);
-        }
+            timeout ??= _timeout;
 
-        public TConditions IsNot(TNumber value, TimeSpan timeout)
-        {
             TNumber? latestValue = null;
 
             bool condition()
@@ -72,7 +67,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout, _pollingInterval);
+                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
             }
             catch (TimeoutException ex)
             {
@@ -82,13 +77,10 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             return _conditions;
         }
 
-        public TConditions IsGreaterThan(TNumber value)
+        public TConditions IsGreaterThan(TNumber value, TimeSpan? timeout = default)
         {
-            return IsGreaterThan(value, _timeout);
-        }
+            timeout ??= _timeout;
 
-        public TConditions IsGreaterThan(TNumber value, TimeSpan timeout)
-        {
             TNumber? latestValue = null;
 
             bool condition()
@@ -107,7 +99,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout, _pollingInterval);
+                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
             }
             catch (TimeoutException ex)
             {
@@ -117,13 +109,10 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             return _conditions;
         }
 
-        public TConditions IsLessThan(TNumber value)
+        public TConditions IsLessThan(TNumber value, TimeSpan? timeout = default)
         {
-            return IsLessThan(value, _timeout);
-        }
+            timeout ??= _timeout;
 
-        public TConditions IsLessThan(TNumber value, TimeSpan timeout)
-        {
             TNumber? latestValue = null;
 
             bool condition()
@@ -142,7 +131,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout, _pollingInterval);
+                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
             }
             catch (TimeoutException ex)
             {

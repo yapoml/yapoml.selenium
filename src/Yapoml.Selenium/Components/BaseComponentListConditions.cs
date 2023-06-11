@@ -32,13 +32,10 @@ namespace Yapoml.Selenium.Components
 
         public CountCollectionConditions<TListConditions> Count => new CountCollectionConditions<TListConditions>(listConditions, ElementsListHandler, Timeout, PollingInterval);
 
-        public TListConditions Each(Action<TComponentConditions> item)
+        public TListConditions Each(Action<TComponentConditions> item, TimeSpan? timeout = default)
         {
-            return Each(item, Timeout);
-        }
+            timeout ??= Timeout;
 
-        public TListConditions Each(Action<TComponentConditions> item, TimeSpan timeout)
-        {
             bool condition()
             {
                 var elements = ElementsListHandler.LocateMany();
@@ -63,7 +60,7 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                Services.Waiter.Until(condition, timeout, PollingInterval);
+                Services.Waiter.Until(condition, timeout.Value, PollingInterval);
             }
             catch (TimeoutException ex)
             {

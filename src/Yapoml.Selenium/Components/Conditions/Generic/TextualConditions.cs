@@ -13,23 +13,15 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
         protected abstract Func<string> FetchValueFunc { get; }
 
-        public TConditions Is(string value)
+        public TConditions Is(string value, TimeSpan? timeout = default)
         {
-            return Is(value, StringComparison.CurrentCultureIgnoreCase);
+            return Is(value, StringComparison.CurrentCulture, timeout);
         }
 
-        public TConditions Is(string value, TimeSpan timeout)
+        public TConditions Is(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
-            return Is(value, StringComparison.CurrentCultureIgnoreCase, timeout);
-        }
+            timeout ??= _timeout;
 
-        public TConditions Is(string value, StringComparison comparisonType)
-        {
-            return Is(value, comparisonType, _timeout);
-        }
-
-        public TConditions Is(string value, StringComparison comparisonType, TimeSpan timeout)
-        {
             string latestValue = null;
 
             bool condition()
@@ -41,7 +33,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout, _pollingInterval);
+                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
             }
             catch (TimeoutException ex)
             {
@@ -51,23 +43,15 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             return _conditions;
         }
 
-        public TConditions IsNot(string value)
+        public TConditions IsNot(string value, TimeSpan? timeout = default)
         {
-            return IsNot(value, StringComparison.CurrentCultureIgnoreCase);
+            return IsNot(value, StringComparison.CurrentCulture, timeout);
         }
 
-        public TConditions IsNot(string value, TimeSpan timeout)
+        public TConditions IsNot(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
-            return IsNot(value, StringComparison.CurrentCultureIgnoreCase, timeout);
-        }
+            timeout ??= _timeout;
 
-        public TConditions IsNot(string value, StringComparison comparisonType)
-        {
-            return IsNot(value, comparisonType, _timeout);
-        }
-
-        public TConditions IsNot(string value, StringComparison comparisonType, TimeSpan timeout)
-        {
             string latestValue = null;
 
             bool condition()
@@ -79,7 +63,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout, _pollingInterval);
+                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
             }
             catch (TimeoutException ex)
             {
@@ -89,13 +73,10 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             return _conditions;
         }
 
-        public TConditions IsEmpty()
+        public TConditions IsEmpty(TimeSpan? timeout = default)
         {
-            return IsEmpty(_timeout);
-        }
+            timeout ??= _timeout;
 
-        public TConditions IsEmpty(TimeSpan timeout)
-        {
             string latestValue = null;
 
             bool condition()
@@ -107,7 +88,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout, _pollingInterval);
+                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
             }
             catch (TimeoutException ex)
             {
@@ -117,13 +98,10 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             return _conditions;
         }
 
-        public TConditions IsNotEmpty()
+        public TConditions IsNotEmpty(TimeSpan? timeout = default)
         {
-            return IsNotEmpty(_timeout);
-        }
+            timeout ??= _timeout;
 
-        public TConditions IsNotEmpty(TimeSpan timeout)
-        {
             string latestValue = null;
 
             bool condition()
@@ -135,7 +113,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout, _pollingInterval);
+                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
             }
             catch (TimeoutException ex)
             {
@@ -145,23 +123,15 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             return _conditions;
         }
 
-        public TConditions StartsWith(string value)
+        public TConditions StartsWith(string value, TimeSpan? timeout = default)
         {
-            return StartsWith(value, StringComparison.CurrentCultureIgnoreCase);
+            return StartsWith(value, StringComparison.CurrentCulture, timeout);
         }
 
-        public TConditions StartsWith(string value, TimeSpan timeout)
+        public TConditions StartsWith(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
-            return StartsWith(value, StringComparison.CurrentCultureIgnoreCase, timeout);
-        }
+            timeout ??= _timeout;
 
-        public TConditions StartsWith(string value, StringComparison comparisonType)
-        {
-            return StartsWith(value, comparisonType, _timeout);
-        }
-
-        public TConditions StartsWith(string value, StringComparison comparisonType, TimeSpan timeout)
-        {
             string latestValue = null;
 
             bool condition()
@@ -173,7 +143,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout, _pollingInterval);
+                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
             }
             catch (TimeoutException ex)
             {
@@ -183,23 +153,15 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             return _conditions;
         }
 
-        public TConditions DoesNotStartWith(string value)
+        public TConditions DoesNotStartWith(string value, TimeSpan? timeout = default)
         {
-            return DoesNotStartWith(value, StringComparison.CurrentCultureIgnoreCase);
+            return DoesNotStartWith(value, StringComparison.CurrentCulture, timeout);
         }
 
-        public TConditions DoesNotStartWith(string value, TimeSpan timeout)
+        public TConditions DoesNotStartWith(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
-            return DoesNotStartWith(value, StringComparison.CurrentCultureIgnoreCase, timeout);
-        }
+            timeout ??= _timeout;
 
-        public TConditions DoesNotStartWith(string value, StringComparison comparisonType)
-        {
-            return DoesNotStartWith(value, comparisonType, _timeout);
-        }
-
-        public TConditions DoesNotStartWith(string value, StringComparison comparisonType, TimeSpan timeout)
-        {
             string latestValue = null;
 
             bool condition()
@@ -211,7 +173,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout, _pollingInterval);
+                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
             }
             catch (TimeoutException ex)
             {
@@ -221,23 +183,15 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             return _conditions;
         }
 
-        public TConditions EndsWith(string value)
+        public TConditions EndsWith(string value, TimeSpan? timeout = default)
         {
-            return EndsWith(value, StringComparison.CurrentCultureIgnoreCase);
+            return EndsWith(value, StringComparison.CurrentCulture, timeout);
         }
 
-        public TConditions EndsWith(string value, TimeSpan timeout)
+        public TConditions EndsWith(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
-            return EndsWith(value, StringComparison.CurrentCultureIgnoreCase, timeout);
-        }
+            timeout ??= _timeout;
 
-        public TConditions EndsWith(string value, StringComparison comparisonType)
-        {
-            return EndsWith(value, comparisonType, _timeout);
-        }
-
-        public TConditions EndsWith(string value, StringComparison comparisonType, TimeSpan timeout)
-        {
             string latestValue = null;
 
             bool condition()
@@ -249,7 +203,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout, _pollingInterval);
+                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
             }
             catch (TimeoutException ex)
             {
@@ -259,23 +213,15 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             return _conditions;
         }
 
-        public TConditions DoesNotEndWith(string value)
+        public TConditions DoesNotEndWith(string value, TimeSpan? timeout = default)
         {
-            return DoesNotEndWith(value, StringComparison.CurrentCultureIgnoreCase);
+            return DoesNotEndWith(value, StringComparison.CurrentCulture, timeout);
         }
 
-        public TConditions DoesNotEndWith(string value, TimeSpan timeout)
+        public TConditions DoesNotEndWith(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
-            return DoesNotEndWith(value, StringComparison.CurrentCultureIgnoreCase, timeout);
-        }
+            timeout ??= _timeout;
 
-        public TConditions DoesNotEndWith(string value, StringComparison comparisonType)
-        {
-            return DoesNotEndWith(value, comparisonType, _timeout);
-        }
-
-        public TConditions DoesNotEndWith(string value, StringComparison comparisonType, TimeSpan timeout)
-        {
             string latestValue = null;
 
             bool condition()
@@ -287,7 +233,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout, _pollingInterval);
+                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
             }
             catch (TimeoutException ex)
             {
@@ -297,23 +243,15 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             return _conditions;
         }
 
-        public TConditions Contains(string value)
+        public TConditions Contains(string value, TimeSpan? timeout = default)
         {
-            return Contains(value, StringComparison.CurrentCultureIgnoreCase);
+            return Contains(value, StringComparison.CurrentCulture, timeout);
         }
 
-        public TConditions Contains(string value, TimeSpan timeout)
+        public TConditions Contains(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
-            return Contains(value, StringComparison.CurrentCultureIgnoreCase, timeout);
-        }
+            timeout ??= _timeout;
 
-        public TConditions Contains(string value, StringComparison comparisonType)
-        {
-            return Contains(value, comparisonType, _timeout);
-        }
-
-        public TConditions Contains(string value, StringComparison comparisonType, TimeSpan timeout)
-        {
             string latestValue = null;
 
             bool condition()
@@ -325,7 +263,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout, _pollingInterval);
+                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
             }
             catch (TimeoutException ex)
             {
@@ -335,23 +273,15 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             return _conditions;
         }
 
-        public TConditions DoesNotContain(string value)
+        public TConditions DoesNotContain(string value, TimeSpan? timeout = default)
         {
-            return DoesNotContain(value, StringComparison.CurrentCultureIgnoreCase);
+            return DoesNotContain(value, StringComparison.CurrentCulture, timeout);
         }
 
-        public TConditions DoesNotContain(string value, TimeSpan timeout)
+        public TConditions DoesNotContain(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
-            return DoesNotContain(value, StringComparison.CurrentCultureIgnoreCase, timeout);
-        }
+            timeout ??= _timeout;
 
-        public TConditions DoesNotContain(string value, StringComparison comparisonType)
-        {
-            return DoesNotContain(value, comparisonType, _timeout);
-        }
-
-        public TConditions DoesNotContain(string value, StringComparison comparisonType, TimeSpan timeout)
-        {
             string latestValue = null;
 
             bool condition()
@@ -363,7 +293,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout, _pollingInterval);
+                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
             }
             catch (TimeoutException ex)
             {
@@ -373,13 +303,10 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             return _conditions;
         }
 
-        public TConditions Matches(Regex regex)
+        public TConditions Matches(Regex regex, TimeSpan? timeout = default)
         {
-            return Matches(regex, _timeout);
-        }
+            timeout ??= _timeout;
 
-        public TConditions Matches(Regex regex, TimeSpan timeout)
-        {
             string latestValue = null;
 
             bool condition()
@@ -391,7 +318,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout, _pollingInterval);
+                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
             }
             catch (TimeoutException ex)
             {
@@ -401,13 +328,10 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             return _conditions;
         }
 
-        public TConditions DoesNotMatch(Regex regex)
+        public TConditions DoesNotMatch(Regex regex, TimeSpan? timeout = default)
         {
-            return DoesNotMatch(regex, _timeout);
-        }
+            timeout ??= _timeout;
 
-        public TConditions DoesNotMatch(Regex regex, TimeSpan timeout)
-        {
             string latestValue = null;
 
             bool condition()
@@ -419,7 +343,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout, _pollingInterval);
+                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
             }
             catch (TimeoutException ex)
             {

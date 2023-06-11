@@ -31,16 +31,10 @@ namespace Yapoml.Selenium.Components
         /// <summary>
         /// Waits until current <c>document.readyState</c> is <c>complete</c>.
         /// </summary>
-        public virtual TConditions IsLoaded()
+        public virtual TConditions IsLoaded(TimeSpan? timeout = default)
         {
-            return IsLoaded(Timeout);
-        }
+            timeout ??= Timeout;
 
-        /// <summary>
-        /// Waits until current <c>document.readyState</c> is <c>complete</c>.
-        /// </summary>
-        public virtual TConditions IsLoaded(TimeSpan timeout)
-        {
             string latestValue = null;
 
             bool condition()
@@ -52,7 +46,7 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                Services.Waiter.Until(condition, timeout, PollingInterval);
+                Services.Waiter.Until(condition, timeout.Value, PollingInterval);
             }
             catch (TimeoutException ex)
             {

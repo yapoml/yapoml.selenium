@@ -34,19 +34,12 @@ namespace Yapoml.Selenium.Components
         /// <summary>
         /// Waits until the component is displayed.
         /// </summary>
-        /// <returns></returns>
-        public virtual TConditions IsDisplayed()
-        {
-            return IsDisplayed(Timeout);
-        }
-
-        /// <summary>
-        /// Waits until the component is displayed.
-        /// </summary>
         /// <param name="timeout">How long to wait until the component is displayed.</param>
         /// <returns></returns>
-        public virtual TConditions IsDisplayed(TimeSpan timeout)
+        public virtual TConditions IsDisplayed(TimeSpan? timeout = null)
         {
+            timeout ??= Timeout;
+
             Exception lastError = null;
 
             Dictionary<Type, uint> ignoredExceptions = new Dictionary<Type, uint> {
@@ -86,7 +79,7 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                Services.Waiter.Until(attempt, timeout, PollingInterval);
+                Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
             }
             catch (TimeoutException ex)
             {
@@ -100,20 +93,12 @@ namespace Yapoml.Selenium.Components
         /// Waits until the component is not displayed.
         /// Detached component from DOM is also considered as not displayed.
         /// </summary>
-        /// <returns></returns>
-        public virtual TConditions IsNotDisplayed()
-        {
-            return IsNotDisplayed(Timeout);
-        }
-
-        /// <summary>
-        /// Waits until the component is not displayed.
-        /// Detached component from DOM is also considered as not displayed.
-        /// </summary>
         /// <param name="timeout">How long to wait until the component is not displayed.</param>
         /// <returns></returns>
-        public virtual TConditions IsNotDisplayed(TimeSpan timeout)
+        public virtual TConditions IsNotDisplayed(TimeSpan? timeout = null)
         {
+            timeout ??= Timeout;
+
             bool attempt()
             {
                 try
@@ -135,7 +120,7 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                Services.Waiter.Until(attempt, timeout, PollingInterval);
+                Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
             }
             catch (TimeoutException ex)
             {
@@ -148,19 +133,12 @@ namespace Yapoml.Selenium.Components
         /// <summary>
         /// Waits until the component is appeared in the DOM.
         /// </summary>
-        /// <returns></returns>
-        public virtual TConditions Exists()
-        {
-            return Exists(Timeout);
-        }
-
-        /// <summary>
-        /// Waits until the component is appeared in the DOM.
-        /// </summary>
         /// <param name="timeout">How long to wait until the component is appeared.</param>
         /// <returns></returns>
-        public virtual TConditions Exists(TimeSpan timeout)
+        public virtual TConditions Exists(TimeSpan? timeout = null)
         {
+            timeout ??= Timeout;
+
             Exception lastError = null;
 
             Dictionary<Type, uint> ignoredExceptions = new Dictionary<Type, uint> {
@@ -196,7 +174,7 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                Services.Waiter.Until(attempt, timeout, PollingInterval);
+                Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
             }
             catch (TimeoutException ex)
             {
@@ -209,19 +187,12 @@ namespace Yapoml.Selenium.Components
         /// <summary>
         /// Waits until the component disappeared drom the DOM.
         /// </summary>
-        /// <returns></returns>
-        public virtual TConditions DoesNotExist()
-        {
-            return DoesNotExist(Timeout);
-        }
-
-        /// <summary>
-        /// Waits until the component disappeared drom the DOM.
-        /// </summary>
         /// <param name="timeout">How long to wait until the component disappeared.</param>
         /// <returns></returns>
-        public virtual TConditions DoesNotExist(TimeSpan timeout)
+        public virtual TConditions DoesNotExist(TimeSpan? timeout = null)
         {
+            timeout ??= Timeout;
+
             bool attempt()
             {
                 try
@@ -246,7 +217,7 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                Services.Waiter.Until(attempt, timeout, PollingInterval);
+                Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
             }
             catch (TimeoutException ex)
             {
@@ -259,19 +230,12 @@ namespace Yapoml.Selenium.Components
         /// <summary>
         ///  Waits until the component is enabled.
         /// </summary>
-        /// <returns></returns>
-        public virtual TConditions IsEnabled()
-        {
-            return IsEnabled(Timeout);
-        }
-
-        /// <summary>
-        ///  Waits until the component is enabled.
-        /// </summary>
         /// <param name="timeout">How long to wait until the component is enabled.</param>
         /// <returns></returns>
-        public virtual TConditions IsEnabled(TimeSpan timeout)
+        public virtual TConditions IsEnabled(TimeSpan? timeout = null)
         {
+            timeout ??= Timeout;
+
             bool attempt()
             {
                 return ElementHandler.Locate().Enabled;
@@ -279,7 +243,7 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                Services.Waiter.Until(attempt, timeout, PollingInterval);
+                Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
             }
             catch (TimeoutException ex)
             {
@@ -334,203 +298,104 @@ namespace Yapoml.Selenium.Components
             return conditions;
         }
 
-        #region String Conditions
-        public TConditions Is(string value)
-        {
-            return Text.Is(value);
-        }
+        #region Textual Conditions
 
-        public TConditions Is(string value, TimeSpan timeout)
+        public TConditions Is(string value, TimeSpan? timeout = default)
         {
             return Text.Is(value, timeout);
         }
 
-        public TConditions Is(string value, StringComparison comparisonType)
-        {
-            return Text.Is(value, comparisonType);
-        }
-
-        public TConditions Is(string value, StringComparison comparisonType, TimeSpan timeout)
+        public TConditions Is(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
             return Text.Is(value, comparisonType, timeout);
         }
 
-        public TConditions IsNot(string value)
-        {
-            return Text.IsNot(value);
-        }
-
-        public TConditions IsNot(string value, TimeSpan timeout)
+        public TConditions IsNot(string value, TimeSpan? timeout = default)
         {
             return Text.IsNot(value, timeout);
         }
 
-        public TConditions IsNot(string value, StringComparison comparisonType)
-        {
-            return Text.IsNot(value, comparisonType);
-        }
-
-        public TConditions IsNot(string value, StringComparison comparisonType, TimeSpan timeout)
+        public TConditions IsNot(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
             return Text.IsNot(value, comparisonType, timeout);
         }
 
-        public TConditions IsEmpty()
-        {
-            return Text.IsEmpty();
-        }
-
-        public TConditions IsEmpty(TimeSpan timeout)
+        public TConditions IsEmpty(TimeSpan? timeout = default)
         {
             return Text.IsEmpty(timeout);
         }
 
-        public TConditions IsNotEmpty()
-        {
-            return Text.IsNotEmpty();
-        }
-
-        public TConditions IsNotEmpty(TimeSpan timeout)
+        public TConditions IsNotEmpty(TimeSpan? timeout = default)
         {
             return Text.IsNotEmpty(timeout);
         }
 
-        public TConditions StartsWith(string value)
-        {
-            return Text.StartsWith(value);
-        }
-
-        public TConditions StartsWith(string value, TimeSpan timeout)
+        public TConditions StartsWith(string value, TimeSpan? timeout = default)
         {
             return Text.StartsWith(value, timeout);
         }
 
-        public TConditions StartsWith(string value, StringComparison comparisonType)
-        {
-            return Text.StartsWith(value, comparisonType);
-        }
-
-        public TConditions StartsWith(string value, StringComparison comparisonType, TimeSpan timeout)
+        public TConditions StartsWith(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
             return Text.StartsWith(value, comparisonType, timeout);
         }
 
-        public TConditions DoesNotStartWith(string value)
-        {
-            return Text.DoesNotStartWith(value);
-        }
-
-        public TConditions DoesNotStartWith(string value, TimeSpan timeout)
+        public TConditions DoesNotStartWith(string value, TimeSpan? timeout = default)
         {
             return Text.DoesNotStartWith(value, timeout);
         }
 
-        public TConditions DoesNotStartWith(string value, StringComparison comparisonType)
-        {
-            return Text.DoesNotStartWith(value, comparisonType);
-        }
-
-        public TConditions DoesNotStartWith(string value, StringComparison comparisonType, TimeSpan timeout)
+        public TConditions DoesNotStartWith(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
             return Text.DoesNotStartWith(value, comparisonType, timeout);
         }
 
-        public TConditions EndsWith(string value)
-        {
-            return Text.EndsWith(value);
-        }
-
-        public TConditions EndsWith(string value, TimeSpan timeout)
+        public TConditions EndsWith(string value, TimeSpan? timeout = default)
         {
             return Text.EndsWith(value, timeout);
         }
 
-        public TConditions EndsWith(string value, StringComparison comparisonType)
-        {
-            return Text.EndsWith(value, comparisonType);
-        }
-
-        public TConditions EndsWith(string value, StringComparison comparisonType, TimeSpan timeout)
+        public TConditions EndsWith(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
             return Text.EndsWith(value, comparisonType, timeout);
         }
 
-        public TConditions DoesNotEndWith(string value)
-        {
-            return Text.DoesNotEndWith(value);
-        }
-
-        public TConditions DoesNotEndWith(string value, TimeSpan timeout)
+        public TConditions DoesNotEndWith(string value, TimeSpan? timeout = default)
         {
             return Text.DoesNotEndWith(value, timeout);
         }
 
-        public TConditions DoesNotEndWith(string value, StringComparison comparisonType)
-        {
-            return Text.DoesNotEndWith(value, comparisonType);
-        }
-
-        public TConditions DoesNotEndWith(string value, StringComparison comparisonType, TimeSpan timeout)
+        public TConditions DoesNotEndWith(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
             return Text.DoesNotEndWith(value, comparisonType, timeout);
         }
 
-        public TConditions Contains(string value)
-        {
-            return Text.Contains(value);
-        }
-
-        public TConditions Contains(string value, TimeSpan timeout)
+        public TConditions Contains(string value, TimeSpan? timeout = default)
         {
             return Text.Contains(value, timeout);
         }
 
-        public TConditions Contains(string value, StringComparison comparisonType)
-        {
-            return Text.Contains(value, comparisonType);
-        }
-
-        public TConditions Contains(string value, StringComparison comparisonType, TimeSpan timeout)
+        public TConditions Contains(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
             return Text.Contains(value, comparisonType, timeout);
         }
 
-        public TConditions DoesNotContain(string value)
-        {
-            return Text.DoesNotContain(value);
-        }
-
-        public TConditions DoesNotContain(string value, TimeSpan timeout)
+        public TConditions DoesNotContain(string value, TimeSpan? timeout = default)
         {
             return Text.DoesNotContain(value, timeout);
         }
 
-        public TConditions DoesNotContain(string value, StringComparison comparisonType)
-        {
-            return Text.DoesNotContain(value, comparisonType);
-        }
-
-        public TConditions DoesNotContain(string value, StringComparison comparisonType, TimeSpan timeout)
+        public TConditions DoesNotContain(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
             return Text.DoesNotContain(value, comparisonType, timeout);
         }
 
-        public TConditions Matches(Regex regex)
-        {
-            return Text.Matches(regex);
-        }
-
-        public TConditions Matches(Regex regex, TimeSpan timeout)
+        public TConditions Matches(Regex regex, TimeSpan? timeout = default)
         {
             return Text.Matches(regex, timeout);
         }
 
-        public TConditions DoesNotMatch(Regex regex)
-        {
-            return Text.DoesNotMatch(regex);
-        }
-
-        public TConditions DoesNotMatch(Regex regex, TimeSpan timeout)
+        public TConditions DoesNotMatch(Regex regex, TimeSpan? timeout = default)
         {
             return Text.DoesNotMatch(regex, timeout);
         }
