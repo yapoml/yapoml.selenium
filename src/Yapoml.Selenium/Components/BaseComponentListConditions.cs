@@ -36,7 +36,7 @@ namespace Yapoml.Selenium.Components
         public CountCollectionConditions<TListConditions> Count => new CountCollectionConditions<TListConditions>(listConditions, ElementsListHandler, Timeout, PollingInterval);
 
 #if NET6_0_OR_GREATER
-        public TListConditions Each(Action<TComponentConditions> predicate, TimeSpan? timeout = default, [CallerArgumentExpression(nameof(predicate))] string predicateExpression = null)
+        public TListConditions Each(Action<TComponentConditions> predicate, TimeSpan? timeout = default, [CallerArgumentExpression("predicate")] string predicateExpression = null)
 #else
         public TListConditions Each(Action<TComponentConditions> predicate, TimeSpan? timeout = default)
 #endif
