@@ -6,6 +6,9 @@ namespace Yapoml.Selenium.Components.Conditions.Formatters
     {
         public static string Format(string indentation, string first, string second)
         {
+            first ??= "<null>";
+            second ??= "<null>";
+
             var matcher = new diff_match_patch();
             var differences = matcher.diff_main(first, second);
 
