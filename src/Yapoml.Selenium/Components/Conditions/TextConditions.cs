@@ -20,12 +20,12 @@ namespace Yapoml.Selenium.Components.Conditions
 
         protected override string GetIsError(string latestValue, string expectedValue)
         {
-            return $"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{expectedValue}' yet.";
+            return $"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{expectedValue}' yet.{Environment.NewLine}{Formatters.StringFormatter.Format("  ", expectedValue, latestValue)}";
         }
 
         protected override string GetIsNotError(string latestValue, string expectedValue)
         {
-            return $"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still '{expectedValue}'.";
+            return $"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still '{expectedValue}'.{Environment.NewLine}{Formatters.StringFormatter.Format("  ", expectedValue, latestValue)}";
         }
 
         protected override string GetIsEmptyError(string latestValue)
