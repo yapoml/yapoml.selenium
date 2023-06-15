@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace Yapoml.Selenium.Components.Conditions.Formatters
 {
@@ -17,6 +18,24 @@ namespace Yapoml.Selenium.Components.Conditions.Formatters
             StringBuilder line1 = new StringBuilder(indentation);
             StringBuilder line2 = new StringBuilder(indentation);
 
+            Action<int> appendStartDiff = (int diffIndex) =>
+            {
+                if (diffIndex != 0)
+                {
+                    line1.Append('┐');
+                    line2.Append('└');
+                }
+            };
+
+            Action<int> appendEndDiff = (int diffIndex) =>
+            {
+                if (diffIndex != differences.Count - 1)
+                {
+                    line1.Append('┌');
+                    line2.Append('┘');
+                }
+            };
+
             for (int i = 0; i < differences.Count; i++)
             {
                 var difference = differences[i];
@@ -24,16 +43,16 @@ namespace Yapoml.Selenium.Components.Conditions.Formatters
                 if (difference.operation == Operation.EQUAL)
                 {
                     line1.Append(difference.text);
-                    line2.Append(new string(' ', difference.text.Length));
+                    line2.Append(' ', difference.text.Length);
                 }
                 else if (difference.operation == Operation.INSERT)
                 {
-                    line1.Append("┐");
-                    line1.Append(new string(' ', difference.text.Length));
-                    line2.Append("└");
+                    appendStartDiff(i);
+
+                    line1.Append(' ', difference.text.Length);
                     line2.Append(difference.text);
-                    line1.Append("┌");
-                    line2.Append("┘");
+
+                    appendEndDiff(i);
                 }
                 else if (difference.operation == Operation.DELETE)
                 {
@@ -43,35 +62,33 @@ namespace Yapoml.Selenium.Components.Conditions.Formatters
                         var deletedPiece = difference.text;
                         var insertedString = differences[i + 1].text;
 
-                        line1.Append("┐");
+                        appendStartDiff(i);
+
                         line1.Append(deletedPiece);
-                        line2.Append("└");
                         line2.Append(insertedString);
 
                         if (deletedPiece.Length < insertedString.Length)
                         {
-                            line1.Append(new string(' ', insertedString.Length - deletedPiece.Length));
+                            line1.Append(' ', insertedString.Length - deletedPiece.Length);
                         }
                         else if (insertedString.Length < deletedPiece.Length)
                         {
-                            line2.Append(new string('─', deletedPiece.Length - insertedString.Length));
+                            line2.Append(' ', deletedPiece.Length - insertedString.Length);
                         }
 
-                        line1.Append("┌");
-                        line2.Append("┘");
+                        appendEndDiff(i + 1);
 
                         i++;
                     }
                     else
                     {
                         // just deleted
-                        line1.Append("┐");
-                        line1.Append(difference.text);
-                        line2.Append("└");
-                        line2.Append(new string(' ', difference.text.Length));
+                        appendStartDiff(i);
 
-                        line1.Append("┌");
-                        line2.Append("┘");
+                        line1.Append(difference.text);
+                        line2.Append(' ', difference.text.Length);
+
+                        appendEndDiff(i);
                     }
                 }
             }
