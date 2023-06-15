@@ -5,6 +5,13 @@ namespace Yapoml.Selenium.Components.Conditions.Formatters
 {
     public static class StringFormatter
     {
+        private static readonly bool _isUtfOutputEncoding;
+
+        static StringFormatter()
+        {
+            _isUtfOutputEncoding = Console.OutputEncoding.Equals(Encoding.UTF8) || Console.OutputEncoding.Equals(Encoding.Unicode);
+        }
+
         public static string Format(string indentation, string first, string second)
         {
             first ??= "<null>";
@@ -20,7 +27,12 @@ namespace Yapoml.Selenium.Components.Conditions.Formatters
 
             Action<int> appendStartDiff = (int diffIndex) =>
             {
-                if (diffIndex != 0)
+                if (_isUtfOutputEncoding)
+                {
+                    line1.Append('╮');
+                    line2.Append('╰');
+                }
+                else
                 {
                     line1.Append('┐');
                     line2.Append('└');
@@ -29,7 +41,12 @@ namespace Yapoml.Selenium.Components.Conditions.Formatters
 
             Action<int> appendEndDiff = (int diffIndex) =>
             {
-                if (diffIndex != differences.Count - 1)
+                if (_isUtfOutputEncoding)
+                {
+                    line1.Append('╭');
+                    line2.Append('╯');
+                }
+                else
                 {
                     line1.Append('┌');
                     line2.Append('┘');
