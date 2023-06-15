@@ -14,5 +14,17 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             _timeout = timeout;
             _pollingInterval = pollingInterval;
         }
+
+        public string GetDifference(string first, string second)
+        {
+            if (first is not null && second is not null)
+            {
+                return Environment.NewLine + Formatters.StringFormatter.Format("  ", first, second);
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

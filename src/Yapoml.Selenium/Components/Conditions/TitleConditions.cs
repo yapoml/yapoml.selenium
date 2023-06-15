@@ -23,12 +23,12 @@ namespace Yapoml.Selenium.Components.Conditions
 
         protected override string GetIsError(string latestValue, string expectedValue)
         {
-            return $"'{latestValue}' title doesn't equal to '{expectedValue}'.{Environment.NewLine}{Formatters.StringFormatter.Format("  ", expectedValue, latestValue)}";
+            return $"'{latestValue}' title doesn't equal to '{expectedValue}'.{GetDifference(expectedValue, latestValue)}";
         }
 
         protected override string GetIsNotError(string latestValue, string expectedValue)
         {
-            return $"'{latestValue}' title doesn't equal to '{expectedValue}'.{Environment.NewLine}{Formatters.StringFormatter.Format("  ", expectedValue, latestValue)}";
+            return $"'{latestValue}' title doesn't equal to '{expectedValue}'.{GetDifference(expectedValue, latestValue)}";
         }
 
         protected override string GetIsEmptyError(string latestValue)
