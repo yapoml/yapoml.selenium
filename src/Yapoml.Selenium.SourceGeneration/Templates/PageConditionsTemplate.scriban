@@ -7,6 +7,13 @@ public partial class Conditions : global::Yapoml.Selenium.Components.BasePageCon
 		base.conditions = this;
 	}
 
+	{{ if $1.url && $1.url.segments == null && $1.url.params == null }}
+	public override Conditions IsLoaded(global::System.TimeSpan? timeout = default)
+	{	
+		return Url.EndsWith("{{ $1.url.path }}qwe").IsLoaded(timeout);
+	}
+	{{ end }}
+
 	{{ for component in $1.components }}
 	{{if !component.is_plural && component.by.segments == null }}
 	public {{get_component_return_type component}}.Conditions {{component.name}}
