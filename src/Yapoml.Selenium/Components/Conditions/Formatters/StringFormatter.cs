@@ -12,15 +12,15 @@ namespace Yapoml.Selenium.Components.Conditions.Formatters
             _isUtfOutputEncoding = Console.OutputEncoding.Equals(Encoding.UTF8) || Console.OutputEncoding.Equals(Encoding.Unicode);
         }
 
-        public static string Format(string indentation, string first, string second)
+        public static string Format(string firstIndentation, string secondIndentation, string first, string second)
         {
             var matcher = new diff_match_patch();
             var differences = matcher.diff_main(first, second);
 
             matcher.diff_cleanupSemantic(differences);
 
-            StringBuilder line1 = new StringBuilder(indentation);
-            StringBuilder line2 = new StringBuilder(indentation);
+            StringBuilder line1 = new StringBuilder(firstIndentation);
+            StringBuilder line2 = new StringBuilder(secondIndentation);
 
             Action<int> appendStartDiff = (int diffIndex) =>
             {

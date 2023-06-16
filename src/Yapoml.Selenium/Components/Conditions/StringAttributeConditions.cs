@@ -22,22 +22,22 @@ namespace Yapoml.Selenium.Components.Conditions
 
         protected override string GetIsError(string latestValue, string expectedValue)
         {
-            return $"Attribute '{_attributeName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{expectedValue}' yet.{GetDifference(expectedValue, latestValue)}";
+            return $"Attribute {_attributeName} of the {_elementHandler.ComponentMetadata.Name} is not '{expectedValue}',{GetDifference("it was", expectedValue, latestValue)}";
         }
 
         protected override string GetIsNotError(string latestValue, string expectedValue)
         {
-            return $"Attribute '{_attributeName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still '{expectedValue}'.{GetDifference(expectedValue, latestValue)}";
+            return $"Attribute {_attributeName} of the {_elementHandler.ComponentMetadata.Name} component is '{expectedValue}', when expected to be not.";
         }
 
         protected override string GetIsEmptyError(string latestValue)
         {
-            return $"Attribute '{_attributeName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not empty yet.";
+            return $"Attribute {_attributeName} '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} is not empty, when expected to be empty.";
         }
 
         protected override string GetIsNotEmptyError(string latestValue)
         {
-            return $"Attribute '{_attributeName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still empty.";
+            return $"Attribute {_attributeName} of the {_elementHandler.ComponentMetadata.Name} is empty, when expected to be not empty.";
         }
 
         protected override string GetStartsWithError(string latestValue, string expectedValue)

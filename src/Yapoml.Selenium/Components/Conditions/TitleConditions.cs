@@ -23,22 +23,22 @@ namespace Yapoml.Selenium.Components.Conditions
 
         protected override string GetIsError(string latestValue, string expectedValue)
         {
-            return $"'{latestValue}' title doesn't equal to '{expectedValue}'.{GetDifference(expectedValue, latestValue)}";
+            return $"Page title is not '{expectedValue}',{GetDifference("it was", expectedValue, latestValue)}";
         }
 
         protected override string GetIsNotError(string latestValue, string expectedValue)
         {
-            return $"'{latestValue}' title doesn't equal to '{expectedValue}'.{GetDifference(expectedValue, latestValue)}";
+            return $"Page title is '{expectedValue}', when expected to be not.";
         }
 
         protected override string GetIsEmptyError(string latestValue)
         {
-            return $"'{latestValue}' title is not empty yet.";
+            return $"Page title '{latestValue}' is not empty, when expected to be empty.";
         }
 
         protected override string GetIsNotEmptyError(string latestValue)
         {
-            return $"'{latestValue}' title is still empty.";
+            return $"Page title is empty, when expected to be not empty.";
         }
 
         protected override string GetStartsWithError(string latestValue, string expectedValue)

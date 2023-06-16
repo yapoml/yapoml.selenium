@@ -15,11 +15,11 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             _pollingInterval = pollingInterval;
         }
 
-        public string GetDifference(string first, string second)
+        public string GetDifference(string phrase, string first, string second)
         {
             if (first is not null && second is not null)
             {
-                return Environment.NewLine + Formatters.StringFormatter.Format("  ", first, second);
+                return Environment.NewLine + Formatters.StringFormatter.Format($"  {phrase} ", new string(' ', phrase.Length + 3), first, second) + Environment.NewLine;
             }
             else
             {
