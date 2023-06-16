@@ -27,7 +27,7 @@ namespace Yapoml.Selenium.Components.Conditions
 
         protected override string GetIsNotError(string latestValue, string expectedValue)
         {
-            return $"Attribute {_attributeName} of the {_elementHandler.ComponentMetadata.Name} component is '{expectedValue}', when expected to be not.";
+            return $"Attribute {_attributeName} of the {_elementHandler.ComponentMetadata.Name} component is '{latestValue}', when expected to be not.";
         }
 
         protected override string GetIsEmptyError(string latestValue)
