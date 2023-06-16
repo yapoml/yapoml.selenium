@@ -189,6 +189,16 @@ namespace Yapoml.Selenium.Components
             return listConditions;
         }
 
+        public virtual TListConditions IsEmpty(TimeSpan? timeout)
+        {
+            return Count.IsGreaterThan(0, timeout);
+        }
+
+        public virtual TListConditions IsNotEmpty(TimeSpan? timeout)
+        {
+            return Count.Is(0, timeout);
+        }
+
         /// <summary>
         /// Waits specified amount of time.
         /// </summary>
