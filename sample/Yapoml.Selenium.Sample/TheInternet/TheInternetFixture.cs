@@ -39,7 +39,7 @@ namespace Yapoml.Selenium.Sample.TheInternet
         [Test]
         public void ContextClick()
         {
-            _ya.ContextMenuPage.Open().Box.RightClick();
+            _ya.ContextMenuPage.Open().Box.ContextClick();
 
             var alert = _driver.SwitchTo().Alert();
             alert.Text.Should().Be("You selected a context menu");
