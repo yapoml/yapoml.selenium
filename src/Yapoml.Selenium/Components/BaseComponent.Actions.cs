@@ -307,12 +307,12 @@ namespace Yapoml.Selenium.Components
         }
 
         /// <summary>
-        /// Right-clicks the mouse on the element.
+        /// Context clicks the mouse on the element.
         /// </summary>
         /// <returns></returns>
-        public virtual TComponent RightClick()
+        public virtual TComponent ContextClick()
         {
-            _logger.Trace($"Right clicking on {Metadata.Name}");
+            _logger.Trace($"Context clicking on {Metadata.Name}");
 
             RelocateOnStaleReference(() => new Actions(WebDriver).ContextClick(WrappedElement).Build().Perform());
 
