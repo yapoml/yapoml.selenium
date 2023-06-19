@@ -29,7 +29,10 @@ namespace Yapoml.Selenium.Components
         protected IEventSource EventSource { get; }
 
         /// <summary>
-        /// Waits until current <c>document.readyState</c> is <c>complete</c>.
+        /// Evaluates document's state to be <c>complete</c> which means the page is fully loaded.
+        /// It doesn't guarantee that some components on the page are present, they might be rendered dynamically.
+        /// 
+        /// If url is defined for the page, then it also evaluates current url.
         /// </summary>
         public virtual TConditions IsLoaded(TimeSpan? timeout = default)
         {
@@ -58,7 +61,7 @@ namespace Yapoml.Selenium.Components
         }
 
         /// <summary>
-        /// Various expected conditions for awaiting url.
+        /// Various conditions for current page Url.
         /// </summary>
         public virtual UrlConditions<TConditions> Url
         {
@@ -69,7 +72,7 @@ namespace Yapoml.Selenium.Components
         }
 
         /// <summary>
-        /// Various expected conditions for page title.
+        /// Various conditions for current title of the page.
         /// </summary>
         public virtual TitleConditions<TConditions> Title
         {

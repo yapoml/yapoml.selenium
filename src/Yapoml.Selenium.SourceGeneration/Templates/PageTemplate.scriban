@@ -121,8 +121,10 @@ namespace {{namespace}}
 		{{ end }}
 
 		/// <summary>
-		/// Various awaitable conditions on the {{name}} page.
+		/// Various awaitable conditions on the <c>{{name}}</c> page.
 		/// </summary>
+		/// <param name="it">Actionable conditions object, allowing you to specify multiple chainable conditions.</param>
+		/// <returns>Self <c>{{name}}</c> page to continue interactions after conditions are satisfied.</returns>
 		public {{ get_page_class_name this }} Expect(global::System.Action<{{ get_page_class_name this }}.Conditions> it)
 		{
 			var timeoutOptions = SpaceOptions.Services.Get<global::Yapoml.Selenium.Options.TimeoutOptions>();
