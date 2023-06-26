@@ -21,8 +21,6 @@ namespace {{namespace}}
 		{{- for segment in url.segments }}{{ if for.first == false }}, {{ end }}string {{ segment }}{{ end }}
 		{{- for param in url.params }} {{ if url.segments && for.first }}, {{ end }}{{ if for.first == false }}, {{ end }}string {{ param }} = null{{ end }})
 		{
-			var baseUrl = SpaceOptions.Services.Get<global::Yapoml.Selenium.Options.BaseUrlOptions>().Url;
-
 			var segments = new global::System.Collections.Generic.List<global::System.Collections.Generic.KeyValuePair<string, string>>() { 
 				{{- for segment in url.segments }}{{ if for.first == false }}, {{end}}new global::System.Collections.Generic.KeyValuePair<string, string>("{{ segment }}", {{ segment }}) {{ end -}} 
 			};
@@ -31,7 +29,7 @@ namespace {{namespace}}
 				{{- for param in url.params }}{{ if for.first == false }}, {{end}}new global::System.Collections.Generic.KeyValuePair<string, string>("{{ param }}", {{ param }}) {{ end -}} 
 			};
 
-			var navService = new global::Yapoml.Selenium.Services.NavigationService(baseUrl);
+			var navService = new global::Yapoml.Selenium.Services.NavigationService(SpaceOptions);
 
 			var url = navService.BuildUri("{{ url.path }}", segments, queryParams);
 

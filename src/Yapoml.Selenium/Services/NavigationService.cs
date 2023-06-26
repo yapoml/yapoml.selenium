@@ -1,23 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Yapoml.Framework.Options;
+using Yapoml.Selenium.Options;
 
 namespace Yapoml.Selenium.Services
 {
     public class NavigationService
     {
-        string _baseUrl;
+        readonly ISpaceOptions _spaceOptions;
 
-        public NavigationService(string baseUrl)
+        public NavigationService(ISpaceOptions spaceOptions)
         {
-            _baseUrl = baseUrl;
+            _spaceOptions = spaceOptions;
         }
 
         public Uri BuildUri(string url, IList<KeyValuePair<string, string>> segments, IList<KeyValuePair<string, string>> queryParams)
         {
             url = new SegmentService().Replace(url, segments);
 
-            var urlBuilder = new UriBuilder(new Uri(new Uri(_baseUrl), url));
+            UriBuilder urlBuilder;
+
+            if (Uri.IsWellFormedUriString(url, UriKind.Relative))
+            {
+                var baseUrl = _spaceOptions.Services.Get<BaseUrlOptions>();
+
+                urlBuilder = new UriBuilder(new Uri(new Uri(baseUrl.Url), url));
+            }
+            else
+            {
+                urlBuilder = new UriBuilder(url);
+            }
 
             if (queryParams != null && queryParams.Count > 0)
             {
