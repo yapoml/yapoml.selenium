@@ -39,7 +39,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw new TimeoutException(GetIsError(latestValue, value), ex);
+                throw new ExpectException(GetIsError(latestValue, value), ex);
             }
 
             return _conditions;
@@ -71,7 +71,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw new TimeoutException(GetIsNotError(latestValue, value), ex);
+                throw new ExpectException(GetIsNotError(latestValue, value), ex);
             }
 
             return _conditions;
@@ -103,7 +103,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw new TimeoutException(GetIsGreaterThanError(latestValue, value), ex);
+                throw new ExpectException(GetIsGreaterThanError(latestValue, value), ex);
             }
 
             return _conditions;
@@ -135,7 +135,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw new TimeoutException(GetIsLessThanError(latestValue, value), ex);
+                throw new ExpectException(GetIsLessThanError(latestValue, value), ex);
             }
 
             return _conditions;

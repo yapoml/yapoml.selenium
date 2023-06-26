@@ -83,7 +83,7 @@ namespace Yapoml.Selenium.Components
             }
             catch (TimeoutException ex)
             {
-                throw new TimeoutException($"{ElementHandler.ComponentMetadata.Name} is not displayed yet '{ElementHandler.By}'.", ex);
+                throw new ExpectException($"{ElementHandler.ComponentMetadata.Name} is not displayed yet '{ElementHandler.By}'.", ex);
             }
 
             return conditions;
@@ -124,7 +124,7 @@ namespace Yapoml.Selenium.Components
             }
             catch (TimeoutException ex)
             {
-                throw new TimeoutException($"{ElementHandler.ComponentMetadata.Name} is still displayed '{ElementHandler.By}'.", ex);
+                throw new ExpectException($"{ElementHandler.ComponentMetadata.Name} is still displayed '{ElementHandler.By}'.", ex);
             }
 
             return conditions;
@@ -178,7 +178,7 @@ namespace Yapoml.Selenium.Components
             }
             catch (TimeoutException ex)
             {
-                throw new TimeoutException($"{ElementHandler.ComponentMetadata.Name} does not exist yet '{ElementHandler.By}'.", ex);
+                throw new ExpectException($"{ElementHandler.ComponentMetadata.Name} does not exist yet '{ElementHandler.By}'.", ex);
             }
 
             return conditions;
@@ -221,7 +221,7 @@ namespace Yapoml.Selenium.Components
             }
             catch (TimeoutException ex)
             {
-                throw new TimeoutException($"{ElementHandler.ComponentMetadata.Name} still exists '{ElementHandler.By}'.", ex);
+                throw new ExpectException($"{ElementHandler.ComponentMetadata.Name} still exists '{ElementHandler.By}'.", ex);
             }
 
             return conditions;
@@ -247,7 +247,7 @@ namespace Yapoml.Selenium.Components
             }
             catch (TimeoutException ex)
             {
-                throw new TimeoutException($"{ElementHandler.ComponentMetadata.Name} is not enabled yet.", ex);
+                throw new ExpectException($"{ElementHandler.ComponentMetadata.Name} is not enabled yet.", ex);
             }
 
             return conditions;

@@ -37,7 +37,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw new TimeoutException(GetIsError(latestValue, value), ex);
+                throw new ExpectException(GetIsError(latestValue, value), ex);
             }
 
             return _conditions;
@@ -67,7 +67,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw new TimeoutException(GetIsNotError(latestValue, value), ex);
+                throw new ExpectException(GetIsNotError(latestValue, value), ex);
             }
 
             return _conditions;
@@ -92,7 +92,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw new TimeoutException(GetIsEmptyError(latestValue), ex);
+                throw new ExpectException(GetIsEmptyError(latestValue), ex);
             }
 
             return _conditions;
@@ -117,7 +117,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw new TimeoutException(GetIsNotEmptyError(latestValue), ex);
+                throw new ExpectException(GetIsNotEmptyError(latestValue), ex);
             }
 
             return _conditions;
@@ -147,7 +147,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw new TimeoutException(GetStartsWithError(latestValue, value), ex);
+                throw new ExpectException(GetStartsWithError(latestValue, value), ex);
             }
 
             return _conditions;
@@ -177,7 +177,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw new TimeoutException(GetDoesNotStartWithError(latestValue, value), ex);
+                throw new ExpectException(GetDoesNotStartWithError(latestValue, value), ex);
             }
 
             return _conditions;
@@ -207,7 +207,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw new TimeoutException(GetEndsWithError(latestValue, value), ex);
+                throw new ExpectException(GetEndsWithError(latestValue, value), ex);
             }
 
             return _conditions;
@@ -237,7 +237,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw new TimeoutException(GetDoesNotEndWithError(latestValue, value), ex);
+                throw new ExpectException(GetDoesNotEndWithError(latestValue, value), ex);
             }
 
             return _conditions;
@@ -267,7 +267,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw new TimeoutException(GetContainsError(latestValue, value), ex);
+                throw new ExpectException(GetContainsError(latestValue, value), ex);
             }
 
             return _conditions;
@@ -297,7 +297,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw new TimeoutException(GetDoesNotContainError(latestValue, value), ex);
+                throw new ExpectException(GetDoesNotContainError(latestValue, value), ex);
             }
 
             return _conditions;
@@ -322,7 +322,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw new TimeoutException(GetMatchesError(latestValue, regex), ex);
+                throw new ExpectException(GetMatchesError(latestValue, regex), ex);
             }
 
             return _conditions;
@@ -347,7 +347,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             }
             catch (TimeoutException ex)
             {
-                throw new TimeoutException(GetDoesNotMatchError(latestValue, regex), ex);
+                throw new ExpectException(GetDoesNotMatchError(latestValue, regex), ex);
             }
 
             return _conditions;

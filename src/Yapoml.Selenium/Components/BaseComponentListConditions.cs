@@ -68,9 +68,9 @@ namespace Yapoml.Selenium.Components
                             _ => "th"
                         };
 #if NET6_0_OR_GREATER
-                        throw new TimeoutException($"The {i + 1}{indexPostfix} {elementHandler.ComponentMetadata.Name} of {elements.Count} does not satisfy condition '{predicateExpression}'.", ex);
+                        throw new ExpectException($"The {i + 1}{indexPostfix} {elementHandler.ComponentMetadata.Name} of {elements.Count} does not satisfy condition '{predicateExpression}'.", ex);
 #else
-                        throw new TimeoutException($"The {i + 1}{indexPostfix} {elementHandler.ComponentMetadata.Name} of {elements.Count} does not satisfy condition.", ex);
+                        throw new ExpectException($"The {i + 1}{indexPostfix} {elementHandler.ComponentMetadata.Name} of {elements.Count} does not satisfy condition.", ex);
 #endif
                     }
                 }
@@ -84,7 +84,7 @@ namespace Yapoml.Selenium.Components
             }
             catch (TimeoutException ex)
             {
-                throw new TimeoutException($"Not all {ElementsListHandler.ComponentsListMetadata.Name} satisfy condition.", ex);
+                throw new ExpectException($"Not all {ElementsListHandler.ComponentsListMetadata.Name} satisfy condition.", ex);
             }
 
             return listConditions;
@@ -129,9 +129,9 @@ namespace Yapoml.Selenium.Components
             catch (TimeoutException ex)
             {
 #if NET6_0_OR_GREATER
-                throw new TimeoutException($"The {ElementsListHandler.ComponentsListMetadata.Name} does not contain any {ElementsListHandler.ComponentsListMetadata.ComponentMetadata.Name} satisfying condition '{predicateExpression}'.", ex);
+                throw new ExpectException($"The {ElementsListHandler.ComponentsListMetadata.Name} does not contain any {ElementsListHandler.ComponentsListMetadata.ComponentMetadata.Name} satisfying condition '{predicateExpression}'.", ex);
 #else
-                throw new TimeoutException($"The {ElementsListHandler.ComponentsListMetadata.Name} does not contain any {ElementsListHandler.ComponentsListMetadata.ComponentMetadata.Name} satisfying condition.", ex);
+                throw new ExpectException($"The {ElementsListHandler.ComponentsListMetadata.Name} does not contain any {ElementsListHandler.ComponentsListMetadata.ComponentMetadata.Name} satisfying condition.", ex);
 #endif
             }
 
@@ -180,9 +180,9 @@ namespace Yapoml.Selenium.Components
             catch (TimeoutException ex)
             {
 #if NET6_0_OR_GREATER
-                throw new TimeoutException($"The {ElementsListHandler.ComponentsListMetadata.Name} contain at least one {ElementsListHandler.ComponentsListMetadata.ComponentMetadata.Name} satisfying condition '{predicateExpression}'.", ex);
+                throw new ExpectException($"The {ElementsListHandler.ComponentsListMetadata.Name} contain at least one {ElementsListHandler.ComponentsListMetadata.ComponentMetadata.Name} satisfying condition '{predicateExpression}'.", ex);
 #else
-                throw new TimeoutException($"The {ElementsListHandler.ComponentsListMetadata.Name} contain at least one {ElementsListHandler.ComponentsListMetadata.ComponentMetadata.Name} satisfying condition.", ex);
+                throw new ExpectException($"The {ElementsListHandler.ComponentsListMetadata.Name} contain at least one {ElementsListHandler.ComponentsListMetadata.ComponentMetadata.Name} satisfying condition.", ex);
 #endif
             }
 

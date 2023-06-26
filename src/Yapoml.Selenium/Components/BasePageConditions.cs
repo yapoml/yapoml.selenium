@@ -54,7 +54,7 @@ namespace Yapoml.Selenium.Components
             catch (TimeoutException ex)
             {
                 // TODO Put page name in exception
-                throw new TimeoutException($"Page is not loaded yet. Current state is '{latestValue}'.", ex);
+                throw new ExpectException($"Page is not loaded yet. Current state is '{latestValue}'.", ex);
             }
 
             return conditions;
