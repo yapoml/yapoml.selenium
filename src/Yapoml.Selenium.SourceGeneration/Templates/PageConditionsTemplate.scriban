@@ -10,7 +10,9 @@ public partial class Conditions : global::Yapoml.Selenium.Components.BasePageCon
 	{{ if $1.url && $1.url.segments == null && $1.url.params == null }}
 	public override Conditions IsLoaded(global::System.TimeSpan? timeout = default)
 	{	
-		return Url.EndsWith("{{ $1.url.path }}", timeout).IsLoaded(timeout);
+		Url.EndsWith("{{ $1.url.path }}", timeout);
+
+		return base.IsLoaded(timeout);
 	}
 	{{ end }}
 
