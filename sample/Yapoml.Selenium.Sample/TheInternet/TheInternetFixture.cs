@@ -46,8 +46,7 @@ namespace Yapoml.Selenium.Sample.TheInternet
             alert.Accept();
         }
 
-        [Test, Ignore("")]
-        // https://github.com/w3c/webdriver/issues/1488
+        [Test, Ignore("https://github.com/w3c/webdriver/issues/1488")]
         public void DragAndDrop()
         {
             var page = _ya.DragAndDropPage.Open();
