@@ -91,9 +91,9 @@ namespace Yapoml.Selenium.Components
         }
 
 #if NET6_0_OR_GREATER
-        public TListConditions Contain(Action<TComponentConditions> predicate, TimeSpan? timeout = default, [CallerArgumentExpression("predicate")] string predicateExpression = null)
+        public TListConditions Contains(Action<TComponentConditions> predicate, TimeSpan? timeout = default, [CallerArgumentExpression("predicate")] string predicateExpression = null)
 #else
-        public TListConditions Contain(Action<TComponentConditions> predicate, TimeSpan? timeout = default)
+        public TListConditions Contains(Action<TComponentConditions> predicate, TimeSpan? timeout = default)
 #endif
         {
             timeout ??= Timeout;
