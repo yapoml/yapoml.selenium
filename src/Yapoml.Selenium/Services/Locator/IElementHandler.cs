@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using System;
 using Yapoml.Selenium.Components.Metadata;
 
 namespace Yapoml.Selenium.Services.Locator
@@ -6,6 +7,8 @@ namespace Yapoml.Selenium.Services.Locator
     public interface IElementHandler
     {
         IWebElement Locate();
+
+        IWebElement Locate(TimeSpan timeout, TimeSpan pollingInterval);
 
         void Invalidate();
 

@@ -113,6 +113,7 @@ namespace Yapoml.Selenium.Components
             _logger.Trace($"Hovering over {Metadata.Name}");
 
             RelocateOnStaleReference(() => new Actions(WebDriver).MoveToElement(WrappedElement).Build().Perform());
+
             return component;
         }
 

@@ -1,5 +1,7 @@
 ﻿using OpenQA.Selenium;
-using System.Collections.Generic;
+using System;
+using System.Diagnostics;
+using System.Threading;
 using Yapoml.Selenium.Components.Metadata;
 using Yapoml.Selenium.Events;
 
@@ -39,32 +41,106 @@ namespace Yapoml.Selenium.Services.Locator
 
         public IWebElement Locate()
         {
+            return Locate(TimeSpan.Zero, TimeSpan.Zero);
+        }
+
+        public IWebElement Locate(TimeSpan timeout, TimeSpan pollingInterval)
+        {
             if (_webElement == null)
             {
                 if (_parentElementHandler != null)
                 {
                     try
                     {
-                        var parentElement = _parentElementHandler.Locate();
+                        var parentElement = _parentElementHandler.Locate(timeout, pollingInterval);
 
                         _eventSource.ComponentEventSource.RaiseOnFindingComponent(By, ComponentMetadata);
 
-                        _webElement = _elementLocator.FindElement(parentElement, By);
+                        var stopwatch = Stopwatch.StartNew();
+
+                        Exception lastException = null;
+
+                        do
+                        {
+                            try
+                            {
+                                _webElement = _elementLocator.FindElement(parentElement, By);
+
+                                break;
+                            }
+                            catch (NoSuchElementException exp)
+                            {
+                                lastException = exp;
+                                Thread.Sleep(pollingInterval);
+                            }
+                        }
+                        while (stopwatch.Elapsed <= timeout);
+
+                        if (_webElement is null)
+                        {
+                            throw lastException;
+                        }
                     }
                     catch (StaleElementReferenceException)
                     {
                         _parentElementHandler.Invalidate();
 
-                        var parentElement = _parentElementHandler.Locate();
+                        var parentElement = _parentElementHandler.Locate(timeout, pollingInterval);
 
-                        _webElement = _elementLocator.FindElement(parentElement, By);
+                        var stopwatch = Stopwatch.StartNew();
+
+                        Exception lastException = null;
+
+                        do
+                        {
+                            try
+                            {
+                                _webElement = _elementLocator.FindElement(parentElement, By);
+
+                                break;
+                            }
+                            catch (NoSuchElementException exp)
+                            {
+                                lastException = exp;
+                                Thread.Sleep(pollingInterval);
+                            }
+                        }
+                        while (stopwatch.Elapsed <= timeout);
+
+                        if (_webElement is null)
+                        {
+                            throw lastException;
+                        }
                     }
                 }
                 else
                 {
                     _eventSource.ComponentEventSource.RaiseOnFindingComponent(By, ComponentMetadata);
 
-                    _webElement = _elementLocator.FindElement(_webDriver, By);
+                    var stopwatch = Stopwatch.StartNew();
+
+                    Exception lastException = null;
+
+                    do
+                    {
+                        try
+                        {
+                            _webElement = _elementLocator.FindElement(_webDriver, By);
+
+                            break;
+                        }
+                        catch (NoSuchElementException exp)
+                        {
+                            lastException = exp;
+                            Thread.Sleep(pollingInterval);
+                        }
+                    }
+                    while (stopwatch.Elapsed <= timeout);
+
+                    if (_webElement is null)
+                    {
+                        throw lastException;
+                    }
                 }
 
                 _eventSource.ComponentEventSource.RaiseOnFoundComponent(By, _webDriver, _webElement, ComponentMetadata);

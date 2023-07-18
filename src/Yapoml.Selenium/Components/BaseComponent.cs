@@ -6,6 +6,7 @@ using System.Drawing;
 using Yapoml.Framework.Logging;
 using Yapoml.Selenium.Services.Locator;
 using Yapoml.Selenium.Components.Metadata;
+using Yapoml.Selenium.Options;
 
 namespace Yapoml.Selenium.Components
 {
@@ -61,7 +62,10 @@ namespace Yapoml.Selenium.Components
         private readonly Lazy<StylesCollection> _styles;
         protected ILogger _logger;
 
-        public virtual IWebElement WrappedElement => _elementHandler.Locate();
+        protected TimeSpan _locateTimeout;
+        protected TimeSpan _locatePollingInterval;
+
+        public virtual IWebElement WrappedElement => _elementHandler.Locate(_locateTimeout, _locatePollingInterval);
 
         protected ComponentMetadata Metadata { get; }
 
@@ -80,6 +84,8 @@ namespace Yapoml.Selenium.Components
 
             EventSource = spaceOptions.Services.Get<IEventSource>();
             _logger = spaceOptions.Services.Get<ILogger>();
+            _locateTimeout = spaceOptions.Services.Get<TimeoutOptions>().Timeout;
+            _locatePollingInterval = spaceOptions.Services.Get<TimeoutOptions>().PollingInterval;
 
             _attributes = new Lazy<AttributesCollection>(() => new AttributesCollection(elementHandler));
             _styles = new Lazy<StylesCollection>(() => new StylesCollection(elementHandler));
@@ -119,14 +125,13 @@ return (
 
         public bool IsDisplayed
         {
-            // TODO return bool for awaitable components (they throw )
             get
             {
                 bool displayed;
 
                 try
                 {
-                    displayed = RelocateOnStaleReference(() => WrappedElement.Displayed);
+                    displayed = _elementHandler.Locate().Displayed;
                 }
                 catch (Exception ex) when (ex is NoSuchElementException || ex is StaleElementReferenceException)
                 {
