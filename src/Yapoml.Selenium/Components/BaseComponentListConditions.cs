@@ -189,14 +189,13 @@ namespace Yapoml.Selenium.Components
             return listConditions;
         }
 
-        public virtual TListConditions IsEmpty(TimeSpan? timeout)
+        public virtual TListConditions IsEmpty(TimeSpan? timeout = default)
         {
             return Count.Is(0, timeout);
         }
 
-        public virtual TListConditions IsNotEmpty(TimeSpan? timeout)
+        public virtual TListConditions IsNotEmpty(TimeSpan? timeout = default)
         {
-
             return Count.IsGreaterThan(0, timeout);
         }
 
