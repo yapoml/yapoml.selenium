@@ -8,8 +8,13 @@ namespace Yapoml.Selenium.Components
     partial class BaseComponent<TComponent, TConditions>
     {
         /// <summary>
-        /// Clears the content of the element.
+        /// Clears the text from a component.
+        /// <para>
+        /// It is useful for deleting the existing text before entering new text.
+        /// For example, you can use it to erase a query in a search box, or clear a password field.
+        /// </para>
         /// </summary>
+        /// <returns>The same instance of the component to continue interaction with it.</returns>
         public virtual TComponent Clear()
         {
             _logger.Trace($"Clearing {Metadata.Name}");
@@ -19,9 +24,8 @@ namespace Yapoml.Selenium.Components
             return component;
         }
 
-        /// <summary>
-        /// Clears the content of the element.
-        /// </summary>
+        /// <inheritdoc cref="Clear()"/>
+        /// <param name="when">Condition to be satisfied before clearing a text.</param>
         public virtual TComponent Clear(Action<TConditions> when)
         {
             when(conditions);
@@ -30,9 +34,14 @@ namespace Yapoml.Selenium.Components
         }
 
         /// <summary>
-        /// Types any text into the component.
+        /// Sends a sequence of keystrokes to a component.
+        /// <para>
+        /// It is useful for entering text, selecting options, or performing keyboard shortcuts.
+        /// For example, you can use it to type a query in a search box, choose a value from a dropdown menu, or press the enter key.
+        /// </para>
         /// </summary>
-        /// <param name="text">The text to be typed.</param>
+        /// <param name="text">The text to be typed. Also supports <seealso cref="OpenQA.Selenium.Keys"/>.</param>
+        /// <returns>The same instance of the component to continue interaction with it.</returns>
         public virtual TComponent Type(string text)
         {
             // todo make it event based
@@ -50,10 +59,8 @@ namespace Yapoml.Selenium.Components
             return component;
         }
 
-        /// <summary>
-        /// Types any text into the component.
-        /// </summary>
-        /// <param name="text">The text to be typed.</param>
+        /// <inheritdoc cref="Type(string)"/>
+        /// <param name="when">Condition to be satisfied before simulating a mouse click.</param>
         public virtual TComponent Type(string text, Action<TConditions> when)
         {
             when(conditions);
