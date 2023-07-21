@@ -113,8 +113,13 @@ namespace Yapoml.Selenium.Components
         }
 
         /// <summary>
-        /// Moves the cursor onto the element or one of its child elements.
+        /// Simulates a mouse hover over a component.
+        /// <para>
+        /// It is useful for triggering events that depend on the mouse cursor position, such as displaying tooltips, menus, or pop-ups.
+        /// For example, you can use it to hover over a link to see its URL, or hover over a button to see its description.
+        /// </para>
         /// </summary>
+        /// <returns>The same instance of the component to continue interaction with it.</returns>
         public virtual TComponent Hover()
         {
             _logger.Trace($"Hovering over {Metadata.Name}");
@@ -124,9 +129,8 @@ namespace Yapoml.Selenium.Components
             return component;
         }
 
-        /// <summary>
-        /// Moves the cursor onto the element or one of its child elements.
-        /// </summary>
+        /// <inheritdoc cref="Hover()"/>
+        /// <param name="when">Condition to be satisfied before simulating a mouse click.</param>
         public virtual TComponent Hover(Action<TConditions> when)
         {
             when(conditions);
@@ -134,9 +138,9 @@ namespace Yapoml.Selenium.Components
             return Hover();
         }
 
-        /// <summary>
-        /// Moves the cursor onto the element or one of its child elements.
-        /// </summary>
+        /// <inheritdoc cref="Hover()"/>
+        /// <param name="x">Coordinates offset by X-axis.</param>
+        /// <param name="y">Coordinates offset by Y-axis.</param>
         public virtual TComponent Hover(int x, int y)
         {
             _logger.Trace($"Hovering on {Metadata.Name} by X: {x}, Y: {y}");
@@ -146,9 +150,8 @@ namespace Yapoml.Selenium.Components
             return component;
         }
 
-        /// <summary>
-        /// Moves the cursor onto the element or one of its child elements.
-        /// </summary>
+        /// <inheritdoc cref="Hover(int, int)"/>
+        /// <inheritdoc cref="Hover(Action{TConditions})"/>
         public virtual TComponent Hover(int x, int y, Action<TConditions> when)
         {
             when(conditions);
@@ -223,9 +226,13 @@ namespace Yapoml.Selenium.Components
         }
 
         /// <summary>
-        /// Sets focus on the specified element, if it can be focused.
-        /// The focused element is the element that will receive keyboard and similar events by default.
+        /// Sets the focus on a component.
+        /// <para>
+        /// It is useful for activating the component or preparing it for user input. For example,
+        /// you can use it to focus on a text field before typing, or focus on a checkbox before clicking.
+        /// </para>
         /// </summary>
+        /// <returns>The same instance of the component to continue interaction with it.</returns>
         public virtual TComponent Focus()
         {
             if (SpaceOptions.Services.TryGet<FocusOptions>(out var options))
@@ -244,10 +251,8 @@ namespace Yapoml.Selenium.Components
             return component;
         }
 
-        /// <summary>
-        /// Sets focus on the specified element, if it can be focused.
-        /// The focused element is the element that will receive keyboard and similar events by default.
-        /// </summary>
+        /// <inheritdoc cref="Focus()"/>
+        /// <param name="when">Condition to be satisfied before clearing a text.</param>
         public virtual TComponent Focus(Action<TConditions> when)
         {
             if (SpaceOptions.Services.TryGet<FocusOptions>(out var options))
@@ -262,10 +267,8 @@ namespace Yapoml.Selenium.Components
             }
         }
 
-        /// <summary>
-        /// Sets focus on the specified element, if it can be focused.
-        /// The focused element is the element that will receive keyboard and similar events by default.
-        /// </summary>
+        /// <inheritdoc cref="Focus()"/>
+        /// <param name="options">Specified aspects of the focusing process.</param>
         public virtual TComponent Focus(FocusOptions options)
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
@@ -279,10 +282,8 @@ namespace Yapoml.Selenium.Components
             return component;
         }
 
-        /// <summary>
-        /// Sets focus on the specified element, if it can be focused.
-        /// The focused element is the element that will receive keyboard and similar events by default.
-        /// </summary>
+        /// <inheritdoc cref="Focus(FocusOptions)"/>
+        /// <inheritdoc cref="Focus(Action{TConditions})"/>
         public virtual TComponent Focus(FocusOptions options, Action<TConditions> when)
         {
             when(conditions);
