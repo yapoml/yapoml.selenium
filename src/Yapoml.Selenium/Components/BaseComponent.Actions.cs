@@ -160,8 +160,13 @@ namespace Yapoml.Selenium.Components
         }
 
         /// <summary>
-        /// Scrolls the element's ancestor containers is visible to the user.
+        /// Scrolls the web page until a component is visible.
+        /// <para>
+        /// It is useful for accessing components that are not in the current viewport, such as hidden or lazy-loaded components.
+        /// For example, you can use it to scroll to the bottom of a page to see the footer, or scroll to a specific section of a page to see its content.
+        /// </para>
         /// </summary>
+        /// <returns>The same instance of the component to continue interaction with it.</returns>
         public virtual TComponent ScrollIntoView()
         {
             if (SpaceOptions.Services.TryGet<ScrollIntoViewOptions>(out var options))
@@ -180,9 +185,8 @@ namespace Yapoml.Selenium.Components
             return component;
         }
 
-        /// <summary>
-        /// Scrolls the element's ancestor containers is visible to the user.
-        /// </summary>
+        /// <inheritdoc cref="ScrollIntoView()"/>
+        /// <param name="when">Condition to be satisfied before scrolling a component into view.</param>
         public virtual TComponent ScrollIntoView(Action<TConditions> when)
         {
             if (SpaceOptions.Services.TryGet<ScrollIntoViewOptions>(out var options))
@@ -199,9 +203,8 @@ namespace Yapoml.Selenium.Components
             return component;
         }
 
-        /// <summary>
-        /// Scrolls the element's ancestor containers is visible to the user.
-        /// </summary>
+        /// <inheritdoc cref="ScrollIntoView()"/>
+        /// <param name="options">Specified options how exactly scroll a component into view.</param>
         public virtual TComponent ScrollIntoView(ScrollIntoViewOptions options)
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
@@ -215,9 +218,8 @@ namespace Yapoml.Selenium.Components
             return component;
         }
 
-        /// <summary>
-        /// Scrolls the element's ancestor containers is visible to the user.
-        /// </summary>
+        /// <inheritdoc cref="ScrollIntoView(ScrollIntoViewOptions)"/>
+        /// <inheritdoc cref="ScrollIntoView(Action{TConditions})"/>
         public virtual TComponent ScrollIntoView(ScrollIntoViewOptions options, Action<TConditions> when)
         {
             when(conditions);
@@ -292,8 +294,13 @@ namespace Yapoml.Selenium.Components
         }
 
         /// <summary>
-        /// Removes keyboard focus from the element.
+        /// Removes the focus from a component.
+        /// <para>
+        /// It is useful for deactivating the component or triggering events that depend on the focus state, such as validation or formatting.
+        /// For example, you can use it to blur a text field after typing, or blur a dropdown menu after selecting an option.
+        /// </para>
         /// </summary>
+        /// <returns>The same instance of the component to continue interaction with it.</returns>
         public virtual TComponent Blur()
         {
             _logger.Trace($"Bluring {Metadata.Name}");
@@ -305,9 +312,8 @@ namespace Yapoml.Selenium.Components
             return component;
         }
 
-        /// <summary>
-        /// Removes keyboard focus from the element.
-        /// </summary>
+        /// <inheritdoc cref="Blur()"/>
+        /// <param name="when">Condition to be satisfied before removing the focus.</param>
         public virtual TComponent Blur(Action<TConditions> when)
         {
             when(conditions);
