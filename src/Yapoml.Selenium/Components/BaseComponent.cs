@@ -91,16 +91,73 @@ namespace Yapoml.Selenium.Components
             _styles = new Lazy<StylesCollection>(() => new StylesCollection(elementHandler));
         }
 
+        /// <summary>
+        /// Gets the value of an attribute of a component as a string. It can also retrieve component properties, such as an anchor tag’s href attribute.
+        /// <para>
+        /// For example, you can use it to check if an input element has a value attribute that matches the expected input,
+        /// or if an image element has an alt attribute that describes the image.
+        /// </para>
+        /// </summary>
+        /// <remarks>
+        /// Well-known attributes are accessible shortly.
+        /// <code>
+        /// var value = driver.Ya().HomePage.SearchInput.Attributes.Value;
+        /// // or
+        /// var href = driver.Ya().HomePage.Logo.Attributes.Href;
+        /// </code>
+        /// </remarks>
         public AttributesCollection Attributes => _attributes.Value;
 
+        /// <summary>
+        /// Gets the value of a CSS property of a component as a string. It can be used to retrieve the computed style of a component, 
+        /// such as its <c>color</c>, <c>font-size</c>, or <c>display</c>.
+        /// <para>
+        /// For example, you can use it to check if an element has a certain background color, or if an element is visible or hidden by its display property.
+        /// </para>
+        /// </summary>
+        /// <remarks>
+        /// Well-known styles are accessible shortly.
+        /// <code>
+        /// var color = driver.Ya().HomePage.SearchButton.Styles.Color;
+        /// // or
+        /// var opacity = driver.Ya().HomePage.SearchButton.Styles.Opacity;
+        /// </code>
+        /// </remarks>
         public StylesCollection Styles => _styles.Value;
 
+        /// <summary>
+        /// Gets the visible text of a component.
+        /// <para>
+        /// It returns a string value that represents the inner text of the element. For example, you can use it to check if
+        /// a label displays the correct message, or if a paragraph contains the expected text.
+        /// </para>
+        /// </summary>
+        /// <remarks>
+        /// This property may not work as expected for some components that do not have any visible text content. For example,
+        /// input elements (<c>&lt;input&gt;</c>) do not have any inner text, so they will return an empty string for this property.
+        /// To get the value of an input element, you may need to use the <see cref="AttributesCollection.Value"/> property.
+        /// </remarks>
         public string Text => RelocateOnStaleReference(() => WrappedElement.Text);
 
+        /// <summary>
+        /// Used to indicate whether a component can respond to user interactions or not.
+        /// <para>
+        /// It returns a boolean value: <c>true</c> if the element is enabled, and <c>false</c> if the element is disabled.
+        /// </para>
+        /// <para>
+        /// For example, you can use it to check if a checkbox is checked or unchecked, or if a text field is editable or read-only.
+        /// </para>
+        /// </summary>
         public bool IsEnabled => RelocateOnStaleReference(() => WrappedElement.Enabled);
 
         public bool IsSelected => RelocateOnStaleReference(() => WrappedElement.Selected);
 
+        /// <summary>
+        /// Indicates whether a component currently is partially visible within viewport or not.
+        /// <para>
+        /// It returns a boolean value: <c>true</c> if the component is in viewport, and <c>false</c> if the component is not.
+        /// </para>
+        /// </summary>
         public bool IsInView
         {
             get
@@ -113,7 +170,7 @@ return (
     rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
     rect.right <= (window.innerWidth || document.documentElement.clientWidth)
 );";
-                    
+
 
                 return (bool)(RelocateOnStaleReference(() => (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement)));
             }
@@ -123,7 +180,22 @@ return (
 
         public Size Size => RelocateOnStaleReference(() => WrappedElement.Size);
 
-        public bool IsDisplayed
+        /// <summary>
+        /// Indicates whether a component is visible on the page or not.
+        /// <para>
+        /// Returns <c>true</c> if the element is displayed, and <c>false</c> if the element is hidden or not present.
+        /// </para>
+        /// <para>
+        /// Useful for verifying the visibility of components that may change dynamically based on user actions or page conditions.
+        /// For example, you can use it to check if a dropdown menu is expanded or collapsed, or if a modal dialog is open or closed.
+        /// It does not check if the component is within the viewport or not. It only checks if the element is rendered on the page,
+        /// regardless of its position or size. Look at <see cref="IsInView"/> property if you need to check whether the component is within the viewport.
+        /// </para>
+        /// </summary>
+        /// <remarks>
+        /// It doesn't expect a component exists in DOM. It only returns <c>true</c> if a component is found in DOM and visible. Otherwise, it returns <c>false</c>.
+        /// </remarks>
+        public virtual bool IsDisplayed
         {
             get
             {
@@ -142,6 +214,12 @@ return (
             }
         }
 
+        /// <summary>
+        /// Indicates whether a component currently has logical focus or not.
+        /// <para>
+        /// It returns a boolean value: <c>true</c> if the component has focus, and <c>false</c> if the component does not have focus.
+        /// </para>
+        /// </summary>
         public bool IsFocused
         {
             get
