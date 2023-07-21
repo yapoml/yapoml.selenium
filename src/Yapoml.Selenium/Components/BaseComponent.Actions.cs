@@ -308,9 +308,10 @@ namespace Yapoml.Selenium.Components
         }
 
         /// <summary>
-        /// Context clicks the mouse on the element.
+        /// Simulates a mouse right click on a component. It can be used to interact with elements
+        /// that show a context menu when right clicked, such as opening a link in a new tab, copying text.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The same instance of the component to continue interaction with it.</returns>
         public virtual TComponent ContextClick()
         {
             _logger.Trace($"Context clicking on {Metadata.Name}");
@@ -320,10 +321,20 @@ namespace Yapoml.Selenium.Components
             return component;
         }
 
+        /// <inheritdoc cref="ContextClick()"/>
+        /// <param name="when">Condition to be satisfied before simulating a mouse right click.</param>
+        public virtual TComponent ContextClick(Action<TConditions> when)
+        {
+            when(conditions);
+
+            return ContextClick();
+        }
+
         /// <summary>
-        /// Double-clicks the mouse on the element.
+        /// Simulates a mouse double click on a component. It can be used to interact with elements
+        /// that require a double click to launch specific functions, such as opening a file, selecting a word of text, etc.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The same instance of the component to continue interaction with it.</returns>
         public virtual TComponent DoubleClick()
         {
             _logger.Trace($"Double clicking on {Metadata.Name}");
@@ -331,6 +342,15 @@ namespace Yapoml.Selenium.Components
             RelocateOnStaleReference(() => new Actions(WebDriver).DoubleClick(WrappedElement).Build().Perform());
 
             return component;
+        }
+
+        /// <inheritdoc cref="DoubleClick()"/>
+        /// <param name="when">Condition to be satisfied before simulating a mouse double click.</param>
+        public virtual TComponent DoubleClick(Action<TConditions> when)
+        {
+            when(conditions);
+
+            return DoubleClick();
         }
 
         /// <summary>
