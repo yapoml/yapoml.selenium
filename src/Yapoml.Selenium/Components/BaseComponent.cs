@@ -106,7 +106,7 @@ namespace Yapoml.Selenium.Components
         /// var href = driver.Ya().HomePage.Logo.Attributes.Href;
         /// </code>
         /// </remarks>
-        public AttributesCollection Attributes => _attributes.Value;
+        public virtual AttributesCollection Attributes => _attributes.Value;
 
         /// <summary>
         /// Gets the value of a CSS property of a component as a string. It can be used to retrieve the computed style of a component, 
@@ -123,7 +123,7 @@ namespace Yapoml.Selenium.Components
         /// var opacity = driver.Ya().HomePage.SearchButton.Styles.Opacity;
         /// </code>
         /// </remarks>
-        public StylesCollection Styles => _styles.Value;
+        public virtual StylesCollection Styles => _styles.Value;
 
         /// <summary>
         /// Gets the visible text of a component.
@@ -137,7 +137,7 @@ namespace Yapoml.Selenium.Components
         /// input elements (<c>&lt;input&gt;</c>) do not have any inner text, so they will return an empty string for this property.
         /// To get the value of an input element, you may need to use the <see cref="AttributesCollection.Value"/> property.
         /// </remarks>
-        public string Text => RelocateOnStaleReference(() => WrappedElement.Text);
+        public virtual string Text => RelocateOnStaleReference(() => WrappedElement.Text);
 
         /// <summary>
         /// Used to indicate whether a component can respond to user interactions or not.
@@ -148,9 +148,9 @@ namespace Yapoml.Selenium.Components
         /// For example, you can use it to check if a checkbox is checked or unchecked, or if a text field is editable or read-only.
         /// </para>
         /// </summary>
-        public bool IsEnabled => RelocateOnStaleReference(() => WrappedElement.Enabled);
+        public virtual bool IsEnabled => RelocateOnStaleReference(() => WrappedElement.Enabled);
 
-        public bool IsSelected => RelocateOnStaleReference(() => WrappedElement.Selected);
+        public virtual bool IsSelected => RelocateOnStaleReference(() => WrappedElement.Selected);
 
         /// <summary>
         /// Indicates whether a component currently is partially visible within viewport or not.
@@ -158,7 +158,7 @@ namespace Yapoml.Selenium.Components
         /// It returns a boolean value: <c>true</c> if the component is in viewport, and <c>false</c> if the component is not.
         /// </para>
         /// </summary>
-        public bool IsInView
+        public virtual bool IsInView
         {
             get
             {
@@ -176,9 +176,9 @@ return (
             }
         }
 
-        public Point Location => RelocateOnStaleReference(() => WrappedElement.Location);
+        public virtual Point Location => RelocateOnStaleReference(() => WrappedElement.Location);
 
-        public Size Size => RelocateOnStaleReference(() => WrappedElement.Size);
+        public virtual Size Size => RelocateOnStaleReference(() => WrappedElement.Size);
 
         /// <summary>
         /// Indicates whether a component is visible on the page or not.
@@ -220,7 +220,7 @@ return (
         /// It returns a boolean value: <c>true</c> if the component has focus, and <c>false</c> if the component does not have focus.
         /// </para>
         /// </summary>
-        public bool IsFocused
+        public virtual bool IsFocused
         {
             get
             {
@@ -234,7 +234,7 @@ return (
             return RelocateOnStaleReference(() => WrappedElement.GetShadowRoot());
         }
 
-        public void Submit()
+        public virtual void Submit()
         {
             RelocateOnStaleReference(() => WrappedElement.Submit());
         }

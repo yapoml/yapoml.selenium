@@ -62,8 +62,10 @@ namespace Yapoml.Selenium.Components
         }
 
         /// <summary>
-        /// Simulates a mouse click on an element.
+        /// Simulates a mouse click on a component. It can be used to interact with buttons, links,
+        /// checkboxes, radio buttons, and other clickable components on a page.
         /// </summary>
+        /// <returns>The same instance of the component to continue interaction with it.</returns>
         public virtual TComponent Click()
         {
             _logger.Trace($"Clicking on {Metadata.Name}");
@@ -73,9 +75,8 @@ namespace Yapoml.Selenium.Components
             return component;
         }
 
-        /// <summary>
-        /// Simulates a mouse click on an element.
-        /// </summary>
+        /// <inheritdoc cref="Click()"/>/>
+        /// <param name="when">Condition to be satisfied before simulating a mouse click.</param>
         public virtual TComponent Click(Action<TConditions> when)
         {
             when(conditions);
@@ -83,9 +84,9 @@ namespace Yapoml.Selenium.Components
             return Click();
         }
 
-        /// <summary>
-        /// Simulates a mouse click on an element.
-        /// </summary>
+        /// <inheritdoc cref="Click()"/>
+        /// <param name="x">Coordinates offset by X-axis.</param>
+        /// <param name="y">Coordinates offset by Y-axis.</param>
         public virtual TComponent Click(int x, int y)
         {
             _logger.Trace($"Clicking on {Metadata.Name} by X: {x}, Y: {y}");
@@ -95,9 +96,8 @@ namespace Yapoml.Selenium.Components
             return component;
         }
 
-        /// <summary>
-        /// Simulates a mouse click on an element.
-        /// </summary>
+        /// <inheritdoc cref="Click(int, int)"/>
+        /// <inheritdoc cref="Click(Action{TConditions})"/>
         public virtual TComponent Click(int x, int y, Action<TConditions> when)
         {
             when(conditions);
@@ -338,7 +338,7 @@ namespace Yapoml.Selenium.Components
         /// </summary>
         public virtual TComponent DragAndDrop<TToComponent, TToConditions>(BaseComponent<TToComponent, TToConditions> toComponent)
             where TToComponent : BaseComponent<TToComponent, TToConditions>
-            where TToConditions: BaseComponentConditions<TToConditions>
+            where TToConditions : BaseComponentConditions<TToConditions>
         {
             _logger.Trace($"Dragging {Metadata.Name} to {toComponent.Metadata.Name}");
 
