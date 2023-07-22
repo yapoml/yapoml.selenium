@@ -87,8 +87,8 @@ namespace Yapoml.Selenium.Components
             _locateTimeout = spaceOptions.Services.Get<TimeoutOptions>().Timeout;
             _locatePollingInterval = spaceOptions.Services.Get<TimeoutOptions>().PollingInterval;
 
-            _attributes = new Lazy<AttributesCollection>(() => new AttributesCollection(elementHandler));
-            _styles = new Lazy<StylesCollection>(() => new StylesCollection(elementHandler));
+            _attributes = new Lazy<AttributesCollection>(() => new AttributesCollection(elementHandler, spaceOptions));
+            _styles = new Lazy<StylesCollection>(() => new StylesCollection(elementHandler, spaceOptions));
         }
 
         /// <summary>

@@ -1,5 +1,7 @@
 ﻿using OpenQA.Selenium;
 using System;
+using Yapoml.Framework.Options;
+using Yapoml.Selenium.Options;
 using Yapoml.Selenium.Services.Locator;
 
 namespace Yapoml.Selenium.Components
@@ -8,9 +10,15 @@ namespace Yapoml.Selenium.Components
     {
         private readonly IElementHandler _elementHandler;
 
-        public StylesCollection(IElementHandler elementHandler)
+        private readonly TimeSpan _timeout;
+        private readonly TimeSpan _pollingInterval;
+
+        public StylesCollection(IElementHandler elementHandler, ISpaceOptions spaceOptions)
         {
             _elementHandler = elementHandler;
+
+            _timeout = spaceOptions.Services.Get<TimeoutOptions>().Timeout;
+            _pollingInterval = spaceOptions.Services.Get<TimeoutOptions>().PollingInterval;
         }
 
         public string this[string name]
@@ -35,7 +43,7 @@ namespace Yapoml.Selenium.Components
             {
                 _elementHandler.Invalidate();
 
-                _elementHandler.Locate();
+                _elementHandler.Locate(_timeout, _pollingInterval);
 
                 return act();
             }
