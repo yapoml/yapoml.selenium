@@ -26,7 +26,7 @@
     </PackageReference>
 
     <PackageReference Include="Selenium.WebDriver" Version="4.10.0" />
-    <PackageReference Include="Yapoml.Framework" Version="0.10.7" />
+    <PackageReference Include="Yapoml.Framework" Version="0.10.8" />
   </ItemGroup>
 
   <ItemGroup>
