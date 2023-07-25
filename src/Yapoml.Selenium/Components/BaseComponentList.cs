@@ -9,6 +9,8 @@ using System.Runtime.CompilerServices;
 using Yapoml.Framework.Options;
 using Yapoml.Selenium.Components.Metadata;
 using Yapoml.Selenium.Events;
+using Yapoml.Selenium.Options;
+using Yapoml.Selenium.Services;
 using Yapoml.Selenium.Services.Factory;
 using Yapoml.Selenium.Services.Locator;
 
@@ -46,11 +48,37 @@ namespace Yapoml.Selenium.Components
         {
             get
             {
-                EnsureLocated();
+                var factory = _spaceOptions.Services.Get<IComponentFactory>();
+                var locator = _spaceOptions.Services.Get<IElementLocator>();
 
-                if (index >= _list.Count)
+                bool condition()
                 {
-                    throw new ArgumentOutOfRangeException(nameof(index), $"Couldn't get a {_componentsListMetadata.ComponentMetadata.Name} by index {index} from {_list.Count} {_componentsListMetadata.Name}.");
+                    var elements = _elementsListHandler.LocateMany();
+
+                    _list = new List<TComponent>(elements.Select(e => factory.Create<TComponent, TListConditions>(_page, _parentComponent, _webDriver, new ElementHandler(_webDriver, null, locator, _elementsListHandler.By, e, _componentsListMetadata.ComponentMetadata, _elementsListHandler.ElementHandlerRepository.CreateNestedRepository(), _eventSource), _componentsListMetadata.ComponentMetadata, _spaceOptions)));
+
+                    if (elements.Count > index)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        _elementsListHandler.Invalidate();
+
+                        return false;
+                    }
+                }
+
+                var timeout = _spaceOptions.Services.Get<TimeoutOptions>().Timeout;
+                var pollingInterval = _spaceOptions.Services.Get<TimeoutOptions>().PollingInterval;
+
+                try
+                {
+                    Waiter.Until(condition, timeout, pollingInterval);
+                }
+                catch (TimeoutException exp)
+                {
+                    throw new ExpectException($"Couldn't get a {_componentsListMetadata.ComponentMetadata.Name} by index {index} from {_list.Count} {_componentsListMetadata.Name}.", exp);
                 }
 
                 return _list[index];
@@ -61,13 +89,41 @@ namespace Yapoml.Selenium.Components
         {
             get
             {
-                EnsureLocated();
+                var factory = _spaceOptions.Services.Get<IComponentFactory>();
+                var locator = _spaceOptions.Services.Get<IElementLocator>();
 
-                var component = _list.FirstOrDefault(c => c.Text == text);
+                TComponent component = null;
 
-                if (component is null)
+                bool condition()
                 {
-                    throw new InvalidOperationException($"{_componentsListMetadata.Name} contain no matching {_componentsListMetadata.ComponentMetadata.Name} with '{text}' text");
+                    var elements = _elementsListHandler.LocateMany();
+
+                    _list = new List<TComponent>(elements.Select(e => factory.Create<TComponent, TListConditions>(_page, _parentComponent, _webDriver, new ElementHandler(_webDriver, null, locator, _elementsListHandler.By, e, _componentsListMetadata.ComponentMetadata, _elementsListHandler.ElementHandlerRepository.CreateNestedRepository(), _eventSource), _componentsListMetadata.ComponentMetadata, _spaceOptions)));
+
+                    component = _list.FirstOrDefault(c => c.Text == text);
+
+                    if (component is null)
+                    {
+                        _elementsListHandler.Invalidate();
+
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+
+                var timeout = _spaceOptions.Services.Get<TimeoutOptions>().Timeout;
+                var pollingInterval = _spaceOptions.Services.Get<TimeoutOptions>().PollingInterval;
+
+                try
+                {
+                    Waiter.Until(condition, timeout, pollingInterval);
+                }
+                catch (TimeoutException exp)
+                {
+                    throw new ExpectException($"{_componentsListMetadata.Name} contain no matching {_componentsListMetadata.ComponentMetadata.Name} with '{text}' text.", exp);
                 }
 
                 return component;
@@ -82,22 +138,67 @@ namespace Yapoml.Selenium.Components
         {
             get
             {
-                EnsureLocated();
+                var factory = _spaceOptions.Services.Get<IComponentFactory>();
+                var locator = _spaceOptions.Services.Get<IElementLocator>();
 
-                var component = _list.FirstOrDefault(predicate);
+                TComponent component = null;
 
-                if (component is null)
+                bool condition()
+                {
+                    var elements = _elementsListHandler.LocateMany();
+
+                    _list = new List<TComponent>(elements.Select(e => factory.Create<TComponent, TListConditions>(_page, _parentComponent, _webDriver, new ElementHandler(_webDriver, null, locator, _elementsListHandler.By, e, _componentsListMetadata.ComponentMetadata, _elementsListHandler.ElementHandlerRepository.CreateNestedRepository(), _eventSource), _componentsListMetadata.ComponentMetadata, _spaceOptions)));
+
+                    component = _list.FirstOrDefault(predicate);
+
+                    if (component is null)
+                    {
+                        _elementsListHandler.Invalidate();
+
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+
+                var timeout = _spaceOptions.Services.Get<TimeoutOptions>().Timeout;
+                var pollingInterval = _spaceOptions.Services.Get<TimeoutOptions>().PollingInterval;
+
+                try
+                {
+                    Waiter.Until(condition, timeout, pollingInterval);
+                }
+                catch (TimeoutException exp)
                 {
 #if NET6_0_OR_GREATER
-                    throw new InvalidOperationException($"{_componentsListMetadata.Name} contain no matching {_componentsListMetadata.ComponentMetadata.Name} satisfying condition '{predicateExpression}'.");
+                    throw new ExpectException($"{_componentsListMetadata.Name} contain no matching {_componentsListMetadata.ComponentMetadata.Name} satisfying condition '{predicateExpression}'.");
 #else
-                    throw new InvalidOperationException($"{_componentsListMetadata.Name} contain no matching {_componentsListMetadata.ComponentMetadata.Name} satisfying condition.");
+                    throw new ExpectException($"{_componentsListMetadata.Name} contain no matching {_componentsListMetadata.ComponentMetadata.Name} satisfying condition.");
 #endif
-
                 }
 
                 return component;
             }
+        }
+
+        public TComponent First()
+        {
+            return this[0];
+        }
+
+#if NET6_0_OR_GREATER
+        public TComponent First(Func<TComponent, bool> predicate, [CallerArgumentExpression("predicate")] string predicateExpression = null)
+#else
+        public TComponent First(Func<TComponent, bool> predicate)
+#endif
+        {
+#if NET6_0_OR_GREATER
+            return this[predicate, predicateExpression];
+#else
+            return this[predicate];
+#endif
         }
 
         public int Count
