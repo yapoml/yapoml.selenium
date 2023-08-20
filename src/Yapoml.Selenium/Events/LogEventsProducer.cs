@@ -16,16 +16,6 @@ namespace Yapoml.Selenium.Events
         {
             _logger = spaceOptions.Services.Get<ILogger>();
             _source = spaceOptions.Services.Get<IEventSource>();
-
-            spaceOptions.Services.OnTypeRegistered += SpaceOptions_OnTypeRegistered;
-        }
-
-        private void SpaceOptions_OnTypeRegistered(object sender, TypeRegisteredEventArgs e)
-        {
-            if (e.Type == typeof(ILogger))
-            {
-                _logger = e.Instance as ILogger;
-            }
         }
 
         public void Init()

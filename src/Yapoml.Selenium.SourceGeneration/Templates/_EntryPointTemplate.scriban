@@ -58,7 +58,10 @@ namespace {{root_namespace}}
 			var spaceOptions = new global::Yapoml.Framework.Options.SpaceOptions();
 
 			// default logger
-			spaceOptions.Services.Register<global::Yapoml.Framework.Logging.ILogger>(new global::Yapoml.Framework.Logging.Loggers.ConsoleLogger());
+			var logger = new global::Yapoml.Framework.Logging.Logger();
+			spaceOptions.Services.Register<global::Yapoml.Framework.Logging.ILogger>(logger);
+			var consoleLogListener = new global::Yapoml.Framework.Logging.Listeners.ConsoleLogListener();
+			consoleLogListener.Initialize(logger);
 
 			// default factories
 			spaceOptions.Services.Register<global::Yapoml.Selenium.Services.Factory.ISpaceFactory>(new global::Yapoml.Selenium.Services.Factory.DefaultSpaceFactory());
@@ -69,8 +72,7 @@ namespace {{root_namespace}}
 
 			spaceOptions.Services.Register<global::Yapoml.Selenium.Services.Locator.IElementLocator>(new global::Yapoml.Selenium.Services.Locator.DefaultElementLocator());
 
-			var eventSource = new global::Yapoml.Selenium.Events.EventSource();
-			spaceOptions.Services.Register<global::Yapoml.Selenium.Events.IEventSource>(eventSource);
+			spaceOptions.Services.Register<global::Yapoml.Selenium.Events.IEventSource>(new global::Yapoml.Selenium.Events.EventSource());
 
 			var logProducer = new global::Yapoml.Selenium.Events.LogEventsProducer(spaceOptions);
 			logProducer.Init();
