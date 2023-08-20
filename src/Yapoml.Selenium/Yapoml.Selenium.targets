@@ -2,15 +2,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <ItemGroup>
-    <AdditionalFiles Include="**\*.po.yaml" />
-    <None Remove="**\*.po.yaml" />
-    <AdditionalFiles Include="**\*.po.yml" />
-    <None Remove="**\*.po.yml" />
-    <AdditionalFiles Include="**\*.pc.yaml" />
-    <None Remove="**\*.pc.yaml" />
-    <AdditionalFiles Include="**\*.pc.yml" />
-    <None Remove="**\*.pc.yml" />
-
     <AdditionalFiles Include="**\*.page.yaml" />
     <None Remove="**\*.page.yaml" />
     <AdditionalFiles Include="**\*.page.yml" />
@@ -19,16 +10,6 @@
     <None Remove="**\*.component.yaml" />
     <AdditionalFiles Include="**\*.component.yml" />
     <None Remove="**\*.component.yml" />
-
-    <Compile Update="**\*.po.cs">
-      <DependentUpon Condition="Exists('%(RecursiveDir)$([System.String]::Copy(%(Filename)).Split(.)[0]).po.yaml')">$([System.String]::Copy(%(Filename)).Split('.')[0]).po.yaml</DependentUpon>
-      <DependentUpon Condition="Exists('%(RecursiveDir)$([System.String]::Copy(%(Filename)).Split(.)[0]).po.yml')">$([System.String]::Copy(%(Filename)).Split('.')[0]).po.yml</DependentUpon>
-    </Compile>
-
-    <Compile Update="**\*.pc.cs">
-      <DependentUpon Condition="Exists('%(RecursiveDir)$([System.String]::Copy(%(Filename)).Split(.)[0]).pc.yaml')">$([System.String]::Copy(%(Filename)).Split('.')[0]).pc.yaml</DependentUpon>
-      <DependentUpon Condition="Exists('%(RecursiveDir)$([System.String]::Copy(%(Filename)).Split(.)[0]).pc.yml')">$([System.String]::Copy(%(Filename)).Split('.')[0]).pc.yml</DependentUpon>
-    </Compile>
 
     <Compile Update="**\*.page.cs">
       <DependentUpon Condition="Exists('%(RecursiveDir)$([System.String]::Copy(%(Filename)).Split(.)[0]).page.yaml')">$([System.String]::Copy(%(Filename)).Split('.')[0]).page.yaml</DependentUpon>
@@ -42,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(ImplicitUsings)' == 'true' or '$(ImplicitUsings)' == 'enable'">
+    <Using Include="Yapoml.Extensions" />
     <Using Include="Yapoml.Selenium" />
     <Using Include="$(RootNamespace)" />
   </ItemGroup>
