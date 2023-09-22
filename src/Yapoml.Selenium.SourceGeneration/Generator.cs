@@ -35,11 +35,7 @@ namespace Yapoml.Selenium.SourceGeneration
             });
 
             var textFiles = context.AdditionalTextsProvider.Where(file =>
-                file.Path.EndsWith(".po.yaml", StringComparison.OrdinalIgnoreCase)
-                || file.Path.EndsWith(".po.yml", StringComparison.OrdinalIgnoreCase)
-                || file.Path.EndsWith(".pc.yaml", StringComparison.OrdinalIgnoreCase)
-                || file.Path.EndsWith(".pc.yml", StringComparison.OrdinalIgnoreCase)
-                || file.Path.EndsWith(".page.yaml", StringComparison.OrdinalIgnoreCase)
+                file.Path.EndsWith(".page.yaml", StringComparison.OrdinalIgnoreCase)
                 || file.Path.EndsWith(".page.yml", StringComparison.OrdinalIgnoreCase)
                 || file.Path.EndsWith(".component.yaml", StringComparison.OrdinalIgnoreCase)
                 || file.Path.EndsWith(".component.yml", StringComparison.OrdinalIgnoreCase))

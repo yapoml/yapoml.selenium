@@ -51,7 +51,7 @@ SomeButton: ./qwe
 
         for (int i = 0; i < N; i++)
         {
-            workspaceBuilder.AddFile($"{Environment.CurrentDirectory}/MyComponent{i}.pc.yaml",
+            workspaceBuilder.AddFile($"{Environment.CurrentDirectory}/MyComponent{i}.component.yaml",
                 @"
 SomeButton: ./qwe
 "
