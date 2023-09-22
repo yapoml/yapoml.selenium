@@ -4,10 +4,13 @@
     {
         public PackagesPage Search(string text)
         {
-            SearchInput.Type(text);
-            SearchButton.Click();
+            using (_logger.BeginLogScope($"Searching for packages by '{text}' query"))
+            {
+                SearchInput.Type(text);
+                SearchButton.Click();
 
-            return SpaceOptions.Services.Get<YaSpace>().PackagesPage;
+                return SpaceOptions.Services.Get<YaSpace>().PackagesPage;
+            }
         }
     }
 }

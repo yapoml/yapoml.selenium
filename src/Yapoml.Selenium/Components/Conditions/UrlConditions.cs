@@ -1,7 +1,9 @@
 ﻿using OpenQA.Selenium;
 using System;
 using System.Text.RegularExpressions;
+using Yapoml.Framework.Logging;
 using Yapoml.Selenium.Components.Conditions.Generic;
+using Yapoml.Selenium.Components.Metadata;
 
 namespace Yapoml.Selenium.Components.Conditions
 {
@@ -13,72 +15,75 @@ namespace Yapoml.Selenium.Components.Conditions
     {
         private readonly IWebDriver _webDriver;
 
-        public UrlConditions(IWebDriver webDriver, TConditions conditions, TimeSpan timeout, TimeSpan pollingInterval)
-            : base(conditions, timeout, pollingInterval)
+        private readonly PageMetadata _pageMetadata;
+
+        public UrlConditions(IWebDriver webDriver, TConditions conditions, TimeSpan timeout, TimeSpan pollingInterval, PageMetadata pageMetadata, ILogger logger)
+            : base(conditions, timeout, pollingInterval, $"{pageMetadata.Name} page url", logger)
         {
             _webDriver = webDriver;
+            _pageMetadata = pageMetadata;
         }
 
         protected override Func<string> FetchValueFunc => () => _webDriver.Url;
 
         protected override string GetIsError(string latestValue, string expectedValue)
         {
-            return $"Page url is not '{expectedValue}',{GetDifference("it was", expectedValue, latestValue)}";
+            return $"{_pageMetadata.Name} page url is not '{expectedValue}',{GetDifference("it was", expectedValue, latestValue)}";
         }
 
         protected override string GetIsNotError(string latestValue, string expectedValue)
         {
-            return $"Page url is '{latestValue}', when expected to be not.";
+            return $"{_pageMetadata.Name} page url is '{latestValue}', when expected to be not.";
         }
 
         protected override string GetIsEmptyError(string latestValue)
         {
-            return $" Page url '{latestValue}' is not empty, when expected to be empty.";
+            return $"{_pageMetadata.Name} page url '{latestValue}' is not empty, when expected to be empty.";
         }
 
         protected override string GetIsNotEmptyError(string latestValue)
         {
-            return $"Page url is empty, when expected to be not empty.";
+            return $"{_pageMetadata.Name} page url is empty, when expected to be not empty.";
         }
 
         protected override string GetStartsWithError(string latestValue, string expectedValue)
         {
-            return $"'{latestValue}' url doesn't start with '{expectedValue}'.";
+            return $"'{latestValue}' {_pageMetadata.Name} page url doesn't start with '{expectedValue}'.";
         }
 
         protected override string GetDoesNotStartWithError(string latestValue, string expectedValue)
         {
-            return $"'{latestValue}' url starts with '{expectedValue}'.";
+            return $"'{latestValue}' {_pageMetadata.Name} page url starts with '{expectedValue}'.";
         }
 
         protected override string GetEndsWithError(string latestValue, string expectedValue)
         {
-            return $"'{latestValue}' url doesn't end with '{expectedValue}'.";
+            return $"'{latestValue}' {_pageMetadata.Name} page url doesn't end with '{expectedValue}'.";
         }
 
         protected override string GetDoesNotEndWithError(string latestValue, string expectedValue)
         {
-            return $"'{latestValue}' url ends with '{expectedValue}'.";
+            return $"'{latestValue}' {_pageMetadata.Name} page url ends with '{expectedValue}'.";
         }
 
         protected override string GetContainsError(string latestValue, string expectedValue)
         {
-            return $"'{latestValue}' url doesn't contain '{expectedValue}' yet.";
+            return $"'{latestValue}' {_pageMetadata.Name} page url doesn't contain '{expectedValue}' yet.";
         }
 
         protected override string GetDoesNotContainError(string latestValue, string expectedValue)
         {
-            return $"'{latestValue}' url contains '{expectedValue}'.";
+            return $"'{latestValue}' {_pageMetadata.Name} page url contains '{expectedValue}'.";
         }
 
         protected override string GetMatchesError(string latestValue, Regex regex)
         {
-            return $"'{latestValue}' url doesn't match '{regex}'.";
+            return $"'{latestValue}' {_pageMetadata.Name} page url doesn't match '{regex}'.";
         }
 
         protected override string GetDoesNotMatchError(string latestValue, Regex regex)
         {
-            return $"'{latestValue}' url matches '{regex}'.";
+            return $"'{latestValue}' {_pageMetadata.Name} page url matches '{regex}'.";
         }
     }
 }

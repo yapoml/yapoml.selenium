@@ -1,28 +1,25 @@
 ﻿using System;
+using Yapoml.Framework.Logging;
+using Yapoml.Selenium.Components.Conditions.Generic;
 using Yapoml.Selenium.Services.Locator;
 
 namespace Yapoml.Selenium.Components.Conditions
 {
-    public class StylesCollectionConditions<TConditions>
+    public class StylesCollectionConditions<TConditions> : Conditions<TConditions>
     {
-        private readonly TConditions _conditions;
         private readonly IElementHandler _elementHandler;
-        private readonly TimeSpan _timeout;
-        private readonly TimeSpan _pollingInterval;
 
-        public StylesCollectionConditions(TConditions conditions, IElementHandler elementHandler, TimeSpan timeout, TimeSpan pollingInterval)
+        public StylesCollectionConditions(TConditions conditions, IElementHandler elementHandler, TimeSpan timeout, TimeSpan pollingInterval, ILogger logger)
+            : base(conditions, timeout, pollingInterval, logger)
         {
-            _conditions = conditions;
             _elementHandler = elementHandler;
-            _timeout = timeout;
-            _pollingInterval = pollingInterval;
         }
 
         public StringStyleConditions<TConditions> this[string styleName]
         {
             get
             {
-                return new StringStyleConditions<TConditions>(_conditions, _elementHandler, styleName, _timeout, _pollingInterval);
+                return new StringStyleConditions<TConditions>(_conditions, _elementHandler, styleName, _timeout, _pollingInterval, $"{styleName} style of the {_elementHandler.ComponentMetadata.Name}", _logger);
             }
         }
 
@@ -30,6 +27,6 @@ namespace Yapoml.Selenium.Components.Conditions
         public StringStyleConditions<TConditions> Color => this["color"];
 
         public NumericStyleConditions<TConditions, double> Opacity =>
-            new NumericStyleConditions<TConditions, double>(_conditions, _elementHandler, "opacity", _timeout, _pollingInterval);
+            new NumericStyleConditions<TConditions, double>(_conditions, _elementHandler, "opacity", _timeout, _pollingInterval, $"opacity of the {_elementHandler.ComponentMetadata.Name}", _logger);
     }
 }

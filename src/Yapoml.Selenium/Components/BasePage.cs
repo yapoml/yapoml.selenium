@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using Yapoml.Framework.Logging;
 using Yapoml.Framework.Options;
 using Yapoml.Selenium.Components.Metadata;
 using Yapoml.Selenium.Events;
@@ -16,6 +17,7 @@ namespace Yapoml.Selenium.Components
             SpaceOptions = spaceOptions;
 
             EventSource = spaceOptions.Services.Get<IEventSource>();
+            _logger = spaceOptions.Services.Get<ILogger>();
         }
 
         protected IWebDriver WebDriver { get; }
@@ -26,6 +28,8 @@ namespace Yapoml.Selenium.Components
 
         protected ISpaceOptions SpaceOptions { get; }
 
-        protected IEventSource EventSource;
+        protected IEventSource EventSource { get; }
+
+        protected ILogger _logger;
     }
 }

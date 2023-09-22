@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading;
+using Yapoml.Framework.Logging;
 using Yapoml.Selenium.Components.Conditions;
 using Yapoml.Selenium.Components.Conditions.Generic;
 using Yapoml.Selenium.Events;
@@ -20,8 +21,9 @@ namespace Yapoml.Selenium.Components
         protected IElementHandler ElementHandler { get; }
         protected IElementLocator ElementLocator { get; }
         protected IEventSource EventSource { get; }
+        protected ILogger Logger { get; }
 
-        public BaseComponentConditions(TimeSpan timeout, TimeSpan pollingInterval, IWebDriver webDriver, IElementHandler elementHandler, IElementLocator elementLocator, IEventSource eventSource)
+        public BaseComponentConditions(TimeSpan timeout, TimeSpan pollingInterval, IWebDriver webDriver, IElementHandler elementHandler, IElementLocator elementLocator, IEventSource eventSource, ILogger logger)
         {
             Timeout = timeout;
             PollingInterval = pollingInterval;
@@ -29,6 +31,7 @@ namespace Yapoml.Selenium.Components
             ElementHandler = elementHandler;
             ElementLocator = elementLocator;
             EventSource = eventSource;
+            Logger = logger;
         }
 
         /// <summary>
@@ -79,7 +82,10 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                using (Logger.BeginLogScope($"Expect {ElementHandler.ComponentMetadata.Name} is displayed"))
+                {
+                    Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                }
             }
             catch (TimeoutException ex)
             {
@@ -120,7 +126,10 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                using (Logger.BeginLogScope($"Expect {ElementHandler.ComponentMetadata.Name} is not displayed"))
+                {
+                    Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                }
             }
             catch (TimeoutException ex)
             {
@@ -174,7 +183,10 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                using (Logger.BeginLogScope($"Expect {ElementHandler.ComponentMetadata.Name} exists"))
+                {
+                    Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                }
             }
             catch (TimeoutException ex)
             {
@@ -217,7 +229,10 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                using (Logger.BeginLogScope($"Expect {ElementHandler.ComponentMetadata.Name} does not exist"))
+                {
+                    Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                }
             }
             catch (TimeoutException ex)
             {
@@ -243,7 +258,10 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                using (Logger.BeginLogScope($"Expect {ElementHandler.ComponentMetadata.Name} is enabled"))
+                {
+                    Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                }
             }
             catch (TimeoutException ex)
             {
@@ -260,7 +278,7 @@ namespace Yapoml.Selenium.Components
         {
             get
             {
-                return new TextConditions<TConditions>(conditions, ElementHandler, Timeout, PollingInterval);
+                return new TextConditions<TConditions>(conditions, ElementHandler, Timeout, PollingInterval, $"text of the {ElementHandler.ComponentMetadata.Name}", Logger);
             }
         }
 
@@ -271,7 +289,7 @@ namespace Yapoml.Selenium.Components
         {
             get
             {
-                return new AttributesCollectionConditions<TConditions>(conditions, ElementHandler, Timeout, PollingInterval);
+                return new AttributesCollectionConditions<TConditions>(conditions, ElementHandler, Timeout, PollingInterval, Logger);
             }
         }
 
@@ -282,7 +300,7 @@ namespace Yapoml.Selenium.Components
         {
             get
             {
-                return new StylesCollectionConditions<TConditions>(conditions, ElementHandler, Timeout, PollingInterval);
+                return new StylesCollectionConditions<TConditions>(conditions, ElementHandler, Timeout, PollingInterval, Logger);
             }
         }
 

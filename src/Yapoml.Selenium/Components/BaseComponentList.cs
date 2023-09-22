@@ -6,6 +6,7 @@ using System.Linq;
 #if NET6_0_OR_GREATER
 using System.Runtime.CompilerServices;
 #endif
+using Yapoml.Framework.Logging;
 using Yapoml.Framework.Options;
 using Yapoml.Selenium.Components.Metadata;
 using Yapoml.Selenium.Events;
@@ -33,6 +34,8 @@ namespace Yapoml.Selenium.Components
         private readonly IEventSource _eventSource;
         private readonly ISpaceOptions _spaceOptions;
 
+        protected readonly ILogger _logger;
+
         public BaseComponentList(BasePage page, BaseComponent parentComponent, IWebDriver webDriver, IElementsListHandler elementsListHandler, ComponentsListMetadata componentsListMetadata, IEventSource eventSource, ISpaceOptions spaceOptions)
         {
             _page = page;
@@ -42,6 +45,8 @@ namespace Yapoml.Selenium.Components
             _componentsListMetadata = componentsListMetadata;
             _eventSource = eventSource;
             _spaceOptions = spaceOptions;
+
+            _logger = _spaceOptions.Services.Get<ILogger>();
         }
 
         public TComponent this[int index]
@@ -242,7 +247,10 @@ namespace Yapoml.Selenium.Components
         /// </summary>
         public BaseComponentList<TComponent, TListConditions, TComponentConditions> Expect(Action<TListConditions> it)
         {
-            it(listConditions);
+            using (_logger.BeginLogScope($"Expect {_elementsListHandler.ComponentsListMetadata.Name} satisfy conditions"))
+            {
+                it(listConditions);
+            }
 
             return this;
         }

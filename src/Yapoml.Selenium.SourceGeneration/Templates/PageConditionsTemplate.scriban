@@ -1,8 +1,8 @@
 ﻿[global::System.Runtime.CompilerServices.CompilerGenerated]
 public partial class Conditions : global::Yapoml.Selenium.Components.BasePageConditions<Conditions>
 {
-	public Conditions(global::System.TimeSpan timeout, global::System.TimeSpan pollingInterval, global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementHandlerRepository elementHandlerRepository, global::Yapoml.Selenium.Services.Locator.IElementLocator elementLocator, global::Yapoml.Selenium.Events.IEventSource eventSource)
-		: base(timeout, pollingInterval, webDriver, elementHandlerRepository, elementLocator, eventSource)
+	public Conditions(global::System.TimeSpan timeout, global::System.TimeSpan pollingInterval, global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementHandlerRepository elementHandlerRepository, global::Yapoml.Selenium.Services.Locator.IElementLocator elementLocator, global::Yapoml.Selenium.Components.Metadata.PageMetadata pageMetadata, global::Yapoml.Selenium.Events.IEventSource eventSource, global::Yapoml.Framework.Logging.ILogger logger)
+		: base(timeout, pollingInterval, webDriver, elementHandlerRepository, elementLocator, pageMetadata, eventSource, logger)
 	{
 		base.conditions = this;
 	}
@@ -24,7 +24,7 @@ public partial class Conditions : global::Yapoml.Selenium.Components.BasePageCon
 		{
 			if (ElementHandlerRepository.TryGet("{{component.name}}", out var cachedElementHandler))
 			{
-				return new {{get_component_return_type component}}.Conditions(Timeout, PollingInterval, WebDriver, cachedElementHandler, ElementLocator, EventSource);
+				return new {{get_component_return_type component}}.Conditions(Timeout, PollingInterval, WebDriver, cachedElementHandler, ElementLocator, EventSource, Logger);
 			}
 			else
 			{
@@ -37,7 +37,7 @@ public partial class Conditions : global::Yapoml.Selenium.Components.BasePageCon
 			
 				ElementHandlerRepository.Set("{{component.name}}", elementHandler);
 
-				return new {{get_component_return_type component}}.Conditions(Timeout, PollingInterval, WebDriver, elementHandler, ElementLocator, EventSource);
+				return new {{get_component_return_type component}}.Conditions(Timeout, PollingInterval, WebDriver, elementHandler, ElementLocator, EventSource, Logger);
 			}
 		}
 	}
@@ -54,7 +54,7 @@ public partial class Conditions : global::Yapoml.Selenium.Components.BasePageCon
 			var listMetadata = new global::Yapoml.Selenium.Components.Metadata.ComponentsListMetadata() { Name = "{{component.original_name}}", ComponentMetadata = metadata };
 			var elementsListHandler = new global::Yapoml.Selenium.Services.Locator.ElementsListHandler(WebDriver, null, ElementLocator, by, listMetadata, ElementHandlerRepository.CreateNestedRepository(), EventSource);
 			
-			return new {{component.singular_name}}ComponentList.Conditions(Timeout, PollingInterval, WebDriver, elementsListHandler, ElementLocator, EventSource);
+			return new {{component.singular_name}}ComponentList.Conditions(Timeout, PollingInterval, WebDriver, elementsListHandler, ElementLocator, EventSource, Logger);
 		}
 	}
 	{{ end }}

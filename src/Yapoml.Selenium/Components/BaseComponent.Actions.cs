@@ -17,9 +17,10 @@ namespace Yapoml.Selenium.Components
         /// <returns>The same instance of the component to continue interaction with it.</returns>
         public virtual TComponent Clear()
         {
-            _logger.Trace($"Clearing {Metadata.Name}");
-
-            RelocateOnStaleReference(() => WrappedElement.Clear());
+            using (_logger.BeginLogScope($"Clearing {Metadata.Name}"))
+            {
+                RelocateOnStaleReference(() => WrappedElement.Clear());
+            }
 
             return component;
         }
@@ -44,17 +45,21 @@ namespace Yapoml.Selenium.Components
         /// <returns>The same instance of the component to continue interaction with it.</returns>
         public virtual TComponent Type(string text)
         {
-            // todo make it event based
+            string scopeName;
+
             if (Metadata.Name.ToLowerInvariant().Contains("password") && text != null)
             {
-                _logger.Trace($"Typing '{new string('*', text.Length)}' into {Metadata.Name}");
+                scopeName = $"Typing '{new string('*', text.Length)}' into {Metadata.Name}";
             }
             else
             {
-                _logger.Trace($"Typing '{text}' into {Metadata.Name}");
+                scopeName = $"Typing '{text}' into {Metadata.Name}";
             }
 
-            RelocateOnStaleReference(() => WrappedElement.SendKeys(text));
+            using (_logger.BeginLogScope(scopeName))
+            {
+                RelocateOnStaleReference(() => WrappedElement.SendKeys(text));
+            }
 
             return component;
         }
@@ -75,9 +80,10 @@ namespace Yapoml.Selenium.Components
         /// <returns>The same instance of the component to continue interaction with it.</returns>
         public virtual TComponent Click()
         {
-            _logger.Trace($"Clicking on {Metadata.Name}");
-
-            RelocateOnStaleReference(() => WrappedElement.Click());
+            using (_logger.BeginLogScope($"Clicking on {Metadata.Name}"))
+            {
+                RelocateOnStaleReference(() => WrappedElement.Click());
+            }
 
             return component;
         }
@@ -96,9 +102,10 @@ namespace Yapoml.Selenium.Components
         /// <param name="y">Coordinates offset by Y-axis.</param>
         public virtual TComponent Click(int x, int y)
         {
-            _logger.Trace($"Clicking on {Metadata.Name} by X: {x}, Y: {y}");
-
-            RelocateOnStaleReference(() => new Actions(WebDriver).MoveToElement(WrappedElement, x, y).Click().Build().Perform());
+            using (_logger.BeginLogScope($"Clicking on {Metadata.Name} by X: {x}, Y: {y}"))
+            {
+                RelocateOnStaleReference(() => new Actions(WebDriver).MoveToElement(WrappedElement, x, y).Click().Build().Perform());
+            }
 
             return component;
         }
@@ -122,9 +129,10 @@ namespace Yapoml.Selenium.Components
         /// <returns>The same instance of the component to continue interaction with it.</returns>
         public virtual TComponent Hover()
         {
-            _logger.Trace($"Hovering over {Metadata.Name}");
-
-            RelocateOnStaleReference(() => new Actions(WebDriver).MoveToElement(WrappedElement).Build().Perform());
+            using (_logger.BeginLogScope($"Hovering over {Metadata.Name}"))
+            {
+                RelocateOnStaleReference(() => new Actions(WebDriver).MoveToElement(WrappedElement).Build().Perform());
+            }
 
             return component;
         }
@@ -143,9 +151,10 @@ namespace Yapoml.Selenium.Components
         /// <param name="y">Coordinates offset by Y-axis.</param>
         public virtual TComponent Hover(int x, int y)
         {
-            _logger.Trace($"Hovering on {Metadata.Name} by X: {x}, Y: {y}");
-
-            RelocateOnStaleReference(() => new Actions(WebDriver).MoveToElement(WrappedElement, x, y).Build().Perform());
+            using (_logger.BeginLogScope($"Hovering on {Metadata.Name} by X: {x}, Y: {y}"))
+            {
+                RelocateOnStaleReference(() => new Actions(WebDriver).MoveToElement(WrappedElement, x, y).Build().Perform());
+            }
 
             return component;
         }
@@ -175,11 +184,12 @@ namespace Yapoml.Selenium.Components
             }
             else
             {
-                _logger.Trace($"Scrolling {Metadata.Name} into view");
+                using (_logger.BeginLogScope($"Scrolling {Metadata.Name} into view"))
+                {
+                    var js = "arguments[0].scrollIntoView();";
 
-                var js = "arguments[0].scrollIntoView();";
-
-                RelocateOnStaleReference(() => (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement));
+                    RelocateOnStaleReference(() => (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement));
+                }
             }
 
             return component;
@@ -209,11 +219,12 @@ namespace Yapoml.Selenium.Components
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
 
-            _logger.Trace($"Scrolling {Metadata.Name} into view with options {options}");
+            using (_logger.BeginLogScope($"Scrolling {Metadata.Name} into view with options {options}"))
+            {
+                var js = $"arguments[0].scrollIntoView({options.ToJson()});";
 
-            var js = $"arguments[0].scrollIntoView({options.ToJson()});";
-
-            RelocateOnStaleReference(() => (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement));
+                RelocateOnStaleReference(() => (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement));
+            }
 
             return component;
         }
@@ -243,11 +254,12 @@ namespace Yapoml.Selenium.Components
             }
             else
             {
-                _logger.Trace($"Focusing {Metadata.Name}");
+                using (_logger.BeginLogScope($"Focusing {Metadata.Name}"))
+                {
+                    var js = "arguments[0].focus();";
 
-                var js = "arguments[0].focus();";
-
-                RelocateOnStaleReference(() => (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement));
+                    RelocateOnStaleReference(() => (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement));
+                }
             }
 
             return component;
@@ -275,11 +287,12 @@ namespace Yapoml.Selenium.Components
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
 
-            _logger.Trace($"Focusing {Metadata.Name} with options {options}");
+            using (_logger.BeginLogScope($"Focusing {Metadata.Name} with options {options}"))
+            {
+                var js = $"arguments[0].focus({options.ToJson()});";
 
-            var js = $"arguments[0].focus({options.ToJson()});";
-
-            RelocateOnStaleReference(() => (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement));
+                RelocateOnStaleReference(() => (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement));
+            }
 
             return component;
         }
@@ -303,11 +316,12 @@ namespace Yapoml.Selenium.Components
         /// <returns>The same instance of the component to continue interaction with it.</returns>
         public virtual TComponent Blur()
         {
-            _logger.Trace($"Bluring {Metadata.Name}");
+            using (_logger.BeginLogScope($"Bluring {Metadata.Name}"))
+            {
+                var js = $"arguments[0].blur();";
 
-            var js = $"arguments[0].blur();";
-
-            RelocateOnStaleReference(() => (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement));
+                RelocateOnStaleReference(() => (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement));
+            }
 
             return component;
         }
@@ -328,9 +342,10 @@ namespace Yapoml.Selenium.Components
         /// <returns>The same instance of the component to continue interaction with it.</returns>
         public virtual TComponent ContextClick()
         {
-            _logger.Trace($"Context clicking on {Metadata.Name}");
-
-            RelocateOnStaleReference(() => new Actions(WebDriver).ContextClick(WrappedElement).Build().Perform());
+            using (_logger.BeginLogScope($"Context clicking on {Metadata.Name}"))
+            {
+                RelocateOnStaleReference(() => new Actions(WebDriver).ContextClick(WrappedElement).Build().Perform());
+            }
 
             return component;
         }
@@ -351,9 +366,10 @@ namespace Yapoml.Selenium.Components
         /// <returns>The same instance of the component to continue interaction with it.</returns>
         public virtual TComponent DoubleClick()
         {
-            _logger.Trace($"Double clicking on {Metadata.Name}");
-
-            RelocateOnStaleReference(() => new Actions(WebDriver).DoubleClick(WrappedElement).Build().Perform());
+            using (_logger.BeginLogScope($"Double clicking on {Metadata.Name}"))
+            {
+                RelocateOnStaleReference(() => new Actions(WebDriver).DoubleClick(WrappedElement).Build().Perform());
+            }
 
             return component;
         }
@@ -374,9 +390,10 @@ namespace Yapoml.Selenium.Components
             where TToComponent : BaseComponent<TToComponent, TToConditions>
             where TToConditions : BaseComponentConditions<TToConditions>
         {
-            _logger.Trace($"Dragging {Metadata.Name} to {toComponent.Metadata.Name}");
-
-            RelocateOnStaleReference(() => new Actions(WebDriver).DragAndDrop(WrappedElement, toComponent.WrappedElement).Build().Perform());
+            using (_logger.BeginLogScope($"Dragging {Metadata.Name} to {toComponent.Metadata.Name}"))
+            {
+                RelocateOnStaleReference(() => new Actions(WebDriver).DragAndDrop(WrappedElement, toComponent.WrappedElement).Build().Perform());
+            }
 
             return component;
         }

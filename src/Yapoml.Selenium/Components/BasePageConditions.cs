@@ -1,7 +1,9 @@
 ﻿using OpenQA.Selenium;
 using System;
 using System.Threading;
+using Yapoml.Framework.Logging;
 using Yapoml.Selenium.Components.Conditions;
+using Yapoml.Selenium.Components.Metadata;
 using Yapoml.Selenium.Events;
 using Yapoml.Selenium.Services.Locator;
 
@@ -11,14 +13,16 @@ namespace Yapoml.Selenium.Components
     {
         protected TConditions conditions;
 
-        public BasePageConditions(TimeSpan timeout, TimeSpan pollingInterval, IWebDriver webDriver, IElementHandlerRepository elementHandlerRepository, IElementLocator elementLocator, IEventSource eventSource)
+        public BasePageConditions(TimeSpan timeout, TimeSpan pollingInterval, IWebDriver webDriver, IElementHandlerRepository elementHandlerRepository, IElementLocator elementLocator, PageMetadata pageMetadata, IEventSource eventSource, ILogger logger)
         {
             Timeout = timeout;
             PollingInterval = pollingInterval;
             WebDriver = webDriver;
             ElementHandlerRepository = elementHandlerRepository;
             ElementLocator = elementLocator;
+            PageMetadata = pageMetadata;
             EventSource = eventSource;
+            Logger = logger;
         }
 
         protected TimeSpan Timeout { get; }
@@ -26,7 +30,9 @@ namespace Yapoml.Selenium.Components
         protected IWebDriver WebDriver { get; }
         protected IElementHandlerRepository ElementHandlerRepository { get; }
         protected IElementLocator ElementLocator { get; }
+        protected PageMetadata PageMetadata { get; }
         protected IEventSource EventSource { get; }
+        protected ILogger Logger { get; }
 
         /// <summary>
         /// Evaluates document's state to be <c>complete</c> which means the page is fully loaded.
@@ -49,12 +55,14 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                Services.Waiter.Until(condition, timeout.Value, PollingInterval);
+                using (Logger.BeginLogScope($"Expect the {PageMetadata.Name} page is loaded"))
+                {
+                    Services.Waiter.Until(condition, timeout.Value, PollingInterval);
+                }
             }
             catch (TimeoutException ex)
             {
-                // TODO Put page name in exception
-                throw new ExpectException($"Page is not loaded yet. Current state is '{latestValue}'.", ex);
+                throw new ExpectException($"{PageMetadata.Name} page is not loaded yet. Current state is '{latestValue}'.", ex);
             }
 
             return conditions;
@@ -67,7 +75,7 @@ namespace Yapoml.Selenium.Components
         {
             get
             {
-                return new UrlConditions<TConditions>(WebDriver, conditions, Timeout, PollingInterval);
+                return new UrlConditions<TConditions>(WebDriver, conditions, Timeout, PollingInterval, PageMetadata, Logger);
             }
         }
 
@@ -78,7 +86,7 @@ namespace Yapoml.Selenium.Components
         {
             get
             {
-                return new TitleConditions<TConditions>(WebDriver, conditions, Timeout, PollingInterval);
+                return new TitleConditions<TConditions>(WebDriver, conditions, Timeout, PollingInterval, PageMetadata, Logger);
             }
         }
 

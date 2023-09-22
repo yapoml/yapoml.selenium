@@ -49,7 +49,7 @@ namespace {{root_namespace}}
 		/// <example>
 		/// For example:
 		/// <code>
-		/// driver.Ya(opts => opts.UseBaseUrl("https://sut.com"));
+		/// driver.Ya(opts => opts.WithBaseUrl("https://sut.com"));
 		/// </code>
 		/// </example>
 		/// </summary>
@@ -60,8 +60,7 @@ namespace {{root_namespace}}
 			// default logger
 			var logger = new global::Yapoml.Framework.Logging.Logger();
 			spaceOptions.Services.Register<global::Yapoml.Framework.Logging.ILogger>(logger);
-			var consoleLogListener = new global::Yapoml.Framework.Logging.Listeners.ConsoleLogListener();
-			consoleLogListener.Initialize(logger);
+			var consoleLoggerSink = new global::Yapoml.Framework.Logging.Sinks.ConsoleLoggerSink(logger);
 
 			// default factories
 			spaceOptions.Services.Register<global::Yapoml.Selenium.Services.Factory.ISpaceFactory>(new global::Yapoml.Selenium.Services.Factory.DefaultSpaceFactory());

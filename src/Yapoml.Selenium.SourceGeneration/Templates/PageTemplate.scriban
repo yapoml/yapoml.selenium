@@ -35,8 +35,10 @@ namespace {{namespace}}
 
 			EventSource.PageEventSource.RaiseOnPageNavigating(this, url, Metadata);
 
-			WebDriver.Navigate().GoToUrl(url);
-
+			using (_logger.BeginLogScope($"Opening {Metadata.Name} page by {url}"))
+			{
+				WebDriver.Navigate().GoToUrl(url);
+			}
 			return this;
 		}
 		{{ end }}
@@ -128,7 +130,7 @@ namespace {{namespace}}
 			var timeoutOptions = SpaceOptions.Services.Get<global::Yapoml.Selenium.Options.TimeoutOptions>();
 			var elementLocator = SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>();
 
-			it(new Conditions(timeoutOptions.Timeout, timeoutOptions.PollingInterval, WebDriver, ElementHandlerRepository, elementLocator, EventSource));
+			it(new Conditions(timeoutOptions.Timeout, timeoutOptions.PollingInterval, WebDriver, ElementHandlerRepository, elementLocator, Metadata, EventSource, _logger));
 
 			return this;
 		}

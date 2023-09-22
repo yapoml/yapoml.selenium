@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 #endif
 using System.Threading;
+using Yapoml.Framework.Logging;
 using Yapoml.Selenium.Components.Conditions;
 using Yapoml.Selenium.Events;
 using Yapoml.Selenium.Services;
@@ -24,8 +25,9 @@ namespace Yapoml.Selenium.Components
         protected IElementsListHandler ElementsListHandler { get; }
         protected IElementLocator ElementLocator { get; }
         protected IEventSource EventSource { get; }
+        protected ILogger Logger { get; }
 
-        public BaseComponentListConditions(TimeSpan timeout, TimeSpan pollingInterval, IWebDriver webDriver, IElementsListHandler elementsListHandler, IElementLocator elementLocator, IEventSource eventSource)
+        public BaseComponentListConditions(TimeSpan timeout, TimeSpan pollingInterval, IWebDriver webDriver, IElementsListHandler elementsListHandler, IElementLocator elementLocator, IEventSource eventSource, ILogger logger)
         {
             Timeout = timeout;
             PollingInterval = pollingInterval;
@@ -33,9 +35,10 @@ namespace Yapoml.Selenium.Components
             ElementsListHandler = elementsListHandler;
             ElementLocator = elementLocator;
             EventSource = eventSource;
+            Logger = logger;
         }
 
-        public CountCollectionConditions<TListConditions> Count => new CountCollectionConditions<TListConditions>(listConditions, ElementsListHandler, Timeout, PollingInterval);
+        public CountCollectionConditions<TListConditions> Count => new CountCollectionConditions<TListConditions>(listConditions, ElementsListHandler, Timeout, PollingInterval, Logger);
 
 #if NET6_0_OR_GREATER
         public TListConditions Each(Action<TComponentConditions> predicate, TimeSpan? timeout = default, [CallerArgumentExpression("predicate")] string predicateExpression = null)
@@ -52,7 +55,7 @@ namespace Yapoml.Selenium.Components
                 for (int i = 0; i < elements.Count; i++)
                 {
                     var elementHandler = new ElementHandler(WebDriver, null, ElementLocator, ElementsListHandler.By, elements[i], ElementsListHandler.ComponentsListMetadata.ComponentMetadata, ElementsListHandler.ElementHandlerRepository.CreateNestedRepository(), EventSource);
-                    var elementCondition = (TComponentConditions)Activator.CreateInstance(typeof(TComponentConditions), TimeSpan.Zero, PollingInterval, WebDriver, elementHandler, ElementLocator, EventSource);
+                    var elementCondition = (TComponentConditions)Activator.CreateInstance(typeof(TComponentConditions), TimeSpan.Zero, PollingInterval, WebDriver, elementHandler, ElementLocator, EventSource, Logger);
 
                     try
                     {
@@ -80,7 +83,10 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                Services.Waiter.Until(condition, timeout.Value, PollingInterval);
+                using (Logger.BeginLogScope($"Expect each {ElementsListHandler.ComponentsListMetadata.ComponentMetadata.Name} satisfy conditions"))
+                {
+                    Waiter.Until(condition, timeout.Value, PollingInterval);
+                }
             }
             catch (TimeoutException ex)
             {

@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using Yapoml.Framework.Logging;
 
 namespace Yapoml.Selenium.Components.Conditions.Generic
 {
     public abstract class TextualConditions<TConditions> : Conditions<TConditions>, ITextualConditions<TConditions>
     {
-        public TextualConditions(TConditions conditions, TimeSpan timeout, TimeSpan pollingInterval)
-            : base(conditions, timeout, pollingInterval)
-        {
+        protected readonly string _subject;
 
+        public TextualConditions(TConditions conditions, TimeSpan timeout, TimeSpan pollingInterval, string subject, ILogger logger)
+            : base(conditions, timeout, pollingInterval, logger)
+        {
+            _subject = subject;
         }
 
         protected abstract Func<string> FetchValueFunc { get; }
@@ -33,7 +36,10 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                using (_logger.BeginLogScope($"Expect {_subject} is {value}"))
+                {
+                    Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                }
             }
             catch (TimeoutException ex)
             {
@@ -63,7 +69,10 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                using (_logger.BeginLogScope($"Expect {_subject} is not {value}"))
+                {
+                    Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                }
             }
             catch (TimeoutException ex)
             {
@@ -88,7 +97,10 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                using (_logger.BeginLogScope($"Expect {_subject} is empty"))
+                {
+                    Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                }
             }
             catch (TimeoutException ex)
             {
@@ -108,12 +120,15 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             {
                 latestValue = FetchValueFunc();
 
-                return !latestValue.Equals(string.Empty);
+                return !string.IsNullOrEmpty(latestValue);
             }
 
             try
             {
-                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                using (_logger.BeginLogScope($"Expect {_subject} is not empty"))
+                {
+                    Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                }
             }
             catch (TimeoutException ex)
             {
@@ -143,7 +158,10 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                using (_logger.BeginLogScope($"Expect {_subject} starts with {value}"))
+                {
+                    Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                }
             }
             catch (TimeoutException ex)
             {
@@ -168,12 +186,15 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             {
                 latestValue = FetchValueFunc();
 
-                return latestValue.StartsWith(value, comparisonType) == false;
+                return !latestValue.StartsWith(value, comparisonType);
             }
 
             try
             {
-                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                using (_logger.BeginLogScope($"Expect {_subject} does not start with {value}"))
+                {
+                    Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                }
             }
             catch (TimeoutException ex)
             {
@@ -203,7 +224,10 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                using (_logger.BeginLogScope($"Expect {_subject} ends with {value}"))
+                {
+                    Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                }
             }
             catch (TimeoutException ex)
             {
@@ -228,12 +252,15 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             {
                 latestValue = FetchValueFunc();
 
-                return latestValue.EndsWith(value, comparisonType) == false;
+                return !latestValue.EndsWith(value, comparisonType);
             }
 
             try
             {
-                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                using (_logger.BeginLogScope($"Expect {_subject} does not end with {value}"))
+                {
+                    Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                }
             }
             catch (TimeoutException ex)
             {
@@ -263,7 +290,10 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                using (_logger.BeginLogScope($"Expect {_subject} contains {value}"))
+                {
+                    Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                }
             }
             catch (TimeoutException ex)
             {
@@ -293,7 +323,10 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                using (_logger.BeginLogScope($"Expect {_subject} does not contain {value}"))
+                {
+                    Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                }
             }
             catch (TimeoutException ex)
             {
@@ -318,7 +351,10 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                using (_logger.BeginLogScope($"Expect {_subject} matches {regex} regular expression"))
+                {
+                    Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                }
             }
             catch (TimeoutException ex)
             {
@@ -343,7 +379,10 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                using (_logger.BeginLogScope($"Expect {_subject} does not match {regex} regular expression"))
+                {
+                    Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                }
             }
             catch (TimeoutException ex)
             {

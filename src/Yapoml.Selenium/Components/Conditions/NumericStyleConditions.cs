@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using System;
+using Yapoml.Framework.Logging;
 using Yapoml.Selenium.Components.Conditions.Generic;
 using Yapoml.Selenium.Services.Locator;
 
@@ -11,8 +12,8 @@ namespace Yapoml.Selenium.Components.Conditions
         private readonly IElementHandler _elementHandler;
         private readonly string _styleName;
 
-        public NumericStyleConditions(TConditions conditions, IElementHandler elementHandler, string styleName, TimeSpan timeout, TimeSpan pollingInterval)
-            : base(conditions, timeout, pollingInterval)
+        public NumericStyleConditions(TConditions conditions, IElementHandler elementHandler, string styleName, TimeSpan timeout, TimeSpan pollingInterval, string subject, ILogger logger)
+            : base(conditions, timeout, pollingInterval, subject, logger)
         {
             _elementHandler = elementHandler;
             _styleName = styleName;

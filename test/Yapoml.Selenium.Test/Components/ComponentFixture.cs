@@ -2,6 +2,7 @@
 using Moq;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using Yapoml.Framework.Logging;
 using Yapoml.Framework.Options;
 using Yapoml.Selenium.Components;
 using Yapoml.Selenium.Components.Metadata;
@@ -41,8 +42,8 @@ namespace Yapoml.Selenium.Test.Components
 
         public class TestConditions : BaseComponentConditions<TestConditions>
         {
-            public TestConditions(TimeSpan timeout, TimeSpan pollingInterval, IWebDriver webDriver, IElementHandler elementHandler, IElementLocator elementLocator, IEventSource eventSource)
-                : base(timeout, pollingInterval, webDriver, elementHandler, elementLocator, eventSource)
+            public TestConditions(TimeSpan timeout, TimeSpan pollingInterval, IWebDriver webDriver, IElementHandler elementHandler, IElementLocator elementLocator, IEventSource eventSource, ILogger logger)
+                : base(timeout, pollingInterval, webDriver, elementHandler, elementLocator, eventSource, logger)
             {
             }
         }

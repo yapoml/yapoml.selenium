@@ -1,28 +1,25 @@
 ﻿using System;
+using Yapoml.Framework.Logging;
+using Yapoml.Selenium.Components.Conditions.Generic;
 using Yapoml.Selenium.Services.Locator;
 
 namespace Yapoml.Selenium.Components.Conditions
 {
-    public class AttributesCollectionConditions<TConditions>
+    public class AttributesCollectionConditions<TConditions> : Conditions<TConditions>
     {
-        private readonly TConditions _conditions;
         private readonly IElementHandler _elementHandler;
-        private readonly TimeSpan _timeout;
-        private readonly TimeSpan _pollingInterval;
 
-        public AttributesCollectionConditions(TConditions conditions, IElementHandler elementHandler, TimeSpan timeout, TimeSpan pollingInterval)
+        public AttributesCollectionConditions(TConditions conditions, IElementHandler elementHandler, TimeSpan timeout, TimeSpan pollingInterval, ILogger logger)
+            : base(conditions, timeout, pollingInterval, logger)
         {
-            _conditions = conditions;
             _elementHandler = elementHandler;
-            _timeout = timeout;
-            _pollingInterval = pollingInterval;
         }
 
         public StringAttributeConditions<TConditions> this[string attributeName]
         {
             get
             {
-                return new StringAttributeConditions<TConditions>(_conditions, _elementHandler, attributeName, _timeout, _pollingInterval);
+                return new StringAttributeConditions<TConditions>(_conditions, _elementHandler, attributeName, _timeout, _pollingInterval, $"{attributeName} attribute of the {_elementHandler.ComponentMetadata.Name}", _logger);
             }
         }
 
@@ -35,9 +32,9 @@ namespace Yapoml.Selenium.Components.Conditions
         public StringAttributeConditions<TConditions> Style => this["style"];
 
         public NumericAttributeConditions<TConditions, int> Width =>
-            new NumericAttributeConditions<TConditions, int>(_conditions, _elementHandler, "width", _timeout, _pollingInterval);
+            new NumericAttributeConditions<TConditions, int>(_conditions, _elementHandler, "width", _timeout, _pollingInterval, $"width attribute of the {_elementHandler.ComponentMetadata.Name}", _logger);
 
         public NumericAttributeConditions<TConditions, int> TabIndex =>
-            new NumericAttributeConditions<TConditions, int>(_conditions, _elementHandler, "tabindex", _timeout, _pollingInterval);
+            new NumericAttributeConditions<TConditions, int>(_conditions, _elementHandler, "tabindex", _timeout, _pollingInterval, $"tabindex attribute of the {_elementHandler.ComponentMetadata.Name}", _logger);
     }
 }

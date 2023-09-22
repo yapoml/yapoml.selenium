@@ -1,4 +1,5 @@
 ﻿using System;
+using Yapoml.Framework.Logging;
 
 namespace Yapoml.Selenium.Components.Conditions.Generic
 {
@@ -7,12 +8,14 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
         protected readonly TConditions _conditions;
         protected readonly TimeSpan _timeout;
         protected readonly TimeSpan _pollingInterval;
+        protected readonly ILogger _logger;
 
-        public Conditions(TConditions conditions, TimeSpan timeout, TimeSpan pollingInterval)
+        public Conditions(TConditions conditions, TimeSpan timeout, TimeSpan pollingInterval, ILogger logger)
         {
             _conditions = conditions;
             _timeout = timeout;
             _pollingInterval = pollingInterval;
+            _logger = logger;
         }
 
         public string GetDifference(string phrase, string first, string second)

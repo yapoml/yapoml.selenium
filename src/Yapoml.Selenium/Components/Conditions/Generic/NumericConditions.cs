@@ -1,13 +1,16 @@
 ﻿using System;
+using Yapoml.Framework.Logging;
 
 namespace Yapoml.Selenium.Components.Conditions.Generic
 {
     public abstract class NumericConditions<TConditions, TNumber> : Conditions<TConditions>, INumericConditions<TConditions, TNumber> where TNumber : struct, IComparable<TNumber>
     {
-        public NumericConditions(TConditions conditions, TimeSpan timeout, TimeSpan pollingInterval)
-            : base(conditions, timeout, pollingInterval)
-        {
+        protected readonly string _subject;
 
+        public NumericConditions(TConditions conditions, TimeSpan timeout, TimeSpan pollingInterval, string subject, ILogger logger)
+            : base(conditions, timeout, pollingInterval, logger)
+        {
+            _subject = subject;
         }
 
         protected abstract Func<TNumber?> FetchValueFunc { get; }
@@ -35,7 +38,10 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                using (_logger.BeginLogScope($"Expect {_subject} is {value}"))
+                {
+                    Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                }
             }
             catch (TimeoutException ex)
             {
@@ -67,7 +73,10 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                using (_logger.BeginLogScope($"Expect {_subject} is not {value}"))
+                {
+                    Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                }
             }
             catch (TimeoutException ex)
             {
@@ -99,7 +108,10 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                using (_logger.BeginLogScope($"Expect {_subject} is greater than {value}"))
+                {
+                    Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                }
             }
             catch (TimeoutException ex)
             {
@@ -131,7 +143,10 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                using (_logger.BeginLogScope($"Expect {_subject} is less than {value}"))
+                {
+                    Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                }
             }
             catch (TimeoutException ex)
             {

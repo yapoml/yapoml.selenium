@@ -23,13 +23,6 @@ namespace Yapoml.Selenium.Events
             _source.ComponentEventSource.OnFindingComponent += ComponentEventSource_OnFindingComponent;
             _source.ComponentEventSource.OnFindingComponents += ComponentEventSource_OnFindingComponents;
             _source.ComponentEventSource.OnFoundComponents += ComponentEventSource_OnFoundComponents;
-
-            _source.PageEventSource.OnPageNavigating += PageEventSource_OnPageNavigating;
-        }
-
-        private void PageEventSource_OnPageNavigating(object sender, PageNavigatingEventArgs e)
-        {
-            _logger.Trace($"Opening {e.Metadata.Name} page by {e.Uri}");
         }
 
         private void ComponentEventSource_OnFoundComponents(object sender, FoundElementsEventArgs e)

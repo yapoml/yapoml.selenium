@@ -6,7 +6,7 @@ public {{get_component_return_type component}}.Conditions {{component.name}}
 	{
 		if (ElementHandler.ElementHandlerRepository.TryGet("{{component.name}}", out var cachedElementHandler))
 		{
-			return new {{get_component_return_type component}}.Conditions(Timeout, PollingInterval, WebDriver, cachedElementHandler, ElementLocator, EventSource);
+			return new {{get_component_return_type component}}.Conditions(Timeout, PollingInterval, WebDriver, cachedElementHandler, ElementLocator, EventSource, Logger);
 		}
 		else
 		{
@@ -19,7 +19,7 @@ public {{get_component_return_type component}}.Conditions {{component.name}}
 
 			ElementHandler.ElementHandlerRepository.Set("{{component.name}}", elementHandler);
 
-			return new {{get_component_return_type component}}.Conditions(Timeout, PollingInterval, WebDriver, elementHandler, ElementLocator, EventSource);
+			return new {{get_component_return_type component}}.Conditions(Timeout, PollingInterval, WebDriver, elementHandler, ElementLocator, EventSource, Logger);
 		}
 	}
 }
@@ -36,7 +36,7 @@ public {{get_component_return_type component}}List.Conditions {{component.name}}
 		var listMetadata = new global::Yapoml.Selenium.Components.Metadata.ComponentsListMetadata() { Name = "{{component.original_name}}", ComponentMetadata = metadata };
 		var elementsListHandler = new global::Yapoml.Selenium.Services.Locator.ElementsListHandler(WebDriver, ElementHandler, ElementLocator, by, listMetadata, ElementHandler.ElementHandlerRepository.CreateNestedRepository(), EventSource);
 
-		return new {{component.singular_name}}ComponentList.Conditions(Timeout, PollingInterval, WebDriver, elementsListHandler, ElementLocator, EventSource);
+		return new {{component.singular_name}}ComponentList.Conditions(Timeout, PollingInterval, WebDriver, elementsListHandler, ElementLocator, EventSource, Logger);
 	}
 }
 {{ end }}

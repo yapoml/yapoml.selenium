@@ -7,7 +7,7 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 		base.component = this;
 		var timeoutOptions = SpaceOptions.Services.Get<global::Yapoml.Selenium.Options.TimeoutOptions>();
 		var elementLocator = SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>();
-		base.conditions = new Conditions(timeoutOptions.Timeout, timeoutOptions.PollingInterval, webDriver, elementHandler, elementLocator, EventSource);
+		base.conditions = new Conditions(timeoutOptions.Timeout, timeoutOptions.PollingInterval, webDriver, elementHandler, elementLocator, EventSource, _logger);
 	}
 
 	public override global::OpenQA.Selenium.IWebElement WrappedElement
@@ -99,8 +99,8 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 	[global::System.Runtime.CompilerServices.CompilerGenerated]
 	public partial class Conditions : global::Yapoml.Selenium.Components.BaseComponentConditions<Conditions>
 	{
-		public Conditions(global::System.TimeSpan timeout, global::System.TimeSpan pollingInterval, global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementHandler elementHandler, global::Yapoml.Selenium.Services.Locator.IElementLocator elementLocator, global::Yapoml.Selenium.Events.IEventSource eventSource)
-			: base(timeout, pollingInterval, webDriver, elementHandler, elementLocator, eventSource)
+		public Conditions(global::System.TimeSpan timeout, global::System.TimeSpan pollingInterval, global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementHandler elementHandler, global::Yapoml.Selenium.Services.Locator.IElementLocator elementLocator, global::Yapoml.Selenium.Events.IEventSource eventSource, global::Yapoml.Framework.Logging.ILogger logger)
+			: base(timeout, pollingInterval, webDriver, elementHandler, elementLocator, eventSource, logger)
 		{
 			base.conditions = this;
 		}
@@ -207,14 +207,14 @@ public partial class {{$1.singular_name}}ComponentList : global::Yapoml.Selenium
 	{
 		var timeoutOptions = spaceOptions.Services.Get<global::Yapoml.Selenium.Options.TimeoutOptions>();
 		var elementLocator = spaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>();
-		base.listConditions = new Conditions(timeoutOptions.Timeout, timeoutOptions.PollingInterval, webDriver, elementsListHandler, elementLocator, eventSource);
+		base.listConditions = new Conditions(timeoutOptions.Timeout, timeoutOptions.PollingInterval, webDriver, elementsListHandler, elementLocator, eventSource, _logger);
 	}
 
 	[global::System.Runtime.CompilerServices.CompilerGenerated]
 	public partial class Conditions : global::Yapoml.Selenium.Components.BaseComponentListConditions<Conditions, {{$1.singular_name}}Component.Conditions>
 	{
-		public Conditions(global::System.TimeSpan timeout, global::System.TimeSpan pollingInterval, global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementsListHandler elementsListHandler, global::Yapoml.Selenium.Services.Locator.IElementLocator elementLocator, global::Yapoml.Selenium.Events.IEventSource eventSource)
-			: base(timeout, pollingInterval, webDriver, elementsListHandler, elementLocator, eventSource)
+		public Conditions(global::System.TimeSpan timeout, global::System.TimeSpan pollingInterval, global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementsListHandler elementsListHandler, global::Yapoml.Selenium.Services.Locator.IElementLocator elementLocator, global::Yapoml.Selenium.Events.IEventSource eventSource, global::Yapoml.Framework.Logging.ILogger logger)
+			: base(timeout, pollingInterval, webDriver, elementsListHandler, elementLocator, eventSource, logger)
 		{
 			base.listConditions = this;
 		}

@@ -1,4 +1,5 @@
 ﻿using System;
+using Yapoml.Framework.Logging;
 using Yapoml.Selenium.Components.Conditions.Generic;
 using Yapoml.Selenium.Services.Locator;
 
@@ -8,8 +9,8 @@ namespace Yapoml.Selenium.Components.Conditions
     {
         private readonly IElementsListHandler _elementsListHandler;
 
-        public CountCollectionConditions(TListConditions listConditions, IElementsListHandler elementsListHandler, TimeSpan timeout, TimeSpan pollingInterval)
-            : base(listConditions, timeout, pollingInterval)
+        public CountCollectionConditions(TListConditions listConditions, IElementsListHandler elementsListHandler, TimeSpan timeout, TimeSpan pollingInterval, ILogger logger)
+            : base(listConditions, timeout, pollingInterval, $"the count of {elementsListHandler.ComponentsListMetadata.Name}", logger)
         {
             _elementsListHandler = elementsListHandler;
         }
