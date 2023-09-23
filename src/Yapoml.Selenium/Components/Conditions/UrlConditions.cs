@@ -26,6 +26,9 @@ namespace Yapoml.Selenium.Components.Conditions
 
         protected override Func<string> FetchValueFunc => () => _webDriver.Url;
 
+        public override NumericConditions<TConditions, int> Length
+            => new TextualLengthConditons<TConditions>(_conditions, _timeout, _pollingInterval, FetchValueFunc, $"{_pageMetadata.Name} page url", _logger);
+
         protected override string GetIsError(string latestValue, string expectedValue)
         {
             return $"{_pageMetadata.Name} page url is not '{expectedValue}',{GetDifference("it was", expectedValue, latestValue)}";

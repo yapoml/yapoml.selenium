@@ -18,7 +18,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             _logger = logger;
         }
 
-        public string GetDifference(string phrase, string first, string second)
+        protected string GetDifference(string phrase, string first, string second)
         {
             if (first is not null && second is not null)
             {

@@ -21,6 +21,9 @@ namespace Yapoml.Selenium.Components.Conditions
 
         protected override Func<string> FetchValueFunc => () => RelocateOnStaleReference(() => _elementHandler.Locate().GetAttribute(_attributeName));
 
+        public override NumericConditions<TConditions, int> Length
+            => new TextualLengthConditons<TConditions>(_conditions, _timeout, _pollingInterval, FetchValueFunc, $"{_attributeName} attribute of {_elementHandler.ComponentMetadata.Name}", _logger);
+
         protected override string GetIsError(string latestValue, string expectedValue)
         {
             return $"Attribute {_attributeName} of the {_elementHandler.ComponentMetadata.Name} is not '{expectedValue}',{GetDifference("it was", expectedValue, latestValue)}";

@@ -25,6 +25,9 @@ namespace Yapoml.Selenium.Components.Conditions
 
         protected override Func<string> FetchValueFunc => () => _webDriver.Title;
 
+        public override NumericConditions<TConditions, int> Length
+            => new TextualLengthConditons<TConditions>(_conditions, _timeout, _pollingInterval, FetchValueFunc, $"{_pageMetadata.Name} page title", _logger);
+
         protected override string GetIsError(string latestValue, string expectedValue)
         {
             return $"{_pageMetadata.Name} page title is not '{expectedValue}',{GetDifference("it was", expectedValue, latestValue)}";

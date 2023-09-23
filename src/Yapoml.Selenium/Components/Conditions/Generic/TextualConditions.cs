@@ -8,13 +8,15 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
     {
         protected readonly string _subject;
 
-        public TextualConditions(TConditions conditions, TimeSpan timeout, TimeSpan pollingInterval, string subject, ILogger logger)
+        protected TextualConditions(TConditions conditions, TimeSpan timeout, TimeSpan pollingInterval, string subject, ILogger logger)
             : base(conditions, timeout, pollingInterval, logger)
         {
             _subject = subject;
         }
 
         protected abstract Func<string> FetchValueFunc { get; }
+
+        public abstract NumericConditions<TConditions, int> Length { get; }
 
         public TConditions Is(string value, TimeSpan? timeout = default)
         {
