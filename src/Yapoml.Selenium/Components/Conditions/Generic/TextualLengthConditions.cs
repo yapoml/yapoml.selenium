@@ -34,12 +34,17 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
         protected override string GetIsGreaterThanError(int? latestValue, int expectedValue)
         {
-            return $"The {_subject} remains {latestValue} characters long, which is still less than the {expectedValue} characters expected.\n  it was: {_lastTextualValue}";
+            return $"The {_subject} remains {latestValue} characters long, which is still not greater than the {expectedValue} characters expected.\n  it was: {_lastTextualValue}";
+        }
+
+        protected override string AtLeast(int? latestValue, int expectedValue)
+        {
+            return $"The {_subject} remains {latestValue} characters long, which is still not equal to or greater than the {expectedValue} characters expected.\n  it was: {_lastTextualValue}";
         }
 
         protected override string GetIsLessThanError(int? latestValue, int expectedValue)
         {
-            return $"The {_subject} remains {latestValue} characters long, which is still greater than the {expectedValue} characters expected.\n  it was: {_lastTextualValue}";
+            return $"The {_subject} remains {latestValue} characters long, which is still not less than the {expectedValue} characters expected.\n  it was: {_lastTextualValue}";
         }
     }
 }

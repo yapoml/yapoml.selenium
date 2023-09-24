@@ -34,6 +34,14 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
         TConditions IsGreaterThan(TNumber value, TimeSpan? timeout = default);
 
         /// <summary>
+        /// Checks if the actual value is equal to or greater than the expected value.
+        /// </summary>
+        /// <param name="value">The expected value.</param>
+        /// <param name="timeout">The optional timeout for the check.</param>
+        /// <returns>The conditions object for further chaining.</returns>
+        TConditions AtLeast(TNumber value, TimeSpan? timeout = default);
+
+        /// <summary>
         /// Checks if the actual value is less than the expected value.
         /// </summary>
         /// <param name="value">The expected value.</param>

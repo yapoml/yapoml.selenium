@@ -48,6 +48,11 @@ namespace Yapoml.Selenium.Components.Conditions
             return $"Style '{_styleName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still not greater than '{expectedValue}'.";
         }
 
+        protected override string AtLeast(TNumber? latestValue, TNumber expectedValue)
+        {
+            return $"Style '{_styleName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still not equal to or greater than '{expectedValue}'.";
+        }
+
         protected override string GetIsLessThanError(TNumber? latestValue, TNumber expectedValue)
         {
             return $"Style '{_styleName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still not less than '{expectedValue}'.";
