@@ -58,6 +58,11 @@ namespace Yapoml.Selenium.Components.Conditions
             return $"Style '{_styleName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still not less than '{expectedValue}'.";
         }
 
+        protected override string GetAtMostError(TNumber? latestValue, TNumber expectedValue)
+        {
+            return $"Style '{_styleName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still not equal to or less than '{expectedValue}'.";
+        }
+
         private T RelocateOnStaleReference<T>(Func<T> act)
         {
             try

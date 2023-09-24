@@ -24,27 +24,32 @@ namespace Yapoml.Selenium.Components.Conditions
 
         protected override string GetIsError(int? latestValue, int expectedValue)
         {
-            return $"The count of the {_elementsListHandler.ComponentsListMetadata.Name} is not '{expectedValue}' yet. The latest count is {latestValue}.";
+            return $"The count of the {_elementsListHandler.ComponentsListMetadata.Name} is still not '{expectedValue}' yet. The latest count is {latestValue}.";
         }
 
         protected override string GetIsNotError(int? latestValue, int expectedValue)
         {
-            return $"The count of the {_elementsListHandler.ComponentsListMetadata.Name} is not '{expectedValue}' yet. The latest count is {latestValue}.";
+            return $"The count of the {_elementsListHandler.ComponentsListMetadata.Name} is still not '{expectedValue}' yet. The latest count is {latestValue}.";
         }
 
         protected override string GetIsGreaterThanError(int? latestValue, int expectedValue)
         {
-            return $"The count of the {_elementsListHandler.ComponentsListMetadata.Name} is not greater than '{expectedValue}' yet. The latest count is {latestValue}.";
+            return $"The count of the {_elementsListHandler.ComponentsListMetadata.Name} is still not greater than '{expectedValue}' yet. The latest count is {latestValue}.";
         }
 
         protected override string AtLeast(int? latestValue, int expectedValue)
         {
-            return $"The count of the {_elementsListHandler.ComponentsListMetadata.Name} is not equal to or greater than '{expectedValue}' yet. The latest count is {latestValue}.";
+            return $"The count of the {_elementsListHandler.ComponentsListMetadata.Name} is still not equal to or greater than '{expectedValue}' yet. The latest count is {latestValue}.";
         }
 
         protected override string GetIsLessThanError(int? latestValue, int expectedValue)
         {
-            return $"The count of the {_elementsListHandler.ComponentsListMetadata.Name} is not less than '{expectedValue}' yet. The latest count is {latestValue}.";
+            return $"The count of the {_elementsListHandler.ComponentsListMetadata.Name} is still not less than '{expectedValue}' yet. The latest count is {latestValue}.";
+        }
+
+        protected override string GetAtMostError(int? latestValue, int expectedValue)
+        {
+            return $"The count of the {_elementsListHandler.ComponentsListMetadata.Name} is still not equal to or less than '{expectedValue}' yet. The latest count is {latestValue}.";
         }
     }
 }

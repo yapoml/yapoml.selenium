@@ -45,7 +45,7 @@ namespace Yapoml.Selenium.Components.Conditions
 
         protected override string GetIsGreaterThanError(TNumber? latestValue, TNumber expectedValue)
         {
-            return $"Attribute '{_attributeName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not still greater than '{expectedValue}'.";
+            return $"Attribute '{_attributeName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still not greater than '{expectedValue}'.";
         }
 
         protected override string AtLeast(TNumber? latestValue, TNumber expectedValue)
@@ -55,7 +55,12 @@ namespace Yapoml.Selenium.Components.Conditions
 
         protected override string GetIsLessThanError(TNumber? latestValue, TNumber expectedValue)
         {
-            return $"Attribute '{_attributeName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not still less than '{expectedValue}'.";
+            return $"Attribute '{_attributeName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still not less than '{expectedValue}'.";
+        }
+
+        protected override string GetAtMostError(TNumber? latestValue, TNumber expectedValue)
+        {
+            return $"Attribute '{_attributeName} = {latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is still not equal to or less than '{expectedValue}'.";
         }
 
         private T RelocateOnStaleReference<T>(Func<T> act)

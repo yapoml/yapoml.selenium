@@ -46,5 +46,10 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
         {
             return $"The {_subject} remains {latestValue} characters long, which is still not less than the {expectedValue} characters expected.\n  it was: {_lastTextualValue}";
         }
+
+        protected override string GetAtMostError(int? latestValue, int expectedValue)
+        {
+            return $"The {_subject} remains {latestValue} characters long, which is still not equal to or less than the {expectedValue} characters expected.\n  it was: {_lastTextualValue}";
+        }
     }
 }
