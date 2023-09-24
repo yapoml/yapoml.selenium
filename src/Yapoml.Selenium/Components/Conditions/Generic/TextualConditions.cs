@@ -4,6 +4,7 @@ using Yapoml.Framework.Logging;
 
 namespace Yapoml.Selenium.Components.Conditions.Generic
 {
+    /// <inheritdoc cref="ITextualConditions{TConditions}"/>
     public abstract class TextualConditions<TConditions> : Conditions<TConditions>, ITextualConditions<TConditions>
     {
         protected readonly string _subject;

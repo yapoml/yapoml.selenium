@@ -3,6 +3,7 @@ using Yapoml.Framework.Logging;
 
 namespace Yapoml.Selenium.Components.Conditions.Generic
 {
+    /// <inheritdoc cref="INumericConditions{TConditions, TNumber}"/>
     public abstract class NumericConditions<TConditions, TNumber> : Conditions<TConditions>, INumericConditions<TConditions, TNumber> where TNumber : struct, IComparable<TNumber>
     {
         protected readonly string _subject;
