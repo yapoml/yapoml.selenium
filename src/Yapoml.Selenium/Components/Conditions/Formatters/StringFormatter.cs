@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Yapoml.Selenium.Components.Conditions.Formatters
 {
-    public static class StringFormatter
+    internal static class StringFormatter
     {
         private static readonly bool _isUtfOutputEncoding;
 
