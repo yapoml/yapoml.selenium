@@ -29,7 +29,7 @@ namespace Yapoml.Selenium.Components
         private readonly BasePage _page;
         private readonly BaseComponent _parentComponent;
         private readonly IWebDriver _webDriver;
-        private readonly IElementsListHandler _elementsListHandler;
+        protected readonly IElementsListHandler _elementsListHandler;
         private readonly ComponentsListMetadata _componentsListMetadata;
         private readonly IEventSource _eventSource;
         private readonly ISpaceOptions _spaceOptions;
@@ -60,7 +60,7 @@ namespace Yapoml.Selenium.Components
                 {
                     var elements = _elementsListHandler.LocateMany();
 
-                    _list = new List<TComponent>(elements.Select(e => factory.Create<TComponent, TListConditions>(_page, _parentComponent, _webDriver, new ElementHandler(_webDriver, null, locator, _elementsListHandler.By, e, _componentsListMetadata.ComponentMetadata, _elementsListHandler.ElementHandlerRepository.CreateNestedRepository(), _eventSource), _componentsListMetadata.ComponentMetadata, _spaceOptions)));
+                    _list = new List<TComponent>(elements.Select(e => factory.Create<TComponent, TListConditions, TComponentConditions>(_page, _parentComponent, _webDriver, new ElementHandler(_webDriver, null, locator, _elementsListHandler.By, e, _componentsListMetadata.ComponentMetadata, _elementsListHandler.ElementHandlerRepository.CreateNestedRepository(), _eventSource), _componentsListMetadata.ComponentMetadata, _spaceOptions)));
 
                     if (elements.Count > index)
                     {
@@ -103,7 +103,7 @@ namespace Yapoml.Selenium.Components
                 {
                     var elements = _elementsListHandler.LocateMany();
 
-                    _list = new List<TComponent>(elements.Select(e => factory.Create<TComponent, TListConditions>(_page, _parentComponent, _webDriver, new ElementHandler(_webDriver, null, locator, _elementsListHandler.By, e, _componentsListMetadata.ComponentMetadata, _elementsListHandler.ElementHandlerRepository.CreateNestedRepository(), _eventSource), _componentsListMetadata.ComponentMetadata, _spaceOptions)));
+                    _list = new List<TComponent>(elements.Select(e => factory.Create<TComponent, TListConditions, TComponentConditions>(_page, _parentComponent, _webDriver, new ElementHandler(_webDriver, null, locator, _elementsListHandler.By, e, _componentsListMetadata.ComponentMetadata, _elementsListHandler.ElementHandlerRepository.CreateNestedRepository(), _eventSource), _componentsListMetadata.ComponentMetadata, _spaceOptions)));
 
                     component = _list.FirstOrDefault(c => c.Text == text);
 
@@ -152,7 +152,7 @@ namespace Yapoml.Selenium.Components
                 {
                     var elements = _elementsListHandler.LocateMany();
 
-                    _list = new List<TComponent>(elements.Select(e => factory.Create<TComponent, TListConditions>(_page, _parentComponent, _webDriver, new ElementHandler(_webDriver, null, locator, _elementsListHandler.By, e, _componentsListMetadata.ComponentMetadata, _elementsListHandler.ElementHandlerRepository.CreateNestedRepository(), _eventSource), _componentsListMetadata.ComponentMetadata, _spaceOptions)));
+                    _list = new List<TComponent>(elements.Select(e => factory.Create<TComponent, TListConditions, TComponentConditions>(_page, _parentComponent, _webDriver, new ElementHandler(_webDriver, null, locator, _elementsListHandler.By, e, _componentsListMetadata.ComponentMetadata, _elementsListHandler.ElementHandlerRepository.CreateNestedRepository(), _eventSource), _componentsListMetadata.ComponentMetadata, _spaceOptions)));
 
                     component = _list.FirstOrDefault(predicate);
 
@@ -242,19 +242,6 @@ namespace Yapoml.Selenium.Components
             }
         }
 
-        /// <summary>
-        /// Various awaitable conditions on the list of components.
-        /// </summary>
-        public BaseComponentList<TComponent, TListConditions, TComponentConditions> Expect(Action<TListConditions> it)
-        {
-            using (_logger.BeginLogScope($"Expect {_elementsListHandler.ComponentsListMetadata.Name} satisfy conditions"))
-            {
-                it(listConditions);
-            }
-
-            return this;
-        }
-
         private void EnsureLocated()
         {
             if (_list == null)
@@ -264,7 +251,7 @@ namespace Yapoml.Selenium.Components
 
                 var elements = _elementsListHandler.LocateMany();
 
-                _list = new List<TComponent>(elements.Select(e => factory.Create<TComponent, TListConditions>(_page, _parentComponent, _webDriver, new ElementHandler(_webDriver, null, locator, _elementsListHandler.By, e, _componentsListMetadata.ComponentMetadata, _elementsListHandler.ElementHandlerRepository.CreateNestedRepository(), _eventSource), _componentsListMetadata.ComponentMetadata, _spaceOptions)));
+                _list = new List<TComponent>(elements.Select(e => factory.Create<TComponent, TListConditions, TComponentConditions>(_page, _parentComponent, _webDriver, new ElementHandler(_webDriver, null, locator, _elementsListHandler.By, e, _componentsListMetadata.ComponentMetadata, _elementsListHandler.ElementHandlerRepository.CreateNestedRepository(), _eventSource), _componentsListMetadata.ComponentMetadata, _spaceOptions)));
             }
         }
     }

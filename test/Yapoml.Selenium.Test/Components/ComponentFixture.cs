@@ -26,14 +26,14 @@ namespace Yapoml.Selenium.Test.Components
             var spaceOptions = new Mock<ISpaceOptions>();
             spaceOptions.SetupGet(p => p.Services).Returns(container.Object);
 
-            var component = new Mock<BaseComponent<TestComponent, TestComponent.TestConditions>>(null, null, webDriver.Object, elementHandler.Object, null, spaceOptions.Object);
+            var component = new Mock<BaseComponent<TestComponent, TestComponent.TestConditions, TestComponent.TestOneTimeConditions>>(null, null, webDriver.Object, elementHandler.Object, null, spaceOptions.Object);
             component.CallBase = true;
 
             component.Object.IsDisplayed.Should().BeFalse();
         }
     }
 
-    public class TestComponent : BaseComponent<TestComponent, TestComponent.TestConditions>
+    public class TestComponent : BaseComponent<TestComponent, TestComponent.TestConditions, TestComponent.TestOneTimeConditions>
     {
         public TestComponent(BasePage page, BaseComponent parentComponent, IWebDriver webDriver, IElementHandler elementHandler, ComponentMetadata metadata, ISpaceOptions spaceOptions)
             : base(page, parentComponent, webDriver, elementHandler, metadata, spaceOptions)
@@ -43,6 +43,14 @@ namespace Yapoml.Selenium.Test.Components
         public class TestConditions : BaseComponentConditions<TestConditions>
         {
             public TestConditions(TimeSpan timeout, TimeSpan pollingInterval, IWebDriver webDriver, IElementHandler elementHandler, IElementLocator elementLocator, IEventSource eventSource, ILogger logger)
+                : base(timeout, pollingInterval, webDriver, elementHandler, elementLocator, eventSource, logger)
+            {
+            }
+        }
+
+        public class TestOneTimeConditions : BaseComponentConditions<TestComponent>
+        {
+            public TestOneTimeConditions(TimeSpan timeout, TimeSpan pollingInterval, IWebDriver webDriver, IElementHandler elementHandler, IElementLocator elementLocator, IEventSource eventSource, ILogger logger)
                 : base(timeout, pollingInterval, webDriver, elementHandler, elementLocator, eventSource, logger)
             {
             }

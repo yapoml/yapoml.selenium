@@ -13,24 +13,11 @@ using Yapoml.Selenium.Services.Locator;
 
 namespace Yapoml.Selenium.Components
 {
-    public class BaseComponentListConditions<TListConditions, TComponentConditions>
-            where TListConditions : BaseComponentListConditions<TListConditions, TComponentConditions>
-            where TComponentConditions : BaseComponentConditions<TComponentConditions>
+    public class BaseComponentListConditions<TSelf, TComponentConditions> : BaseConditions<TSelf>
     {
-        protected TListConditions listConditions;
-
-        protected TimeSpan Timeout { get; }
-        protected TimeSpan PollingInterval { get; }
-        protected IWebDriver WebDriver { get; }
-        protected IElementsListHandler ElementsListHandler { get; }
-        protected IElementLocator ElementLocator { get; }
-        protected IEventSource EventSource { get; }
-        protected ILogger Logger { get; }
-
         public BaseComponentListConditions(TimeSpan timeout, TimeSpan pollingInterval, IWebDriver webDriver, IElementsListHandler elementsListHandler, IElementLocator elementLocator, IEventSource eventSource, ILogger logger)
+            : base(timeout, pollingInterval)
         {
-            Timeout = timeout;
-            PollingInterval = pollingInterval;
             WebDriver = webDriver;
             ElementsListHandler = elementsListHandler;
             ElementLocator = elementLocator;
@@ -38,12 +25,18 @@ namespace Yapoml.Selenium.Components
             Logger = logger;
         }
 
-        public CountCollectionConditions<TListConditions> Count => new CountCollectionConditions<TListConditions>(listConditions, ElementsListHandler, Timeout, PollingInterval, Logger);
+        protected IWebDriver WebDriver { get; }
+        protected IElementsListHandler ElementsListHandler { get; }
+        protected IElementLocator ElementLocator { get; }
+        protected IEventSource EventSource { get; }
+        protected ILogger Logger { get; }
+
+        public CountCollectionConditions<TSelf> Count => new CountCollectionConditions<TSelf>(_self, ElementsListHandler, Timeout, PollingInterval, Logger);
 
 #if NET6_0_OR_GREATER
-        public TListConditions Each(Action<TComponentConditions> predicate, TimeSpan? timeout = default, [CallerArgumentExpression("predicate")] string predicateExpression = null)
+        public TSelf Each(Action<TComponentConditions> predicate, TimeSpan? timeout = default, [CallerArgumentExpression("predicate")] string predicateExpression = null)
 #else
-        public TListConditions Each(Action<TComponentConditions> predicate, TimeSpan? timeout = default)
+        public TSelf Each(Action<TComponentConditions> predicate, TimeSpan? timeout = default)
 #endif
         {
             timeout ??= Timeout;
@@ -93,13 +86,13 @@ namespace Yapoml.Selenium.Components
                 throw new ExpectException($"Not all {ElementsListHandler.ComponentsListMetadata.Name} satisfy condition.", ex);
             }
 
-            return listConditions;
+            return _self;
         }
 
 #if NET6_0_OR_GREATER
-        public TListConditions Contains(Action<TComponentConditions> predicate, TimeSpan? timeout = default, [CallerArgumentExpression("predicate")] string predicateExpression = null)
+        public TSelf Contains(Action<TComponentConditions> predicate, TimeSpan? timeout = default, [CallerArgumentExpression("predicate")] string predicateExpression = null)
 #else
-        public TListConditions Contains(Action<TComponentConditions> predicate, TimeSpan? timeout = default)
+        public TSelf Contains(Action<TComponentConditions> predicate, TimeSpan? timeout = default)
 #endif
         {
             timeout ??= Timeout;
@@ -141,13 +134,13 @@ namespace Yapoml.Selenium.Components
 #endif
             }
 
-            return listConditions;
+            return _self;
         }
 
 #if NET6_0_OR_GREATER
-        public TListConditions DoNotContain(Action<TComponentConditions> predicate, TimeSpan? timeout = default, [CallerArgumentExpression("predicate")] string predicateExpression = null)
+        public TSelf DoNotContain(Action<TComponentConditions> predicate, TimeSpan? timeout = default, [CallerArgumentExpression("predicate")] string predicateExpression = null)
 #else
-        public TListConditions DoNotContain(Action<TComponentConditions> predicate, TimeSpan? timeout = default)
+        public TSelf DoNotContain(Action<TComponentConditions> predicate, TimeSpan? timeout = default)
 #endif
         {
             timeout ??= Timeout;
@@ -192,15 +185,15 @@ namespace Yapoml.Selenium.Components
 #endif
             }
 
-            return listConditions;
+            return _self;
         }
 
-        public virtual TListConditions IsEmpty(TimeSpan? timeout = default)
+        public virtual TSelf IsEmpty(TimeSpan? timeout = default)
         {
             return Count.Is(0, timeout);
         }
 
-        public virtual TListConditions IsNotEmpty(TimeSpan? timeout = default)
+        public virtual TSelf IsNotEmpty(TimeSpan? timeout = default)
         {
             return Count.IsGreaterThan(0, timeout);
         }
@@ -210,11 +203,11 @@ namespace Yapoml.Selenium.Components
         /// </summary>
         /// <param name="duration">Aamount of time to wait.</param>
         /// <returns></returns>
-        public virtual TListConditions Elapsed(TimeSpan duration)
+        public virtual TSelf Elapsed(TimeSpan duration)
         {
             Thread.Sleep(duration);
 
-            return listConditions;
+            return _self;
         }
     }
 }

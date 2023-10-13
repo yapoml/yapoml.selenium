@@ -2,9 +2,10 @@
 namespace {{root_namespace}}
 {
 	[global::System.Runtime.CompilerServices.CompilerGenerated]
-	public abstract partial class BaseComponent<TComponent, TConditions> : global::Yapoml.Selenium.Components.BaseComponent<TComponent, TConditions>
-		where TComponent: global::Yapoml.Selenium.Components.BaseComponent<TComponent, TConditions>
+	public abstract partial class BaseComponent<TComponent, TConditions, TCondition> : global::Yapoml.Selenium.Components.BaseComponent<TComponent, TConditions, TCondition>
+		where TComponent: global::Yapoml.Selenium.Components.BaseComponent<TComponent, TConditions, TCondition>
 		where TConditions: global::Yapoml.Selenium.Components.BaseComponentConditions<TConditions>
+		where TCondition: global::Yapoml.Selenium.Components.BaseComponentConditions<TComponent>
 	{
 		public BaseComponent(global::Yapoml.Selenium.Components.BasePage page, global::Yapoml.Selenium.Components.BaseComponent parentComponent, global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementHandler elementHandler, global::Yapoml.Selenium.Components.Metadata.ComponentMetadata metadata, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
 			: base(page, parentComponent, webDriver, elementHandler, metadata, spaceOptions)

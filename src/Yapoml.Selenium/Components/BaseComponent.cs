@@ -11,15 +11,17 @@ using Yapoml.Selenium.Options;
 namespace Yapoml.Selenium.Components
 {
     /// <inheritdoc cref="IWebElement"/>
-    public abstract partial class BaseComponent<TComponent, TConditions> : BaseComponent, IWrapsElement, ITakesScreenshot
-        where TComponent : BaseComponent<TComponent, TConditions>
+    public abstract partial class BaseComponent<TComponent, TConditions, TCondition> : BaseComponent, IWrapsElement, ITakesScreenshot
+        where TComponent : BaseComponent<TComponent, TConditions, TCondition>
         where TConditions : BaseComponentConditions<TConditions>
+        where TCondition : BaseComponentConditions<TComponent>
     {
         protected TComponent component;
 
         protected TConditions conditions;
+        protected TCondition oneTimeConditions;
 
-        public BaseComponent(BasePage page, BaseComponent parentComponent, IWebDriver webDriver, IElementHandler elementHandler, ComponentMetadata metadata, ISpaceOptions spaceOptions)
+        protected BaseComponent(BasePage page, BaseComponent parentComponent, IWebDriver webDriver, IElementHandler elementHandler, ComponentMetadata metadata, ISpaceOptions spaceOptions)
             : base(page, parentComponent, webDriver, elementHandler, metadata, spaceOptions)
         {
 
@@ -28,14 +30,22 @@ namespace Yapoml.Selenium.Components
         /// <summary>
         /// Various awaitable conditions on the component.
         /// </summary>
-        public TComponent Expect(Action<TConditions> it)
+        public virtual TCondition Expect()
+        {
+            return oneTimeConditions;
+        }
+
+        /// <summary>
+        /// Various awaitable and chainable conditions on the component.
+        /// </summary>
+        public virtual TComponent Expect(Action<TConditions> it)
         {
             it(conditions);
 
             return component;
         }
 
-        public static bool operator ==(BaseComponent<TComponent, TConditions> component, string value)
+        public static bool operator ==(BaseComponent<TComponent, TConditions, TCondition> component, string value)
         {
             if (component is null)
             {
@@ -45,7 +55,7 @@ namespace Yapoml.Selenium.Components
             return component.Text == value;
         }
 
-        public static bool operator !=(BaseComponent<TComponent, TConditions> component, string value)
+        public static bool operator !=(BaseComponent<TComponent, TConditions, TCondition> component, string value)
         {
             return !(component == value);
         }

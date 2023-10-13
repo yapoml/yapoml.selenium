@@ -5,7 +5,7 @@ using Yapoml.Selenium.Options;
 
 namespace Yapoml.Selenium.Components
 {
-    partial class BaseComponent<TComponent, TConditions>
+    partial class BaseComponent<TComponent, TConditions, TCondition>
     {
         /// <summary>
         /// Clears the text from a component.
@@ -386,9 +386,10 @@ namespace Yapoml.Selenium.Components
         /// <summary>
         /// Performs a drag and drop operation to another component.
         /// </summary>
-        public virtual TComponent DragAndDrop<TToComponent, TToConditions>(BaseComponent<TToComponent, TToConditions> toComponent)
-            where TToComponent : BaseComponent<TToComponent, TToConditions>
+        public virtual TComponent DragAndDrop<TToComponent, TToConditions, TToCondition>(BaseComponent<TToComponent, TToConditions, TToCondition> toComponent)
+            where TToComponent : BaseComponent<TToComponent, TToConditions, TToCondition>
             where TToConditions : BaseComponentConditions<TToConditions>
+            where TToCondition : BaseComponentConditions<TToComponent>
         {
             using (_logger.BeginLogScope($"Dragging {Metadata.Name} to {toComponent.Metadata.Name}"))
             {
@@ -401,9 +402,10 @@ namespace Yapoml.Selenium.Components
         /// <summary>
         /// Performs a drag and drop operation to another component.
         /// </summary>
-        public virtual TComponent DragAndDrop<TToComponent, TToConditions>(BaseComponent<TToComponent, TToConditions> toComponent, Action<TConditions> when)
-            where TToComponent : BaseComponent<TToComponent, TToConditions>
+        public virtual TComponent DragAndDrop<TToComponent, TToConditions, TToCondition>(BaseComponent<TToComponent, TToConditions, TToCondition> toComponent, Action<TConditions> when)
+            where TToComponent : BaseComponent<TToComponent, TToConditions, TToCondition>
             where TToConditions : BaseComponentConditions<TToConditions>
+            where TToCondition : BaseComponentConditions<TToComponent>
         {
             when(conditions);
 

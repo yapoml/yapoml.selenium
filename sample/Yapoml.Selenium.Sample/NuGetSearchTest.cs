@@ -50,6 +50,18 @@ namespace Yapoml.Selenium.Sample
         [Test]
         public void SearchWithYapoml()
         {
+            var ya = _webDriver.Ya(opts => opts.WithBaseUrl("https://nuget.org"));
+            
+            ya.HomePage.Open().Search("Selenium");
+            
+            ya.PackagesPage.Packages[1].Expect().Title.IsDisplayed();
+            //ya.PackagesPage.Packages.Expect().IsEmpty();
+            ya.PackagesPage.Expect().Packages.Each(p => p.Title.IsNotEmpty());
+            var p = _webDriver.Ya(opts => opts.WithBaseUrl("https://nuget.org"))
+                .HomePage.Open();
+
+            p.SearchButton.Expect().IsDisplayed().Click();
+
             _webDriver.Ya(opts => opts.WithBaseUrl("https://nuget.org"))
                 .HomePage.Open().Search("Selenium")
                 .Packages.Expect(its => its.Count.Is(20).Each(package =>

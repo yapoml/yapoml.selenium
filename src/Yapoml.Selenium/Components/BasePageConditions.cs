@@ -9,14 +9,11 @@ using Yapoml.Selenium.Services.Locator;
 
 namespace Yapoml.Selenium.Components
 {
-    public abstract class BasePageConditions<TConditions> where TConditions : BasePageConditions<TConditions>
+    public abstract class BasePageConditions<TSelf> : BaseConditions<TSelf>
     {
-        protected TConditions conditions;
-
         public BasePageConditions(TimeSpan timeout, TimeSpan pollingInterval, IWebDriver webDriver, IElementHandlerRepository elementHandlerRepository, IElementLocator elementLocator, PageMetadata pageMetadata, IEventSource eventSource, ILogger logger)
+            : base(timeout, pollingInterval)
         {
-            Timeout = timeout;
-            PollingInterval = pollingInterval;
             WebDriver = webDriver;
             ElementHandlerRepository = elementHandlerRepository;
             ElementLocator = elementLocator;
@@ -25,8 +22,6 @@ namespace Yapoml.Selenium.Components
             Logger = logger;
         }
 
-        protected TimeSpan Timeout { get; }
-        protected TimeSpan PollingInterval { get; }
         protected IWebDriver WebDriver { get; }
         protected IElementHandlerRepository ElementHandlerRepository { get; }
         protected IElementLocator ElementLocator { get; }
@@ -40,7 +35,7 @@ namespace Yapoml.Selenium.Components
         /// 
         /// If url is defined for the page, then it also evaluates current url.
         /// </summary>
-        public virtual TConditions IsLoaded(TimeSpan? timeout = default)
+        public virtual TSelf IsLoaded(TimeSpan? timeout = default)
         {
             timeout ??= Timeout;
 
@@ -65,28 +60,28 @@ namespace Yapoml.Selenium.Components
                 throw new ExpectException($"{PageMetadata.Name} page is not loaded yet. Current state is '{latestValue}'.", ex);
             }
 
-            return conditions;
+            return _self;
         }
 
         /// <summary>
         /// Various conditions for current page Url.
         /// </summary>
-        public virtual UrlConditions<TConditions> Url
+        public virtual UrlConditions<TSelf> Url
         {
             get
             {
-                return new UrlConditions<TConditions>(WebDriver, conditions, Timeout, PollingInterval, PageMetadata, Logger);
+                return new UrlConditions<TSelf>(WebDriver, _self, Timeout, PollingInterval, PageMetadata, Logger);
             }
         }
 
         /// <summary>
         /// Various conditions for current title of the page.
         /// </summary>
-        public virtual TitleConditions<TConditions> Title
+        public virtual TitleConditions<TSelf> Title
         {
             get
             {
-                return new TitleConditions<TConditions>(WebDriver, conditions, Timeout, PollingInterval, PageMetadata, Logger);
+                return new TitleConditions<TSelf>(WebDriver, _self, Timeout, PollingInterval, PageMetadata, Logger);
             }
         }
 
@@ -95,11 +90,11 @@ namespace Yapoml.Selenium.Components
         /// </summary>
         /// <param name="duration">Aamount of time to wait.</param>
         /// <returns></returns>
-        public virtual TConditions Elapsed(TimeSpan duration)
+        public virtual TSelf Elapsed(TimeSpan duration)
         {
             Thread.Sleep(duration);
 
-            return conditions;
+            return _self;
         }
     }
 }

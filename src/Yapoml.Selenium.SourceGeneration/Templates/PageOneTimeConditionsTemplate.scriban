@@ -1,0 +1,29 @@
+﻿[global::System.Runtime.CompilerServices.CompilerGenerated]
+public class OneTimeConditions : global::Yapoml.Selenium.Components.BasePageConditions<{{get_page_class_name $1}}>
+{
+	public OneTimeConditions({{get_page_class_name $1}} self, global::System.TimeSpan timeout, global::System.TimeSpan pollingInterval, global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementHandlerRepository elementHandlerRepository, global::Yapoml.Selenium.Services.Locator.IElementLocator elementLocator, global::Yapoml.Selenium.Components.Metadata.PageMetadata pageMetadata, global::Yapoml.Selenium.Events.IEventSource eventSource, global::Yapoml.Framework.Logging.ILogger logger)
+		: base(timeout, pollingInterval, webDriver, elementHandlerRepository, elementLocator, pageMetadata, eventSource, logger)
+	{
+		base._self = self;
+	}
+
+	{{ for component in $1.components }}
+	{{if !component.is_plural && component.by.segments == null }}
+	public {{get_component_return_type component}}.OneTimeConditions {{component.name}}
+	{
+		get
+		{
+			return base._self.{{component.name}}.Expect();
+		}
+	}
+	{{ else if component.is_plural && component.by.segments == null }}
+	public {{get_component_return_type component}}List.OneTimeConditions {{component.name}}
+	{
+		get
+		{
+			return base._self.{{component.name}}.Expect();
+		}
+	}
+	{{ end }}
+	{{ end }}
+}

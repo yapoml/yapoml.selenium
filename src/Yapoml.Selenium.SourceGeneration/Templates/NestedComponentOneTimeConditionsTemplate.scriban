@@ -1,0 +1,19 @@
+﻿{{ for component in $1.components }}
+{{if !component.is_plural && component.by.segments == null }}
+public {{get_component_return_type component}}.OneTimeConditions {{component.name}}
+{
+	get
+	{
+		return base._self.{{component.name}}.Expect();
+	}
+}
+{{ else if component.is_plural && component.by.segments == null }}
+public {{get_component_return_type component}}List.OneTimeConditions {{component.name}}
+{
+	get
+	{
+		return base._self.{{component.name}}.Expect();
+	}
+}
+{{ end }}
+{{ end }}

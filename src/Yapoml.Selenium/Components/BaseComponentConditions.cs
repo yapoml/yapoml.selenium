@@ -11,22 +11,11 @@ using Yapoml.Selenium.Services.Locator;
 
 namespace Yapoml.Selenium.Components
 {
-    public abstract class BaseComponentConditions<TConditions> : ITextualConditions<TConditions> where TConditions : BaseComponentConditions<TConditions>
+    public abstract class BaseComponentConditions<TSelf> : BaseConditions<TSelf>, ITextualConditions<TSelf>
     {
-        protected TConditions conditions;
-
-        protected TimeSpan Timeout { get; }
-        protected TimeSpan PollingInterval { get; }
-        protected IWebDriver WebDriver { get; }
-        protected IElementHandler ElementHandler { get; }
-        protected IElementLocator ElementLocator { get; }
-        protected IEventSource EventSource { get; }
-        protected ILogger Logger { get; }
-
         public BaseComponentConditions(TimeSpan timeout, TimeSpan pollingInterval, IWebDriver webDriver, IElementHandler elementHandler, IElementLocator elementLocator, IEventSource eventSource, ILogger logger)
+            : base(timeout, pollingInterval)
         {
-            Timeout = timeout;
-            PollingInterval = pollingInterval;
             WebDriver = webDriver;
             ElementHandler = elementHandler;
             ElementLocator = elementLocator;
@@ -34,12 +23,18 @@ namespace Yapoml.Selenium.Components
             Logger = logger;
         }
 
+        protected IWebDriver WebDriver { get; }
+        protected IElementHandler ElementHandler { get; }
+        protected IElementLocator ElementLocator { get; }
+        protected IEventSource EventSource { get; }
+        protected ILogger Logger { get; }
+
         /// <summary>
         /// Waits until the component is displayed.
         /// </summary>
         /// <param name="timeout">How long to wait until the component is displayed.</param>
         /// <returns></returns>
-        public virtual TConditions IsDisplayed(TimeSpan? timeout = null)
+        public virtual TSelf IsDisplayed(TimeSpan? timeout = null)
         {
             timeout ??= Timeout;
 
@@ -92,7 +87,7 @@ namespace Yapoml.Selenium.Components
                 throw new ExpectException($"{ElementHandler.ComponentMetadata.Name} is not displayed yet '{ElementHandler.By}'.", ex);
             }
 
-            return conditions;
+            return _self;
         }
 
         /// <summary>
@@ -101,7 +96,7 @@ namespace Yapoml.Selenium.Components
         /// </summary>
         /// <param name="timeout">How long to wait until the component is not displayed.</param>
         /// <returns></returns>
-        public virtual TConditions IsNotDisplayed(TimeSpan? timeout = null)
+        public virtual TSelf IsNotDisplayed(TimeSpan? timeout = null)
         {
             timeout ??= Timeout;
 
@@ -136,7 +131,7 @@ namespace Yapoml.Selenium.Components
                 throw new ExpectException($"{ElementHandler.ComponentMetadata.Name} is still displayed '{ElementHandler.By}'.", ex);
             }
 
-            return conditions;
+            return _self;
         }
 
         /// <summary>
@@ -144,7 +139,7 @@ namespace Yapoml.Selenium.Components
         /// </summary>
         /// <param name="timeout">How long to wait until the component is appeared.</param>
         /// <returns></returns>
-        public virtual TConditions Exists(TimeSpan? timeout = null)
+        public virtual TSelf Exists(TimeSpan? timeout = null)
         {
             timeout ??= Timeout;
 
@@ -193,7 +188,7 @@ namespace Yapoml.Selenium.Components
                 throw new ExpectException($"{ElementHandler.ComponentMetadata.Name} does not exist yet '{ElementHandler.By}'.", ex);
             }
 
-            return conditions;
+            return _self;
         }
 
         /// <summary>
@@ -201,7 +196,7 @@ namespace Yapoml.Selenium.Components
         /// </summary>
         /// <param name="timeout">How long to wait until the component disappeared.</param>
         /// <returns></returns>
-        public virtual TConditions DoesNotExist(TimeSpan? timeout = null)
+        public virtual TSelf DoesNotExist(TimeSpan? timeout = null)
         {
             timeout ??= Timeout;
 
@@ -239,7 +234,7 @@ namespace Yapoml.Selenium.Components
                 throw new ExpectException($"{ElementHandler.ComponentMetadata.Name} still exists '{ElementHandler.By}'.", ex);
             }
 
-            return conditions;
+            return _self;
         }
 
         /// <summary>
@@ -247,7 +242,7 @@ namespace Yapoml.Selenium.Components
         /// </summary>
         /// <param name="timeout">How long to wait until the component is enabled.</param>
         /// <returns></returns>
-        public virtual TConditions IsEnabled(TimeSpan? timeout = null)
+        public virtual TSelf IsEnabled(TimeSpan? timeout = null)
         {
             timeout ??= Timeout;
 
@@ -268,39 +263,39 @@ namespace Yapoml.Selenium.Components
                 throw new ExpectException($"{ElementHandler.ComponentMetadata.Name} is not enabled yet.", ex);
             }
 
-            return conditions;
+            return _self;
         }
 
         /// <summary>
         /// Various expected conditions for component's text.
         /// </summary>
-        public virtual TextConditions<TConditions> Text
+        public virtual TextConditions<TSelf> Text
         {
             get
             {
-                return new TextConditions<TConditions>(conditions, ElementHandler, Timeout, PollingInterval, $"text of the {ElementHandler.ComponentMetadata.Name}", Logger);
+                return new TextConditions<TSelf>(_self, ElementHandler, Timeout, PollingInterval, $"text of the {ElementHandler.ComponentMetadata.Name}", Logger);
             }
         }
 
         /// <summary>
         /// Various expected conditions for component attributes.
         /// </summary>
-        public virtual AttributesCollectionConditions<TConditions> Attributes
+        public virtual AttributesCollectionConditions<TSelf> Attributes
         {
             get
             {
-                return new AttributesCollectionConditions<TConditions>(conditions, ElementHandler, Timeout, PollingInterval, Logger);
+                return new AttributesCollectionConditions<TSelf>(_self, ElementHandler, Timeout, PollingInterval, Logger);
             }
         }
 
         /// <summary>
         /// Various expected conditions for CSS styles.
         /// </summary>
-        public virtual StylesCollectionConditions<TConditions> Styles
+        public virtual StylesCollectionConditions<TSelf> Styles
         {
             get
             {
-                return new StylesCollectionConditions<TConditions>(conditions, ElementHandler, Timeout, PollingInterval, Logger);
+                return new StylesCollectionConditions<TSelf>(_self, ElementHandler, Timeout, PollingInterval, Logger);
             }
         }
 
@@ -309,111 +304,111 @@ namespace Yapoml.Selenium.Components
         /// </summary>
         /// <param name="duration">Aamount of time to wait.</param>
         /// <returns></returns>
-        public virtual TConditions Elapsed(TimeSpan duration)
+        public virtual TSelf Elapsed(TimeSpan duration)
         {
             Thread.Sleep(duration);
 
-            return conditions;
+            return _self;
         }
 
         #region Textual Conditions
 
-        public TConditions Is(string value, TimeSpan? timeout = default)
+        public TSelf Is(string value, TimeSpan? timeout = default)
         {
             return Text.Is(value, timeout);
         }
 
-        public TConditions Is(string value, StringComparison comparisonType, TimeSpan? timeout = default)
+        public TSelf Is(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
             return Text.Is(value, comparisonType, timeout);
         }
 
-        public TConditions IsNot(string value, TimeSpan? timeout = default)
+        public TSelf IsNot(string value, TimeSpan? timeout = default)
         {
             return Text.IsNot(value, timeout);
         }
 
-        public TConditions IsNot(string value, StringComparison comparisonType, TimeSpan? timeout = default)
+        public TSelf IsNot(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
             return Text.IsNot(value, comparisonType, timeout);
         }
 
-        public TConditions IsEmpty(TimeSpan? timeout = default)
+        public TSelf IsEmpty(TimeSpan? timeout = default)
         {
             return Text.IsEmpty(timeout);
         }
 
-        public TConditions IsNotEmpty(TimeSpan? timeout = default)
+        public TSelf IsNotEmpty(TimeSpan? timeout = default)
         {
             return Text.IsNotEmpty(timeout);
         }
 
-        public TConditions StartsWith(string value, TimeSpan? timeout = default)
+        public TSelf StartsWith(string value, TimeSpan? timeout = default)
         {
             return Text.StartsWith(value, timeout);
         }
 
-        public TConditions StartsWith(string value, StringComparison comparisonType, TimeSpan? timeout = default)
+        public TSelf StartsWith(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
             return Text.StartsWith(value, comparisonType, timeout);
         }
 
-        public TConditions DoesNotStartWith(string value, TimeSpan? timeout = default)
+        public TSelf DoesNotStartWith(string value, TimeSpan? timeout = default)
         {
             return Text.DoesNotStartWith(value, timeout);
         }
 
-        public TConditions DoesNotStartWith(string value, StringComparison comparisonType, TimeSpan? timeout = default)
+        public TSelf DoesNotStartWith(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
             return Text.DoesNotStartWith(value, comparisonType, timeout);
         }
 
-        public TConditions EndsWith(string value, TimeSpan? timeout = default)
+        public TSelf EndsWith(string value, TimeSpan? timeout = default)
         {
             return Text.EndsWith(value, timeout);
         }
 
-        public TConditions EndsWith(string value, StringComparison comparisonType, TimeSpan? timeout = default)
+        public TSelf EndsWith(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
             return Text.EndsWith(value, comparisonType, timeout);
         }
 
-        public TConditions DoesNotEndWith(string value, TimeSpan? timeout = default)
+        public TSelf DoesNotEndWith(string value, TimeSpan? timeout = default)
         {
             return Text.DoesNotEndWith(value, timeout);
         }
 
-        public TConditions DoesNotEndWith(string value, StringComparison comparisonType, TimeSpan? timeout = default)
+        public TSelf DoesNotEndWith(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
             return Text.DoesNotEndWith(value, comparisonType, timeout);
         }
 
-        public TConditions Contains(string value, TimeSpan? timeout = default)
+        public TSelf Contains(string value, TimeSpan? timeout = default)
         {
             return Text.Contains(value, timeout);
         }
 
-        public TConditions Contains(string value, StringComparison comparisonType, TimeSpan? timeout = default)
+        public TSelf Contains(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
             return Text.Contains(value, comparisonType, timeout);
         }
 
-        public TConditions DoesNotContain(string value, TimeSpan? timeout = default)
+        public TSelf DoesNotContain(string value, TimeSpan? timeout = default)
         {
             return Text.DoesNotContain(value, timeout);
         }
 
-        public TConditions DoesNotContain(string value, StringComparison comparisonType, TimeSpan? timeout = default)
+        public TSelf DoesNotContain(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
             return Text.DoesNotContain(value, comparisonType, timeout);
         }
 
-        public TConditions Matches(Regex regex, TimeSpan? timeout = default)
+        public TSelf Matches(Regex regex, TimeSpan? timeout = default)
         {
             return Text.Matches(regex, timeout);
         }
 
-        public TConditions DoesNotMatch(Regex regex, TimeSpan? timeout = default)
+        public TSelf DoesNotMatch(Regex regex, TimeSpan? timeout = default)
         {
             return Text.DoesNotMatch(regex, timeout);
         }

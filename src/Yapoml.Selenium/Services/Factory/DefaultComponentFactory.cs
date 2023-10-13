@@ -9,7 +9,7 @@ namespace Yapoml.Selenium.Services.Factory
 {
     public class DefaultComponentFactory : IComponentFactory
     {
-        public TComponent Create<TComponent, TConditions>(BasePage page, BaseComponent parentComponent, IWebDriver webDriver, IElementHandler elementHandler, ComponentMetadata componentMetadata, ISpaceOptions spaceOptions) where TComponent : BaseComponent
+        public TComponent Create<TComponent, TConditions, TCondition>(BasePage page, BaseComponent parentComponent, IWebDriver webDriver, IElementHandler elementHandler, ComponentMetadata componentMetadata, ISpaceOptions spaceOptions) where TComponent : BaseComponent
         {
             var component = (TComponent)Activator.CreateInstance(typeof(TComponent), page, parentComponent, webDriver, elementHandler, componentMetadata, spaceOptions);
 

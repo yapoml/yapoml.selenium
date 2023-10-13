@@ -69,7 +69,7 @@ namespace {{namespace}}
 				if (ElementHandlerRepository.TryGet("{{component.name}}", out var cachedElementHandler))
 				{
 					var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.original_name}}" };
-					return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}, {{get_component_return_type component}}.Conditions>(this, null, WebDriver, cachedElementHandler, metadata, SpaceOptions);
+					return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}, {{get_component_return_type component}}.ChainConditions, {{get_component_return_type component}}.OneTimeConditions>(this, null, WebDriver, cachedElementHandler, metadata, SpaceOptions);
 				}
 				else
 				{
@@ -83,7 +83,7 @@ namespace {{namespace}}
 				
 					ElementHandlerRepository.Set("{{component.name}}", elementHandler);
 
-					return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}, {{get_component_return_type component}}.Conditions>(this, null, WebDriver, elementHandler, metadata, SpaceOptions);
+					return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}, {{get_component_return_type component}}.ChainConditions, {{get_component_return_type component}}.OneTimeConditions>(this, null, WebDriver, elementHandler, metadata, SpaceOptions);
 				}
 				{{- end}}
 			}
@@ -110,7 +110,7 @@ namespace {{namespace}}
 			{{ else }}
 			var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.original_name}}" };
 			var elementHandler = new global::Yapoml.Selenium.Services.Locator.ElementHandler(WebDriver, null, elementLocator, by, metadata, ElementHandlerRepository.CreateNestedRepository(), EventSource);
-			return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}, {{get_component_return_type component}}.Conditions>(this, null, WebDriver, elementHandler, metadata, SpaceOptions);
+			return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}, {{get_component_return_type component}}.ChainConditions, {{get_component_return_type component}}.OneTimeConditions>(this, null, WebDriver, elementHandler, metadata, SpaceOptions);
 			{{- end }}
 		}
 		{{ end }}
@@ -122,6 +122,18 @@ namespace {{namespace}}
 
 		/// <summary>
 		/// Various awaitable conditions on the <c>{{name}}</c> page.
+		/// </summary>
+		/// <returns>Self <c>{{name}}</c> page to continue interactions after conditions are satisfied.</returns>
+		public OneTimeConditions Expect()
+		{
+			var timeoutOptions = SpaceOptions.Services.Get<global::Yapoml.Selenium.Options.TimeoutOptions>();
+			var elementLocator = SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>();
+
+			return new OneTimeConditions(this, timeoutOptions.Timeout, timeoutOptions.PollingInterval, WebDriver, ElementHandlerRepository, elementLocator, Metadata, EventSource, _logger);
+		}
+
+		/// <summary>
+		/// Various awaitable and chainable conditions on the <c>{{name}}</c> page.
 		/// </summary>
 		/// <param name="it">Actionable conditions object, allowing you to specify multiple chainable conditions.</param>
 		/// <returns>Self <c>{{name}}</c> page to continue interactions after conditions are satisfied.</returns>
@@ -136,6 +148,8 @@ namespace {{namespace}}
 		}
 
 		{{ include 'PageConditionsTemplate' this }}
+
+		{{ include 'PageOneTimeConditionsTemplate' this }}
 	}
 }
 # pragma warning restore

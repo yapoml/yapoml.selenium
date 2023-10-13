@@ -5,11 +5,11 @@ using Yapoml.Framework.Logging;
 namespace Yapoml.Selenium.Components.Conditions.Generic
 {
     /// <inheritdoc cref="ITextualConditions{TConditions}"/>
-    public abstract class TextualConditions<TConditions> : Conditions<TConditions>, ITextualConditions<TConditions>
+    public abstract class TextualConditions<TSelf> : Conditions<TSelf>, ITextualConditions<TSelf>
     {
         protected readonly string _subject;
 
-        protected TextualConditions(TConditions conditions, TimeSpan timeout, TimeSpan pollingInterval, string subject, ILogger logger)
+        protected TextualConditions(TSelf conditions, TimeSpan timeout, TimeSpan pollingInterval, string subject, ILogger logger)
             : base(conditions, timeout, pollingInterval, logger)
         {
             _subject = subject;
@@ -17,14 +17,14 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
         protected abstract Func<string> FetchValueFunc { get; }
 
-        public abstract NumericConditions<TConditions, int> Length { get; }
+        public abstract NumericConditions<TSelf, int> Length { get; }
 
-        public TConditions Is(string value, TimeSpan? timeout = default)
+        public TSelf Is(string value, TimeSpan? timeout = default)
         {
             return Is(value, StringComparison.CurrentCulture, timeout);
         }
 
-        public TConditions Is(string value, StringComparison comparisonType, TimeSpan? timeout = default)
+        public TSelf Is(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
             timeout ??= _timeout;
 
@@ -52,12 +52,12 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             return _conditions;
         }
 
-        public TConditions IsNot(string value, TimeSpan? timeout = default)
+        public TSelf IsNot(string value, TimeSpan? timeout = default)
         {
             return IsNot(value, StringComparison.CurrentCulture, timeout);
         }
 
-        public TConditions IsNot(string value, StringComparison comparisonType, TimeSpan? timeout = default)
+        public TSelf IsNot(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
             timeout ??= _timeout;
 
@@ -85,7 +85,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             return _conditions;
         }
 
-        public TConditions IsEmpty(TimeSpan? timeout = default)
+        public TSelf IsEmpty(TimeSpan? timeout = default)
         {
             timeout ??= _timeout;
 
@@ -113,7 +113,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             return _conditions;
         }
 
-        public TConditions IsNotEmpty(TimeSpan? timeout = default)
+        public TSelf IsNotEmpty(TimeSpan? timeout = default)
         {
             timeout ??= _timeout;
 
@@ -141,12 +141,12 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             return _conditions;
         }
 
-        public TConditions StartsWith(string value, TimeSpan? timeout = default)
+        public TSelf StartsWith(string value, TimeSpan? timeout = default)
         {
             return StartsWith(value, StringComparison.CurrentCulture, timeout);
         }
 
-        public TConditions StartsWith(string value, StringComparison comparisonType, TimeSpan? timeout = default)
+        public TSelf StartsWith(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
             timeout ??= _timeout;
 
@@ -174,12 +174,12 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             return _conditions;
         }
 
-        public TConditions DoesNotStartWith(string value, TimeSpan? timeout = default)
+        public TSelf DoesNotStartWith(string value, TimeSpan? timeout = default)
         {
             return DoesNotStartWith(value, StringComparison.CurrentCulture, timeout);
         }
 
-        public TConditions DoesNotStartWith(string value, StringComparison comparisonType, TimeSpan? timeout = default)
+        public TSelf DoesNotStartWith(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
             timeout ??= _timeout;
 
@@ -207,12 +207,12 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             return _conditions;
         }
 
-        public TConditions EndsWith(string value, TimeSpan? timeout = default)
+        public TSelf EndsWith(string value, TimeSpan? timeout = default)
         {
             return EndsWith(value, StringComparison.CurrentCulture, timeout);
         }
 
-        public TConditions EndsWith(string value, StringComparison comparisonType, TimeSpan? timeout = default)
+        public TSelf EndsWith(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
             timeout ??= _timeout;
 
@@ -240,12 +240,12 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             return _conditions;
         }
 
-        public TConditions DoesNotEndWith(string value, TimeSpan? timeout = default)
+        public TSelf DoesNotEndWith(string value, TimeSpan? timeout = default)
         {
             return DoesNotEndWith(value, StringComparison.CurrentCulture, timeout);
         }
 
-        public TConditions DoesNotEndWith(string value, StringComparison comparisonType, TimeSpan? timeout = default)
+        public TSelf DoesNotEndWith(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
             timeout ??= _timeout;
 
@@ -273,12 +273,12 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             return _conditions;
         }
 
-        public TConditions Contains(string value, TimeSpan? timeout = default)
+        public TSelf Contains(string value, TimeSpan? timeout = default)
         {
             return Contains(value, StringComparison.CurrentCulture, timeout);
         }
 
-        public TConditions Contains(string value, StringComparison comparisonType, TimeSpan? timeout = default)
+        public TSelf Contains(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
             timeout ??= _timeout;
 
@@ -306,12 +306,12 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             return _conditions;
         }
 
-        public TConditions DoesNotContain(string value, TimeSpan? timeout = default)
+        public TSelf DoesNotContain(string value, TimeSpan? timeout = default)
         {
             return DoesNotContain(value, StringComparison.CurrentCulture, timeout);
         }
 
-        public TConditions DoesNotContain(string value, StringComparison comparisonType, TimeSpan? timeout = default)
+        public TSelf DoesNotContain(string value, StringComparison comparisonType, TimeSpan? timeout = default)
         {
             timeout ??= _timeout;
 
@@ -339,7 +339,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             return _conditions;
         }
 
-        public TConditions Matches(Regex regex, TimeSpan? timeout = default)
+        public TSelf Matches(Regex regex, TimeSpan? timeout = default)
         {
             timeout ??= _timeout;
 
@@ -367,7 +367,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
             return _conditions;
         }
 
-        public TConditions DoesNotMatch(Regex regex, TimeSpan? timeout = default)
+        public TSelf DoesNotMatch(Regex regex, TimeSpan? timeout = default)
         {
             timeout ??= _timeout;
 

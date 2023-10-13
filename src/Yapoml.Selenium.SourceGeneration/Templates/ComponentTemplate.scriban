@@ -2,9 +2,10 @@
 namespace {{namespace}}
 {
 	[global::System.Runtime.CompilerServices.CompilerGenerated]
-	public abstract partial class {{singular_name}}Component<TComponent, TConditions> : {{if base_component}}global::{{base_component.namespace}}.{{base_component.name}}Component<TComponent, TConditions>{{else}}{{if page}}global::{{page.namespace}}{{else if space}}{{if name == 'Base' }}{{if space.parent_space}}global::{{space.parent_space.namespace}}{{else}}global::Yapoml.Selenium.Components{{end}}{{else}}global::{{space.namespace}}{{end}}{{else}}global::Yapoml.Selenium.Components{{end}}.BaseComponent<TComponent, TConditions>{{end}}
-		where TComponent: global::Yapoml.Selenium.Components.BaseComponent<TComponent, TConditions>
+	public abstract partial class {{singular_name}}Component<TComponent, TConditions, TCondition> : {{if base_component}}global::{{base_component.namespace}}.{{base_component.name}}Component<TComponent, TConditions, TCondition>{{else}}{{if page}}global::{{page.namespace}}{{else if space}}{{if name == 'Base' }}{{if space.parent_space}}global::{{space.parent_space.namespace}}{{else}}global::Yapoml.Selenium.Components{{end}}{{else}}global::{{space.namespace}}{{end}}{{else}}global::Yapoml.Selenium.Components{{end}}.BaseComponent<TComponent, TConditions, TCondition>{{end}}
+		where TComponent: global::Yapoml.Selenium.Components.BaseComponent<TComponent, TConditions, TCondition>
 		where TConditions: global::Yapoml.Selenium.Components.BaseComponentConditions<TConditions>
+		where TCondition: global::Yapoml.Selenium.Components.BaseComponentConditions<TComponent>
 	{
 		public {{singular_name}}Component(global::Yapoml.Selenium.Components.BasePage page, global::Yapoml.Selenium.Components.BaseComponent parentComponent, global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementHandler elementHandler, global::Yapoml.Selenium.Components.Metadata.ComponentMetadata metadata, global::Yapoml.Framework.Options.ISpaceOptions spaceOptions)
 			: base(page, parentComponent, webDriver, elementHandler, metadata, spaceOptions)
@@ -48,7 +49,7 @@ namespace {{namespace}}
 				if (_elementHandler.ElementHandlerRepository.TryGet("{{component.name}}", out var cachedElementHandler))
 				{
 					var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.original_name}}" };
-					return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}, {{get_component_return_type component}}.Conditions>(Page, this, WebDriver, cachedElementHandler, metadata, SpaceOptions);
+					return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}, {{get_component_return_type component}}.ChainConditions, {{get_component_return_type component}}.OneTimeConditions>(Page, this, WebDriver, cachedElementHandler, metadata, SpaceOptions);
 				}
 				else
 				{
@@ -62,7 +63,7 @@ namespace {{namespace}}
 
 					_elementHandler.ElementHandlerRepository.Set("{{component.name}}", elementHandler);
 
-					return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}, {{get_component_return_type component}}.Conditions>(Page, this, WebDriver, elementHandler, metadata, SpaceOptions);
+					return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}, {{get_component_return_type component}}.ChainConditions, {{get_component_return_type component}}.OneTimeConditions>(Page, this, WebDriver, elementHandler, metadata, SpaceOptions);
 				}
 				{{- end }}
 			}
@@ -89,7 +90,7 @@ namespace {{namespace}}
 			{{ else }}
 			var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.original_name}}" };
 			var elementHandler = new global::Yapoml.Selenium.Services.Locator.ElementHandler(WebDriver, _elementHandler, elementLocator, by, metadata, _elementHandler.ElementHandlerRepository.CreateNestedRepository(), EventSource);
-			return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}, {{get_component_return_type component}}.Conditions>(Page, this, WebDriver, elementHandler, metadata, SpaceOptions);
+			return SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Factory.IComponentFactory>().Create<{{get_component_return_type component}}, {{get_component_return_type component}}.ChainConditions, {{get_component_return_type component}}.OneTimeConditions>(Page, this, WebDriver, elementHandler, metadata, SpaceOptions);
 			{{- end }}
 		}
 		{{ end }}
