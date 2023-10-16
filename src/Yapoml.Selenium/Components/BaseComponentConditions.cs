@@ -238,7 +238,7 @@ namespace Yapoml.Selenium.Components
         }
 
         /// <summary>
-        ///  Waits until the component is enabled.
+        /// Waits until the component is enabled.
         /// </summary>
         /// <param name="timeout">How long to wait until the component is enabled.</param>
         /// <returns></returns>
@@ -264,6 +264,45 @@ namespace Yapoml.Selenium.Components
             }
 
             return _self;
+        }
+
+        /// <summary>
+        /// Waits until the component is disabled.
+        /// </summary>
+        /// <param name="timeout">How long to wait until the component is disabled.</param>
+        /// <returns></returns>
+        public virtual TSelf IsDisabled(TimeSpan? timeout = null)
+        {
+            timeout ??= Timeout;
+
+            bool attempt()
+            {
+                return !ElementHandler.Locate().Enabled;
+            }
+
+            try
+            {
+                using (Logger.BeginLogScope($"Expect {ElementHandler.ComponentMetadata.Name} is disabled"))
+                {
+                    Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                }
+            }
+            catch (TimeoutException ex)
+            {
+                throw new ExpectException($"{ElementHandler.ComponentMetadata.Name} is still enabled.", ex);
+            }
+
+            return _self;
+        }
+
+        /// <summary>
+        /// Waits until the component is disabled.
+        /// </summary>
+        /// <param name="timeout">How long to wait until the component is disabled.</param>
+        /// <returns></returns>
+        public TSelf IsNotEnabled(TimeSpan? timeout = null)
+        {
+            return IsDisabled(timeout);
         }
 
         /// <summary>
