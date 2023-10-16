@@ -346,6 +346,46 @@ return (
         }
 
         /// <summary>
+        /// Waits until the component is not in view.
+        /// </summary>
+        /// <param name="timeout">How long to wait until the component is not in view.</param>
+        /// <returns></returns>
+        public virtual TSelf IsNotInView(TimeSpan? timeout = null)
+        {
+            timeout ??= Timeout;
+
+            var js = @"
+const rect = arguments[0].getBoundingClientRect();
+return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+);";
+
+            var jsExecutor = WebDriver as IJavaScriptExecutor;
+
+            bool attempt()
+            {
+                return !(bool)jsExecutor.ExecuteScript(js, ElementHandler.Locate());
+            }
+
+            try
+            {
+                using (Logger.BeginLogScope($"Expect {ElementHandler.ComponentMetadata.Name} is not in view"))
+                {
+                    Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                }
+            }
+            catch (TimeoutException ex)
+            {
+                throw new ExpectException($"{ElementHandler.ComponentMetadata.Name} is still in view.", ex);
+            }
+
+            return _self;
+        }
+
+        /// <summary>
         /// Various expected conditions for component's text.
         /// </summary>
         public virtual TextConditions<TSelf> Text
