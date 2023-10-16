@@ -26,7 +26,7 @@ namespace Yapoml.Selenium.Components.Conditions
 
         protected override string GetIsError(string latestValue, string expectedValue)
         {
-            return $"Style {_styleName} of the {_elementHandler.ComponentMetadata.Name} is not '{expectedValue}',{GetDifference("it was", expectedValue, latestValue)}";
+            return $"Style {_styleName} of the {_elementHandler.ComponentMetadata.Name} is not '{expectedValue}',{GetDifference("it was:", expectedValue, latestValue)}";
         }
 
         protected override string GetIsNotError(string latestValue, string expectedValue)

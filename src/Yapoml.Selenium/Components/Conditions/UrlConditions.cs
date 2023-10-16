@@ -31,7 +31,7 @@ namespace Yapoml.Selenium.Components.Conditions
 
         protected override string GetIsError(string latestValue, string expectedValue)
         {
-            return $"{_pageMetadata.Name} page url is not '{expectedValue}',{GetDifference("it was", expectedValue, latestValue)}";
+            return $"{_pageMetadata.Name} page url is not '{expectedValue}',{GetDifference("it was:", expectedValue, latestValue)}";
         }
 
         protected override string GetIsNotError(string latestValue, string expectedValue)
