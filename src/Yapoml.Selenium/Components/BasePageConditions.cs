@@ -50,7 +50,7 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                using (Logger.BeginLogScope($"Expect the {PageMetadata.Name} page is loaded"))
+                using (Logger.BeginLogScope($"Expect the {PageMetadata.Name} document state is complete"))
                 {
                     Services.Waiter.Until(condition, timeout.Value, PollingInterval);
                 }
