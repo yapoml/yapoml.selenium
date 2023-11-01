@@ -35,7 +35,7 @@ namespace Yapoml.Selenium.Components
         /// 
         /// If url is defined for the page, then it also evaluates current url.
         /// </summary>
-        public virtual TSelf IsLoaded(TimeSpan? timeout = default)
+        public virtual TSelf IsOpened(TimeSpan? timeout = default)
         {
             timeout ??= Timeout;
 
@@ -57,7 +57,7 @@ namespace Yapoml.Selenium.Components
             }
             catch (TimeoutException ex)
             {
-                throw new ExpectException($"{PageMetadata.Name} page is not loaded yet. Current state is '{latestValue}'.", ex);
+                throw new ExpectException($"{PageMetadata.Name} page is not opened yet. Current state is '{latestValue}'.", ex);
             }
 
             return _self;

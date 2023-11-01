@@ -8,13 +8,13 @@ public class OneTimeConditions : global::Yapoml.Selenium.Components.BasePageCond
 	}
 
 	{{ if $1.url && $1.url.segments == null && $1.url.params == null }}
-	public override {{get_page_class_name $1}} IsLoaded(global::System.TimeSpan? timeout = default)
+	public override {{get_page_class_name $1}} IsOpened(global::System.TimeSpan? timeout = default)
 	{
-		using (Logger.BeginLogScope("Expect the {{$1.name}} page is loaded"))
+		using (Logger.BeginLogScope("Expect the {{$1.name}} page is opened"))
 		{
 			Url.EndsWith("{{ $1.url.path }}", timeout);
 
-			return base.IsLoaded(timeout);
+			return base.IsOpened(timeout);
 		}
 	}
 	{{ end }}
