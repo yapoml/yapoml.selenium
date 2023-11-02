@@ -8,11 +8,17 @@ public partial class Conditions : global::Yapoml.Selenium.Components.BasePageCon
 	}
 
 	{{ if $1.url && $1.url.segments == null && $1.url.params == null }}
+	/// <summary>
+	/// Expect that current url contains <c>{{ $1.url.path }}</c>.
+	///
+	/// Evaluates document's state to be <c>complete</c> which means the page is fully loaded.
+	/// It doesn't guarantee that some components on the page are present, they might be rendered dynamically.
+	/// </summary>
 	public override Conditions IsOpened(global::System.TimeSpan? timeout = default)
 	{
 		using (Logger.BeginLogScope("Expect the {{$1.name}} page is opened"))
 		{
-			Url.EndsWith("{{ $1.url.path }}", timeout);
+			Url.Contains("{{ $1.url.path }}", timeout);
 
 			return base.IsOpened(timeout);
 		}
