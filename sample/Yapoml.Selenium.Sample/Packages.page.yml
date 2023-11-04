@@ -1,4 +1,9 @@
-﻿packages: 
+﻿url:
+  path: https://www.nuget.org/packages
+  query:
+    - q
+
+packages: 
   by: .package
 
   title: .//a

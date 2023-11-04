@@ -60,5 +60,17 @@ namespace Yapoml.Selenium.Sample
                     })
                 );
         }
+
+        [Test]
+        public void IntroShowcase()
+        {
+            _webDriver.Ya().PackagesPage.Open(q: "yapoml")
+                .Packages.Expect(it => it.IsNotEmpty().Each(package =>
+                    {
+                        package.Description.IsNotEmpty();
+                        package.Tags.IsNotEmpty();
+                    })
+                );
+        }
     }
 }
