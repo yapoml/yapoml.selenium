@@ -1,0 +1,7 @@
+primary header:
+  by: .primary_header
+  
+  shopping cart:
+    by: .shopping_cart_link
+
+    badge: .shopping_cart_badge

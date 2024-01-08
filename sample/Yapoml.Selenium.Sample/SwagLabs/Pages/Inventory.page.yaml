@@ -1,0 +1,9 @@
+url: /inventory.html
+
+products:
+  by: .inventory_item
+  
+  name: .inventory_item_label a
+  description: .inventory_item_desc
+  price: .inventory_item_price
+  add to cart button: .btn_inventory

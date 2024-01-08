@@ -1,0 +1,7 @@
+url: /cart.html
+
+items:
+  by: .cart_item
+  
+  name: .inventory_item_name
+  remove button: id remove-sauce-labs-backpack

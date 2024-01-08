@@ -26,6 +26,8 @@ namespace Yapoml.Selenium.Components.Conditions
         // TODO make it strongly typed
         public StringStyleConditions<TConditions> Color => this["color"];
 
+        public StringStyleConditions<TConditions> BackgroundColor => this["background-color"];
+
         public NumericStyleConditions<TConditions, double> Opacity =>
             new NumericStyleConditions<TConditions, double>(_conditions, _elementHandler, "opacity", _timeout, _pollingInterval, $"opacity of the {_elementHandler.ComponentMetadata.Name}", _logger);
     }

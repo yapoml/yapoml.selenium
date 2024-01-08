@@ -31,6 +31,8 @@ namespace Yapoml.Selenium.Components
 
         public string Color => this["color"];
 
+        public string BackgroundColor => this["background-color"];
+
         public string Opacity => this["opacity"];
 
         private T RelocateOnStaleReference<T>(Func<T> act)
