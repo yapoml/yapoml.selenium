@@ -2,7 +2,6 @@
 using System;
 using Yapoml.Framework.Options;
 using Yapoml.Selenium.Events;
-using System.Drawing;
 using Yapoml.Framework.Logging;
 using Yapoml.Selenium.Services.Locator;
 using Yapoml.Selenium.Components.Metadata;
@@ -185,10 +184,6 @@ return (
                 return (bool)(RelocateOnStaleReference(() => (WebDriver as IJavaScriptExecutor).ExecuteScript(js, WrappedElement)));
             }
         }
-
-        public virtual Point Location => RelocateOnStaleReference(() => WrappedElement.Location);
-
-        public virtual Size Size => RelocateOnStaleReference(() => WrappedElement.Size);
 
         /// <summary>
         /// Indicates whether a component is visible on the page or not.
