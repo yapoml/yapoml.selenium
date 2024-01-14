@@ -13,7 +13,7 @@ namespace {{namespace}}
 		
 		}
 
-		public override global::OpenQA.Selenium.IWebElement WrappedElement
+		protected override global::OpenQA.Selenium.IWebElement WrappedElement
 		{
 			get
 			{

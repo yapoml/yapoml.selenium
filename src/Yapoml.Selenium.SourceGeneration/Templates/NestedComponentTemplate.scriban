@@ -11,7 +11,7 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 		base.oneTimeConditions = new OneTimeConditions(this, timeoutOptions.Timeout, timeoutOptions.PollingInterval, webDriver, elementHandler, elementLocator, EventSource, _logger);
 	}
 
-	public override global::OpenQA.Selenium.IWebElement WrappedElement
+	protected override global::OpenQA.Selenium.IWebElement WrappedElement
 	{
 		get
 		{
