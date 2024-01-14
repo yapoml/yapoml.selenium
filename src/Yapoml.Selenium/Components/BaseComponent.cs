@@ -11,7 +11,7 @@ using Yapoml.Selenium.Options;
 namespace Yapoml.Selenium.Components
 {
     /// <inheritdoc cref="IWebElement"/>
-    public abstract partial class BaseComponent<TComponent, TConditions, TCondition> : BaseComponent, IWrapsElement, ITakesScreenshot
+    public abstract partial class BaseComponent<TComponent, TConditions, TCondition> : BaseComponent
         where TComponent : BaseComponent<TComponent, TConditions, TCondition>
         where TConditions : BaseComponentConditions<TConditions>
         where TCondition : BaseComponentConditions<TComponent>
@@ -75,7 +75,7 @@ namespace Yapoml.Selenium.Components
         protected TimeSpan _locateTimeout;
         protected TimeSpan _locatePollingInterval;
 
-        public virtual IWebElement WrappedElement => _elementHandler.Locate(_locateTimeout, _locatePollingInterval);
+        protected virtual IWebElement WrappedElement => _elementHandler.Locate(_locateTimeout, _locatePollingInterval);
 
         protected ComponentMetadata Metadata { get; }
 
@@ -239,19 +239,9 @@ return (
             }
         }
 
-        public ISearchContext GetShadowRoot()
+        public byte[] GetScreenshot()
         {
-            return RelocateOnStaleReference(() => WrappedElement.GetShadowRoot());
-        }
-
-        public virtual void Submit()
-        {
-            RelocateOnStaleReference(() => WrappedElement.Submit());
-        }
-
-        public Screenshot GetScreenshot()
-        {
-            return RelocateOnStaleReference(() => ((ITakesScreenshot)WrappedElement).GetScreenshot());
+            return RelocateOnStaleReference(() => ((ITakesScreenshot)WrappedElement).GetScreenshot().AsByteArray);
         }
 
         public override bool Equals(object obj)
