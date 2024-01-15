@@ -25,6 +25,10 @@ namespace Yapoml.Selenium.Services
                     {
                         return;
                     }
+                    else
+                    {
+                        Thread.Sleep(pollingInterval);
+                    }
                 }
                 catch (Exception ex)
                 {
