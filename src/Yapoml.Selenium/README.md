@@ -8,8 +8,8 @@ username: id username
 login: .//button
 ```
 
-Then you are immediately able to interact with web elements
+Then you are able to immediately interact with web elements
 
 ```csharp
-webDriver.Ya().LoginPage.Username.Type("user01");
+driver.Ya().LoginPage.Username.Type("user01");
 ```
