@@ -44,7 +44,7 @@ namespace Yapoml.Selenium.Components.Conditions
 
         protected override string GetStartsWithError(string latestValue, string expectedValue)
         {
-            return $"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{latestValue}' yet.";
+            return $"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component does not start with '{expectedValue}'.";
         }
 
         protected override string GetDoesNotStartWithError(string latestValue, string expectedValue)
@@ -54,7 +54,7 @@ namespace Yapoml.Selenium.Components.Conditions
 
         protected override string GetEndsWithError(string latestValue, string expectedValue)
         {
-            return $"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component is not '{expectedValue}' yet.";
+            return $"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component does not end with '{expectedValue}'.";
         }
 
         protected override string GetDoesNotEndWithError(string latestValue, string expectedValue)
@@ -64,7 +64,7 @@ namespace Yapoml.Selenium.Components.Conditions
 
         protected override string GetContainsError(string latestValue, string expectedValue)
         {
-            return $"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component doesn't contain '{expectedValue}' yet.";
+            return $"Text '{latestValue}' of the {_elementHandler.ComponentMetadata.Name} component doesn't contain '{expectedValue}'.";
         }
 
         protected override string GetDoesNotContainError(string latestValue, string expectedValue)
