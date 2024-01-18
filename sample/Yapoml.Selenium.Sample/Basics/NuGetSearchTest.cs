@@ -120,5 +120,13 @@ namespace Yapoml.Selenium.Sample.Basics
             var myPackage = packagesPage.Packages[p => p.Title == "Yapoml.Selenium"];
             Console.Write(myPackage);
         }
+
+        [Test]
+        public void CustomExpectation()
+        {
+            var page = _webDriver.Ya().Basics.Pages.HomePage.Expect(its => its.SearchButton.IsNotWhite());
+
+            page.SearchButton.Click(when => when.IsNotWhite());
+        }
     }
 }

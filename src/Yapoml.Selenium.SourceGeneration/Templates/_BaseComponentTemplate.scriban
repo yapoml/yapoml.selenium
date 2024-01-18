@@ -13,6 +13,15 @@ namespace {{root_namespace}}
 		
 		}
 
+		[global::System.Runtime.CompilerServices.CompilerGenerated]
+		public abstract partial class Conditions<TSelf> : global::Yapoml.Selenium.Components.BaseComponentConditions<TSelf>
+		{
+			public Conditions(global::System.TimeSpan timeout, global::System.TimeSpan pollingInterval, global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementHandler elementHandler, global::Yapoml.Selenium.Services.Locator.IElementLocator elementLocator, global::Yapoml.Selenium.Events.IEventSource eventSource, global::Yapoml.Framework.Logging.ILogger logger)
+				: base(timeout, pollingInterval, webDriver, elementHandler, elementLocator, eventSource, logger)
+			{
+						
+			}
+		}
 	}
 }
 # pragma warning restore

@@ -97,26 +97,8 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 
 	{{ end }}
 
-	/// <summary>
-    /// Various awaitable conditions on the component.
-	/// TODO: Provide generated examples.
-    /// </summary>
-    public override OneTimeConditions Expect()
-    {
-        return base.Expect();
-    }
-
-	/// <summary>
-    /// Various awaitable and chainable conditions on the component.
-	/// TODO: Provide generated examples.
-    /// </summary>
-    public override {{$1.singular_name}}Component Expect(global::System.Action<ChainConditions> it)
-    {
-        return base.Expect(it);
-    }
-
 	[global::System.Runtime.CompilerServices.CompilerGenerated]
-	public abstract partial class Conditions<TSelf> : global::Yapoml.Selenium.Components.BaseComponentConditions<TSelf>
+	public abstract partial class Conditions<TSelf> : BaseComponent<{{$1.singular_name}}Component, ChainConditions, OneTimeConditions>.Conditions<TSelf>
 	{
 		public Conditions(global::System.TimeSpan timeout, global::System.TimeSpan pollingInterval, global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementHandler elementHandler, global::Yapoml.Selenium.Services.Locator.IElementLocator elementLocator, global::Yapoml.Selenium.Events.IEventSource eventSource, global::Yapoml.Framework.Logging.ILogger logger)
 			: base(timeout, pollingInterval, webDriver, elementHandler, elementLocator, eventSource, logger)

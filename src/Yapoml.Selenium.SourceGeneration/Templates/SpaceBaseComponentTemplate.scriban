@@ -9,4 +9,14 @@ public abstract partial class BaseComponent<TComponent, TConditions, TCondition>
 	{
 		
 	}
+
+	[global::System.Runtime.CompilerServices.CompilerGenerated]
+	public abstract partial class Conditions<TSelf> : {{if parent_space}}global::{{parent_space.namespace}}{{else}}global::{{workspace.root_namespace}}{{end}}.BaseComponent<TComponent, TConditions, TCondition>.Conditions<TSelf>
+	{
+		public Conditions(global::System.TimeSpan timeout, global::System.TimeSpan pollingInterval, global::OpenQA.Selenium.IWebDriver webDriver, global::Yapoml.Selenium.Services.Locator.IElementHandler elementHandler, global::Yapoml.Selenium.Services.Locator.IElementLocator elementLocator, global::Yapoml.Selenium.Events.IEventSource eventSource, global::Yapoml.Framework.Logging.ILogger logger)
+			: base(timeout, pollingInterval, webDriver, elementHandler, elementLocator, eventSource, logger)
+		{
+					
+		}
+	}
 }
