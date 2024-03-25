@@ -1,26 +1,11 @@
 using NUnit.Framework;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 
 namespace Yapoml.Selenium.Sample
 {
     [TestFixture]
-    public class NuGetSearchTest
+    class NuGetSearchTest : BaseTest
     {
-        private IWebDriver _webDriver;
-
-        [SetUp]
-        public void SetUp()
-        {
-            _webDriver = new ChromeDriver();
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            _webDriver?.Quit();
-        }
-
         [Test]
         public void SearchWithSelenium()
         {

@@ -1,6 +1,5 @@
 using NUnit.Framework;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using System;
 using System.Linq;
 using Yapoml.Framework.Options;
@@ -11,24 +10,14 @@ using Yapoml.Selenium.Services.Locator;
 namespace Yapoml.Selenium.Sample.Responsive
 {
     [TestFixture]
-    public class NuGetNavigationTest
+    class NuGetNavigationTest : BaseTest
     {
-        private IWebDriver _webDriver;
-
         [SetUp]
         public void SetUp()
         {
-            _webDriver = new ChromeDriver();
-
             _webDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 
             _webDriver.Navigate().GoToUrl("https://nuget.org");
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            _webDriver.Quit();
         }
 
         [Test]

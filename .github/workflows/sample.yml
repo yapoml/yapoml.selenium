@@ -1,0 +1,23 @@
+name: Samples
+
+on:
+  push:
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+    - name: Test
+      run: dotnet test sample/Yapoml.Selenium.Sample/Yapoml.Selenium.Sample.csproj

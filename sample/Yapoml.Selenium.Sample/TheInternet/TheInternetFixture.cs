@@ -1,29 +1,17 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using Yapoml.Selenium.Sample.TheInternet.Pages;
 
 namespace Yapoml.Selenium.Sample.TheInternet
 {
-    internal class TheInternetFixture
+    class TheInternetFixture : BaseTest
     {
-        private IWebDriver _driver;
-
         private PagesSpace _ya;
 
         [SetUp]
         public void SetUp()
         {
-            _driver = new ChromeDriver();
-
-            _ya = _driver.Ya(opts => opts.WithBaseUrl("https://the-internet.herokuapp.com")).TheInternet.Pages;
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            _driver?.Quit();
+            _ya = _webDriver.Ya(opts => opts.WithBaseUrl("https://the-internet.herokuapp.com")).TheInternet.Pages;
         }
 
         [Test]
@@ -41,7 +29,7 @@ namespace Yapoml.Selenium.Sample.TheInternet
         {
             _ya.ContextMenuPage.Open().Box.ContextClick();
 
-            var alert = _driver.SwitchTo().Alert();
+            var alert = _webDriver.SwitchTo().Alert();
             alert.Text.Should().Be("You selected a context menu");
             alert.Accept();
         }

@@ -1,26 +1,16 @@
 ﻿using NUnit.Framework;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium;
 using Yapoml.Selenium.Sample.SwagLabs.Pages;
 
 namespace Yapoml.Selenium.Sample.SwagLabs
 {
-    internal class SwagLabsTests
+    class SwagLabsTests : BaseTest
     {
-        private IWebDriver _webDriver;
         private PagesSpace _ya;
 
         [SetUp]
         public void SetUp()
         {
-            _webDriver = new ChromeDriver();
             _ya = _webDriver.Ya(opts => opts.WithBaseUrl("https://www.saucedemo.com")).SwagLabs.Pages;
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            _webDriver?.Quit();
         }
 
         [Test]
