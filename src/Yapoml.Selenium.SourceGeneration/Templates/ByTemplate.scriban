@@ -10,4 +10,6 @@
 	var by = global::OpenQA.Selenium.By.CssSelector(byValue);
 {{- else if $1.by.method == 'Id' -}}
 	var by = global::OpenQA.Selenium.By.Id(byValue);
+{{- else if $1.by.method == 'TestId' -}}
+	var by = global::OpenQA.Selenium.By.CssSelector($"[data-testid='{byValue}']");
 {{- end -}}
