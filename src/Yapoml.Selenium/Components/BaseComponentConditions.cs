@@ -77,9 +77,12 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                using (Logger.BeginLogScope($"Expect {ElementHandler.ComponentMetadata.Name} is displayed"))
+                using (var scope = Logger.BeginLogScope($"Expect {ElementHandler.ComponentMetadata.Name} is displayed"))
                 {
-                    Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                    scope.Execute(() =>
+                    {
+                        Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                    });
                 }
             }
             catch (TimeoutException ex)
@@ -121,9 +124,12 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                using (Logger.BeginLogScope($"Expect {ElementHandler.ComponentMetadata.Name} is not displayed"))
+                using (var scope = Logger.BeginLogScope($"Expect {ElementHandler.ComponentMetadata.Name} is not displayed"))
                 {
-                    Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                    scope.Execute(() =>
+                    {
+                        Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                    });
                 }
             }
             catch (TimeoutException ex)
@@ -178,9 +184,12 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                using (Logger.BeginLogScope($"Expect {ElementHandler.ComponentMetadata.Name} exists"))
+                using (var scope = Logger.BeginLogScope($"Expect {ElementHandler.ComponentMetadata.Name} exists"))
                 {
-                    Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                    scope.Execute(() =>
+                    {
+                        Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                    });
                 }
             }
             catch (TimeoutException ex)
@@ -224,9 +233,12 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                using (Logger.BeginLogScope($"Expect {ElementHandler.ComponentMetadata.Name} does not exist"))
+                using (var scope = Logger.BeginLogScope($"Expect {ElementHandler.ComponentMetadata.Name} does not exist"))
                 {
-                    Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                    scope.Execute(() =>
+                    {
+                        Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                    });
                 }
             }
             catch (TimeoutException ex)
@@ -253,9 +265,12 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                using (Logger.BeginLogScope($"Expect {ElementHandler.ComponentMetadata.Name} is enabled"))
+                using (var scope = Logger.BeginLogScope($"Expect {ElementHandler.ComponentMetadata.Name} is enabled"))
                 {
-                    Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                    scope.Execute(() =>
+                    {
+                        Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                    });
                 }
             }
             catch (TimeoutException ex)
@@ -282,9 +297,12 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                using (Logger.BeginLogScope($"Expect {ElementHandler.ComponentMetadata.Name} is disabled"))
+                using (var scope = Logger.BeginLogScope($"Expect {ElementHandler.ComponentMetadata.Name} is disabled"))
                 {
-                    Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                    scope.Execute(() =>
+                    {
+                        Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                    });
                 }
             }
             catch (TimeoutException ex)
@@ -332,9 +350,12 @@ return (
 
             try
             {
-                using (Logger.BeginLogScope($"Expect {ElementHandler.ComponentMetadata.Name} is in view"))
+                using (var scope = Logger.BeginLogScope($"Expect {ElementHandler.ComponentMetadata.Name} is in view"))
                 {
-                    Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                    scope.Execute(() =>
+                    {
+                        Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                    });
                 }
             }
             catch (TimeoutException ex)
@@ -372,9 +393,12 @@ return (
 
             try
             {
-                using (Logger.BeginLogScope($"Expect {ElementHandler.ComponentMetadata.Name} is not in view"))
+                using (var scope = Logger.BeginLogScope($"Expect {ElementHandler.ComponentMetadata.Name} is not in view"))
                 {
-                    Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                    scope.Execute(() =>
+                    {
+                        Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                    });
                 }
             }
             catch (TimeoutException ex)

@@ -50,9 +50,12 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                using (Logger.BeginLogScope($"Expect the {PageMetadata.Name} document state is complete"))
+                using (var scope = Logger.BeginLogScope($"Expect the {PageMetadata.Name} document state is complete"))
                 {
-                    Services.Waiter.Until(condition, timeout.Value, PollingInterval);
+                    scope.Execute(() =>
+                    {
+                        Services.Waiter.Until(condition, timeout.Value, PollingInterval);
+                    });
                 }
             }
             catch (TimeoutException ex)

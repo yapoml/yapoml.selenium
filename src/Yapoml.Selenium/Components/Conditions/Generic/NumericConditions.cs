@@ -38,9 +38,12 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                using (_logger.BeginLogScope($"Expect {_subject} is {value}"))
+                using (var scope = _logger.BeginLogScope($"Expect {_subject} is {value}"))
                 {
-                    Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                    scope.Execute(() =>
+                    {
+                        Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                    });
                 }
             }
             catch (TimeoutException ex)
@@ -73,9 +76,12 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                using (_logger.BeginLogScope($"Expect {_subject} is not {value}"))
+                using (var scope = _logger.BeginLogScope($"Expect {_subject} is not {value}"))
                 {
-                    Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                    scope.Execute(() =>
+                    {
+                        Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                    });
                 }
             }
             catch (TimeoutException ex)
@@ -108,9 +114,12 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                using (_logger.BeginLogScope($"Expect {_subject} is greater than {value}"))
+                using (var scope = _logger.BeginLogScope($"Expect {_subject} is greater than {value}"))
                 {
-                    Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                    scope.Execute(() =>
+                    {
+                        Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                    });
                 }
             }
             catch (TimeoutException ex)
@@ -143,9 +152,12 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                using (_logger.BeginLogScope($"Expect {_subject} is equal to or greater than {value}"))
+                using (var scope = _logger.BeginLogScope($"Expect {_subject} is equal to or greater than {value}"))
                 {
-                    Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                    scope.Execute(() => 
+                    { 
+                        Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                    });
                 }
             }
             catch (TimeoutException ex)
@@ -178,9 +190,12 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                using (_logger.BeginLogScope($"Expect {_subject} is less than {value}"))
+                using (var scope = _logger.BeginLogScope($"Expect {_subject} is less than {value}"))
                 {
-                    Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                    scope.Execute(() => 
+                    { 
+                        Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                    });
                 }
             }
             catch (TimeoutException ex)
@@ -213,9 +228,12 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
 
             try
             {
-                using (_logger.BeginLogScope($"Expect {_subject} is less than {value}"))
+                using (var scope = _logger.BeginLogScope($"Expect {_subject} is less than {value}"))
                 {
-                    Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                    scope.Execute(() =>
+                    {
+                        Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                    });
                 }
             }
             catch (TimeoutException ex)

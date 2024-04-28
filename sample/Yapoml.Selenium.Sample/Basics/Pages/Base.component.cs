@@ -15,9 +15,12 @@ partial class BaseComponent<TComponent, TConditions, TCondition>
     {
         public TSelf IsNotWhite()
         {
-            using (this.Logger.BeginLogScope($"Expect {this.ElementHandler.ComponentMetadata.Name} color is not white"))
+            using (var scope = this.Logger.BeginLogScope($"Expect {this.ElementHandler.ComponentMetadata.Name} color is not white"))
             {
-                return Styles.BackgroundColor.DoesNotContain("255, 255, 255");
+                return scope.Execute(() =>
+                {
+                    return Styles.BackgroundColor.DoesNotContain("255, 255, 255");
+                });
             }
         }
     }

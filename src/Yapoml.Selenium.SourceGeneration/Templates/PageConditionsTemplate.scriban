@@ -16,11 +16,14 @@ public partial class Conditions : global::Yapoml.Selenium.Components.BasePageCon
 	/// </summary>
 	public override Conditions IsOpened(global::System.TimeSpan? timeout = default)
 	{
-		using (Logger.BeginLogScope("Expect the {{$1.name}} page is opened"))
+		using (var scope = Logger.BeginLogScope("Expect the {{$1.name}} page is opened"))
 		{
-			Url.Contains("{{ $1.url.path }}", timeout);
+			return scope.Execute(() =>
+			{
+				Url.Contains("{{ $1.url.path }}", timeout);
 
-			return base.IsOpened(timeout);
+				return base.IsOpened(timeout);
+			});
 		}
 	}
 	{{ end }}

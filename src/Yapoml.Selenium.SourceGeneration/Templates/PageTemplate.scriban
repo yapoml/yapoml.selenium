@@ -35,9 +35,12 @@ namespace {{namespace}}
 
 			EventSource.PageEventSource.RaiseOnPageNavigating(this, url, Metadata);
 
-			using (_logger.BeginLogScope($"Opening {Metadata.Name} page by {url}"))
+			using (var scope = _logger.BeginLogScope($"Opening {Metadata.Name} page by {url}"))
 			{
-				WebDriver.Navigate().GoToUrl(url);
+				scope.Execute(() =>
+				{
+					WebDriver.Navigate().GoToUrl(url);
+				});
 			}
 			return this;
 		}

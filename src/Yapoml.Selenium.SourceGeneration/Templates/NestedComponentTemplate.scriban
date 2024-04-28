@@ -249,9 +249,12 @@ public partial class {{$1.singular_name}}ComponentList : global::Yapoml.Selenium
 	/// </summary>
 	public {{$1.singular_name}}ComponentList Expect(global::System.Action<Conditions> it)
 	{
-		using (_logger.BeginLogScope($"Expect {_elementsListHandler.ComponentsListMetadata.Name} satisfy conditions"))
+		using (var scope = _logger.BeginLogScope($"Expect {_elementsListHandler.ComponentsListMetadata.Name} satisfy conditions"))
 		{
-			it(listConditions);
+			scope.Execute(() =>
+			{
+				it(listConditions);
+			});
 		}
 
 		return this;

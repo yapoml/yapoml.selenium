@@ -4,9 +4,12 @@ partial class CartPage
 {
     public CartPage RemoveAllItems()
     {
-        using (_logger.BeginLogScope("Removing all items from cart"))
+        using (var scope = _logger.BeginLogScope("Removing all items from cart"))
         {
-            Items.ForEach(i => i.RemoveButton.Click());
+            scope.Execute(() =>
+            {
+                Items.ForEach(i => i.RemoveButton.Click());
+            });
         }
 
         return this;

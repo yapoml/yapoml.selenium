@@ -76,9 +76,12 @@ namespace Yapoml.Selenium.Components
 
             try
             {
-                using (Logger.BeginLogScope($"Expect each {ElementsListHandler.ComponentsListMetadata.ComponentMetadata.Name} satisfy conditions"))
+                using (var scope = Logger.BeginLogScope($"Expect each {ElementsListHandler.ComponentsListMetadata.ComponentMetadata.Name} satisfy conditions"))
                 {
-                    Waiter.Until(condition, timeout.Value, PollingInterval);
+                    scope.Execute(() =>
+                    {
+                        Waiter.Until(condition, timeout.Value, PollingInterval);
+                    });
                 }
             }
             catch (TimeoutException ex)
