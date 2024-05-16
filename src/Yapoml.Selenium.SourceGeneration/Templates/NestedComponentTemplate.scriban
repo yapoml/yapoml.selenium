@@ -39,7 +39,7 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 			var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{singularize(component.original_name)}}" };
 			var listMetadata = new global::Yapoml.Selenium.Components.Metadata.ComponentsListMetadata() { Name = "{{component.original_name}}", ComponentMetadata = metadata };
 			var elementLocator = SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>();
-			var elementsListHandler = new global::Yapoml.Selenium.Services.Locator.ElementsListHandler(WebDriver, _elementHandler, elementLocator, by, listMetadata, _elementHandler.ElementHandlerRepository.CreateNestedRepository(), EventSource);
+			var elementsListHandler = new global::Yapoml.Selenium.Services.Locator.ElementsListHandler(WebDriver, _elementHandler, elementLocator, by, byFrom, listMetadata, _elementHandler.ElementHandlerRepository.CreateNestedRepository(), EventSource);
 
 			var webElements = new {{component.singular_name}}ComponentList(Page, this, WebDriver, elementsListHandler, listMetadata, EventSource, SpaceOptions);
 			return webElements;
@@ -57,7 +57,7 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 				
 				var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.original_name}}" };
 				var elementLocator = SpaceOptions.Services.Get<global::Yapoml.Selenium.Services.Locator.IElementLocator>();
-				var elementHandler = new global::Yapoml.Selenium.Services.Locator.ElementHandler(WebDriver, _elementHandler, elementLocator, by, metadata, _elementHandler.ElementHandlerRepository.CreateNestedRepository(), EventSource);
+				var elementHandler = new global::Yapoml.Selenium.Services.Locator.ElementHandler(WebDriver, _elementHandler, elementLocator, by, byFrom, metadata, _elementHandler.ElementHandlerRepository.CreateNestedRepository(), EventSource);
 
 				_elementHandler.ElementHandlerRepository.Set("{{component.name}}", elementHandler);
 
@@ -82,7 +82,7 @@ public partial class {{$1.singular_name}}Component : {{if $1.base_component}}glo
 		{{- if component.is_plural }}
 		var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{singularize(component.original_name)}}" };
 		var listMetadata = new global::Yapoml.Selenium.Components.Metadata.ComponentsListMetadata() { Name = "{{component.original_name}}", ComponentMetadata = metadata };
-		var elementsListHandler = new global::Yapoml.Selenium.Services.Locator.ElementsListHandler(WebDriver, _elementHandler, elementLocator, by, listMetadata, _elementHandler.ElementHandlerRepository.CreateNestedRepository(), EventSource);
+		var elementsListHandler = new global::Yapoml.Selenium.Services.Locator.ElementsListHandler(WebDriver, _elementHandler, elementLocator, by, byFrom, byFrom, listMetadata, _elementHandler.ElementHandlerRepository.CreateNestedRepository(), EventSource);
 		var webElements = new {{component.singular_name}}ComponentList(Page, this, WebDriver, elementsListHandler, listMetadata, EventSource, SpaceOptions);
 		return webElements;
 		{{ else }}

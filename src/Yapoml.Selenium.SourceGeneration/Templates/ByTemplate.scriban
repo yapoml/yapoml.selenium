@@ -12,4 +12,6 @@
 	var by = global::OpenQA.Selenium.By.Id(byValue);
 {{- else if $1.by.method == 'TestId' -}}
 	var by = global::OpenQA.Selenium.By.CssSelector($"[data-testid='{byValue}']");
-{{- end -}}
+{{- end }}
+
+var byFrom = {{ if $1.by.scope == 'Parent' }}global::Yapoml.Selenium.Services.Locator.ElementLocatorContext.Parent{{ else }}global::Yapoml.Selenium.Services.Locator.ElementLocatorContext.Root{{ end }};

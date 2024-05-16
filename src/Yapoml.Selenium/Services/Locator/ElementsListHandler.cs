@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using System;
 using System.Collections.Generic;
 using Yapoml.Selenium.Components.Metadata;
 using Yapoml.Selenium.Events;
@@ -12,18 +13,21 @@ namespace Yapoml.Selenium.Services.Locator
         private readonly IElementLocator _elementLocator;
         private readonly IEventSource _eventSource;
 
-        public ElementsListHandler(IWebDriver webDriver, IElementHandler parentElementHandler, IElementLocator elementLocator, By by, ComponentsListMetadata componentsListMetadata, IElementHandlerRepository elementHandlerRepository, IEventSource eventSource)
+        public ElementsListHandler(IWebDriver webDriver, IElementHandler parentElementHandler, IElementLocator elementLocator, By by, ElementLocatorContext from, ComponentsListMetadata componentsListMetadata, IElementHandlerRepository elementHandlerRepository, IEventSource eventSource)
         {
             _webDriver = webDriver;
             _parentElementHandler = parentElementHandler;
             _elementLocator = elementLocator;
             By = by;
+            From = from;
             ComponentsListMetadata = componentsListMetadata;
             ElementHandlerRepository = elementHandlerRepository;
             _eventSource = eventSource;
         }
 
         public By By { get; }
+
+        public ElementLocatorContext From { get; }
 
         public ComponentsListMetadata ComponentsListMetadata { get; }
 
@@ -45,28 +49,41 @@ namespace Yapoml.Selenium.Services.Locator
         {
             if (_webElements == null)
             {
-                if (_parentElementHandler != null)
+                if (From == ElementLocatorContext.Parent)
                 {
-                    try
+                    if (_parentElementHandler != null)
                     {
-                        var parentElement = _parentElementHandler.Locate();
+                        try
+                        {
+                            var parentElement = _parentElementHandler.Locate();
 
+                            _eventSource.ComponentEventSource.RaiseOnFindingComponents(By, ComponentsListMetadata);
+
+                            _webElements = _elementLocator.FindElements(parentElement, By);
+                        }
+                        catch (StaleElementReferenceException)
+                        {
+                            _parentElementHandler.Invalidate();
+
+                            _webElements = _elementLocator.FindElements(_parentElementHandler.Locate(), By);
+                        }
+                    }
+                    else
+                    {
                         _eventSource.ComponentEventSource.RaiseOnFindingComponents(By, ComponentsListMetadata);
 
-                        _webElements = _elementLocator.FindElements(parentElement, By);
-                    }
-                    catch (StaleElementReferenceException)
-                    {
-                        _parentElementHandler.Invalidate();
-
-                        _webElements = _elementLocator.FindElements(_parentElementHandler.Locate(), By);
+                        _webElements = _elementLocator.FindElements(_webDriver, By);
                     }
                 }
-                else
+                else if (From == ElementLocatorContext.Root)
                 {
                     _eventSource.ComponentEventSource.RaiseOnFindingComponents(By, ComponentsListMetadata);
 
                     _webElements = _elementLocator.FindElements(_webDriver, By);
+                }
+                else
+                {
+                    throw new NotImplementedException($"Element locator context {From} is not supported yet.");
                 }
 
                 _eventSource.ComponentEventSource.RaiseOnFoundComponents(By, _webDriver, _webElements, ComponentsListMetadata);

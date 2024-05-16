@@ -45,7 +45,7 @@ public partial class Conditions : global::Yapoml.Selenium.Components.BasePageCon
 				{{ include 'ByTemplate' component }}
 
 				var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{component.original_name}}" };
-				var elementHandler = new global::Yapoml.Selenium.Services.Locator.ElementHandler(WebDriver, null, ElementLocator, by, metadata, ElementHandlerRepository.CreateNestedRepository(), EventSource);
+				var elementHandler = new global::Yapoml.Selenium.Services.Locator.ElementHandler(WebDriver, null, ElementLocator, by, byFrom, metadata, ElementHandlerRepository.CreateNestedRepository(), EventSource);
 			
 				ElementHandlerRepository.Set("{{component.name}}", elementHandler);
 
@@ -64,7 +64,7 @@ public partial class Conditions : global::Yapoml.Selenium.Components.BasePageCon
 				
 			var metadata = new global::Yapoml.Selenium.Components.Metadata.ComponentMetadata() { Name = "{{singularize(component.original_name)}}" };
 			var listMetadata = new global::Yapoml.Selenium.Components.Metadata.ComponentsListMetadata() { Name = "{{component.original_name}}", ComponentMetadata = metadata };
-			var elementsListHandler = new global::Yapoml.Selenium.Services.Locator.ElementsListHandler(WebDriver, null, ElementLocator, by, listMetadata, ElementHandlerRepository.CreateNestedRepository(), EventSource);
+			var elementsListHandler = new global::Yapoml.Selenium.Services.Locator.ElementsListHandler(WebDriver, null, ElementLocator, by, byFrom, listMetadata, ElementHandlerRepository.CreateNestedRepository(), EventSource);
 			
 			return new {{component.singular_name}}ComponentList.Conditions(Timeout, PollingInterval, WebDriver, elementsListHandler, ElementLocator, EventSource, Logger);
 		}

@@ -16,7 +16,7 @@
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3" PrivateAssets="all" />
     <PackageReference Include="Scriban" Version="5.9.0" GeneratePathProperty="true" PrivateAssets="all" />
     <PackageReference Include="YamlDotNet" Version="13.4.0" GeneratePathProperty="true" PrivateAssets="all" />
-    <PackageReference Include="Yapoml.Framework.Workspace" Version="0.14.1" GeneratePathProperty="true" PrivateAssets="all" />
+    <PackageReference Include="Yapoml.Framework.Workspace" Version="0.15.2" GeneratePathProperty="true" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
