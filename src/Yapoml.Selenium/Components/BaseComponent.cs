@@ -159,7 +159,14 @@ namespace Yapoml.Selenium.Components
         /// </summary>
         public virtual bool IsEnabled => RelocateOnStaleReference(() => WrappedElement.Enabled);
 
-        public virtual bool IsSelected => RelocateOnStaleReference(() => WrappedElement.Selected);
+
+        /// <summary>
+        /// Indicates whether a component currently is checked or not.
+        /// <para>
+        /// It returns a boolean value: <c>true</c> if the component is checked, and <c>false</c> if the component is unchecked.
+        /// </para>
+        /// </summary>
+        public virtual bool IsChecked => RelocateOnStaleReference(() => WrappedElement.Selected);
 
         /// <summary>
         /// Indicates whether a component currently is partially visible within viewport or not.

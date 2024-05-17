@@ -324,6 +324,82 @@ namespace Yapoml.Selenium.Components
         }
 
         /// <summary>
+        /// Waits until the component is checked.
+        /// </summary>
+        /// <param name="timeout">How long to wait until the component is checked.</param>
+        /// <returns></returns>
+        /// <exception cref="ExpectException"></exception>
+        public virtual TSelf IsChecked(TimeSpan? timeout = null)
+        {
+            timeout ??= Timeout;
+
+            bool attempt()
+            {
+                return ElementHandler.Locate().Selected;
+            }
+
+            try
+            {
+                using (var scope = Logger.BeginLogScope($"Expect {ElementHandler.ComponentMetadata.Name} is checked"))
+                {
+                    scope.Execute(() =>
+                    {
+                        Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                    });
+                }
+            }
+            catch (TimeoutException ex)
+            {
+                throw new ExpectException($"{ElementHandler.ComponentMetadata.Name} is still not checked.", ex);
+            }
+
+            return _self;
+        }
+
+        /// <summary>
+        /// Waits until the component is unchecked.
+        /// </summary>
+        /// <param name="timeout">How long to wait until the component is unchecked.</param>
+        /// <returns></returns>
+        /// <exception cref="ExpectException"></exception>
+        public virtual TSelf IsNotChecked(TimeSpan? timeout = null)
+        {
+            timeout ??= Timeout;
+
+            bool attempt()
+            {
+                return !ElementHandler.Locate().Selected;
+            }
+
+            try
+            {
+                using (var scope = Logger.BeginLogScope($"Expect {ElementHandler.ComponentMetadata.Name} is unchecked"))
+                {
+                    scope.Execute(() =>
+                    {
+                        Services.Waiter.Until(attempt, timeout.Value, PollingInterval);
+                    });
+                }
+            }
+            catch (TimeoutException ex)
+            {
+                throw new ExpectException($"{ElementHandler.ComponentMetadata.Name} is still checked.", ex);
+            }
+
+            return _self;
+        }
+
+        /// <summary>
+        /// Waits until the component is unchecked.
+        /// </summary>
+        /// <param name="timeout">How long to wait until the component is unchecked.</param>
+        /// <returns></returns>
+        public virtual TSelf IsUnchecked(TimeSpan? timeout = null)
+        {
+            return IsNotChecked(timeout);
+        }
+
+        /// <summary>
         /// Waits until the component is in view.
         /// </summary>
         /// <param name="timeout">How long to wait until the component is in view.</param>

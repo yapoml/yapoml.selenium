@@ -451,6 +451,58 @@ namespace Yapoml.Selenium.Components
         }
 
         /// <summary>
+        /// Perform check operation for the component.
+        /// </summary>
+        /// <returns>The same instance of the component to continue interaction with it.</returns>
+        public virtual TComponent Check()
+        {
+            using (var scope = _logger.BeginLogScope($"Checking on {Metadata.Name}"))
+            {
+                scope.Execute(() =>
+                {
+                    RelocateOnStaleReference(() => { if (!WrappedElement.Selected) { WrappedElement.Click(); } });
+                });
+            }
+
+            return component;
+        }
+
+        /// <inheritdoc cref="Check()"/>
+        /// <param name="when">Condition to be satisfied before checking.</param>
+        public virtual TComponent Check(Action<TConditions> when)
+        {
+            when(conditions);
+
+            return Check();
+        }
+
+        /// <summary>
+        /// Perform uncheck operation for the component.
+        /// </summary>
+        /// <returns>The same instance of the component to continue interaction with it.</returns>
+        public virtual TComponent Uncheck()
+        {
+            using (var scope = _logger.BeginLogScope($"Unchecking on {Metadata.Name}"))
+            {
+                scope.Execute(() =>
+                {
+                    RelocateOnStaleReference(() => { if (WrappedElement.Selected) { WrappedElement.Click(); } });
+                });
+            }
+
+            return component;
+        }
+
+        /// <inheritdoc cref="Uncheck()"/>
+        /// <param name="when">Condition to be satisfied before unchecking.</param>
+        public virtual TComponent Uncheck(Action<TConditions> when)
+        {
+            when(conditions);
+
+            return Uncheck();
+        }
+
+        /// <summary>
         /// Performs a drag and drop operation to another component.
         /// </summary>
         public virtual TComponent DragAndDrop<TToComponent, TToConditions, TToCondition>(BaseComponent<TToComponent, TToConditions, TToCondition> toComponent)
