@@ -5,10 +5,10 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 #endif
 using System.Threading;
+using Yapoml.Framework;
 using Yapoml.Framework.Logging;
 using Yapoml.Selenium.Components.Conditions;
 using Yapoml.Selenium.Events;
-using Yapoml.Selenium.Services;
 using Yapoml.Selenium.Services.Locator;
 
 namespace Yapoml.Selenium.Components

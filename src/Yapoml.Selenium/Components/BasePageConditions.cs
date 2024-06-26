@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
 using System;
 using System.Threading;
+using Yapoml.Framework;
 using Yapoml.Framework.Logging;
 using Yapoml.Selenium.Components.Conditions;
 using Yapoml.Selenium.Components.Metadata;
@@ -54,7 +55,7 @@ namespace Yapoml.Selenium.Components
                 {
                     scope.Execute(() =>
                     {
-                        Services.Waiter.Until(condition, timeout.Value, PollingInterval);
+                        Waiter.Until(condition, timeout.Value, PollingInterval);
                     });
                 }
             }

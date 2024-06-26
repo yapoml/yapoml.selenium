@@ -6,12 +6,12 @@ using System.Linq;
 #if NET6_0_OR_GREATER
 using System.Runtime.CompilerServices;
 #endif
+using Yapoml.Framework;
 using Yapoml.Framework.Logging;
 using Yapoml.Framework.Options;
 using Yapoml.Selenium.Components.Metadata;
 using Yapoml.Selenium.Events;
 using Yapoml.Selenium.Options;
-using Yapoml.Selenium.Services;
 using Yapoml.Selenium.Services.Factory;
 using Yapoml.Selenium.Services.Locator;
 

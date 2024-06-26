@@ -2,7 +2,7 @@
 using Moq;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using Yapoml.Selenium.Services;
+using Yapoml.Framework;
 using Yapoml.Selenium.Services.Locator;
 
 namespace Yapoml.Selenium.Test

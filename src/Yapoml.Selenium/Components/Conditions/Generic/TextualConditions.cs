@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using Yapoml.Framework;
 using Yapoml.Framework.Logging;
 
 namespace Yapoml.Selenium.Components.Conditions.Generic
@@ -43,7 +44,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
                 {
                     scope.Execute(() =>
                     {
-                        Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                        Waiter.Until(condition, timeout.Value, _pollingInterval);
                     });
                 }
             }
@@ -79,7 +80,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
                 {
                     scope.Execute(() =>
                     {
-                        Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                        Waiter.Until(condition, timeout.Value, _pollingInterval);
                     });
                 }
             }
@@ -110,7 +111,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
                 {
                     scope.Execute(() =>
                     {
-                        Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                        Waiter.Until(condition, timeout.Value, _pollingInterval);
                     });
                 }
             }
@@ -141,7 +142,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
                 {
                     scope.Execute(() =>
                     {
-                        Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                        Waiter.Until(condition, timeout.Value, _pollingInterval);
                     });
                 }
             }
@@ -177,7 +178,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
                 {
                     scope.Execute(() =>
                     {
-                        Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                        Waiter.Until(condition, timeout.Value, _pollingInterval);
                     });
                 }
             }
@@ -213,7 +214,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
                 {
                     scope.Execute(() =>
                     {
-                        Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                        Waiter.Until(condition, timeout.Value, _pollingInterval);
                     });
                 }
             }
@@ -249,7 +250,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
                 {
                     scope.Execute(() =>
                     {
-                        Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                        Waiter.Until(condition, timeout.Value, _pollingInterval);
                     });
                 }
             }
@@ -285,7 +286,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
                 {
                     scope.Execute(() =>
                     {
-                        Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                        Waiter.Until(condition, timeout.Value, _pollingInterval);
                     });
                 }
             }
@@ -321,7 +322,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
                 {
                     scope.Execute(() =>
                     {
-                        Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                        Waiter.Until(condition, timeout.Value, _pollingInterval);
                     });
                 }
             }
@@ -357,7 +358,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
                 {
                     scope.Execute(() =>
                     {
-                        Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                        Waiter.Until(condition, timeout.Value, _pollingInterval);
                     });
                 }
             }
@@ -388,7 +389,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
                 {
                     scope.Execute(() =>
                     {
-                        Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                        Waiter.Until(condition, timeout.Value, _pollingInterval);
                     });
                 }
             }
@@ -419,7 +420,7 @@ namespace Yapoml.Selenium.Components.Conditions.Generic
                 {
                     scope.Execute(() =>
                     {
-                        Services.Waiter.Until(condition, timeout.Value, _pollingInterval);
+                        Waiter.Until(condition, timeout.Value, _pollingInterval);
                     });
                 }
             }
