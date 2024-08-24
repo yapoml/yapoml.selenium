@@ -520,6 +520,17 @@ return (
         }
 
         /// <summary>
+        /// Various expected conditions for value.
+        /// </summary>
+        public virtual ValueConditions<TSelf> Value
+        {
+            get
+            {
+                return new ValueConditions<TSelf>(_self, ElementHandler, Timeout, PollingInterval, $"value of the {ElementHandler.ComponentMetadata.Name}", Logger);
+            }
+        }
+
+        /// <summary>
         /// Waits specified amount of time.
         /// </summary>
         /// <param name="duration">Aamount of time to wait.</param>

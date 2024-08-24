@@ -241,6 +241,11 @@ return (
             }
         }
 
+        /// <summary>
+        /// Returns a value of the component.
+        /// </summary>
+        public virtual string Value => RelocateOnStaleReference(() => _elementHandler.Locate().GetAttribute("value"));
+
         public override bool Equals(object obj)
         {
             var str = obj as string;
