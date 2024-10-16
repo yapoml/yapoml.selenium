@@ -34,7 +34,7 @@ namespace Yapoml.Selenium.Services
 
             if (queryParams != null && queryParams.Count > 0)
             {
-                urlBuilder.Query = string.Join("&", queryParams.Select(qp => $"{qp.Key}={qp.Value}"));
+                urlBuilder.Query = string.Join("&", queryParams.Where(qp => qp.Value is not null).Select(qp => $"{qp.Key}={qp.Value}"));
             }
 
             return urlBuilder.Uri;
