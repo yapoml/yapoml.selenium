@@ -13,5 +13,5 @@ username input: id username
 Then you are immediately able to interact with web elements
 
 ```csharp
-webDriver.Ya().LoginPage.UsernameInput.Type("user01");
+webDriver.Ya().LoginPage.UsernameInput.Fill("user01");
 ```
