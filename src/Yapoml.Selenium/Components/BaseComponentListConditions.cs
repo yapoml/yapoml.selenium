@@ -109,7 +109,7 @@ namespace Yapoml.Selenium.Components
                     try
                     {
                         var elementHandler = new ElementHandler(WebDriver, null, ElementLocator, ElementsListHandler.By, ElementsListHandler.From, element, ElementsListHandler.ComponentsListMetadata.ComponentMetadata, ElementsListHandler.ElementHandlerRepository.CreateNestedRepository(), EventSource);
-                        var elementCondition = (TComponentConditions)Activator.CreateInstance(typeof(TComponentConditions), TimeSpan.FromMilliseconds(-1), PollingInterval, WebDriver, elementHandler, ElementLocator, EventSource);
+                        var elementCondition = (TComponentConditions)Activator.CreateInstance(typeof(TComponentConditions), TimeSpan.FromMilliseconds(-1), PollingInterval, WebDriver, elementHandler, ElementLocator, Logger, EventSource);
 
                         predicate(elementCondition);
 
@@ -159,7 +159,7 @@ namespace Yapoml.Selenium.Components
                     try
                     {
                         var elementHandler = new ElementHandler(WebDriver, null, ElementLocator, ElementsListHandler.By, ElementsListHandler.From, element, ElementsListHandler.ComponentsListMetadata.ComponentMetadata, ElementsListHandler.ElementHandlerRepository.CreateNestedRepository(), EventSource);
-                        var elementCondition = (TComponentConditions)Activator.CreateInstance(typeof(TComponentConditions), TimeSpan.FromMilliseconds(-1), PollingInterval, WebDriver, elementHandler, ElementLocator, EventSource);
+                        var elementCondition = (TComponentConditions)Activator.CreateInstance(typeof(TComponentConditions), TimeSpan.FromMilliseconds(-1), PollingInterval, WebDriver, elementHandler, ElementLocator, Logger, EventSource);
 
                         predicate(elementCondition);
 
