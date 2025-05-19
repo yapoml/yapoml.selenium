@@ -109,15 +109,15 @@ namespace Yapoml.Selenium.Components
                     try
                     {
                         var elementHandler = new ElementHandler(WebDriver, null, ElementLocator, ElementsListHandler.By, ElementsListHandler.From, element, ElementsListHandler.ComponentsListMetadata.ComponentMetadata, ElementsListHandler.ElementHandlerRepository.CreateNestedRepository(), EventSource);
-                        var elementCondition = (TComponentConditions)Activator.CreateInstance(typeof(TComponentConditions), TimeSpan.FromMilliseconds(-1), PollingInterval, WebDriver, elementHandler, ElementLocator, Logger, EventSource);
+                        var elementCondition = (TComponentConditions)Activator.CreateInstance(typeof(TComponentConditions), TimeSpan.FromMilliseconds(-1), PollingInterval, WebDriver, elementHandler, ElementLocator, EventSource, Logger);
 
                         predicate(elementCondition);
 
                         return true;
                     }
-                    catch (TimeoutException)
+                    catch (ExpectException)
                     {
-                        return false;
+                        continue;
                     }
                 }
 
@@ -159,14 +159,14 @@ namespace Yapoml.Selenium.Components
                     try
                     {
                         var elementHandler = new ElementHandler(WebDriver, null, ElementLocator, ElementsListHandler.By, ElementsListHandler.From, element, ElementsListHandler.ComponentsListMetadata.ComponentMetadata, ElementsListHandler.ElementHandlerRepository.CreateNestedRepository(), EventSource);
-                        var elementCondition = (TComponentConditions)Activator.CreateInstance(typeof(TComponentConditions), TimeSpan.FromMilliseconds(-1), PollingInterval, WebDriver, elementHandler, ElementLocator, Logger, EventSource);
+                        var elementCondition = (TComponentConditions)Activator.CreateInstance(typeof(TComponentConditions), TimeSpan.FromMilliseconds(-1), PollingInterval, WebDriver, elementHandler, ElementLocator, EventSource, Logger);
 
                         predicate(elementCondition);
 
                         // this one still satisfy condition, so returning false for reiterating
                         result = false;
                     }
-                    catch (TimeoutException)
+                    catch (ExpectException)
                     {
                         // do noting and leave result true b default, proceding next item
                     }
