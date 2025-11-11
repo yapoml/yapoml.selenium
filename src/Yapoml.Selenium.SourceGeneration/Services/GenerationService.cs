@@ -1,4 +1,5 @@
 ﻿using Scriban.Runtime;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Yapoml.Framework.Workspace;
@@ -20,40 +21,18 @@ namespace Yapoml.Selenium.SourceGeneration.Services
             return isXpath;
         }
 
-        private static Dictionary<ComponentContext, string> _returnTypesCache = new Dictionary<ComponentContext, string>();
+        private static ConcurrentDictionary<ComponentContext, string> _returnTypesCache = new ConcurrentDictionary<ComponentContext, string>();
 
         public static string GetComponentReturnType(ComponentContext component)
         {
-            if (_returnTypesCache.TryGetValue(component, out var cachedRetType))
-            {
-                return cachedRetType;
-            }
-            else
-            {
-                var retType = $"{component.SingularName}Component";
-
-                _returnTypesCache[component] = retType;
-
-                return retType;
-            }
+            return _returnTypesCache.GetOrAdd(component, $"{component.SingularName}Component");
         }
 
-        private static Dictionary<ComponentContext, string> _returnFullTypesCache = new Dictionary<ComponentContext, string>();
+        private static ConcurrentDictionary<ComponentContext, string> _returnFullTypesCache = new ConcurrentDictionary<ComponentContext, string>();
 
         public static string GetComponentReturnFullType(ComponentContext component)
         {
-            if (_returnFullTypesCache.TryGetValue(component, out var cachedRetType))
-            {
-                return cachedRetType;
-            }
-            else
-            {
-                var retType = $"global::{component.Namespace}.{component.SingularName}Component";
-
-                _returnFullTypesCache[component] = retType;
-
-                return retType;
-            }
+            return _returnFullTypesCache.GetOrAdd(component, $"global::{component.Namespace}.{component.SingularName}Component");
         }
 
         public static string GetPageClassName(ScriptObject page)
